@@ -1,0 +1,97 @@
+# ImpressionCore-EDS Enhanced v2.1 (Refactored) Requirements
+# Production-grade dependencies for educational data scraping
+
+# Core HTTP and async libraries
+aiohttp==3.9.1
+asyncio-throttle==1.0.2
+requests==2.31.0
+
+# HTML parsing and content extraction
+beautifulsoup4==4.12.2
+lxml==4.9.3
+html2text==2020.1.16
+readability-lxml==0.8.1
+
+# Advanced retry and circuit breaker patterns
+tenacity==8.2.3
+circuit-breaker==1.0.1
+
+# Natural Language Processing
+nltk==3.8.1
+textstat==0.7.3
+spacy==3.7.2
+
+# Machine Learning for quality assessment
+transformers==4.36.2
+torch==2.1.1+cpu
+
+# Feed parsing (for arXiv and RSS feeds)
+feedparser==6.0.10
+
+# System monitoring and resource management
+psutil==5.9.6
+memory-profiler==0.61.0
+
+# Rich terminal output and progress bars
+rich==13.7.0
+
+# Data validation and serialization
+pydantic==2.5.1
+dataclasses-json==0.6.3
+
+# Caching and storage
+diskcache==5.6.3
+
+# URL utilities and robots.txt parsing
+urllib3==2.1.0
+robotparser==1.1.0
+
+# Development and testing dependencies
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+
+# Optional ML dependencies (CPU versions for GTX 1050 Ti compatibility)
+scikit-learn==1.3.2
+numpy==1.24.4
+pandas==2.1.4
+
+# XML processing
+xmltodict==0.13.0
+
+# Rate limiting and throttling
+ratelimit==2.2.1
+backoff==2.2.1
+
+# Async utilities
+aiofiles==23.2.1
+asyncio-pool==0.6.0
+
+# Monitoring and logging
+structlog==23.2.0
+python-json-logger==2.0.7
+
+# Security and compliance
+cryptography==41.0.8
+python-dotenv==1.0.0
+
+# HTTP client enhancements
+httpx==0.25.2
+fake-useragent==1.4.0
+
+# Content quality assessment
+langdetect==1.0.9
+readcalc==1.0.6
+
+# Data export and serialization
+ujson==5.8.0
+orjson==3.9.10
+
+# Optional: Database support for caching
+sqlite3-utils==3.35.0
+
+# Development utilities
+black==23.11.0
+isort==5.12.0
+flake8==6.1.0
+mypy==1.7.1

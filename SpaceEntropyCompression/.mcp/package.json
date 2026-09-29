@@ -1,0 +1,50 @@
+{
+  "name": "impressioncore-educational-scraper",
+  "version": "1.0.0",
+  "description": "License-compliant educational content scraper for ImpressionCore training data",
+  "author": "ImpressionCore Team",
+  "license": "MIT",
+  "main": "server.py",
+  "dependencies": {
+    "requests": "^2.31.0",
+    "beautifulsoup4": "^4.12.0",
+    "wikipedia": "^1.4.0",
+    "arxiv": "^2.1.0",
+    "mcp": "^1.0.0",
+    "aiohttp": "^3.9.0",
+    "feedparser": "^6.0.0"
+  },
+  "mcp": {
+    "server": {
+      "command": "python",
+      "args": ["server.py"],
+      "env": {}
+    }
+  },
+  "tools": [
+    {
+      "name": "scrape_mit_ocw",
+      "description": "Scrape MIT OpenCourseWare content (Creative Commons licensed)"
+    },
+    {
+      "name": "scrape_wikipedia_educational",
+      "description": "Extract educational Wikipedia articles (CC-BY-SA licensed)"
+    },
+    {
+      "name": "scrape_arxiv_papers",
+      "description": "Get educational arXiv papers (open access)"
+    },
+    {
+      "name": "scrape_government_educational",
+      "description": "Access US government educational resources (public domain)"
+    },
+    {
+      "name": "scrape_khan_academy_cc",
+      "description": "Access Khan Academy Creative Commons content"
+    },
+    {
+      "name": "validate_license_compliance",
+      "description": "Validate that scraped content is license-compliant"
+    }
+  ]
+}

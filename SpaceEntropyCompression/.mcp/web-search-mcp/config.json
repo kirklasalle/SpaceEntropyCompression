@@ -1,0 +1,69 @@
+{
+    "mcp": {
+        "server_name": "web-search-mcp",
+        "version": "1.0.0",
+        "debug": true
+    },
+    "search": {
+        "default_num_results": 10,
+        "max_num_results": 20,
+        "safe_search": true,
+        "timeout": 30,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "google_search_enabled": true,
+        "duckduckgo_search_enabled": true,
+        "content_extraction_enabled": true
+    },
+    "rate_limit": {
+        "requests_per_minute": 30,
+        "request_timeout": 15,
+        "burst_limit": 5
+    },
+    "filters": {
+        "academic_sites": [
+            "edu",
+            "org",
+            "arxiv.org",
+            "scholar.google.com"
+        ],
+        "technical_sites": [
+            "stackoverflow.com",
+            "github.com",
+            "docs.python.org",
+            "developer.mozilla.org",
+            "readthedocs.io"
+        ],
+        "news_sites": [
+            "reuters.com",
+            "bbc.com",
+            "cnn.com",
+            "npr.org",
+            "ap.org"
+        ],
+        "documentation_sites": [
+            "readthedocs.io",
+            "github.io",
+            "docs.python.org",
+            "developer.mozilla.org"
+        ]
+    },
+    "google_operators": {
+        "enabled": true,
+        "default_operators": [
+            "site",
+            "filetype",
+            "intitle",
+            "inurl",
+            "exact_phrase",
+            "exclude",
+            "after",
+            "before"
+        ],
+        "advanced_operators": [
+            "related",
+            "cache",
+            "define",
+            "intext"
+        ]
+    }
+}

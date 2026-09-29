@@ -1,0 +1,27 @@
+# ImpressionCore-IPA Comprehensive Edition Requirements
+# Minimal dependencies for maximum compatibility and Sacred Covenant compliance
+
+# Core MCP Server Framework
+mcp>=1.0.0
+
+# Standard library modules are used primarily for minimal dependency footprint
+# No additional requirements needed for basic functionality
+
+# Optional enhancements (install only if available)
+# rich>=13.0.0  # For enhanced UI and progress tracking
+# requests>=2.25.0  # For more robust HTTP handling (optional fallback)
+# beautifulsoup4>=4.9.0  # For enhanced HTML parsing (optional fallback)
+# lxml>=4.6.0  # For XML/HTML parsing performance (optional fallback)
+
+# Development and testing (not required for production)
+# pytest>=6.0.0
+# pytest-asyncio>=0.18.0
+
+# Sacred Covenant Compliance Notes:
+# - Primary implementation uses only Python standard library
+# - Rich UI components gracefully degrade if not available
+# - HTTP operations implemented with stdlib http.client for reliability
+# - No external API keys or cloud dependencies required
+# - All network operations respect rate limits and robots.txt
+# - License detection and scholarly citation generation included
+# - Memory optimized for GTX 1050 Ti hardware constraints

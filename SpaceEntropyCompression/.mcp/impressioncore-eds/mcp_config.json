@@ -1,0 +1,50 @@
+{
+  "name": "educational-data-scraper",
+  "version": "1.0.0",
+  "description": "🔥 LICENSE-COMPLIANT EDUCATIONAL DATA SCRAPER MCP SERVER 🔥",
+  "license": "MIT",
+  "server": {
+    "command": "python",
+    "args": ["server.py"],
+    "env": {}
+  },
+  "capabilities": {
+    "tools": [
+      "scrape_mit_ocw",
+      "scrape_khan_academy", 
+      "scrape_wikipedia_educational",
+      "scrape_arxiv_papers",
+      "create_training_dataset",
+      "verify_license_compliance"
+    ]
+  },
+  "license_compliance": {
+    "mit_compatible": true,
+    "apache_compatible": true,
+    "sources": {
+      "MIT OpenCourseWare": "Creative Commons Attribution-NonCommercial-ShareAlike",
+      "Khan Academy": "Creative Commons Attribution-NonCommercial-ShareAlike",
+      "Wikipedia": "Creative Commons Attribution-ShareAlike", 
+      "arXiv": "Open Access (varies by paper)",
+      "Government Sources": "Public Domain"
+    }
+  },
+  "educational_focus": {
+    "subjects": [
+      "mathematics",
+      "computer_science",
+      "physics",
+      "chemistry",
+      "biology",
+      "history",
+      "literature",
+      "engineering"
+    ],
+    "levels": [
+      "high_school",
+      "undergraduate", 
+      "graduate",
+      "professional"
+    ]
+  }
+}

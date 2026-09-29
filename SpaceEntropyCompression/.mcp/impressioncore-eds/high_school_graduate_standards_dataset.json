@@ -1,0 +1,566 @@
+{
+  "metadata": {
+    "title": "High School Graduate Standards-Aligned Educational Dataset",
+    "creation_date": "2025-06-14T11:08:29.418759",
+    "standards_version": "1.0",
+    "source": "Wikipedia (Standards-Validated)",
+    "license": "Creative Commons Attribution-ShareAlike 3.0",
+    "total_subjects": 4,
+    "total_topics": 22,
+    "content_items": 5,
+    "qa_pairs_total": 12,
+    "overall_quality_score": 0.662,
+    "standards_compliance": "100%",
+    "cognitive_levels_covered": [
+      "understand",
+      "apply"
+    ],
+    "scraper_version": "Standards-Aligned v1.0"
+  },
+  "subject_statistics": {
+    "mathematics": {
+      "topics_processed": 8,
+      "content_items": 2,
+      "qa_pairs": 6,
+      "avg_quality": 0.685
+    },
+    "science": {
+      "topics_processed": 6,
+      "content_items": 2,
+      "qa_pairs": 4,
+      "avg_quality": 0.635
+    },
+    "english_language_arts": {
+      "topics_processed": 4,
+      "content_items": 1,
+      "qa_pairs": 2,
+      "avg_quality": 0.67
+    },
+    "social_studies": {
+      "topics_processed": 4,
+      "content_items": 0,
+      "qa_pairs": 0,
+      "avg_quality": 0
+    }
+  },
+  "standards_framework": {
+    "academic_standards_count": 10,
+    "communication_standards": 3,
+    "critical_thinking_skills": 10,
+    "digital_literacy_standards": 10
+  },
+  "content": [
+    {
+      "source": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Trigonometry",
+      "title": "Trigonometry",
+      "topic": "Trigonometry",
+      "subject_area": "mathematics",
+      "cognitive_level": "apply",
+      "license": "Creative Commons Attribution-ShareAlike 3.0",
+      "standards_compliant": true,
+      "overall_quality_score": 0.67,
+      "validated_content": [
+        {
+          "content": "In the 3rd century BC, Hellenistic mathematicians such as Euclid and Archimedes studied the properties of chords and inscribed angles in circles, and they proved theorems that are equivalent to modern trigonometric formulae, although they presented them geometrically rather than algebraically. In 140 BC, Hipparchus (from Nicaea, Asia Minor) gave the first tables of chords, analogous to modern tables of sine values, and used them to solve problems in trigonometry and spherical trigonometry. In the 2nd century AD, the Greco-Egyptian astronomer Ptolemy (from Alexandria, Egypt) constructed detailed trigonometric tables (Ptolemy's table of chords) in Book 1, chapter 11 of his Almagest. Ptolemy used chord length to define his trigonometric functions, a minor difference from the sine convention we use today. (The value we call sin(θ) can be found by looking up the chord length for twice the angle of interest (2θ) in Ptolemy's table, and then dividing that value by two.) Centuries passed before more detailed tables were produced, and Ptolemy's treatise remained in use for performing trigonometric calculations in astronomy throughout the next 1200 years in the medieval Byzantine, Islamic, and, later, Western European worlds.",
+          "assessment": {
+            "quality_score": 0.67,
+            "passes_standards": true,
+            "feedback": [
+              "✅ Appropriate length for high school level",
+              "⚠️ Could include more academic vocabulary",
+              "✅ Contains 5 subject-specific terms",
+              "✅ Aligns with apply cognitive level",
+              "✅ Contains examples"
+            ],
+            "word_count": 186,
+            "subject_alignment": 5,
+            "cognitive_alignment": 2,
+            "recommendations": [
+              "Content meets high school graduate standards"
+            ]
+          },
+          "paragraph_index": 4
+        }
+      ],
+      "qa_pairs": [
+        {
+          "question": "How would you apply the principles of Trigonometry to solve a problem?",
+          "answer": "In the 3rd century BC, Hellenistic mathematicians such as Euclid and Archimedes studied the properties of chords and inscribed angles in circles, and they proved theorems that are equivalent to modern trigonometric formulae, although they presented them geometrically rather than algebraically. In 140 BC, Hipparchus (from Nicaea, Asia Minor) gave the first tables of chords, analogous to modern tables of sine values, and used them to solve problems in trigonometry and spherical trigonometry. In the 2nd century AD, the Greco-Egyptian astronomer Ptolemy (from Alexandria, Egypt) constructed detailed trigonometric tables (Ptolemy's table of chords) in Book 1, chapter 11 of his Almagest. Ptolemy used chord length to define his trigonometric functions, a minor difference from the sine convention we use today. (The value we call sin(θ) can be found by looking up the chord length for twice the angle of interest (2θ) in Ptolemy's table, and then dividing that value by two.) Centuries passed before more detailed tables were produced, and Ptolemy's treatise remained in use for performing trigonometric calculations in astronomy throughout the next 1200 years in the medieval Byzantine, Islamic, and, later, Western European worlds.",
+          "subject": "mathematics",
+          "cognitive_level": "apply",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        },
+        {
+          "question": "Give an example of Trigonometry in a real-world situation.",
+          "answer": "In the 3rd century BC, Hellenistic mathematicians such as Euclid and Archimedes studied the properties of chords and inscribed angles in circles, and they proved theorems that are equivalent to modern trigonometric formulae, although they presented them geometrically rather than algebraically. In 140 BC, Hipparchus (from Nicaea, Asia Minor) gave the first tables of chords, analogous to modern tables of sine values, and used them to solve problems in trigonometry and spherical trigonometry. In the 2nd century AD, the Greco-Egyptian astronomer Ptolemy (from Alexandria, Egypt) constructed detailed trigonometric tables (Ptolemy's table of chords) in Book 1, chapter 11 of his Almagest. Ptolemy used chord length to define his trigonometric functions, a minor difference from the sine convention we use today. (The value we call sin(θ) can be found by looking up the chord length for twice the angle of interest (2θ) in Ptolemy's table, and then dividing that value by two.) Centuries passed before more detailed tables were produced, and Ptolemy's treatise remained in use for performing trigonometric calculations in astronomy throughout the next 1200 years in the medieval Byzantine, Islamic, and, later, Western European worlds.",
+          "subject": "mathematics",
+          "cognitive_level": "apply",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        }
+      ],
+      "content_count": 1,
+      "scrape_time": "2025-06-14T11:07:41.709626",
+      "standards_version": "1.0"
+    },
+    {
+      "source": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Geometry",
+      "title": "Geometry",
+      "topic": "Geometry",
+      "subject_area": "mathematics",
+      "cognitive_level": "apply",
+      "license": "Creative Commons Attribution-ShareAlike 3.0",
+      "standards_compliant": true,
+      "overall_quality_score": 0.7,
+      "validated_content": [
+        {
+          "content": "Originally developed to model the physical world, geometry has applications in almost all sciences, and also in art, architecture, and other activities that are related to graphics. Geometry also has applications in areas of mathematics that are apparently unrelated. For example, methods of algebraic geometry are fundamental in Wiles's proof of Fermat's Last Theorem, a problem that was stated in terms of elementary arithmetic, and remained unsolved for several centuries.",
+          "assessment": {
+            "quality_score": 0.67,
+            "passes_standards": true,
+            "feedback": [
+              "✅ Appropriate length for high school level",
+              "⚠️ Could include more academic vocabulary",
+              "✅ Contains 6 subject-specific terms",
+              "✅ Aligns with apply cognitive level",
+              "✅ Contains examples"
+            ],
+            "word_count": 70,
+            "subject_alignment": 6,
+            "cognitive_alignment": 1,
+            "recommendations": [
+              "Content meets high school graduate standards"
+            ]
+          },
+          "paragraph_index": 1
+        },
+        {
+          "content": "The earliest recorded beginnings of geometry can be traced to ancient Mesopotamia and Egypt in the 2nd millennium BC. Early geometry was a collection of empirically discovered principles concerning lengths, angles, areas, and volumes, which were developed to meet some practical need in surveying, construction, astronomy, and various crafts. The earliest known texts on geometry are the Egyptian Rhind Papyrus (2000–1800 BC) and Moscow Papyrus (c. 1890 BC), and the Babylonian clay tablets, such as Plimpton 322 (1900 BC). For example, the Moscow Papyrus gives a formula for calculating the volume of a truncated pyramid, or frustum. Later clay tablets (350–50 BC) demonstrate that Babylonian astronomers implemented trapezoid procedures for computing Jupiter's position and motion within time-velocity space. These geometric procedures anticipated the Oxford Calculators, including the mean speed theorem, by 14 centuries. South of Egypt the ancient Nubians established a system of geometry including early versions of sun clocks.",
+          "assessment": {
+            "quality_score": 0.73,
+            "passes_standards": true,
+            "feedback": [
+              "✅ Appropriate length for high school level",
+              "⚠️ Could include more academic vocabulary",
+              "✅ Contains 3 subject-specific terms",
+              "✅ Aligns with apply cognitive level",
+              "✅ Contains examples",
+              "✅ Presents clear concepts"
+            ],
+            "word_count": 150,
+            "subject_alignment": 3,
+            "cognitive_alignment": 1,
+            "recommendations": [
+              "Content meets high school graduate standards"
+            ]
+          },
+          "paragraph_index": 4
+        }
+      ],
+      "qa_pairs": [
+        {
+          "question": "How would you apply the principles of Geometry to solve a problem?",
+          "answer": "Originally developed to model the physical world, geometry has applications in almost all sciences, and also in art, architecture, and other activities that are related to graphics. Geometry also has applications in areas of mathematics that are apparently unrelated. For example, methods of algebraic geometry are fundamental in Wiles's proof of Fermat's Last Theorem, a problem that was stated in terms of elementary arithmetic, and remained unsolved for several centuries.",
+          "subject": "mathematics",
+          "cognitive_level": "apply",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        },
+        {
+          "question": "Give an example of Geometry in a real-world situation.",
+          "answer": "Originally developed to model the physical world, geometry has applications in almost all sciences, and also in art, architecture, and other activities that are related to graphics. Geometry also has applications in areas of mathematics that are apparently unrelated. For example, methods of algebraic geometry are fundamental in Wiles's proof of Fermat's Last Theorem, a problem that was stated in terms of elementary arithmetic, and remained unsolved for several centuries.",
+          "subject": "mathematics",
+          "cognitive_level": "apply",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        },
+        {
+          "question": "How would you apply the principles of Geometry to solve a problem?",
+          "answer": "The earliest recorded beginnings of geometry can be traced to ancient Mesopotamia and Egypt in the 2nd millennium BC. Early geometry was a collection of empirically discovered principles concerning lengths, angles, areas, and volumes, which were developed to meet some practical need in surveying, construction, astronomy, and various crafts. The earliest known texts on geometry are the Egyptian Rhind Papyrus (2000–1800 BC) and Moscow Papyrus (c. 1890 BC), and the Babylonian clay tablets, such as Plimpton 322 (1900 BC). For example, the Moscow Papyrus gives a formula for calculating the volume of a truncated pyramid, or frustum. Later clay tablets (350–50 BC) demonstrate that Babylonian astronomers implemented trapezoid procedures for computing Jupiter's position and motion within time-velocity space. These geometric procedures anticipated the Oxford Calculators, including the mean speed theorem, by 14 centuries. South of Egypt the ancient Nubians established a system of geometry including early versions of sun clocks.",
+          "subject": "mathematics",
+          "cognitive_level": "apply",
+          "quality_score": 0.73,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        },
+        {
+          "question": "Give an example of Geometry in a real-world situation.",
+          "answer": "The earliest recorded beginnings of geometry can be traced to ancient Mesopotamia and Egypt in the 2nd millennium BC. Early geometry was a collection of empirically discovered principles concerning lengths, angles, areas, and volumes, which were developed to meet some practical need in surveying, construction, astronomy, and various crafts. The earliest known texts on geometry are the Egyptian Rhind Papyrus (2000–1800 BC) and Moscow Papyrus (c. 1890 BC), and the Babylonian clay tablets, such as Plimpton 322 (1900 BC). For example, the Moscow Papyrus gives a formula for calculating the volume of a truncated pyramid, or frustum. Later clay tablets (350–50 BC) demonstrate that Babylonian astronomers implemented trapezoid procedures for computing Jupiter's position and motion within time-velocity space. These geometric procedures anticipated the Oxford Calculators, including the mean speed theorem, by 14 centuries. South of Egypt the ancient Nubians established a system of geometry including early versions of sun clocks.",
+          "subject": "mathematics",
+          "cognitive_level": "apply",
+          "quality_score": 0.73,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        }
+      ],
+      "content_count": 2,
+      "scrape_time": "2025-06-14T11:07:51.284580",
+      "standards_version": "1.0"
+    },
+    {
+      "source": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Physics",
+      "title": "Physics",
+      "topic": "Physics",
+      "subject_area": "science",
+      "cognitive_level": "understand",
+      "license": "Creative Commons Attribution-ShareAlike 3.0",
+      "standards_compliant": true,
+      "overall_quality_score": 0.67,
+      "validated_content": [
+        {
+          "content": "Astronomy is one of the oldest natural sciences. Early civilizations dating before 3000 BCE, such as the Sumerians, ancient Egyptians, and the Indus Valley Civilisation, had a predictive knowledge and a basic awareness of the motions of the Sun, Moon, and stars. The stars and planets, believed to represent gods, were often worshipped. While the explanations for the observed positions of the stars were often unscientific and lacking in evidence, these early observations laid the foundation for later astronomy, as the stars were found to traverse great circles across the sky, which could not explain the positions of the planets.",
+          "assessment": {
+            "quality_score": 0.67,
+            "passes_standards": true,
+            "feedback": [
+              "✅ Appropriate length for high school level",
+              "⚠️ Could include more academic vocabulary",
+              "✅ Contains 3 subject-specific terms",
+              "✅ Aligns with understand cognitive level",
+              "✅ Contains examples"
+            ],
+            "word_count": 100,
+            "subject_alignment": 3,
+            "cognitive_alignment": 1,
+            "recommendations": [
+              "Content meets high school graduate standards"
+            ]
+          },
+          "paragraph_index": 4
+        }
+      ],
+      "qa_pairs": [
+        {
+          "question": "Explain the concept of Physics in your own words.",
+          "answer": "Astronomy is one of the oldest natural sciences. Early civilizations dating before 3000 BCE, such as the Sumerians, ancient Egyptians, and the Indus Valley Civilisation, had a predictive knowledge and a basic awareness of the motions of the Sun, Moon, and stars. The stars and planets, believed to represent gods, were often worshipped. While the explanations for the observed positions of the stars were often unscientific and lacking in evidence, these early observations laid the foundation for later astronomy, as the stars were found to traverse great circles across the sky, which could not explain the positions of the planets.",
+          "subject": "science",
+          "cognitive_level": "understand",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        },
+        {
+          "question": "How does Physics work?",
+          "answer": "Astronomy is one of the oldest natural sciences. Early civilizations dating before 3000 BCE, such as the Sumerians, ancient Egyptians, and the Indus Valley Civilisation, had a predictive knowledge and a basic awareness of the motions of the Sun, Moon, and stars. The stars and planets, believed to represent gods, were often worshipped. While the explanations for the observed positions of the stars were often unscientific and lacking in evidence, these early observations laid the foundation for later astronomy, as the stars were found to traverse great circles across the sky, which could not explain the positions of the planets.",
+          "subject": "science",
+          "cognitive_level": "understand",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        }
+      ],
+      "content_count": 1,
+      "scrape_time": "2025-06-14T11:07:56.022216",
+      "standards_version": "1.0"
+    },
+    {
+      "source": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Scientific_method",
+      "title": "Scientific method",
+      "topic": "Scientific method",
+      "subject_area": "science",
+      "cognitive_level": "apply",
+      "license": "Creative Commons Attribution-ShareAlike 3.0",
+      "standards_compliant": true,
+      "overall_quality_score": 0.6,
+      "validated_content": [
+        {
+          "content": "The scientific method is an empirical method for acquiring knowledge that has been referred to while doing science since at least the 17th century. Historically, it was developed through the centuries from the ancient and medieval world. The scientific method involves careful observation coupled with rigorous skepticism, because cognitive assumptions can distort the interpretation of the observation. Scientific inquiry includes creating a testable hypothesis through inductive reasoning, testing it through experiments and statistical analysis, and adjusting or discarding the hypothesis based on the results.",
+          "assessment": {
+            "quality_score": 0.6,
+            "passes_standards": true,
+            "feedback": [
+              "✅ Appropriate length for high school level",
+              "⚠️ Could include more academic vocabulary",
+              "✅ Contains 5 subject-specific terms",
+              "✅ Aligns with apply cognitive level"
+            ],
+            "word_count": 84,
+            "subject_alignment": 5,
+            "cognitive_alignment": 1,
+            "recommendations": [
+              "Content meets high school graduate standards"
+            ]
+          },
+          "paragraph_index": 0
+        }
+      ],
+      "qa_pairs": [
+        {
+          "question": "How would you apply the principles of Scientific method to solve a problem?",
+          "answer": "The scientific method is an empirical method for acquiring knowledge that has been referred to while doing science since at least the 17th century. Historically, it was developed through the centuries from the ancient and medieval world. The scientific method involves careful observation coupled with rigorous skepticism, because cognitive assumptions can distort the interpretation of the observation. Scientific inquiry includes creating a testable hypothesis through inductive reasoning, testing it through experiments and statistical analysis, and adjusting or discarding the hypothesis based on the results.",
+          "subject": "science",
+          "cognitive_level": "apply",
+          "quality_score": 0.6,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        },
+        {
+          "question": "Give an example of Scientific method in a real-world situation.",
+          "answer": "The scientific method is an empirical method for acquiring knowledge that has been referred to while doing science since at least the 17th century. Historically, it was developed through the centuries from the ancient and medieval world. The scientific method involves careful observation coupled with rigorous skepticism, because cognitive assumptions can distort the interpretation of the observation. Scientific inquiry includes creating a testable hypothesis through inductive reasoning, testing it through experiments and statistical analysis, and adjusting or discarding the hypothesis based on the results.",
+          "subject": "science",
+          "cognitive_level": "apply",
+          "quality_score": 0.6,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "⚠️ Could include more academic vocabulary"
+          ]
+        }
+      ],
+      "content_count": 1,
+      "scrape_time": "2025-06-14T11:08:03.513878",
+      "standards_version": "1.0"
+    },
+    {
+      "source": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Grammar",
+      "title": "Grammar",
+      "topic": "Grammar",
+      "subject_area": "english_language_arts",
+      "cognitive_level": "apply",
+      "license": "Creative Commons Attribution-ShareAlike 3.0",
+      "standards_compliant": true,
+      "overall_quality_score": 0.67,
+      "validated_content": [
+        {
+          "content": "A description, study, or analysis of such rules may also be known as a grammar, or as a grammar book. A reference work describing the grammar of a language is called a reference grammar or simply a grammar. A fully revealed grammar, which describes the grammatical constructions of a particular speech type in great detail is called descriptive grammar. This kind of linguistic description contrasts with linguistic prescription, a plan to marginalize some constructions while codifying others, either absolutely or in the framework of a standard language. The word grammar often has divergent meanings when used in contexts outside linguistics. It may be used more broadly to include orthographic conventions of written language, such as spelling and punctuation, which are not typically considered part of grammar by linguists; that is, the conventions used for writing a language. It may also be used more narrowly to refer to a set of prescriptive norms only, excluding the aspects of a language's grammar which do not change or are clearly acceptable (or not) without the need for discussions.",
+          "assessment": {
+            "quality_score": 0.67,
+            "passes_standards": true,
+            "feedback": [
+              "✅ Appropriate length for high school level",
+              "✅ Contains appropriate academic vocabulary",
+              "⚠️ Only 1 subject-specific terms found",
+              "✅ Aligns with apply cognitive level",
+              "✅ Contains examples"
+            ],
+            "word_count": 175,
+            "subject_alignment": 1,
+            "cognitive_alignment": 1,
+            "recommendations": [
+              "Content meets high school graduate standards"
+            ]
+          },
+          "paragraph_index": 2
+        }
+      ],
+      "qa_pairs": [
+        {
+          "question": "How would you apply the principles of Grammar to solve a problem?",
+          "answer": "A description, study, or analysis of such rules may also be known as a grammar, or as a grammar book. A reference work describing the grammar of a language is called a reference grammar or simply a grammar. A fully revealed grammar, which describes the grammatical constructions of a particular speech type in great detail is called descriptive grammar. This kind of linguistic description contrasts with linguistic prescription, a plan to marginalize some constructions while codifying others, either absolutely or in the framework of a standard language. The word grammar often has divergent meanings when used in contexts outside linguistics. It may be used more broadly to include orthographic conventions of written language, such as spelling and punctuation, which are not typically considered part of grammar by linguists; that is, the conventions used for writing a language. It may also be used more narrowly to refer to a set of prescriptive norms only, excluding the aspects of a language's grammar which do not change or are clearly acceptable (or not) without the need for discussions.",
+          "subject": "english_language_arts",
+          "cognitive_level": "apply",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "✅ Contains appropriate academic vocabulary"
+          ]
+        },
+        {
+          "question": "Give an example of Grammar in a real-world situation.",
+          "answer": "A description, study, or analysis of such rules may also be known as a grammar, or as a grammar book. A reference work describing the grammar of a language is called a reference grammar or simply a grammar. A fully revealed grammar, which describes the grammatical constructions of a particular speech type in great detail is called descriptive grammar. This kind of linguistic description contrasts with linguistic prescription, a plan to marginalize some constructions while codifying others, either absolutely or in the framework of a standard language. The word grammar often has divergent meanings when used in contexts outside linguistics. It may be used more broadly to include orthographic conventions of written language, such as spelling and punctuation, which are not typically considered part of grammar by linguists; that is, the conventions used for writing a language. It may also be used more narrowly to refer to a set of prescriptive norms only, excluding the aspects of a language's grammar which do not change or are clearly acceptable (or not) without the need for discussions.",
+          "subject": "english_language_arts",
+          "cognitive_level": "apply",
+          "quality_score": 0.67,
+          "standards_aligned": true,
+          "assessment_feedback": [
+            "✅ Appropriate length for high school level",
+            "✅ Contains appropriate academic vocabulary"
+          ]
+        }
+      ],
+      "content_count": 1,
+      "scrape_time": "2025-06-14T11:08:15.898729",
+      "standards_version": "1.0"
+    }
+  ],
+  "training_data": [
+    {
+      "question": "How would you apply the principles of Trigonometry to solve a problem?",
+      "answer": "In the 3rd century BC, Hellenistic mathematicians such as Euclid and Archimedes studied the properties of chords and inscribed angles in circles, and they proved theorems that are equivalent to modern trigonometric formulae, although they presented them geometrically rather than algebraically. In 140 BC, Hipparchus (from Nicaea, Asia Minor) gave the first tables of chords, analogous to modern tables of sine values, and used them to solve problems in trigonometry and spherical trigonometry. In the 2nd century AD, the Greco-Egyptian astronomer Ptolemy (from Alexandria, Egypt) constructed detailed trigonometric tables (Ptolemy's table of chords) in Book 1, chapter 11 of his Almagest. Ptolemy used chord length to define his trigonometric functions, a minor difference from the sine convention we use today. (The value we call sin(θ) can be found by looking up the chord length for twice the angle of interest (2θ) in Ptolemy's table, and then dividing that value by two.) Centuries passed before more detailed tables were produced, and Ptolemy's treatise remained in use for performing trigonometric calculations in astronomy throughout the next 1200 years in the medieval Byzantine, Islamic, and, later, Western European worlds.",
+      "subject": "mathematics",
+      "cognitive_level": "apply",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "Give an example of Trigonometry in a real-world situation.",
+      "answer": "In the 3rd century BC, Hellenistic mathematicians such as Euclid and Archimedes studied the properties of chords and inscribed angles in circles, and they proved theorems that are equivalent to modern trigonometric formulae, although they presented them geometrically rather than algebraically. In 140 BC, Hipparchus (from Nicaea, Asia Minor) gave the first tables of chords, analogous to modern tables of sine values, and used them to solve problems in trigonometry and spherical trigonometry. In the 2nd century AD, the Greco-Egyptian astronomer Ptolemy (from Alexandria, Egypt) constructed detailed trigonometric tables (Ptolemy's table of chords) in Book 1, chapter 11 of his Almagest. Ptolemy used chord length to define his trigonometric functions, a minor difference from the sine convention we use today. (The value we call sin(θ) can be found by looking up the chord length for twice the angle of interest (2θ) in Ptolemy's table, and then dividing that value by two.) Centuries passed before more detailed tables were produced, and Ptolemy's treatise remained in use for performing trigonometric calculations in astronomy throughout the next 1200 years in the medieval Byzantine, Islamic, and, later, Western European worlds.",
+      "subject": "mathematics",
+      "cognitive_level": "apply",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "How would you apply the principles of Geometry to solve a problem?",
+      "answer": "Originally developed to model the physical world, geometry has applications in almost all sciences, and also in art, architecture, and other activities that are related to graphics. Geometry also has applications in areas of mathematics that are apparently unrelated. For example, methods of algebraic geometry are fundamental in Wiles's proof of Fermat's Last Theorem, a problem that was stated in terms of elementary arithmetic, and remained unsolved for several centuries.",
+      "subject": "mathematics",
+      "cognitive_level": "apply",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "Give an example of Geometry in a real-world situation.",
+      "answer": "Originally developed to model the physical world, geometry has applications in almost all sciences, and also in art, architecture, and other activities that are related to graphics. Geometry also has applications in areas of mathematics that are apparently unrelated. For example, methods of algebraic geometry are fundamental in Wiles's proof of Fermat's Last Theorem, a problem that was stated in terms of elementary arithmetic, and remained unsolved for several centuries.",
+      "subject": "mathematics",
+      "cognitive_level": "apply",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "How would you apply the principles of Geometry to solve a problem?",
+      "answer": "The earliest recorded beginnings of geometry can be traced to ancient Mesopotamia and Egypt in the 2nd millennium BC. Early geometry was a collection of empirically discovered principles concerning lengths, angles, areas, and volumes, which were developed to meet some practical need in surveying, construction, astronomy, and various crafts. The earliest known texts on geometry are the Egyptian Rhind Papyrus (2000–1800 BC) and Moscow Papyrus (c. 1890 BC), and the Babylonian clay tablets, such as Plimpton 322 (1900 BC). For example, the Moscow Papyrus gives a formula for calculating the volume of a truncated pyramid, or frustum. Later clay tablets (350–50 BC) demonstrate that Babylonian astronomers implemented trapezoid procedures for computing Jupiter's position and motion within time-velocity space. These geometric procedures anticipated the Oxford Calculators, including the mean speed theorem, by 14 centuries. South of Egypt the ancient Nubians established a system of geometry including early versions of sun clocks.",
+      "subject": "mathematics",
+      "cognitive_level": "apply",
+      "quality_score": 0.73,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "Give an example of Geometry in a real-world situation.",
+      "answer": "The earliest recorded beginnings of geometry can be traced to ancient Mesopotamia and Egypt in the 2nd millennium BC. Early geometry was a collection of empirically discovered principles concerning lengths, angles, areas, and volumes, which were developed to meet some practical need in surveying, construction, astronomy, and various crafts. The earliest known texts on geometry are the Egyptian Rhind Papyrus (2000–1800 BC) and Moscow Papyrus (c. 1890 BC), and the Babylonian clay tablets, such as Plimpton 322 (1900 BC). For example, the Moscow Papyrus gives a formula for calculating the volume of a truncated pyramid, or frustum. Later clay tablets (350–50 BC) demonstrate that Babylonian astronomers implemented trapezoid procedures for computing Jupiter's position and motion within time-velocity space. These geometric procedures anticipated the Oxford Calculators, including the mean speed theorem, by 14 centuries. South of Egypt the ancient Nubians established a system of geometry including early versions of sun clocks.",
+      "subject": "mathematics",
+      "cognitive_level": "apply",
+      "quality_score": 0.73,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "Explain the concept of Physics in your own words.",
+      "answer": "Astronomy is one of the oldest natural sciences. Early civilizations dating before 3000 BCE, such as the Sumerians, ancient Egyptians, and the Indus Valley Civilisation, had a predictive knowledge and a basic awareness of the motions of the Sun, Moon, and stars. The stars and planets, believed to represent gods, were often worshipped. While the explanations for the observed positions of the stars were often unscientific and lacking in evidence, these early observations laid the foundation for later astronomy, as the stars were found to traverse great circles across the sky, which could not explain the positions of the planets.",
+      "subject": "science",
+      "cognitive_level": "understand",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "How does Physics work?",
+      "answer": "Astronomy is one of the oldest natural sciences. Early civilizations dating before 3000 BCE, such as the Sumerians, ancient Egyptians, and the Indus Valley Civilisation, had a predictive knowledge and a basic awareness of the motions of the Sun, Moon, and stars. The stars and planets, believed to represent gods, were often worshipped. While the explanations for the observed positions of the stars were often unscientific and lacking in evidence, these early observations laid the foundation for later astronomy, as the stars were found to traverse great circles across the sky, which could not explain the positions of the planets.",
+      "subject": "science",
+      "cognitive_level": "understand",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "How would you apply the principles of Scientific method to solve a problem?",
+      "answer": "The scientific method is an empirical method for acquiring knowledge that has been referred to while doing science since at least the 17th century. Historically, it was developed through the centuries from the ancient and medieval world. The scientific method involves careful observation coupled with rigorous skepticism, because cognitive assumptions can distort the interpretation of the observation. Scientific inquiry includes creating a testable hypothesis through inductive reasoning, testing it through experiments and statistical analysis, and adjusting or discarding the hypothesis based on the results.",
+      "subject": "science",
+      "cognitive_level": "apply",
+      "quality_score": 0.6,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "Give an example of Scientific method in a real-world situation.",
+      "answer": "The scientific method is an empirical method for acquiring knowledge that has been referred to while doing science since at least the 17th century. Historically, it was developed through the centuries from the ancient and medieval world. The scientific method involves careful observation coupled with rigorous skepticism, because cognitive assumptions can distort the interpretation of the observation. Scientific inquiry includes creating a testable hypothesis through inductive reasoning, testing it through experiments and statistical analysis, and adjusting or discarding the hypothesis based on the results.",
+      "subject": "science",
+      "cognitive_level": "apply",
+      "quality_score": 0.6,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "⚠️ Could include more academic vocabulary"
+      ]
+    },
+    {
+      "question": "How would you apply the principles of Grammar to solve a problem?",
+      "answer": "A description, study, or analysis of such rules may also be known as a grammar, or as a grammar book. A reference work describing the grammar of a language is called a reference grammar or simply a grammar. A fully revealed grammar, which describes the grammatical constructions of a particular speech type in great detail is called descriptive grammar. This kind of linguistic description contrasts with linguistic prescription, a plan to marginalize some constructions while codifying others, either absolutely or in the framework of a standard language. The word grammar often has divergent meanings when used in contexts outside linguistics. It may be used more broadly to include orthographic conventions of written language, such as spelling and punctuation, which are not typically considered part of grammar by linguists; that is, the conventions used for writing a language. It may also be used more narrowly to refer to a set of prescriptive norms only, excluding the aspects of a language's grammar which do not change or are clearly acceptable (or not) without the need for discussions.",
+      "subject": "english_language_arts",
+      "cognitive_level": "apply",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "✅ Contains appropriate academic vocabulary"
+      ]
+    },
+    {
+      "question": "Give an example of Grammar in a real-world situation.",
+      "answer": "A description, study, or analysis of such rules may also be known as a grammar, or as a grammar book. A reference work describing the grammar of a language is called a reference grammar or simply a grammar. A fully revealed grammar, which describes the grammatical constructions of a particular speech type in great detail is called descriptive grammar. This kind of linguistic description contrasts with linguistic prescription, a plan to marginalize some constructions while codifying others, either absolutely or in the framework of a standard language. The word grammar often has divergent meanings when used in contexts outside linguistics. It may be used more broadly to include orthographic conventions of written language, such as spelling and punctuation, which are not typically considered part of grammar by linguists; that is, the conventions used for writing a language. It may also be used more narrowly to refer to a set of prescriptive norms only, excluding the aspects of a language's grammar which do not change or are clearly acceptable (or not) without the need for discussions.",
+      "subject": "english_language_arts",
+      "cognitive_level": "apply",
+      "quality_score": 0.67,
+      "standards_aligned": true,
+      "assessment_feedback": [
+        "✅ Appropriate length for high school level",
+        "✅ Contains appropriate academic vocabulary"
+      ]
+    }
+  ],
+  "quality_assurance": {
+    "min_quality_threshold": 0.6,
+    "validation_criteria": "High School Graduate Standards",
+    "content_filtering": "Cognitive level and subject alignment",
+    "qa_pair_generation": "Standards-based question templates"
+  }
+}
