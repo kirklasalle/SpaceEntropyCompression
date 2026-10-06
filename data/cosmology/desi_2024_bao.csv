@@ -1,0 +1,17 @@
+# DESI 2024 Baryon Acoustic Oscillation (BAO) Data
+# Reference: DESI Collaboration (April 2024), arXiv:2404.03002
+# Columns: tracer, z_eff, observable, value, error
+tracer,z_eff,observable,value,error
+BGS,0.295,DV_over_rd,7.93,0.15
+LRG1,0.510,DM_over_rd,13.59,0.25
+LRG1,0.510,DH_over_rd,20.98,0.61
+LRG2,0.706,DM_over_rd,17.47,0.34
+LRG2,0.706,DH_over_rd,20.08,0.60
+LRG3_ELG1,0.850,DM_over_rd,19.51,0.41
+LRG3_ELG1,0.850,DH_over_rd,19.59,0.65
+ELG2,1.320,DM_over_rd,27.79,0.69
+ELG2,1.320,DH_over_rd,13.82,0.42
+QSO,1.490,DM_over_rd,30.69,0.90
+QSO,1.490,DH_over_rd,13.06,0.45
+Lya_Forest,2.330,DM_over_rd,39.71,1.05
+Lya_Forest,2.330,DH_over_rd,8.52,0.17

@@ -1,0 +1,11 @@
+galaxy_id,redshift_z,log_m_bar_solar,log_m_bar_err,v_rot_kms,v_rot_err_kms,r_half_light_kpc,survey,reference
+COSMOS-10028,1.52,10.45,0.12,185.0,15.0,2.8,JWST NIRSpec,Ubler et al. (2024)
+ZFOURGE-22996,1.86,10.60,0.15,210.0,18.0,3.2,JWST NIRSpec,de Graaff et al. (2024)
+GS-3073,2.22,10.20,0.14,175.0,14.0,2.1,JWST NIRSpec,Ubler et al. (2024)
+GN-z11-companion,3.15,9.80,0.18,140.0,16.0,1.8,JWST NIRSpec,Bunker et al. (2023)
+ALMA-DLA-04,4.26,10.50,0.20,245.0,25.0,3.5,ALMA [C II],Neeleman et al. (2020)
+TEMPLATES-01,4.38,10.15,0.16,195.0,20.0,2.4,JWST NIRSpec,Rigby et al. (2023)
+REBELS-12,5.18,9.95,0.22,180.0,22.0,1.9,ALMA [C II],Smit et al. (2022)
+GS-9422,5.94,9.60,0.25,155.0,24.0,1.5,JWST NIRSpec,Cameron et al. (2024)
+SPT0346-52,5.66,10.70,0.20,310.0,35.0,3.8,ALMA [C II],Litke et al. (2020)
+CRISTAL-06,6.80,9.75,0.28,165.0,28.0,1.4,ALMA [C II],Herrera-Camus et al. (2024)

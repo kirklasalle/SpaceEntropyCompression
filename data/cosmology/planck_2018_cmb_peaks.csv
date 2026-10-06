@@ -1,0 +1,20 @@
+# Planck 2018 PR3 Temperature Angular Power Spectrum (TT) Binned Peaks & Acoustic Data
+# Reference: Planck Collaboration (2020), A&A 641, A6 (Cosmological Parameters)
+# Columns: multipole_l, D_l_uK2, error_uK2, feature_type
+multipole_l,D_l_uK2,error_uK2,feature_type
+50,1180.5,45.0,Sachs-Wolfe Plateau
+100,1650.0,38.0,Rise to Peak 1
+160,3580.0,42.0,Rise to Peak 1
+221,5748.2,32.5,Peak 1 (1st Compression)
+280,4520.0,28.0,Trough 1
+360,2150.0,22.0,Trough 1
+450,1780.0,20.0,Trough 1
+538,2552.4,21.0,Peak 2 (1st Rarefaction)
+620,2100.0,22.0,Trough 2
+700,1920.0,23.0,Trough 2
+811,2521.8,24.5,Peak 3 (2nd Compression)
+920,1850.0,25.0,Trough 3
+1000,1480.0,26.0,Silk Damping Tail
+1120,1210.0,28.0,Peak 4 (3rd Compression)
+1250,810.0,30.0,Silk Damping Tail
+1400,540.0,32.0,Silk Damping Tail
