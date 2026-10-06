@@ -36,7 +36,13 @@ def run_cosmology_expansion_stress_test(
     desi_path = os.path.join(data_dir, "desi_2024_bao.csv")
 
     if not os.path.exists(pantheon_path) or not os.path.exists(desi_path):
-        raise FileNotFoundError(f"Missing cosmology datasets in {data_dir}")
+        parent_dir = os.path.join("..", data_dir)
+        if os.path.exists(os.path.join(parent_dir, "pantheon_plus_sample.csv")):
+            data_dir = parent_dir
+            pantheon_path = os.path.join(data_dir, "pantheon_plus_sample.csv")
+            desi_path = os.path.join(data_dir, "desi_2024_bao.csv")
+        else:
+            raise FileNotFoundError(f"Missing cosmology datasets in {data_dir}")
 
     # 1. Monotonicity & Causality Sanity Check
     params_default = EMRFCosmologyParams()

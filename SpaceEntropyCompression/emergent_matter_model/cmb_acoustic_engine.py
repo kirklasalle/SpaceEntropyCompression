@@ -192,11 +192,29 @@ def compute_full_cmb_power_spectrum(
     return l_arr, Dl_arr
 
 
+from pathlib import Path
+
+
+def _resolve_cmb_path(filepath: str) -> str:
+    """Resolve file path relative to current dir, parent, or repo root."""
+    if os.path.exists(filepath):
+        return filepath
+    parent = os.path.join("..", filepath)
+    if os.path.exists(parent):
+        return parent
+    repo_root = Path(__file__).resolve().parent.parent
+    candidate = repo_root / filepath
+    if candidate.exists():
+        return str(candidate)
+    return filepath
+
+
 def evaluate_planck_cmb_peaks(
     params: EMRFCMBParams,
     filepath: str
 ) -> Dict[str, Any]:
     """Benchmark theoretical CMB spectrum against Planck 2018 PR3 measurements."""
+    filepath = _resolve_cmb_path(filepath)
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Planck CMB data not found at {filepath}")
 

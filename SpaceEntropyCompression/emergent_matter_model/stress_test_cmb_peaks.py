@@ -32,7 +32,12 @@ def run_cmb_peaks_stress_test(
     """Execute full CMB acoustic oscillation stress test."""
     planck_path = os.path.join(data_dir, "planck_2018_cmb_peaks.csv")
     if not os.path.exists(planck_path):
-        raise FileNotFoundError(f"Missing Planck data file at {planck_path}")
+        parent_dir = os.path.join("..", data_dir)
+        if os.path.exists(os.path.join(parent_dir, "planck_2018_cmb_peaks.csv")):
+            data_dir = parent_dir
+            planck_path = os.path.join(data_dir, "planck_2018_cmb_peaks.csv")
+        else:
+            raise FileNotFoundError(f"Missing Planck data file at {planck_path}")
 
     params = EMRFCMBParams()
     report = evaluate_planck_cmb_peaks(params, planck_path)

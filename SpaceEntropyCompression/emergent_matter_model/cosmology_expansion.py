@@ -128,11 +128,29 @@ def bao_observables(z: float, params: EMRFCosmologyParams) -> Dict[str, float]:
     }
 
 
+from pathlib import Path
+
+
+def _resolve_cosmo_path(filepath: str) -> str:
+    """Resolve file path relative to current dir, parent, or repo root."""
+    if os.path.exists(filepath):
+        return filepath
+    parent = os.path.join("..", filepath)
+    if os.path.exists(parent):
+        return parent
+    repo_root = Path(__file__).resolve().parent.parent
+    candidate = repo_root / filepath
+    if candidate.exists():
+        return str(candidate)
+    return filepath
+
+
 def evaluate_pantheon_plus(
     params: EMRFCosmologyParams,
     filepath: str
 ) -> Dict[str, float]:
     """Evaluate chi2 and residuals against Pantheon+ Supernova sample."""
+    filepath = _resolve_cosmo_path(filepath)
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Pantheon+ data not found at {filepath}")
     
@@ -170,6 +188,7 @@ def evaluate_desi_bao(
     filepath: str
 ) -> Dict[str, float]:
     """Evaluate chi2 against DESI 2024 BAO measurements."""
+    filepath = _resolve_cosmo_path(filepath)
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"DESI BAO data not found at {filepath}")
     
