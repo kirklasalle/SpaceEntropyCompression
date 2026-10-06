@@ -1,0 +1,32 @@
+{
+  "title": "Emergent Matter Research Framework (EMRF): Space-Entropy Compression and Multi-Star Relativistic S-Star Dynamics",
+  "description": "Open-source research framework, numerical simulation platform, and observational astrophysics testing suite investigating the Compressed Space-Time Matter Hypothesis (CSTMH). Implements multidimensional spatial coordinates X = {x, y, z, d0, d1, d2, ...}, thermodynamic entropy state coupling S(X,t), 1PN relativistic equations of motion, exact Kretschmann curvature calculations, Thiele-Innes sky-plane projection, SPARC rotation curve fitting, and cosmological horizon acceleration evolution a_0(z) = c H(z) / (2 pi). Empirically confronted across 425 observational data points spanning the Sagittarius A* S-star cluster (S2, S29, S38, S55, S301; Delta-BIC = +70.74, Branch A Geometric Collapse), 10 SPARC rotationally supported galaxies (Delta-BIC = -52,490.1), and 10 high-redshift JWST/ALMA disk galaxies (Delta-BIC = -100.08). Backed by 99 automated tests.",
+  "creators": [
+    {
+      "name": "LaSalle, Kirk",
+      "affiliation": "Emergent Matter Research Framework (EMRF)"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "theoretical physics",
+    "general relativity",
+    "emergent gravity",
+    "emergent matter",
+    "astrophysics",
+    "cosmology",
+    "sagittarius a*",
+    "s-star cluster",
+    "sparc database",
+    "galactic rotation curves",
+    "james webb space telescope",
+    "jwst",
+    "baryonic tully-fisher relation",
+    "hubble parameter",
+    "astrometry",
+    "bayesian model selection",
+    "bifurcation protocol"
+  ],
+  "upload_type": "software"
+}

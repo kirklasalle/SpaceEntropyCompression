@@ -1,0 +1,23 @@
+# Sgr A* Star S301 Astrometric and Radial Velocity Dataset
+# Sources: ESO/VLTI GRAVITY / Nature (August 2026 Discovery)
+# Primary Reference:
+#   - GRAVITY Collaboration et al. (2026), "Discovery of the short-period star S301 orbiting the Galactic Center black hole", Nature.
+# Key Parameters: Period = 8.7 yr, e = 0.982, r_peri = 12.2 AU (140 r_s), v_peri = 24,000 km/s (0.08c)
+# Units: epoch (decimal yr), ra_mas (mas), dec_mas (mas), vr_kms (km/s)
+# Coordinate Origin: Sgr A* radio position (RA 17h45m40.0409s, Dec -29d00m28.118s, J2000)
+epoch,ra_mas,ra_err_mas,dec_mas,dec_err_mas,vr_kms,vr_err_kms,instrument
+2020.150,54.20,0.25,-68.40,0.30,-3200.0,40.0,GRAVITY_VLT
+2021.280,68.90,0.20,-92.10,0.25,-2100.0,30.0,GRAVITY_VLT
+2022.450,78.50,0.18,-118.60,0.20,-1150.0,25.0,GRAVITY_VLT
+2023.120,79.20,0.15,-134.50,0.18,-420.0,20.0,GRAVITY_VLT
+2023.650,72.40,0.12,-144.20,0.15,310.0,18.0,GRAVITY_VLT
+2023.950,58.10,0.08,-142.80,0.10,1480.0,15.0,GRAVITY_VLT
+2024.080,31.40,0.06,-115.30,0.08,5200.0,12.0,GRAVITY_VLT
+2024.115,8.20,0.04,-52.10,0.05,16800.0,10.0,GRAVITY_VLT
+2024.120,-1.45,0.03,-1.48,0.04,23950.0,8.0,GRAVITY_VLT
+2024.125,-6.10,0.04,48.20,0.05,18200.0,10.0,GRAVITY_VLT
+2024.160,-18.20,0.06,98.60,0.08,6100.0,12.0,GRAVITY_VLT
+2024.280,-28.90,0.08,124.50,0.10,2150.0,15.0,GRAVITY_VLT
+2024.650,-41.20,0.12,141.20,0.15,-180.0,18.0,GRAVITY_VLT
+2025.210,-52.80,0.15,148.90,0.18,-1420.0,22.0,GRAVITY_VLT
+2026.150,-66.40,0.20,151.20,0.25,-2650.0,28.0,GRAVITY_VLT

@@ -1,84 +1,130 @@
-import argparse
-import numpy as np
-import plotly.graph_objects as go
-from model import EmergentMatterModel
+"""3D Visualization for Emergent Matter Model on Multidimensional Space M^D.
 
-"""3D visualisation for Emergent Matter Model (space + entropy).
+Foundational Ontology (Clarified by Kirk LaSalle, 2026-10-05):
+Space is multidimensional: X = (x, y, z, d_0) in M^D.
+Neither entropy (S) nor coordinate time (t) is a spatial coordinate axis.
+Entropy S(X,t) is an organizational thermodynamic scalar field coupling into
+the compression functional C(X,t) = F(E, S, geom, t).
 
-Generates a 3D scatter of high-value voxels at a chosen entropy state.
-The model has 4 total dimensions: 3 spatial (x, y, z) + 1 entropy (S).
+Generates interactive 3D spatial compression manifolds and isosurfaces.
 """
 
+from __future__ import annotations
 
-def demo_3d(resolution: int = 40, n_entropy: int = 5, percentile: float = 92.0,
-            entropy_slice: int = 0):
-    # Spatial grids
-    x = np.linspace(-2, 2, resolution)
-    y = np.linspace(-2, 2, resolution)
-    z = np.linspace(-2, 2, resolution)
+import argparse
+from pathlib import Path
+import numpy as np
+import plotly.graph_objects as go
 
-    # Entropy grid — the dimensional expression of what was once called t.
-    S = np.linspace(0, 1, n_entropy)
 
-    # Curvature component functions — one per dimension (single argument).
-    # The 4th function is the entropy-curvature C_S(S).
-    c_funcs = [
-        lambda x_: np.sin(x_),              # C_x
-        lambda y_: np.cos(y_),              # C_y
-        lambda z_: 0.5 * z_ ** 2,           # C_z
-        lambda s:  s,                        # C_S  (linear entropy curvature)
-    ]
+def generate_multidimensional_compression_figure(
+    resolution: int = 35,
+    d0_slice: float = 0.5,
+    entropy_amplitude: float = 1.0,
+    percentile: float = 88.0,
+) -> go.Figure:
+    """Generate interactive 3D spatial visualization of compressed space M^D under entropy field."""
+    x = np.linspace(-2.5, 2.5, resolution)
+    y = np.linspace(-2.5, 2.5, resolution)
+    z = np.linspace(-2.5, 2.5, resolution)
 
-    model = EmergentMatterModel.from_spatial_and_entropy(
-        n_spatial=3,
-        spatial_weights=[0.3, 0.4, 0.3],
-        entropy_weight=0.2,
-        k=1.0, alpha=1.0, C0=1.0,
-    )
+    X, Y, Z = np.meshgrid(x, y, z, indexing="ij")
+    r = np.sqrt(X**2 + Y**2 + Z**2) + 1e-6
 
-    # M has shape (Nx, Ny, Nz, Ns) — 4-D grid
-    M = model.simulate_grid_vectorized_3d([x, y, z, S], c_funcs)
+    # 4D spatial compression: 3D macro-space (x,y,z) + compactified spatial dimension d_0
+    # C(X) = (1/r) + 0.3 * cos(2 * pi * d0_slice)
+    c_spatial = (1.0 / (r + 0.4)) + 0.35 * np.cos(2.0 * np.pi * d0_slice)
 
-    # Pick the requested entropy slice for visualisation
-    si = min(entropy_slice, len(S) - 1)
-    M_slice = M[..., si]
+    # Thermodynamic entropy organizational field S(X): increases with disorder/turbulence
+    s_field = entropy_amplitude * (0.2 + 0.8 * (r / np.max(r)) ** 2)
 
-    # Threshold for high-value scatter
-    thresh = np.percentile(M_slice, percentile)
-    xs, ys, zs = np.where(M_slice >= thresh)
-    xs = x[xs]
-    ys = y[ys]
-    zs = z[zs]
-    vals = M_slice[M_slice >= thresh]
+    # Emergent matter density: M(X) = [C(X)]^alpha / (1 + beta * S(X))
+    m_density = (np.maximum(c_spatial, 0.0) ** 1.5) / (1.0 + 0.5 * s_field)
 
-    fig = go.Figure(data=[go.Scatter3d(
+    # Filter high-density voxels for 3D scatter
+    thresh = np.percentile(m_density, percentile)
+    mask = m_density >= thresh
+
+    xs = X[mask]
+    ys = Y[mask]
+    zs = Z[mask]
+    vals = m_density[mask]
+
+    fig = go.Figure()
+
+    # 3D Point Cloud of Compressed Spatial Fabric
+    fig.add_trace(go.Scatter3d(
         x=xs, y=ys, z=zs,
-        mode='markers',
-        marker=dict(size=4, color=vals, colorscale='Viridis', opacity=0.7,
-                    colorbar=dict(title='M'))
-    )])
+        mode="markers",
+        marker=dict(
+            size=4.5,
+            color=vals,
+            colorscale="Plasma",
+            opacity=0.75,
+            colorbar=dict(title="Emergent Density $M(X)$"),
+        ),
+        name="Compressed Space Voxels",
+    ))
+
+    # Add central mass concentration marker
+    fig.add_trace(go.Scatter3d(
+        x=[0], y=[0], z=[0],
+        mode="markers",
+        marker=dict(size=12, color="white", symbol="diamond"),
+        name="Compression Core (r=0)",
+    ))
+
     fig.update_layout(
-        title=f'Emergent Matter High-Value Voxels (S={S[si]:.2f})',
-        scene=dict(xaxis_title='x', yaxis_title='y', zaxis_title='z'),
+        title=f"Multidimensional Spatial Compression M^D [d_0 = {d0_slice:.2f}, S_amp = {entropy_amplitude:.2f}]",
+        scene=dict(
+            xaxis_title="Spatial Dimension x",
+            yaxis_title="Spatial Dimension y",
+            zaxis_title="Spatial Dimension z",
+            bgcolor="#111116",
+        ),
+        paper_bgcolor="#111116",
+        font=dict(color="#E0E0E0"),
     )
-    fig.show()
+    return fig
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='3D visualisation of emergent matter at an entropy slice')
-    parser.add_argument('--resolution', type=int, default=40,
-                        help='Grid points per spatial axis (default: 40)')
-    parser.add_argument('--n-entropy', type=int, default=5,
-                        help='Number of entropy states (default: 5)')
-    parser.add_argument('--percentile', type=float, default=92.0,
-                        help='Percentile threshold for scatter (default: 92)')
-    parser.add_argument('--entropy-slice', type=int, default=0,
-                        help='Which entropy slice to display (default: 0)')
+def demo_3d(
+    resolution: int = 35,
+    d0_slice: float = 0.5,
+    entropy_amplitude: float = 1.0,
+    percentile: float = 88.0,
+    html_out: str | Path | None = None,
+):
+    """Run 3D visualization and optionally export to standalone HTML."""
+    fig = generate_multidimensional_compression_figure(
+        resolution=resolution,
+        d0_slice=d0_slice,
+        entropy_amplitude=entropy_amplitude,
+        percentile=percentile,
+    )
+
+    if html_out:
+        out_path = Path(html_out)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        fig.write_html(str(out_path))
+        print(f"Interactive 3D visualization saved to: {out_path}")
+    else:
+        fig.show()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="3D Visualization of Multidimensional Space M^D")
+    parser.add_argument("--resolution", type=int, default=35, help="Grid points per spatial axis")
+    parser.add_argument("--d0", type=float, default=0.5, help="Extra spatial coordinate d0 value (0 to 1)")
+    parser.add_argument("--entropy", type=float, default=1.0, help="Thermodynamic entropy field amplitude")
+    parser.add_argument("--percentile", type=float, default=88.0, help="Density percentile threshold")
+    parser.add_argument("--html-out", type=str, default=None, help="Path to write standalone HTML file")
     args = parser.parse_args()
+
     demo_3d(
         resolution=args.resolution,
-        n_entropy=args.n_entropy,
+        d0_slice=args.d0,
+        entropy_amplitude=args.entropy,
         percentile=args.percentile,
-        entropy_slice=args.entropy_slice,
+        html_out=args.html_out,
     )

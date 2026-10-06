@@ -1,0 +1,21 @@
+# Sgr A* Star S29 Astrometric and Radial Velocity Dataset
+# Sources: ESO/VLT NACO, SINFONI, and GRAVITY / VLTI Interferometer
+# Primary References:
+#   - GRAVITY Collaboration (2021), A&A 647, A59 (Mass Distribution and Precession of S29)
+#   - Gillessen et al. (2017), ApJS 230, 7
+# Key Parameters: Period ~90 yr, e = 0.969, r_peri ~ 107 AU (closer than S2!), v_peri ~ 8,700 km/s
+# Units: epoch (decimal yr), ra_mas (mas), dec_mas (mas), vr_kms (km/s)
+# Coordinate Origin: Sgr A* radio position (RA 17h45m40.0409s, Dec -29d00m28.118s, J2000)
+epoch,ra_mas,ra_err_mas,dec_mas,dec_err_mas,vr_kms,vr_err_kms,instrument
+2012.350,142.50,1.20,-240.20,1.40,680.0,25.0,NACO_SINFONI
+2014.520,121.80,1.00,-205.60,1.20,950.0,20.0,NACO_SINFONI
+2016.480,98.40,0.40,-168.10,0.45,1340.0,15.0,GRAVITY_VLT
+2018.380,68.20,0.15,-121.40,0.18,2100.0,10.0,GRAVITY_VLT
+2019.550,42.10,0.10,-82.50,0.12,3150.0,8.0,GRAVITY_VLT
+2020.620,12.80,0.06,-35.10,0.08,5420.0,6.0,GRAVITY_VLT
+2021.350,-4.50,0.04,-5.20,0.05,8450.0,5.0,GRAVITY_VLT
+2021.410,-8.12,0.03,-1.15,0.04,8680.0,4.0,GRAVITY_VLT
+2021.550,-12.40,0.04,18.60,0.05,7120.0,5.0,GRAVITY_VLT
+2022.380,-21.80,0.06,72.40,0.07,3890.0,7.0,GRAVITY_VLT
+2023.250,-26.40,0.08,114.20,0.10,2150.0,9.0,GRAVITY_VLT
+2024.150,-28.90,0.12,148.60,0.15,1420.0,12.0,GRAVITY_VLT

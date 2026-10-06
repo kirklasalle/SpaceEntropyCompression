@@ -1,26 +1,33 @@
 """Comparison with known physics: Schwarzschild-like curvature profile.
 
 Demonstrates that the Emergent Matter Model reproduces the 1/r^6 scaling
-of the Kretschner curvature invariant in Schwarzschild spacetime, and
+of the Kretschmann curvature invariant in Schwarzschild spacetime, and
 shows how different alpha values map to different physical falloff rates.
 
 Dimensions: 1 spatial (radial r) + 1 entropy (S) = 2 total.
 """
 
 import argparse
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 from model import EmergentMatterModel
 
 
-def schwarzschild_comparison(alpha: float = 1.0, resolution: int = 200):
+def schwarzschild_comparison(
+    alpha: float = 1.0,
+    resolution: int = 200,
+    headless: bool = False,
+    save_plot: str | None = None,
+):
     # Radial grid (avoid r=0 singularity)
     r = np.linspace(0.5, 10.0, resolution)
     # Entropy grid
     S = np.linspace(0.1, 1.0, 5)
 
     # Curvature functions:
-    #   C_r(r) = 1/r^6   — matches Kretschner scalar radial dependence
+    #   C_r(r) = 1/r^6   — matches Kretschmann scalar radial dependence
     #   C_S(S) = S        — linear entropy curvature
     c_funcs = [
         lambda r_: 1.0 / r_ ** 6,
@@ -68,10 +75,18 @@ def schwarzschild_comparison(alpha: float = 1.0, resolution: int = 200):
     plt.tight_layout()
     plt.suptitle(
         'Schwarzschild Consistency Check\n'
-        'C_r(r) = 1/r⁶ (Kretschner invariant scaling)',
+        'C_r(r) = 1/r⁶ (Kretschmann invariant scaling)',
         y=1.02, fontsize=12,
     )
-    plt.show()
+
+    if save_plot:
+        plt.savefig(save_plot, bbox_inches='tight')
+        print(f"Plot saved to: {save_plot}")
+
+    if not headless:
+        plt.show()
+    else:
+        plt.close(fig)
 
     # Print slope verification
     # In log-log, slope = d(log M) / d(log r) should be ~ -6*alpha
@@ -80,7 +95,9 @@ def schwarzschild_comparison(alpha: float = 1.0, resolution: int = 200):
     slope = np.polyfit(log_r[10:], log_M[10:], 1)[0]
     print(f"\nExpected log-log slope: {-6 * alpha:.2f}")
     print(f"Measured log-log slope: {slope:.2f}")
-    print(f"Match: {'YES' if abs(slope + 6 * alpha) < 0.5 else 'approximate'}")
+    match_status = 'YES' if abs(slope + 6 * alpha) < 0.5 else 'approximate'
+    print(f"Match: {match_status}")
+    return slope
 
 
 if __name__ == '__main__':
@@ -90,5 +107,14 @@ if __name__ == '__main__':
                         help='Power-law exponent (default: 1.0)')
     parser.add_argument('--resolution', type=int, default=200,
                         help='Grid points for radial axis (default: 200)')
+    parser.add_argument('--headless', action='store_true',
+                        help='Run without displaying GUI window')
+    parser.add_argument('--save-plot', type=str, default=None,
+                        help='Path to save plot image')
     args = parser.parse_args()
-    schwarzschild_comparison(alpha=args.alpha, resolution=args.resolution)
+    schwarzschild_comparison(
+        alpha=args.alpha,
+        resolution=args.resolution,
+        headless=args.headless,
+        save_plot=args.save_plot,
+    )

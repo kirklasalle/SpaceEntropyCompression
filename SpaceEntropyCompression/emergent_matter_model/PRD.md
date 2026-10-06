@@ -7,21 +7,23 @@ Emergent Matter Model: Simulation and Visualization Platform
 "I believe that matter is like time (and Math), and it is observed and convergent (3d here and now IS Dimensional, we are not separate and or apart.). time and change are of course, unison (I believe beyond thermo dynamics. Again, these are ONLY observed that same way time and matter are observed.) It is there we witness the compression, and the entropy (or change) that we observe as 'time'. We can't even quantify either, and like human perception, we need to stay acute to what we can observe. I think a subtle 3d plus 4d, makes perfect sense for query and discussion. MOST importantly, testing"
 
 ## Foundational Principle
-Entropy (S) is **dimensional**, not parametric. It is the quantifiable expression of what is conventionally called "time". There is no independent time coordinate — entropy IS the clock. There is no smallest or greatest unit of time; only entropy gives us that measurement and that math.
 
-Matter arises from the compression of space and entropy together. From the smallest matter through compression and entropy, we see the change in matter — oversimplified, you go from dust to a rock or other material, gas, energy, planet, etc. This is the compression of space-entropy, and thermodynamics absolutely quantifies this.
+> **Author Clarification (Kirk LaSalle, 2026-10-05):**  
+> *"Space is dimensional ($X: x, y, z, d_0, d_1, d_2, \dots$), not entropy or time."*
 
-The second law of thermodynamics constrains the entropy dimension to be traversed monotonically (non-decreasing), which is the sole physical distinction between the entropy coordinate and the spatial coordinates. This is what gives "time" its one-way character.
+Space possesses multidimensional structure ($X = \{x, y, z, d_0, d_1, d_2, \dots, d_m\}$), spanning ordinary 3D spatial coordinates and extra spatial or topological degrees of freedom. Neither entropy nor time is a spatial coordinate axis. Time represents the observed progression of change, and entropy quantifies the thermodynamic/informational organization of energy-momentum within those spatial degrees of freedom.
+
+Matter arises from the structured compression of multidimensional space over time under thermodynamic and energetic organization.
 
 ## Core Mathematical Theory
 
 Let:
-- \( \tilde{X} = (x_1, \ldots, x_n, S) \) be the full coordinate — n spatial dimensions plus one entropy dimension S, giving (n+1) total dimensions.
-- \( w_i \) are normalised weights (\( \sum_{i=1}^{n+1} w_i = 1 \)), one per dimension including entropy.
-- \( C_i(\tilde{x}_i) \) is the curvature contribution from the i-th dimension, depending only on its own coordinate.
-- \( C_S(S) \) is the curvature contribution from the entropy dimension.
-- \( C(\tilde{X}) = \sum_{i=1}^{n+1} w_i \, C_i(\tilde{x}_i) \) is the effective curvature across all dimensions (spatial + entropy).
-- \( M(\tilde{X}) = k \left( \frac{C(\tilde{X})}{C_0} \right)^\alpha \) is the emergent matter mapping.
+- \( X = (x, y, z, d_0, d_1, \ldots, d_m) \) be the spatial coordinate vector — 3 macroscopic spatial dimensions plus \( m+1 \) extended spatial dimensions, giving \( D \) total spatial degrees of freedom.
+- \( t \) be coordinate time tracking observed change.
+- \( w_i \) are normalised weights (\( \sum_{i=1}^{D} w_i = 1 \)), one per spatial/dimensional degree of freedom.
+- \( C_i(x_i, t) \) is the curvature/compression contribution from the i-th dimension.
+- \( C(X,t) = \sum_{i=1}^{D} w_i \, C_i(x_i, t) \) is the effective compression across all spatial dimensions, coupled to thermodynamic entropy and energy: \( C(X,t) = \mathcal{F}(E, S, \text{geometry}, t) \).
+- \( M(X,t) = k \left( \frac{C(X,t)}{C_0} \right)^\alpha \) is the emergent matter mapping.
 
 ### Discrete/Quantum Version
 - Discretise \( x_i \) and \( S \) (e.g., on a lattice/grid).
@@ -103,7 +105,7 @@ This is a starting point for future theoretical development.
 
 As a sanity check, we can compare the model's output to the matter density implied by a Schwarzschild-like radial curvature.
 
-For a spherically symmetric mass \( M_0 \), the Kretschner scalar (a curvature invariant) goes as:
+For a spherically symmetric mass \( M_0 \), the Kretschmann scalar (a curvature invariant) goes as:
 
 \[
   K(r) = \frac{48 \, G^2 M_0^2}{c^4 \, r^6}

@@ -1,15 +1,19 @@
 """REST API for emergent matter simulation.
 
-Entropy (S) is the last dimension in X_grid, treated as a full
-dimensional coordinate — not a separate time parameter.
+X_grid spans multidimensional spatial coordinates X = {x, y, z, d_0, d_1, d_2, ...} in M^D.
+Coordinate time t parameterizes dynamics, and S(X,t) characterizes thermodynamic organizational compression.
 """
 
 import logging
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from model import EmergentMatterModel
+import time
+from collections import defaultdict
+from typing import Any
+
 import numpy as np
-from typing import Any, Dict, List, Tuple
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+
+from model import EmergentMatterModel
 
 app = Flask(__name__)
 CORS(app)
@@ -17,12 +21,32 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# In-memory sliding window rate limiter: client_ip -> list of timestamps
+_RATE_LIMIT_WINDOW_SEC = 60.0
+_RATE_LIMIT_MAX_REQUESTS = 120
+_request_records: dict[str, list[float]] = defaultdict(list)
+
+
+def _check_rate_limit(client_ip: str) -> bool:
+    """Return True if request is allowed, False if rate limit is exceeded."""
+    now = time.time()
+    cutoff = now - _RATE_LIMIT_WINDOW_SEC
+    timestamps = [t for t in _request_records[client_ip] if t > cutoff]
+    if len(timestamps) >= _RATE_LIMIT_MAX_REQUESTS:
+        _request_records[client_ip] = timestamps
+        return False
+    timestamps.append(now)
+    _request_records[client_ip] = timestamps
+    return True
+
 
 def _is_real_number(value: Any) -> bool:
     return isinstance(value, (int, float)) and np.isfinite(value)
 
 
-def _validate_and_parse_payload(data: Dict[str, Any]) -> Tuple[int, List[float], List[np.ndarray], float, float, float]:
+def _validate_and_parse_payload(
+    data: dict[str, Any],
+) -> tuple[int, list[float], list[np.ndarray], float, float, float]:
     for field in ("n", "weights", "X_grid"):
         if field not in data:
             raise ValueError(f"Missing required field: '{field}'")
@@ -48,7 +72,7 @@ def _validate_and_parse_payload(data: Dict[str, Any]) -> Tuple[int, List[float],
     if not isinstance(x_grid_raw, list) or len(x_grid_raw) != n:
         raise ValueError(f"X_grid must be a list of {n} arrays")
 
-    x_grid: List[np.ndarray] = []
+    x_grid: list[np.ndarray] = []
     for idx, axis in enumerate(x_grid_raw):
         if not isinstance(axis, list):
             raise ValueError(f"X_grid[{idx}] must be a list of numeric values")
@@ -68,20 +92,32 @@ def _validate_and_parse_payload(data: Dict[str, Any]) -> Tuple[int, List[float],
     return n, [float(w) for w in weights_raw], x_grid, k, alpha, C0
 
 
+@app.route('/api/v1/health', methods=['GET'])
+def health():
+    """Health check endpoint for service monitoring and load balancers."""
+    return jsonify({
+        'status': 'healthy',
+        'service': 'emergent-matter-model',
+        'version': '0.6.0'
+    }), 200
+
+
 @app.route('/api/v1/simulate', methods=['POST'])
 def simulate():
     """Run a simulation.
 
     Expected JSON payload
     ---------------------
-    n        : int   — total dimensions (spatial + entropy)
-    weights  : list  — one weight per dimension (last = entropy)
-    X_grid   : list of lists — one grid per dimension (last = entropy S values)
+    n        : int   — total dimensions (spatial coordinates on M^D)
+    weights  : list  — one weight per dimension
+    X_grid   : list of lists — one grid per dimension
     k, alpha, C0 : float (optional, default 1.0)
-
-    The server uses demo curvature functions.  Custom curvature
-    functions can be supported in a future version.
     """
+    client_ip = request.remote_addr or '127.0.0.1'
+    if not _check_rate_limit(client_ip):
+        logger.warning("Rate limit exceeded for IP: %s", client_ip)
+        return jsonify({'error': 'Rate limit exceeded (max 120 req/min). Please throttle requests.'}), 429
+
     try:
         if not request.is_json:
             return jsonify({'error': 'Request body must be valid JSON'}), 400
@@ -93,7 +129,6 @@ def simulate():
         n, weights, X_grid, k, alpha, C0 = _validate_and_parse_payload(data)
 
         # Demo curvature: one function per dimension (single-argument).
-        # The last function applies to the entropy dimension.
         C_funcs = [lambda x, i=i: (x + i) ** 2 for i in range(n)]
 
         model = EmergentMatterModel(n, weights, k, alpha, C0)
@@ -105,7 +140,7 @@ def simulate():
     except (ValueError, TypeError, KeyError) as exc:
         logger.warning("Bad request: %s", exc)
         return jsonify({'error': str(exc)}), 400
-    except Exception as exc:
+    except Exception:
         logger.exception("Internal error during simulation")
         return jsonify({'error': 'Internal server error'}), 500
 
@@ -115,6 +150,16 @@ def simulate():
 def simulate_legacy():
     """Legacy endpoint — forwards to /api/v1/simulate."""
     return simulate()
+
+
+@app.route('/visualizer', methods=['GET'])
+def serve_visualizer():
+    """Serve the interactive HTML5/WebGL multidimensional dashboard."""
+    from pathlib import Path
+    vis_file = Path(__file__).resolve().parent.parent / "tools" / "interactive_visualizer.html"
+    if vis_file.is_file():
+        return vis_file.read_text(encoding="utf-8"), 200, {"Content-Type": "text/html; charset=utf-8"}
+    return jsonify({"error": "Visualizer file not found"}), 404
 
 
 if __name__ == '__main__':

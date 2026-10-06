@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software or theoretical framework, please cite it as below."
+authors:
+  - family-names: "LaSalle"
+    given-names: "Kirk"
+title: "Emergent Matter Research Framework (EMRF): Investigating Space-Entropy Compression and Relativistic S-Star Dynamics"
+version: 0.5.0
+date-released: 2026-10-05
+url: "https://github.com/kirklasalle/SpaceEntropyCompression"
+repository-code: "https://github.com/kirklasalle/SpaceEntropyCompression"
+license: MIT
+keywords:
+  - "theoretical physics"
+  - "general relativity"
+  - "emergent matter"
+  - "space-entropy compression"
+  - "sagittarius a*"
+  - "s-star cluster"
+  - "s2"
+  - "s301"
+  - "astrometry"
+  - "bayesian model selection"
+  - "kretschmann invariant"

@@ -128,3 +128,40 @@ def test_optional_params_must_be_finite(client):
     response = client.post("/api/v1/simulate", json=payload)
     assert response.status_code == 400
     assert "alpha must be a finite numeric value" in response.get_json()["error"]
+
+
+def test_health_endpoint(client):
+    response = client.get("/api/v1/health")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["status"] == "healthy"
+    assert data["service"] == "emergent-matter-model"
+    assert data["version"] == "0.6.0"
+
+
+def test_rate_limiting_triggered(client):
+    import time
+    from server import _RATE_LIMIT_MAX_REQUESTS, _request_records
+    test_ip = "192.168.1.99"
+    now = time.time()
+    # Pre-populate IP request timestamps with current time to exceed limit
+    _request_records[test_ip] = [now] * (_RATE_LIMIT_MAX_REQUESTS + 1)
+    
+    # Send request with this IP
+    response = client.post(
+        "/api/v1/simulate",
+        json=valid_payload(),
+        environ_base={"REMOTE_ADDR": test_ip}
+    )
+    assert response.status_code == 429
+    assert "Rate limit exceeded" in response.get_json()["error"]
+    # Clean up test IP
+    del _request_records[test_ip]
+
+
+def test_visualizer_endpoint(client):
+    response = client.get("/visualizer")
+    assert response.status_code == 200
+    assert "text/html" in response.content_type
+    assert "EMRF Interactive Multidimensional Perspective" in response.get_data(as_text=True)
+

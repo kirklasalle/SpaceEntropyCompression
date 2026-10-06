@@ -1,35 +1,34 @@
-"""Core model for emergent matter from compressed space-entropy.
+"""Core model for emergent matter from multidimensional space-entropy compression.
 
-Foundational Principle
-----------------------
-Entropy (S) is *dimensional*, not parametric.  It is the quantifiable
-expression of what is conventionally called "time".  There is no
-independent time coordinate — entropy IS the clock.  Matter arises from
-the compression of space and entropy together.
-
-The last coordinate of X̃ is always the entropy dimension.  It is treated
-symmetrically with the spatial dimensions in the curvature sum; the only
-physical distinction is that the second law of thermodynamics constrains
-traversal of the entropy axis to be monotonically non-decreasing.
+Foundational Principle (Clarified by Kirk LaSalle, 2026-10-05)
+------------------------------------------------------------
+Space is multidimensional: X = (x, y, z, d_0, d_1, d_2, …) ∈ M^D.
+Neither entropy (S) nor time (t) is a spatial coordinate axis.
+Time tracks the progression of dynamical change, and entropy S(X,t) is an
+organizational thermodynamic state function that couples into the effective
+compression functional:
+  C(X,t) = F(E, S, geometry, t).
 
 Mathematical formulation
 ------------------------
-Let X̃ = (x_1, …, x_n, S)  — n spatial coordinates plus one entropy
-coordinate — giving (n+1) total dimensions.
+Let X = (x_1, …, x_n) be the coordinate axes of the D-dimensional spatial
+manifold (e.g., standard 3D space plus extra topological/spatial degrees
+of freedom d_0, d_1, …).
 
-  C(X̃) = Σ_i  w_i · C_i(x̃_i)          effective curvature
-  M(X̃) = k · ( C(X̃) / C₀ )^α          emergent matter
+  C(X) = Σ_i  w_i · C_i(x_i)           effective compression / curvature
+  M(X) = k · ( C(X) / C₀ )^α           emergent matter density
 
-Each C_i is a function of a *single* coordinate (its own dimension).
-Cross-coupling terms (C_ij) are reserved for future work.
+Each C_i is a function of a *single* coordinate (its own dimension), with
+extended couplings (energy, entropy state, cross-terms) evaluated across
+the state configuration.
 
-Supports brute-force grid simulation over all (n+1) dimensions and an
-optimised vectorised path when there are exactly 3 spatial + 1 entropy
-dimension (n_total == 4).
+Supports brute-force grid simulation over all n dimensions and an
+optimised vectorised path when n_total == 4 (e.g. 3D space + d_0 / state axis).
 """
 
+from collections.abc import Callable, Sequence
+
 import numpy as np
-from typing import Callable, List, Sequence
 
 
 class EmergentMatterModel:
@@ -102,7 +101,7 @@ class EmergentMatterModel:
     def curvature(
         self,
         X: Sequence[float],
-        c_funcs: List[Callable[[float], float]],
+        c_funcs: list[Callable[[float], float]],
     ) -> float:
         """Compute effective curvature C(X̃) = Σ_i w_i · C_i(x̃_i).
 
@@ -121,7 +120,7 @@ class EmergentMatterModel:
     def matter(
         self,
         X: Sequence[float],
-        c_funcs: List[Callable[[float], float]],
+        c_funcs: list[Callable[[float], float]],
     ) -> float:
         """Compute emergent matter M(X̃) = k · (C(X̃) / C₀)^α."""
         C = self.curvature(X, c_funcs)
@@ -134,8 +133,8 @@ class EmergentMatterModel:
     # -- grid simulation -------------------------------------------------
     def simulate_grid(
         self,
-        X_grid: List[np.ndarray],
-        c_funcs: List[Callable[[float], float]],
+        X_grid: list[np.ndarray],
+        c_funcs: list[Callable[[float], float]],
     ) -> np.ndarray:
         """Brute-force simulation over an (n+1)-dimensional grid.
 
@@ -165,8 +164,8 @@ class EmergentMatterModel:
 
     def simulate_grid_vectorized_3d(
         self,
-        X_grid: List[np.ndarray],
-        c_funcs: List[Callable[[float], float]],
+        X_grid: list[np.ndarray],
+        c_funcs: list[Callable[[float], float]],
     ) -> np.ndarray:
         """Vectorised simulation for 3 spatial + 1 entropy dimensions.
 
@@ -182,32 +181,32 @@ class EmergentMatterModel:
             return self.simulate_grid(X_grid, c_funcs)
 
         x, y, z, S_vals = X_grid
-        Ns = len(S_vals)
-        M = np.empty((len(x), len(y), len(z), Ns), dtype=float)
+        ns = len(S_vals)
+        M = np.empty((len(x), len(y), len(z), ns), dtype=float)
 
         for si, S in enumerate(S_vals):
             # Spatial curvature components (broadcast to 3-D)
-            C_total = np.zeros((len(x), len(y), len(z)), dtype=float)
+            c_total = np.zeros((len(x), len(y), len(z)), dtype=float)
             for axis_idx, (grid_1d, w) in enumerate(
-                zip([x, y, z], self.weights[:3])
+                zip([x, y, z], self.weights[:3], strict=True)
             ):
-                Ci_vals = np.array([c_funcs[axis_idx](val) for val in grid_1d])
+                ci_vals = np.array([c_funcs[axis_idx](val) for val in grid_1d])
                 if axis_idx == 0:
-                    Ci_full = Ci_vals[:, None, None]
+                    ci_full = ci_vals[:, None, None]
                 elif axis_idx == 1:
-                    Ci_full = Ci_vals[None, :, None]
+                    ci_full = ci_vals[None, :, None]
                 else:
-                    Ci_full = Ci_vals[None, None, :]
-                C_total += w * Ci_full
+                    ci_full = ci_vals[None, None, :]
+                c_total += w * ci_full
 
             # Entropy curvature component (scalar, broadcast everywhere)
-            C_total += self.weights[3] * c_funcs[3](S)
+            c_total += self.weights[3] * c_funcs[3](S)
 
             if self.C0 == 0:
                 M[..., si] = np.nan
             else:
                 with np.errstate(invalid="ignore"):
-                    M[..., si] = self.k * np.power(C_total / self.C0, self.alpha)
+                    M[..., si] = self.k * np.power(c_total / self.C0, self.alpha)
         return M
 
     # -- EMRF Theoretical Formulations (CG, CE, CS, CGSE) ----------------
@@ -215,7 +214,7 @@ class EmergentMatterModel:
     def geometry_formulation(
         cls,
         n_spatial: int = 3,
-        spatial_weights: Sequence[float] = None,
+        spatial_weights: Sequence[float] | None = None,
         **kwargs,
     ) -> "EmergentMatterModel":
         """C_G = f(spacetime geometry)
@@ -229,7 +228,7 @@ class EmergentMatterModel:
     def energy_formulation(
         cls,
         n_spatial: int = 3,
-        spatial_weights: Sequence[float] = None,
+        spatial_weights: Sequence[float] | None = None,
         **kwargs,
     ) -> "EmergentMatterModel":
         """C_E = f(physically defensible gravitational/energy measures)
@@ -243,7 +242,7 @@ class EmergentMatterModel:
     def entropy_formulation(
         cls,
         n_spatial: int = 3,
-        spatial_weights: Sequence[float] = None,
+        spatial_weights: Sequence[float] | None = None,
         entropy_weight: float = 0.2,
         **kwargs,
     ) -> "EmergentMatterModel":
@@ -272,10 +271,13 @@ class EmergentMatterModel:
         Branch B: Novel Extension (C(X,t) ≢ f(G_μν)) if statistically significant beyond GR.
         """
         delta_bic = float(bic_cm - bic_gr)
-        # In Bayesian Information Criterion, delta_bic < -6 represents strong evidence for the candidate model over GR
+        # Delta BIC <= -6 is treated as strong candidate evidence over GR.
         if delta_bic <= threshold_delta_bic:
             classification = "Branch B: Novel Physical Extension (C(X,t) ≢ f(G_μν))"
-            verdict = "Statistical evidence exceeds GR baseline. Candidate reveals genuine observable extension."
+            verdict = (
+                "Statistical evidence exceeds GR baseline; candidate requires "
+                "independent physical and observational validation."
+            )
         else:
             classification = "Branch A: Geometric Collapse (C(X,t) ≡ f(G_μν))"
             verdict = "Compression reduces to gravitational geometry. No novel force detected."

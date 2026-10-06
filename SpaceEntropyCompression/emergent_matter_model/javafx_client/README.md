@@ -10,9 +10,8 @@ This client renders a 3D scatter plot from the Python simulation API:
 
 Prerequisites:
 
-- Java JDK installed (set `JAVA_HOME` to the JDK root)
-	- Your confirmed path: `G:\Program Files\Java\jdk-25.0.2`
-- Maven on PATH (you can use `../install_maven.ps1` from workspace root)
+- Java JDK 17+ (e.g. JDK 17, 21, or 25) with `JAVA_HOME` configured
+- Apache Maven 3.8+ on PATH
 
 1. Start the Python backend from `emergent_matter_model`:
 	- `python server.py`

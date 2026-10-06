@@ -1,12 +1,14 @@
 # API Examples
 
-These examples target the simulation endpoint where entropy is the last axis in `X_grid`.
+These examples target the simulation endpoint where `X_grid` contains coordinate axes for multidimensional space $X = (x, y, z, d_0, \dots)$.
 
 ## Start server
 
 ```powershell
 # from emergent_matter_model/
-& 'G:\Program Files\Python314\python.exe' server.py
+python server.py
+# or using the virtual environment:
+# .\.venv\Scripts\python.exe server.py
 ```
 
 ## PowerShell request (`/api/v1/simulate`)

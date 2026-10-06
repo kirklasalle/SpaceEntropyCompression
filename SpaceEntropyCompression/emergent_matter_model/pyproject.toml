@@ -1,15 +1,15 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "emergent-matter-model"
-version = "0.2.0"
+version = "0.6.0"
 description = "Simulation platform for emergent matter from compressed space-entropy"
 readme = "README_3D.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-authors = [{name = "Emergent Matter Project"}]
+authors = [{name = "Kirk LaSalle"}]
 
 dependencies = [
     "Flask>=3.0,<4",
@@ -22,11 +22,24 @@ dependencies = [
     "pyyaml>=6.0,<7",
 ]
 
+[tool.setuptools]
+py-modules = [
+    "model",
+    "server",
+    "visualize",
+    "viz3d",
+    "compare_schwarzschild",
+    "physics_baseline",
+    "fit_astrometry",
+    "fit_sparc",
+]
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0,<9",
     "ruff>=0.2",
     "mypy>=1.8",
+    "types-Flask-Cors>=4.0",
 ]
 server = [
     "gunicorn>=21.2,<23",
@@ -41,7 +54,7 @@ target-version = "py310"
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "UP", "B", "SIM"]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.10"

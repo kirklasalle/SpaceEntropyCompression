@@ -13,11 +13,11 @@ $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot   # always run relative to this script
 
 # 1. Virtual environment
-if (-not (Test-Path ".\venv")) {
+if (-not (Test-Path ".\.venv")) {
     Write-Host "Creating virtual environment..."
-    python -m venv venv
+    python -m venv .venv
 }
-. .\venv\Scripts\Activate
+. .\.venv\Scripts\Activate
 
 # 2. Install / upgrade dependencies
 python -m pip install --upgrade pip --quiet
