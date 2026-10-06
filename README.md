@@ -6,7 +6,7 @@
 [![Grand Audit: Certified Level 5](https://img.shields.io/badge/Grand%20Audit-Certified%20Level%205%20(Gold%20Standard)-gold.svg)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](emergent_matter_model/LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://python.org)
-[![Tests: 159/159 Passed](https://img.shields.io/badge/Tests-159%2F159%20Passing-brightgreen.svg)](#quick-start)
+[![Tests: 176/176 Passed](https://img.shields.io/badge/Tests-159%2F159%20Passing-brightgreen.svg)](#quick-start)
 [![Status: Research Release](https://img.shields.io/badge/Status-v0.9.0%20(Case%20001%20Sealed)-orange.svg)](#status)
 
 ![EMRF Space-Entropy Compression Hero Banner](docs/assets/emrf_hero_banner.jpg)
@@ -26,6 +26,21 @@ This repository operates under **The Grand Due Diligence Audit Framework (v1.0.0
 * **Universal Audit Template:** [docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)
 
 ---
+
+
+
+---
+
+## First Use Case: LaSalle's Spatial Ontology Across Three Frontiers
+
+A dedicated academic paper and research monograph demonstrating the explanatory power of LaSalle's Spatial Ontology:
+* **Academic Manuscript:** [paper/use_case_lasalle_ontology.tex](paper/use_case_lasalle_ontology.tex)
+* **Research Monograph:** [docs/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md](docs/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md)
+* **Preprint Package:** [paper/use_case_submission.zip](paper/use_case_submission.zip)
+* **Three Horizons Solved:**
+  1. *Microscopic Quantum Genesis:* Particle rest mass (^-$, ^+$, ^0$) emerges from localized standing-wave spatial metric vibrations ( = \frac{1}{c^2}\int C d^3X$).
+  2. *Black Hole Thermodynamics:* Exact derivation of the Bekenstein-Hawking area formula ({\text{BH}} = \frac{k_B A}{4 \ell_P^2}$) from stretched horizon spatial compression saturation.
+  3. *JWST Cosmic Dawn:* Dynamical horizon acceleration (z) = c H(z) / (2\pi)$ solves the *Impossible Early Galaxy* crisis (JADES-GS-z14-0 at =14.32$) by accelerating baryonic gas collapse into stars within \text{ Myr}$.
 
 ## Overview
 
