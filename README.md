@@ -2,6 +2,7 @@
 
 **Investigating whether matter emerges from structured geometric and entropic states of spacetime**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23197308.svg)](https://doi.org/10.5281/zenodo.23197308)
 [![Grand Audit: Certified Level 5](https://img.shields.io/badge/Grand%20Audit-Certified%20Level%205%20(Gold%20Standard)-gold.svg)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](emergent_matter_model/LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://python.org)
