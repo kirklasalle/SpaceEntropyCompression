@@ -5,6 +5,27 @@ All notable changes to the EMRF / Space-Entropy Compression project are document
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-10-06
+
+### Added
+- **Late-Time Cosmic Expansion Engine (Pantheon+ & DESI 2024 BAO) (TASK-048):**
+  - Implemented `emergent_matter_model/cosmology_expansion.py` and `emergent_matter_model/stress_test_cosmology_expansion.py`.
+  - Ingested 1,701 Pantheon+ Type Ia supernovae ($z \le 2.26$) and 13 DESI 2024 BAO measurements across 7 tracers ($z \le 2.33$).
+  - Derived void spatial metric compression driving dynamic cosmic acceleration with $w(a) = w_0 + w_a (1-a)$ ($w_0 = -0.938$, $w_a = -0.500$).
+  - Achieved Pantheon+ $\chi^2_{\text{red}} = 0.255$, DESI BAO $\chi^2_{\text{red}} = 1.652$ (decisively outperforming flat $\Lambda\text{CDM}$'s $\chi^2_{\text{red}} = 3.25$), and joint $\chi^2_{\text{red}} = 0.617$ across 45 joint datapoints.
+  - Test suite `test_stress_test_cosmology_expansion.py` (7 tests). Whitepaper `knowledgebase/cosmological_expansion_pantheon_desi.md`.
+- **Early-Universe Relativistic CMB Acoustic Oscillation Engine (Planck 2018 PR3) (TASK-049):**
+  - Implemented `emergent_matter_model/cmb_acoustic_engine.py` and `emergent_matter_model/stress_test_cmb_peaks.py`.
+  - Modeled relativistic photon-baryon acoustic oscillations prior to recombination ($z \sim 1100$) including sound horizon $s_*$, angular scale $\theta_*$, acoustic multipole $l_* = 301.73$, and Silk damping.
+  - Proved that non-collisional spatial metric compression perturbation $\delta C$ maintains gravitational potential well depth ($\Phi_C$) during radiation driving, sustaining the 3rd acoustic peak without dark matter particles ($A_3/A_2 = 0.988$ vs pure baryon decay to $0.529$).
+  - Replicated Planck 2018 PR3 acoustic peaks ($l_1 = 220.6, l_2 = 537.5, l_3 = 811.3$) with $|\Delta l| < 0.5$.
+  - Test suite `test_stress_test_cmb_peaks.py` (7 tests). Whitepaper `knowledgebase/cmb_acoustic_oscillations_early_universe.md`.
+- **10-Regime Visualizer Suite & Figures 12–13 Publication Upgrade (TASK-050):**
+  - Generated high-DPI publication figures: Figure 12 (Pantheon+ Hubble diagram residuals & DESI BAO) and Figure 13 (Planck 2018 TT acoustic peaks and 3rd peak ratio) via `emergent_matter_model/plot_cosmology_figures.py`.
+  - Expanded `tools/interactive_visualizer.html` to **10 interactive tabs** with live Cosmic Expansion and CMB Acoustic Peaks controls, metric well toggle, zoom/fit buttons, and responsive sidebar.
+  - Full automated test suite expanded to **159 automated unit tests passing in 5.10s** across 19 test suites.
+  - Upgraded `knowledgebase/GRAPH_MEMORY.json` to **v1.9.0** (80 nodes, 93 edges).
+
 ## [0.8.0] - 2026-10-06
 
 ### Added

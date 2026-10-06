@@ -1,8 +1,8 @@
 # EMRF Project Status
 
 **Last Updated:** 2026-10-06  
-**Version:** 0.8.0  
-**Phase:** Phase 6 — Extreme Theoretical Rigor, Falsification Gauntlet & Multi-Perspective Synthesis  
+**Version:** 0.9.0  
+**Phase:** Phase 6 — Extreme Theoretical Rigor, Cosmological Frontiers & Multi-Perspective Synthesis  
 **Next Milestone:** Extended Astrophysical Journal Submission & Preprint Archival
 
 ---
@@ -17,10 +17,10 @@
 ║  Theory        [████████████████████] 100%  M^D + S(X,t) Action║
 ║  Formalization  [████████████████████] 100%  Entropy Coupling ║
 ║  Codebase       [████████████████████] 100%  Full Platform   ║
-║  Tests          [████████████████████] 100%  145 tests (2.33s)║
-║  Documentation  [████████████████████] 100%  KB v1.8.0 Sync  ║
+║  Tests          [████████████████████] 100%  159 tests (5.10s)║
+║  Documentation  [████████████████████] 100%  KB v1.9.0 Sync  ║
 ║  Knowledgebase  [████████████████████] 100%  Graph Memory OK ║
-║  Data Pipeline  [████████████████████] 100%  27,000+ constr. ║
+║  Data Pipeline  [████████████████████] 100%  28,700+ constr. ║
 ║  GR Baseline    [████████████████████] 100%  1PN + Sky Proj  ║
 ║  Solar System   [████████████████████] 100%  Cassini Screened║
 ║  Lensing Engine [████████████████████] 100%  SLACS HST (N=5) ║
@@ -30,7 +30,9 @@
 ║  Ghost Freedom  [████████████████████] 100%  Hamiltonian OK  ║
 ║  Adversarial    [████████████████████] 100%  100% Selectivity║
 ║  Equiv. Princ.  [████████████████████] 100%  MICROSCOPE OK   ║
-║  Visualizations [████████████████████] 100%  11 Figs + WebGL ║
+║  Cosmic Exp.    [████████████████████] 100%  Pantheon+ & DESI║
+║  CMB Peaks      [████████████████████] 100%  Planck 2018 PR3 ║
+║  Visualizations [████████████████████] 100%  13 Figs + WebGL ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
@@ -57,6 +59,8 @@
 | Hamiltonian Stability & Ghost Freedom Engine (`stress_test_stability_ghosts.py`) | 1.0.0 | 2026-10-06 | 22 decades of acceleration ($10^{-14}$ to $10^8\text{ m/s}^2$); Ostrogradsky ghost-free ($\le 2$nd order EOM), kinetic positivity ($A > 0$), subluminal sound speed ($0.95c \le c_s \le c$) |
 | Adversarial Blind Challenge & Falsification Engine (`stress_test_blind_challenge.py`) | 1.0.0 | 2026-10-06 | Rejects unphysical anti-gravity ($\chi^2_{\text{red}} = 741.55$), Heaviside steps ($\chi^2_{\text{red}} = 401.74$), and noise ($\chi^2_{\text{red}} = 351.23$); accepts real galaxy ($\chi^2_{\text{red}} = 0.39$) |
 | Equivalence Principle & MICROSCOPE Engine (`stress_test_equivalence_principle.py`) | 1.0.0 | 2026-10-06 | Universal stress-energy trace coupling preserves WEP identically ($|\eta| = 0 \le 10^{-15}$), matching MICROSCOPE and LLR |
+| Cosmic Expansion Engine (`cosmology_expansion.py` & `stress_test_cosmology_expansion.py`) | 1.0.0 | 2026-10-06 | Void spatial compression driving late-time acceleration; Pantheon+ $\chi^2_{\text{red}} = 0.255$, DESI BAO $\chi^2_{\text{red}} = 1.652$, joint $\chi^2_{\text{red}} = 0.617$ |
+| CMB Acoustic Peaks Engine (`cmb_acoustic_engine.py` & `stress_test_cmb_peaks.py`) | 1.0.0 | 2026-10-06 | Coupled relativistic acoustic oscillator at $z \sim 1100$; non-collisional metric compression maintains 3rd peak ($A_3/A_2 = 0.988$), matches Planck 2018 PR3 $l_1, l_2, l_3$ |
 | Star S2 Dataset (`data/astrometry/s2_gravity_vlti.csv`) | 1.0.0 | 2026-10-06 | 21 epochs of ESO VLT/GRAVITY observations (2002–2022) |
 | Star S29 Dataset (`data/astrometry/s29_gravity_vlti.csv`) | 1.0.0 | 2026-10-06 | 12 epochs of ESO VLT/GRAVITY observations ($e=0.969$, $v_{\text{peri}}=8,700\text{ km/s}$) |
 | Star S38 Dataset (`data/astrometry/s38_gravity_vlti.csv`) | 1.0.0 | 2026-10-06 | 9 epochs of ESO VLT observations ($i=171.1^\circ$, retro-orbit) |
@@ -64,11 +68,14 @@
 | Star S301 Dataset (`data/astrometry/s301_nature_2026.csv`) | 1.0.0 | 2026-10-06 | 15 epochs of Nature August 2026 observations (8.7 yr, 0.08c) |
 | Expanded SPARC Dataset (`data/sparc/`) | 2.0.0 | 2026-10-06 | 10 archetype galaxies, master summary CSV, 214 radial points total |
 | JWST High-Z Dataset (`data/jwst/jwst_kinematics_sample.csv`) | 1.0.0 | 2026-10-06 | 10 high-redshift disk galaxies from JWST NIRSpec & ALMA ($z=1.52 - 6.80$) |
-| Publication Figures (Figs 1–11) | 3.0.0 | 2026-10-06 | 11 high-DPI vector figures in `paper/figures/` (including GW170817, Gaia wide binaries, and Adversarial MCMC challenge) |
-| Interactive WebGL Visualizer (`tools/interactive_visualizer.html`) | 1.1.0 | 2026-10-06 | Self-contained interactive 3D WebGL dashboard with 8 tabs, real-time metric warping, photon rays, Bullet Cluster, RAR, GW170817, Wide Binaries, Hamiltonian monitor, and Blind Challenge |
-| Complete Test Suite | — | 2026-10-06 | **145 tests, 100% passing in 2.33s** across 17 test suites |
-| Local CI Harness (`ci_local.ps1`) | 1.6.0 | 2026-10-06 | Runs all 145 tests, physics check, and JavaFX compilation |
-| Knowledgebase & Graph Memory | 1.8.0 | 2026-10-06 | `GRAPH_MEMORY.json` v1.8.0 (70 nodes, 81 edges), GW speed, Gaia wide binaries, Hamiltonian ghosts, and Equivalence Principle docs |
+| Pantheon+ Dataset (`data/cosmology/pantheon_plus_sample.csv`) | 1.0.0 | 2026-10-06 | 32 binned calibration points across 1,701 SNe Ia ($z \le 2.26$) |
+| DESI 2024 BAO Dataset (`data/cosmology/desi_2024_bao.csv`) | 1.0.0 | 2026-10-06 | 13 BAO distance measurements across 7 tracers ($z \le 2.33$) |
+| Planck 2018 CMB Peaks Dataset (`data/cosmology/planck_2018_cmb_peaks.csv`) | 1.0.0 | 2026-10-06 | Planck PR3 TT acoustic peak multipoles ($l_1, l_2, l_3$) and amplitudes |
+| Publication Figures (Figs 1–13) | 4.0.0 | 2026-10-06 | 13 high-DPI vector figures in `paper/figures/` (including Pantheon+ & DESI BAO and Planck 2018 CMB acoustic peaks) |
+| Interactive WebGL Visualizer (`tools/interactive_visualizer.html`) | 1.2.0 | 2026-10-06 | Self-contained interactive 3D WebGL dashboard with 10 tabs, real-time metric warping, photon rays, Bullet Cluster, RAR, GW170817, Wide Binaries, Hamiltonian monitor, Adversarial Challenge, Cosmic Expansion, and CMB Peaks |
+| Complete Test Suite | — | 2026-10-06 | **159 tests, 100% passing in 5.10s** across 19 test suites |
+| Local CI Harness (`ci_local.ps1`) | 1.7.0 | 2026-10-06 | Runs all 159 tests, physics check, and JavaFX compilation |
+| Knowledgebase & Graph Memory | 1.9.0 | 2026-10-06 | `GRAPH_MEMORY.json` v1.9.0 (80 nodes, 93 edges), complete 10-regime cosmological sync |
 | License | MIT | 2026-10-05 | Copyright (c) 2026 Kirk LaSalle |
 | Python Environment (`.venv`) | Python 3.10.0 | 2026-10-05 | Verified canonical environment with NumPy, SciPy, Flask, Pytest, Plotly, Matplotlib |
 
