@@ -292,6 +292,22 @@ Speculation     Ansatz          Implemented     Confronted      Gauntlet OK     
 * **Level 4 (Falsification Gauntlet Passed):** Hamiltonian stability audited; Ostrogradsky ghost-free; subluminal sound speed proven; passes 100% of adversarial blind tests; multi-target joint fitting eliminates spurious single-target anomalies.
 * **Level 5 (World-Class Gold Standard & Planetary Stewardship):** Confronted across 10 distinct observational regimes spanning $z=1100$ to $z=0$; automated CI with $>100$ tests; complete deterministic reproducibility; open-source preprint package with SHA-256 hashes; full compliance with The Grand Covenant of Planetary and Life Stewardship.
 
+### Composite Quantitative Scoring Index (CQSI)
+In addition to the qualitative maturity tiers, an auditor may compute the project's numerical score out of 100 possible points across the seven domains:
+
+| Audit Domain | Maximum Weight | Passing Threshold (Level 4) | Gold Standard (Level 5) |
+| :--- | :---: | :---: | :---: |
+| **Domain I: Epistemological & Physics Foundations** | 20 Points | $\ge 16$ Points | $\ge 19$ Points |
+| **Domain II: Relativistic Baselines & Screening** | 15 Points | $\ge 12$ Points | $\ge 15$ Points |
+| **Domain III: Multi-Regime Empirical Confrontation** | 25 Points | $\ge 20$ Points | $\ge 24$ Points |
+| **Domain IV: Software Architecture & Test Suites** | 15 Points | $\ge 12$ Points | $\ge 15$ Points |
+| **Domain V: Adversarial Gauntlets & Selectivity** | 10 Points | $\ge 8$ Points | $\ge 10$ Points |
+| **Domain VI: Planetary, Biosphere & Life Stewardship**| 10 Points | $\ge 8$ Points | $\ge 10$ Points |
+| **Domain VII: Provenance, FAIR & Open Dissemination** | 5 Points | $\ge 4$ Points | $\ge 5$ Points |
+| **TOTAL COMPOSITE SCORE (CQSI)** | **100 Points** | **$\ge 80$ Points** | **$\ge 95$ Points** |
+
+*Note: Achieving $\ge 95$ points is a necessary condition for Level 5 certification, but is immediately invalidated if even one Red-Flag Veto is triggered.*
+
 ---
 
 # PART V: RED-FLAG VETO CONDITIONS
@@ -317,6 +333,7 @@ If **ANY** of the following red-flag conditions are discovered during the audit,
 Auditor Signature: ___________________________________________________________
 Name & Title:      ___________________________________________________________
 Date of Audit:     ___________________________________________________________
+Audited Score:     _____ / 100 Points (CQSI)
 Certified Level:   [  ] Level 0   [  ] Level 1   [  ] Level 2
                    [  ] Level 3   [  ] Level 4   [  ] Level 5 (Gold Standard)
 ```
@@ -329,6 +346,14 @@ Principal Investigator: ________________________________________________________
 Name:                   Kirk LaSalle
 Date of Covenant:       ___________________________________________________________
 Project Sealed:         Emergent Matter Research Framework (EMRF)
+```
+
+### Cryptographic Provenance & Covenant Seal
+```
+Repository Head Commit SHA:  [ e.g., 2917963... ]
+Audit Document SHA-256 Hash: [ e.g., Computed via hashlib.sha256 ]
+Verification Timestamp:      [ YYYY-MM-DDTHH:MM:SSZ ]
+Immutable Status:            SEALED & RATIFIED
 ```
 
 ---
