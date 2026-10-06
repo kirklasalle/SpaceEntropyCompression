@@ -22,7 +22,8 @@ This repository operates under **The Grand Due Diligence Audit Framework (v1.0.0
 * **Composite Quantitative Scoring Index (CQSI):** **100.0 / 100.0 Points (100%)**
 * **Certification Tier:** **LEVEL 5 — WORLD-CLASS GOLD STANDARD & PLANETARY STEWARDSHIP**
 * **Red-Flag Vetos:** **0 / 7 Triggered (Integrity Fully Cleared)**
-* **Formal Ratified Report:** [docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md)
+* **Formal Ratified Report (Case 001 - Framework):** [docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md)
+* **Formal Ratified Report (Case 002 - First Use Case):** [docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md)
 * **Universal Audit Template:** [docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)
 
 ---
