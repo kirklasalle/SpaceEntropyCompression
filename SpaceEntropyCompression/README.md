@@ -99,6 +99,8 @@ SpaceEntropyCompression/
 │   ├── test_*.py              # 19 comprehensive unit test suites (159 tests, 100% passing)
 │   └── compare_schwarzschild.py  # GR consistency check (headless-ready)
 ├── docs/                      # Research documents and papers
+│   ├── GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md # Grand Due Diligence Audit Template (Covenant & Directives)
+│   ├── COSMOLOGICAL_FRONTIERS_PLAN.md # Cosmological Frontiers Implementation Plan
 │   ├── EMRF_MASTER_AUDIT_2026-10-05.md # Master Comprehensive Audit Report
 │   └── hypotheses/            # Frozen hypothesis specifications
 ├── knowledgebase/             # Graph memory & engineering handbooks

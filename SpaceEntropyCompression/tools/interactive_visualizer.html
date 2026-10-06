@@ -735,7 +735,8 @@
         function setRegime(regime) {
             activeRegime = regime;
             document.querySelectorAll(".btn-regime").forEach(btn => btn.classList.remove("active"));
-            if (event && event.target) event.target.classList.add("active");
+            const matchedRegimeBtn = Array.from(document.querySelectorAll(".btn-regime")).find(b => b.getAttribute("onclick") && b.getAttribute("onclick").includes(`'${regime}'`));
+            if (matchedRegimeBtn) matchedRegimeBtn.classList.add("active");
 
             if (regime === "bh") {
                 document.getElementById("slider-accel").value = 5.0;
@@ -1512,6 +1513,7 @@
             ctx.fillText(chi2Text, ox + 25, cy - h / 2 + 56);
             ctx.fillStyle = "#8b9bb4";
             ctx.fillText("Cyan Curve: Physical EMRF Solution | Dots: Blind Dataset", ox + 25, cy - h / 2 + 73);
+        }
 
         function drawCosmicExpansion(cx, cy) {
             const w = canvas.width * 0.75;

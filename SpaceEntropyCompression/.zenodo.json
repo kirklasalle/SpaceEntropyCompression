@@ -1,6 +1,6 @@
 {
-  "title": "Emergent Matter Research Framework (EMRF): Space-Entropy Compression and Multi-Star Relativistic S-Star Dynamics",
-  "description": "Open-source research framework, numerical simulation platform, and observational astrophysics testing suite investigating the Compressed Space-Time Matter Hypothesis (CSTMH). Implements multidimensional spatial coordinates X = {x, y, z, d0, d1, d2, ...}, thermodynamic entropy state coupling S(X,t), 1PN relativistic equations of motion, exact Kretschmann curvature calculations, Thiele-Innes sky-plane projection, SPARC rotation curve fitting, and cosmological horizon acceleration evolution a_0(z) = c H(z) / (2 pi). Empirically confronted across 425 observational data points spanning the Sagittarius A* S-star cluster (S2, S29, S38, S55, S301; Delta-BIC = +70.74, Branch A Geometric Collapse), 10 SPARC rotationally supported galaxies (Delta-BIC = -52,490.1), and 10 high-redshift JWST/ALMA disk galaxies (Delta-BIC = -100.08). Backed by 99 automated tests.",
+  "title": "Emergent Matter Research Framework (EMRF): Space-Entropy Compression Across 10 Relativistic and Cosmological Regimes",
+  "description": "Open-source research framework, numerical simulation platform, and observational astrophysics testing suite investigating the Compressed Space-Time Matter Hypothesis (CSTMH). Implements multidimensional spatial coordinates X = {x, y, z, d0, d1, d2, ...}, thermodynamic entropy state coupling S(X,t), 1PN relativistic equations of motion, exact Kretschmann curvature calculations, Thiele-Innes sky-plane projection, SPARC rotation curve fitting, cosmological horizon acceleration evolution a_0(z) = c H(z) / (2 pi), late-time cosmic expansion solver (Pantheon+ & DESI 2024 BAO), and early-universe coupled relativistic acoustic oscillations (Planck 2018 PR3). Empirically confronted across 28,700+ observational constraints across 10 distinct regimes (Sgr A* 5-star cluster, Solar System Cassini screening, SPARC galaxies, SLACS strong lensing, Bullet Cluster, JWST high-z, GW170817 speed of gravity, Gaia DR3 wide binaries, Pantheon+ SNe, and Planck 2018 CMB acoustic peaks). Backed by 159 automated unit tests across 19 test suites.",
   "creators": [
     {
       "name": "LaSalle, Kirk",
@@ -22,9 +22,13 @@
     "galactic rotation curves",
     "james webb space telescope",
     "jwst",
-    "baryonic tully-fisher relation",
-    "hubble parameter",
-    "astrometry",
+    "pantheon plus",
+    "desi 2024 bao",
+    "planck 2018 cmb",
+    "bullet cluster",
+    "gravitational lensing",
+    "gw170817",
+    "gaia dr3",
     "bayesian model selection",
     "bifurcation protocol"
   ],
