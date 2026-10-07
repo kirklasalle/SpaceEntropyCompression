@@ -54,7 +54,7 @@ def test_manuscript_structural_sections(paper_dir: Path):
         "Relativistic Baseline and Astrometric Projection Engine",
         "The Empirical Astrophysical Crucible: Sgr A* S-Star Cluster",
         "Simultaneous Multi-Star Bayesian Model Comparison",
-        "Discussion: Branch A as a Geometric Reformulation of GR",
+        "Discussion: Branch A as Macroscopic Correspondence with General Relativity",
         "Low-Acceleration Extension: Testing Cosmic Entropy Gradients (SPARC)",
         "Conclusion: The Two-Regime Empirical Synthesis",
     ]

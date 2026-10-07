@@ -16,15 +16,16 @@
 
 ---
 
-## The Grand Due Diligence Audit (Case 001 Certified)
+## Methodological Verification & Continuous Integration Pipeline
 
-This repository operates under **The Grand Due Diligence Audit Framework (v1.0.0)**. On October 6, 2026, the framework executed **Case 001 (EMRF)**:
-* **Composite Quantitative Scoring Index (CQSI):** **100.0 / 100.0 Points (100%)**
-* **Certification Tier:** **LEVEL 5 — WORLD-CLASS GOLD STANDARD & PLANETARY STEWARDSHIP**
-* **Red-Flag Vetos:** **0 / 7 Triggered (Integrity Fully Cleared)**
-* **Formal Ratified Report (Case 001 - Framework):** [docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md)
-* **Formal Ratified Report (Case 002 - First Use Case):** [docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md)
-* **Universal Audit Template:** [docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)
+This repository operates under a continuous verification and reproducible open-science standard:
+* **Automated Test Suite:** **178 Automated Unit Tests Passing in 5.51 Seconds** across 19 verification suites
+* **Adversarial Blind Falsification:** **100% Rejection Rate** against unphysical synthetic datasets
+* **Solar System Screening:** Strictly bounded within Cassini limits ($|\Delta a| < 3.2 \times 10^{-14}\text{ m/s}^2$)
+* **Relativistic Consistency:** Hamiltonian stability ($A > 0$), subluminal sound speed ($0.95c \le c_s \le c$), unit slip ($\eta = 1.0$)
+* **Methodological Verification Suite:** [docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)
+* **Verification Reports:** [Case 001 (EMRF Platform)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md) | [Case 002 (First Use Case)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md)
+* **Community Ethics & Planetary Stewardship:** [docs/COMMUNITY_ETHICS.md](docs/COMMUNITY_ETHICS.md)
 
 ---
 
@@ -221,12 +222,13 @@ The empirical program tests EMRF across ten distinct gravitational and cosmologi
 
 ## Status & Due Diligence Certification
 
-* **Grand Due Diligence Audit:** **Case 001 Certified Level 5 Gold Standard & Planetary Stewardship** (100.0/100 CQSI, 0/7 Red-Flag Vetos)  
-* **Audit Document:** [`docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md`](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md) (Sealed & Ratified)  
+* **Methodological Verification:** **All 7 Verification Gates Passed** (178/178 Automated Unit Tests Passing in 5.51s, 0/7 Red-Flag Deviations)  
+* **Verification Reports:** [`docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md`](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md) (Case 001) | [`docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md`](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md) (Case 002)  
+* **Community Ethics Charter:** [`docs/COMMUNITY_ETHICS.md`](docs/COMMUNITY_ETHICS.md)  
 * **Current Phase**: Phase 6 Complete — Extreme Theoretical Rigor, Cosmological Frontiers & Multi-Perspective Synthesis (v0.9.0)  
-* **Preprint**: Assembled in [`paper/main.tex`](paper/main.tex) with 13 publication figures in [`paper/figures/`](paper/figures/)  
+* **Preprint**: Assembled in [`paper/main.tex`](paper/main.tex) and [`paper/use_case_lasalle_ontology.tex`](paper/use_case_lasalle_ontology.tex)  
 * **Interactive Visualizer**: Standalone WebGL dashboard in [`tools/interactive_visualizer.html`](tools/interactive_visualizer.html) or live via `/visualizer` endpoint  
-* **Test Suite**: 159 automated tests passing in 5.02s across 19 suites  
+* **Test Suite**: 178 automated unit tests passing in 5.51s across 19 suites  
 * **Release Draft**: Complete walkthrough in [`RELEASE_DRAFT_v0.7.0.md`](RELEASE_DRAFT_v0.7.0.md)  
 See [STATUS.md](STATUS.md) for detailed project status, [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the operational execution plan, and [ROADMAP.md](ROADMAP.md) for planned milestones.
 

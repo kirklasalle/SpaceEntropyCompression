@@ -8,6 +8,7 @@ Tests:
 
 import math
 import pytest
+import numpy as np
 from jwst_highz_early_galaxies import (
     JWSTCosmicDawnEngine,
     JWST_BENCHMARKS,
@@ -175,3 +176,19 @@ class TestQuantumVibrationalCompression:
         assert len(suite) == 3
         for name, data in suite.items():
             assert data["vibrational_synthesis_confirmed"] == 1.0
+            assert data["thermodynamic_stability_locked"] == 1.0
+
+    def test_soliton_thermodynamic_locking(self, engine):
+        """Soliton must exhibit positive entropy gradient and dispersion balance."""
+        for p in PARTICLE_BENCHMARKS:
+            stab = engine.verify_soliton_thermodynamic_stability(p.rest_mass_kg)
+            assert stab["positive_entropy_gradient_confirmed"] is True
+            assert stab["thermodynamic_locking_verified"] is True
+            assert stab["dispersion_balance_ratio"] > 0.0
+
+    def test_confining_potential(self, engine):
+        """Confining potential V(psi, S) must be positive-definite."""
+        for p in PARTICLE_BENCHMARKS:
+            r, psi, _ = engine.solve_radial_soliton_profile(p.rest_mass_kg)
+            v = engine.confining_potential(r, psi, p.rest_mass_kg)
+            assert np.all(v >= 0.0)
