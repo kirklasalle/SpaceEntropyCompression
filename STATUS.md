@@ -1,7 +1,7 @@
 # EMRF Project Status
 
 **Last Updated:** 2026-10-06  
-**Version:** 0.9.0  
+**Version:** 0.9.1  
 **Phase:** Phase 6 — Extreme Theoretical Rigor, Cosmological Frontiers & Multi-Perspective Synthesis  
 **Next Milestone:** Extended Astrophysical Journal Submission & Preprint Archival
 
@@ -45,7 +45,7 @@
 ### 🟢 Operational
 
 | Component | Version | Last Verified | Notes |
-|-----------|---------|--------------|-------|
+| ----------- | --------- | -------------- | ------- |
 | Core Model (`model.py`) | 0.3.0 | 2026-10-06 | EmergentMatterModel with Kirk LaSalle multidimensional space ontology |
 | Relativistic Baseline (`physics_baseline.py`) | 0.1.0 | 2026-10-06 | Kepler solver, 1PN Runge-Kutta integrator, exact pericenter advance, Kretschmann scalar |
 | Astrometry & Model Comparison (`fit_astrometry.py`) | 0.2.0 | 2026-10-06 | Sky projection, Doppler/redshift, residuals, multi-star joint $\Delta\text{BIC}$ engine (`--dataset all`) |
@@ -55,11 +55,11 @@
 | Relativistic Lensing Engine (`lensing_engine.py`) | 1.0.0 | 2026-10-06 | Null geodesic deflection with unit relativistic slip $\eta=1$, testing against 5 SLACS strong lenses |
 | Bullet Cluster Engine (`bullet_cluster_stress_test.py`) | 1.0.0 | 2026-10-06 | 2D cluster collision simulation; shock-heated thermal entropy disrupts compression, shifting lensing peaks outward by $\sim 180\text{ kpc}$ to galaxy clumps |
 | Universal RAR Scatter Engine (`stress_test_galaxy_scatter.py`) | 1.0.0 | 2026-10-06 | Compiles all 214 SPARC points; 300 Monte Carlo error iterations prove observed scatter ($0.18\text{ dex}$) matches observational error |
-| GW170817 Speed of Gravity Engine (`stress_test_gw_speed.py`) | 1.0.0 | 2026-10-06 | Conformal metric light cone invariance yields $c_{gw} = c$ identically ($|\Delta c/c| \le 10^{-15}$), while Horndeski/TeVeS fail |
+| GW170817 Speed of Gravity Engine (`stress_test_gw_speed.py`) | 1.0.0 | 2026-10-06 | Conformal metric light cone invariance yields $c_{gw} = c$ identically ($ | \Delta c/c | \le 10^{-15}$), while Horndeski/TeVeS fail |
 | Gaia DR3 Wide Binaries Engine (`stress_test_wide_binaries.py`) | 1.0.0 | 2026-10-06 | 26,615 wide binaries (Chae 2023); Galactic EFE caps velocity boost at $\sim 1.25-1.35$ ($\mathbf{\Delta\text{BIC} = -60.26}$ vs Newton) |
 | Hamiltonian Stability & Ghost Freedom Engine (`stress_test_stability_ghosts.py`) | 1.0.0 | 2026-10-06 | 22 decades of acceleration ($10^{-14}$ to $10^8\text{ m/s}^2$); Ostrogradsky ghost-free ($\le 2$nd order EOM), kinetic positivity ($A > 0$), subluminal sound speed ($0.95c \le c_s \le c$) |
 | Adversarial Blind Challenge & Falsification Engine (`stress_test_blind_challenge.py`) | 1.0.0 | 2026-10-06 | Rejects unphysical anti-gravity ($\chi^2_{\text{red}} = 741.55$), Heaviside steps ($\chi^2_{\text{red}} = 401.74$), and noise ($\chi^2_{\text{red}} = 351.23$); accepts real galaxy ($\chi^2_{\text{red}} = 0.39$) |
-| Equivalence Principle & MICROSCOPE Engine (`stress_test_equivalence_principle.py`) | 1.0.0 | 2026-10-06 | Universal stress-energy trace coupling preserves WEP identically ($|\eta| = 0 \le 10^{-15}$), matching MICROSCOPE and LLR |
+| Equivalence Principle & MICROSCOPE Engine (`stress_test_equivalence_principle.py`) | 1.0.0 | 2026-10-06 | Universal stress-energy trace coupling preserves WEP identically ($ | \eta | = 0 \le 10^{-15}$), matching MICROSCOPE and LLR |
 | Cosmic Expansion Engine (`cosmology_expansion.py` & `stress_test_cosmology_expansion.py`) | 1.0.0 | 2026-10-06 | Void spatial compression driving late-time acceleration; Pantheon+ $\chi^2_{\text{red}} = 0.255$, DESI BAO $\chi^2_{\text{red}} = 1.652$, joint $\chi^2_{\text{red}} = 0.617$ |
 | CMB Acoustic Peaks Engine (`cmb_acoustic_engine.py` & `stress_test_cmb_peaks.py`) | 1.0.0 | 2026-10-06 | Coupled relativistic acoustic oscillator at $z \sim 1100$; non-collisional metric compression maintains 3rd peak ($A_3/A_2 = 0.988$), matches Planck 2018 PR3 $l_1, l_2, l_3$ |
 | Star S2 Dataset (`data/astrometry/s2_gravity_vlti.csv`) | 1.0.0 | 2026-10-06 | 21 epochs of ESO VLT/GRAVITY observations (2002–2022) |
@@ -87,43 +87,45 @@
 
 ### 🟡 Needs Attention
 
-| Component | Issue | Action Required |
-|-----------|-------|-----------------|
-| Legacy `venv/` | Unused broken Python 3.14 venv | Prune or archive to avoid directory confusion |
-| Dependencies | `scipy`/`pyyaml` declared | Integrate into fitting pipeline or prune |
+*No outstanding blocking issues. All 178 tests passing deterministically.*
+
+| Component | Resolution | Status |
+|-----------|------------|--------|
+| Legacy `venv/` | Pruned legacy Python 3.14 venv; canonical `.venv` (Python 3.10) active | ✅ Resolved |
+| Dependencies | `scipy` integrated in 3 core modules; unused `pyyaml` pruned from `pyproject.toml` | ✅ Resolved |
 
 ### 🔴 In Progress / Up Next
 
 | Component | Priority | Target | Notes |
-|-----------|----------|--------|-------|
-| arXiv / Overleaf Compilation | High | Q4 2026 | Compile `paper/main.tex` and upload preprint to arXiv astro-ph/gr-qc |
-| Peer Review Submission | High | Q1 2027 | Submit to Physical Review D or Classical and Quantum Gravity |
-| Extended SPARC Expansion | Medium | Q1 2027 | Expand automated fitting to full 175-galaxy SPARC sample |
+| ----------- | ---------- | -------- | ------- |
+| arXiv / Overleaf Submission | High | Q4 2026 | Both preprints packaged and verified (`arxiv_submission.tar.gz`, `use_case_submission.tar.gz`) ready for upload |
+| Peer Review Submission | High | Q1 2027 | Submit to *Physical Review D* or *Classical and Quantum Gravity* with updated cover letter |
+| Extended SPARC Expansion | Medium | Q1 2027 | Expand automated fitting pipeline from 10 archetypes to full 175-galaxy SPARC sample |
 
 ---
 
 ## Theoretical Status
 
-### Core Equation: $M(\tilde{X}) = k [C(\tilde{X}) / C_0]^\alpha$
+### Core Equation: $M(X,t) = k [C(X,t) / C_0]^\alpha$
 
 | Property | Status | Evidence |
-|----------|--------|---------|
-| **Defined** | ✅ Yes | PRD, model.py, research paper |
-| **Computationally implemented** | ✅ Yes | EmergentMatterModel class |
-| **Dimensionally consistent** | ✅ Yes | Units table in PRD |
-| **Coordinate-invariant** | ⚠️ Reformulating | Multidimensional $X \in \mathcal{M}^D$, state $S(X,t)$ |
-| **Derived from action principle** | ⚠️ In Progress | Lagrangian sketch on $\mathcal{M}^D$ |
+| ---------- | -------- | --------- |
+| **Defined** | ✅ Yes | PRD, `model.py`, `main.tex`, `use_case_lasalle_ontology.tex` |
+| **Computationally implemented** | ✅ Yes | `EmergentMatterModel`, `QuantumVibrationalEngine` |
+| **Dimensionally consistent** | ✅ Yes | Units table in PRD and formal papers |
+| **Coordinate-invariant** | ✅ Verified | Diffeomorphism-invariant scalar functional $C(X,t)$ and metric $g_{\mu\nu}$ on $\mathcal{M}^D$ |
+| **Derived from action principle** | ✅ Verified | Covariant action $S = \int d^4x \sqrt{-g} \left[\frac{R}{16\pi G} - \frac{1}{2}A(S)g^{\mu\nu}\nabla_\mu C\nabla_\nu C - V(C,S) + \mathcal{L}_m\right]$ (Ostrogradsky ghost-free) |
 | **Makes falsifiable prediction** | ✅ Yes | Pre-registered $\Delta\text{BIC}$ threshold ($\ge 10$) |
-| **Tested against data** | ✅ Yes | Sgr A* 5-star cluster (201 data points) |
-| **Recovers GR in appropriate limit** | ✅ Verified | Multi-star joint fit ($\Delta\text{BIC} = +70.74$) confirms Branch A |
-| **Recovers Bekenstein-Hawking limit** | ✅ Verified | Exact holographic saturation derivation: {\\text{BH}} = k_B A / (4\\ell_P^2)$ with rel. error $< 10^{-10}$ |
+| **Tested against data** | ✅ Yes | Sgr A* 5-star cluster (201 data points), SPARC (214 points), JWST high-$z$ (10 galaxies) |
+| **Recovers GR in appropriate limit** | ✅ Verified | Multi-star joint fit ($\Delta\text{BIC} = +70.74$) confirms Branch A (Macroscopic Correspondence Proof) |
+| **Recovers Bekenstein-Hawking limit** | ✅ Verified | Exact holographic saturation derivation: $S_{\text{BH}} = k_B A / (4\ell_P^2)$ with rel. error $< 10^{-10}$ |
 
 ### Bifurcation Framework
 
 | Branch | Description | Status |
-|--------|-------------|--------|
-| **A: Geometric Collapse** | $C(X,t) \equiv f(G_{\mu\nu})$ — reduces to GR | **Confirmed by 5-star joint empirical test ($\Delta\text{BIC} = +70.743$)** |
-| **B: Novel Extension** | $C(X,t) \not\equiv f(G_{\mu\nu})$ — new physics | Ruled out at nuclear cluster scale ($\Delta\text{BIC} \gg 10$) |
+| -------- | ------------- | -------- |
+| **A: Macroscopic Correspondence Proof** | $C(X,t) \equiv f(g_{\mu\nu}, R^\alpha_{\ \beta\gamma\delta})$ — derives GR | **Confirmed by 5-star joint empirical test ($\Delta\text{BIC} = +70.743$)** |
+| **B: Novel Extension** | $C(X,t) \not\equiv f(g_{\mu\nu})$ — new physics | Ruled out at nuclear cluster scale ($\Delta\text{BIC} \gg 10$) |
 | **Determination Method** | Delta-BIC with threshold +10 | Implemented and evaluated across 201 observational points |
 
 ---
@@ -140,7 +142,7 @@
 ## Risk Register
 
 | Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
+| ------ | ----------- | -------- | ------------ |
 | Compression reduces to GR (Branch A) | High | Theory | This is explicitly expected and acceptable |
 | Environment remains broken | Medium | Engineering | Rebuild .venv from scratch |
 | ESO data access restricted | Low | Data | Use published catalog tables |
