@@ -3,8 +3,9 @@ info:
   title: Emergent Matter Simulation API
   version: 1.0.0
   description: |
-    REST API for emergent matter simulation where entropy (S) is the last
-    model dimension and acts as the quantifiable clock.
+    REST API for emergent matter simulation. Entropy S(X,t) is a thermodynamic state
+    field (the arrow of change per Second Law), not a spatial coordinate. The last
+    entry in X_grid is the entropy state sweep; output M[..., j] is matter at state S_j.
 servers:
   - url: http://127.0.0.1:5000
 paths:
@@ -20,7 +21,7 @@ paths:
               $ref: '#/components/schemas/SimulationRequest'
             examples:
               basic4d:
-                summary: 3 spatial + 1 entropy dimension
+                summary: 3 spatial dimensions + entropy state sweep
                 value:
                   n: 4
                   weights: [0.3, 0.3, 0.2, 0.2]
@@ -90,13 +91,13 @@ components:
         n:
           type: integer
           minimum: 1
-          description: Total dimensions including entropy as the last dimension.
+          description: Total dimensions (spatial + topological); entropy is swept separately.
         weights:
           type: array
           minItems: 1
           items:
             type: number
-          description: One weight per dimension; length must equal n.
+          description: One weight per dimension; length must equal n. Entropy weight regulates coupling, not a spatial axis.
         X_grid:
           type: array
           minItems: 1
@@ -105,7 +106,7 @@ components:
             minItems: 1
             items:
               type: number
-          description: One grid array per dimension; last array is entropy S grid.
+          description: One grid array per dimension. Last array is entropy state values (S_1, S_2, ..., S_m); it parameterizes a sweep of thermodynamic states, not a spatial axis.
         k:
           type: number
           default: 1.0
@@ -121,7 +122,7 @@ components:
       properties:
         M:
           type: array
-          description: N-dimensional nested array of simulated matter values.
+          description: Nested array of simulated matter values. M[x_1, ..., x_n-1, S_j] is the matter at spatial coordinates x_i and entropy state S_j.
           items:
             oneOf:
               - type: number

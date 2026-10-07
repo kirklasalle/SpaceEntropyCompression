@@ -1,20 +1,21 @@
 # User Guide
 
 ## Overview
-This platform simulates and visualises emergent matter as a function of effective curvature across n spatial dimensions plus one entropy dimension. Entropy (S) is treated as a full dimension — it is the quantifiable expression of what is conventionally called "time". There is no separate time parameter; entropy IS the clock.
+This platform simulates and visualises emergent matter as a function of effective curvature across spatial dimensions and a thermodynamic entropy state parameter. 
+
+Entropy S(X,t) is a thermodynamic state variable, not a spatial coordinate or time parameter. It characterizes the organizational state of the system and is "the arrow"—the direction in which physical processes naturally proceed (Second Law). The platform evaluates the matter field over a grid of spatial coordinates for a range of entropy states, producing output M[x, y, z, ..., S_j] = matter at spatial point (x,y,z,...) and entropy state S_j.
 
 The platform provides a Python backend, JavaFX and web visualisation, and advanced math support via MCP server.
 
 ## Core Mathematical Theory
-- \( \tilde{X} = (x_1, \ldots, x_n, S) \) — n spatial coordinates plus one entropy coordinate (S), giving (n+1) total dimensions.
-- \( w_i \) are normalised weights (\( \sum_{i=1}^{n+1} w_i = 1 \)), one per dimension.
-- \( C_i(\tilde{x}_i) \) is the curvature contribution of the i-th dimension, depending only on its own coordinate.
-- \( C(\tilde{X}) = \sum_{i=1}^{n+1} w_i \, C_i(\tilde{x}_i) \) is the effective curvature.
-- \( M(\tilde{X}) = k \left( \frac{C(\tilde{X})}{C_0} \right)^\alpha \) is the emergent matter mapping.
+- **Spatial manifold:** \( X = (x_1, \ldots, x_n) \) with n spatial/topological coordinates.
+- **Thermodynamic state field:** \( S(X,t) \) is entropy, a state variable (not a coordinate).
+- **Weights:** \( w_i \) are normalised weights (\( \sum_{i=1}^{n} w_i = 1 \)), one per spatial dimension.
+- **Curvature:** \( C_i(x_i) \) is the curvature contribution of the i-th spatial dimension.
+- **Effective curvature:** \( C(X, S) = \sum_{i=1}^{n} w_i \, C_i(x_i) + w_S \, C_S(S) \) couples spatial and entropy contributions.
+- **Matter field:** \( M(X, S) = k \left( \frac{C(X, S)}{C_0} \right)^\alpha \) is the emergent density.
 
-The **last dimension** in any coordinate vector is always the entropy dimension S.
-
-Discrete/quantum versions, parameter inference, and falsifiable predictions are supported. See the PRD for full details.
+When simulating, the model evaluates C and M at each point in the spatial grid for each entropy state in the sweep. The output array has shape (n_x, n_y, n_z, ..., n_S).
 
 ## Getting Started
 1. Install Python requirements (`requirements.txt`).
@@ -23,8 +24,8 @@ Discrete/quantum versions, parameter inference, and falsifiable predictions are 
 4. (Optional) Use the web client for browser-based visualisation.
 
 ## Features
-- Simulate emergent matter models across space + entropy
-- Entropy as a full dimension — not a time parameter
+- Simulate emergent matter models across spatial dimensions with entropy state sweep
+- Entropy as a thermodynamic state field—the arrow of change
 - Visualise results in 2D/3D at any entropy slice
 - Parameter inference and quantum/discrete support
 - Advanced math via MCP server
@@ -35,9 +36,9 @@ Discrete/quantum versions, parameter inference, and falsifiable predictions are 
 - Postman import: `postman/EmergentMatterAPI.postman_collection.json`
 
 ## Example Workflow
-1. Configure model parameters in the client or API (dimensions, weights, curvature functions).
-2. Include an entropy grid as the last element of `X_grid`.
-3. Run simulations and view results at chosen entropy slices.
+1. Configure model parameters in the client or API (spatial dimensions, weights, curvature functions).
+2. Define a spatial grid and an entropy state sweep.
+3. Run simulations and view results at chosen entropy states.
 4. Export or analyse data as needed.
 
 ## Troubleshooting

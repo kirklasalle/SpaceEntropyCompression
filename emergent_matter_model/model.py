@@ -1,13 +1,22 @@
 """Core model for emergent matter from multidimensional space-entropy compression.
 
-Foundational Principle (Clarified by Kirk LaSalle, 2026-10-05)
-------------------------------------------------------------
+Foundational Principle (Clarified by Kirk LaSalle, 2026-10-05, 2026-10-07)
+--------------------------------------------------------------------------
 Space is multidimensional: X = (x, y, z, d_0, d_1, d_2, …) ∈ M^D.
 Neither entropy (S) nor time (t) is a spatial coordinate axis.
-Time tracks the progression of dynamical change, and entropy S(X,t) is an
-organizational thermodynamic state function that couples into the effective
-compression functional:
-  C(X,t) = F(E, S, geometry, t).
+
+Time t parameterizes the progression of dynamical change.
+
+Entropy S(X,t) is a thermodynamic state field that characterizes the 
+organization and compression of energy-momentum within spatial degrees of freedom.
+Entropy is the arrow: physical change is oriented in the direction of 
+increasing entropy (Second Law). Entropy couples into the effective compression 
+functional as a state variable:
+
+  C(X,S,t) = F(E, S, geometry, t)
+
+For the phenomenological model, we evaluate C over a grid of entropy values.
+The last grid entry is a set of entropy state snapshots, not a spatial axis.
 
 Mathematical formulation
 ------------------------
@@ -15,15 +24,14 @@ Let X = (x_1, …, x_n) be the coordinate axes of the D-dimensional spatial
 manifold (e.g., standard 3D space plus extra topological/spatial degrees
 of freedom d_0, d_1, …).
 
-  C(X) = Σ_i  w_i · C_i(x_i)           effective compression / curvature
-  M(X) = k · ( C(X) / C₀ )^α           emergent matter density
+  C(X, S) = Σ_i w_i · C_i(x_i) + w_S · C_S(S)    effective compression
+  M(X, S) = k · ( C(X, S) / C₀ )^α                emergent matter density
 
-Each C_i is a function of a *single* coordinate (its own dimension), with
-extended couplings (energy, entropy state, cross-terms) evaluated across
-the state configuration.
+Each spatial C_i is a function of coordinate (x_i); C_S is the entropy 
+coupling evaluated at state S(X,t).
 
 Supports brute-force grid simulation over all n dimensions and an
-optimised vectorised path when n_total == 4 (e.g. 3D space + d_0 / state axis).
+optimised vectorised path when n_total == 4 (e.g. 3D space + d_0 plus entropy state).
 """
 
 from collections.abc import Callable, Sequence
@@ -37,8 +45,9 @@ class EmergentMatterModel:
     Parameters
     ----------
     n_total : int
-        Total number of dimensions **including** the entropy dimension.
-        For 3-D space + entropy, pass ``n_total=4``.
+        Total number of spatial/topological dimensions (excluding entropy state axis).
+        For 3-D space + d_0, pass ``n_total=4``. Entropy states are evaluated
+        as a separate parameter sweep; see ``from_spatial_and_entropy``.
     weights : sequence of float, length n_total
         Relative importance of each dimension's curvature.  Automatically
         normalised so that ``sum(weights) == 1``.
@@ -51,8 +60,10 @@ class EmergentMatterModel:
 
     Notes
     -----
-    By convention the **last** weight and the **last** entry in any
-    coordinate vector correspond to the entropy dimension S.
+    Entropy is a thermodynamic state variable, not a spatial coordinate.
+    When simulating over a range of entropy values, use ``from_spatial_and_entropy``
+    to construct grids with shape (n_spatial_1, …, n_spatial_D, n_entropy_states).
+    Each output slice M[…, j] is the matter distribution at entropy state S_j.
     """
 
     def __init__(
@@ -77,7 +88,7 @@ class EmergentMatterModel:
     # -- kept for backward compatibility ---------------------------------
     @property
     def n(self) -> int:
-        """Alias — total dimension count (spatial + entropy)."""
+        """Alias — total dimension count (spatial + topological)."""
         return self.n_total
 
     # -- convenience constructor -----------------------------------------
@@ -89,8 +100,29 @@ class EmergentMatterModel:
         entropy_weight: float = 1.0,
         **kwargs,
     ) -> "EmergentMatterModel":
-        """Create a model with *n_spatial* space dims + 1 entropy dim.
+        """Create a model with n_spatial space dimensions and entropy state sweep.
 
+        Parameters
+        ----------
+        n_spatial : int
+            Number of spatial/topological coordinate axes (e.g., 3 for 3D space).
+        spatial_weights : sequence of float
+            Weight for each spatial dimension.
+        entropy_weight : float
+            Weight parameter for entropy coupling (does not change n_total).
+            Entropy is not a coordinate; this weight regulates how S(X,t)
+            couples into the effective compression C(X,S,t).
+        **kwargs
+            Additional arguments passed to the constructor (k, alpha, C0, etc.).
+
+        Returns
+        -------
+        EmergentMatterModel
+            Model with n_total = n_spatial + 1, ready to simulate
+            over a grid of entropy state values.
+
+        Example
+        -------
         >>> m = EmergentMatterModel.from_spatial_and_entropy(
         ...     3, [0.3, 0.4, 0.3], entropy_weight=0.2, k=1.0)
         """
@@ -136,20 +168,21 @@ class EmergentMatterModel:
         X_grid: list[np.ndarray],
         c_funcs: list[Callable[[float], float]],
     ) -> np.ndarray:
-        """Brute-force simulation over an (n+1)-dimensional grid.
+        """Brute-force simulation over a (spatial + entropy state) grid.
 
         Parameters
         ----------
         X_grid : list of 1-D arrays, length n_total
             One array per dimension.  The **last** array is the entropy
-            grid (S values).  All other arrays are spatial axes.
+            state grid (S values); all others are spatial/topological axes.
         c_funcs : list of callables, length n_total
             ``c_funcs[i](x_i) -> float`` — curvature in dimension *i*.
 
         Returns
         -------
         M : ndarray of shape ``(len(X_grid[0]), …, len(X_grid[-1]))``
-            Emergent matter values over the full grid.
+            Emergent matter values over the full grid. The last index
+            ranges over entropy states: M[…, j] is matter at state S_j.
         """
         if len(X_grid) != self.n_total:
             raise ValueError(
@@ -167,14 +200,16 @@ class EmergentMatterModel:
         X_grid: list[np.ndarray],
         c_funcs: list[Callable[[float], float]],
     ) -> np.ndarray:
-        """Vectorised simulation for 3 spatial + 1 entropy dimensions.
+        """Vectorised simulation for 3 spatial + entropy state evaluation.
 
-        Produces M[x, y, z, S].  Falls back to ``simulate_grid`` when
+        Produces M[x, y, z, S] by evaluating over 3D space for each 
+        entropy state in the sweep. Falls back to ``simulate_grid`` when
         ``n_total != 4``.
 
         Parameters
         ----------
-        X_grid : list of 4 arrays — [x, y, z, S_grid]
+        X_grid : list of 4 arrays — [x, y, z, S_states]
+            The last array is entropy state values (not a spatial axis).
         c_funcs : list of 4 callables — [Cx, Cy, Cz, Cs]
         """
         if self.n_total != 4:

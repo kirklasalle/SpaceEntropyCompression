@@ -1,7 +1,7 @@
 # Developer Guide
 
 ## Project Structure
-- `model.py`: Core mathematical model (space + entropy dimensions)
+- `model.py`: Core mathematical model (spatial dimensions + entropy state evaluation)
 - `server.py`: Python REST API
 - `openapi.yaml`: OpenAPI 3.0 specification for REST endpoints
 - `visualize.py`: 2D Python visualisation client
@@ -11,20 +11,28 @@
 - `pom.xml`: JavaFX Maven config
 - `resources/`: JavaFX SDK and other assets
 
-## Foundational Principle
-Entropy (S) is **dimensional**, not parametric. It is the quantifiable
-expression of what is conventionally called "time". The model treats
-entropy as the (n+1)-th dimension alongside n spatial dimensions.
+## Foundational Principle (T03 Decision, 2026-10-07)
+**Entropy is a thermodynamic state field, not a spatial coordinate.**
+
+Space is multidimensional: X = (x, y, z, d_0, d_1, d_2, …).
+Time t is the progression parameter; entropy S(X,t) is a state variable.
+The model couples entropy into the effective compression as C(X,S,t) = F(E, S, geometry, t).
+Entropy is the arrow: physical processes proceed in the direction of increasing entropy (Second Law).
+
+When evaluating the model, we sweep over entropy states: for each spatial point X, 
+we compute M(X, S_1), M(X, S_2), ..., M(X, S_m). The output array M[x, y, z, ..., j] 
+is the matter field at spatial coords (x,y,z,...) and entropy state S_j.
 
 ## Core Mathematical Theory
-- \( \tilde{X} = (x_1, \ldots, x_n, S) \) — n spatial coordinates plus one entropy coordinate.
-- \( w_i \) are normalised weights (\( \sum_{i=1}^{n+1} w_i = 1 \)), one per dimension.
-- \( C_i(\tilde{x}_i) \) is the curvature in the i-th dimension — a function of that dimension's coordinate only.
-- \( C(\tilde{X}) = \sum_{i=1}^{n+1} w_i \, C_i(\tilde{x}_i) \) is the effective curvature.
-- \( M(\tilde{X}) = k \left( \frac{C(\tilde{X})}{C_0} \right)^\alpha \) is the emergent matter mapping.
+- **Spatial manifold:** \( X = (x_1, \ldots, x_n) \) with n spatial/topological coordinates.
+- **State field:** \( S(X,t) \) is entropy, a thermodynamic state variable (not a coordinate).
+- **Weights:** \( w_i \) are normalised weights (\( \sum_{i=1}^{n} w_i = 1 \)), one per spatial dimension.
+- **Curvature:** \( C_i(x_i) \) depends only on coordinate i; \( C_S(S) \) couples entropy state.
+- **Effective curvature:** \( C(X, S) = \sum_{i=1}^{n} w_i \, C_i(x_i) + w_S \, C_S(S) \)
+- **Matter field:** \( M(X, S) = k \left( \frac{C(X, S)}{C_0} \right)^\alpha \)
 
-The last dimension is always entropy.  Each curvature function `C_i` takes
-a **single argument** (its own coordinate value).
+Each curvature function `C_i` takes a **single argument** (its own coordinate value).
+The entropy coupling `C_S(S)` should be monotonically non-decreasing to respect the Second Law.
 
 Discrete/quantum versions, parameter inference, and falsifiable predictions are supported. See the PRD for full details.
 
@@ -34,10 +42,9 @@ Discrete/quantum versions, parameter inference, and falsifiable predictions are 
 3. Run Python server and JavaFX client
 
 ## Extending the Model
-- Add new curvature functions in `model.py` — each `c_func` takes one
+- Add new spatial curvature functions in `model.py` — each `c_func` takes one
   argument: `c_func(x_i) -> float`
-- For the entropy dimension, design `C_S(S)` to be monotonically
-  non-decreasing to respect the second law of thermodynamics
+- For entropy coupling, design `C_S(S)` to be monotonically non-decreasing to respect the Second Law
 - Extend API endpoints in `server.py`
 - Add new visualisations in Python or JavaFX
 - Use `EmergentMatterModel.from_spatial_and_entropy(n_spatial, spatial_weights, entropy_weight)` for clarity

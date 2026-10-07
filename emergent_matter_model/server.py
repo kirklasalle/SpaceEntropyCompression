@@ -1,7 +1,12 @@
 """REST API for emergent matter simulation.
 
 X_grid spans multidimensional spatial coordinates X = {x, y, z, d_0, d_1, d_2, ...} in M^D.
-Coordinate time t parameterizes dynamics, and S(X,t) characterizes thermodynamic organizational compression.
+Time t parameterizes dynamical evolution; entropy S(X,t) is a thermodynamic state field that
+characterizes organizational compression and couples into the matter density via C(X,S,t).
+
+Entropy is not a spatial coordinate. When evaluating the model over entropy states,
+pass the entropy values as the last grid entry; output M[..., j] represents matter
+at the j-th entropy state S_j.
 """
 
 import logging
