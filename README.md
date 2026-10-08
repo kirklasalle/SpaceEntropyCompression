@@ -62,7 +62,16 @@ This follows the method of Li et al. (2018). It's validated as unbiased on known
 
 * The gas-vs-star disagreement is really a **bulge-vs-bulgeless disagreement** (5.4σ, and 4.8σ even in the deep regime). Either bulge mass models are wrong, or a₀ isn't universal.
 * Without bulges, gas- and star-dominated galaxies agree, at a₀ ≈ 0.93, which is *below* cH₀/2π.
-* Defensible galaxy selections give a₀ ≈ 0.84–1.28. The measurement is **limited by stellar-mass systematics at ±15–20%**, so current SPARC mass models can't settle the hypothesis. The next lever is independent bulge and stellar mass estimates.
+* Defensible galaxy selections give a₀ ≈ 0.84–1.28. The measurement is **limited by stellar-mass systematics at ±15–20%**, so current SPARC mass models can't settle the hypothesis.
+
+### Step 4: is it just mis-modelled bulges? ([`sparc_bulge_test.py`](emergent_matter_model/sparc_bulge_test.py))
+
+**Not by stellar mass alone.**
+* Heavier bulges *raise* a₀. The only way to bring bulge galaxies down to ~1.0 using all points is bulges at about half the expected mass, which also worsens the fit.
+* In their outer, deep regime the bulge galaxies give a₀ ≈ 1.6 for **every** assumed bulge or disk mass-to-light ratio.
+* With every bulge freed, a₀ = 1.28 ± 0.13, still ~2σ above cH₀/2π and ~3σ above the bulgeless value.
+
+So a single universal a₀ = cH₀/2π doesn't describe these 31 galaxies with standard mass models. That's either other systematics (distances, non-circular motions, warps) or a non-universal a₀; the universality of a₀ is debated in the literature (Rodrigues+2018 vs McGaugh+2018, Kroupa+2018).
 
 ## Overview
 
@@ -192,7 +201,7 @@ SpaceEntropyCompression/
 ```bash
 cd SpaceEntropyCompression
 
-# Run the test suite (203 tests)
+# Run the test suite (207 tests)
 python -m pytest emergent_matter_model -q
 
 # REAL DATA: download SPARC (checksummed) and test a0 = c H0 / 2 pi with four candidate laws
@@ -203,6 +212,9 @@ python emergent_matter_model/sparc_marginalized_a0.py    # ~12 minutes
 
 # Diagnose the gas- vs star-dominated disagreement (bulges, deep points)
 python emergent_matter_model/sparc_tension_diagnostics.py  # ~20 minutes
+
+# Bulge mass-to-light test (mis-modelled bulges vs non-universal a0)
+python emergent_matter_model/sparc_bulge_test.py           # ~15 minutes
 
 # Reproduce every number in the audit (docs/SHOW_YOUR_WORK.md)
 python tools/show_your_work_audit.py
@@ -230,7 +242,7 @@ EMRF investigates three competing compression formulations:
 |---|---|---|
 | 1 | Sgr A* S-stars | No valid result (synthetic data; no fitting). EMRF is *required* to equal GR here, so these orbits can't discriminate it. |
 | 2 | Solar System | Constraint: the earlier EMRF law fails. RAR-like laws pass (EFE quadrupole not yet evaluated). |
-| 3 | **SPARC rotation curves** | **Real-data tests done.** a₀ = cH₀/2π is neither confirmed nor excluded. The gas/star disagreement traces to bulge galaxies (5σ), and a₀ is systematics-limited at ±15–20%. The earlier EMRF law is disfavoured. |
+| 3 | **SPARC rotation curves** | **Real-data tests done.** a₀ = cH₀/2π is neither confirmed nor excluded. The gas/star disagreement traces to bulge galaxies (5σ), and no plausible mass-to-light ratio removes it. a₀ is systematics-limited at ±15–20%. The earlier EMRF law is disfavoured. |
 | 4 | Strong lensing | The code used the standard GR formula; no EMRF prediction exists yet. |
 | 5 | Bullet Cluster | Hand-tuned toy model; withdrawn. MOND-type laws leave residual missing mass (Angus+2007). |
 | 6 | High-z disks (a₀ ∝ H(z)) | No valid result (synthetic data). Existing studies disfavour strong evolution (Genzel+2017; Nestor Shachar+2023). |
@@ -245,7 +257,7 @@ Open theoretical task: derive an RAR-like interpolating function from an action.
 
 * **Paper:** [`paper/main.tex`](paper/main.tex) (revised 2026-10-07; real-data SPARC test; correction statement). [`paper/use_case_lasalle_ontology.tex`](paper/use_case_lasalle_ontology.tex) is conceptual; its empirical claims are withdrawn.
 * **Audit:** [`docs/SHOW_YOUR_WORK.md`](docs/SHOW_YOUR_WORK.md).
-* **Tests:** 203 passing. Note that many older tests only check internal consistency, not physics.
+* **Tests:** 207 passing. Note that many older tests only check internal consistency, not physics.
 * **Community Ethics Charter:** [`docs/COMMUNITY_ETHICS.md`](docs/COMMUNITY_ETHICS.md).
 * Older planning and status documents (STATUS, ROADMAP, earlier audits) carry an integrity notice at the top.
 

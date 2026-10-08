@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `emergent_matter_model/test_sparc_marginalized_a0.py` (6 tests, including an unbiasedness test with deliberately wrong catalogue distances and inclinations).
 - `emergent_matter_model/sparc_tension_diagnostics.py`: subsets defined before fitting (bulgeless, deep-regime points, locally gas-dominated points), plus post hoc bulge-galaxy subsets. Result: the gas/star disagreement traces to bulge galaxies (a₀ = 1.91 ± 0.18 vs 0.894 ± 0.050 bulgeless, 5.4σ; 4.8σ in deep points). Bulgeless galaxies combined give 0.930 ± 0.042. Selections span 0.84–1.28, so a₀ is systematics-limited at ±15–20%. Figure `paper/figures/fig_real_sparc_tension_diagnostics.png`; results in `results/sparc_tension_diagnostics.json`; paper §"Diagnosing the Disagreement".
 - `emergent_matter_model/test_sparc_tension_diagnostics.py` (6 offline tests).
+- `emergent_matter_model/sparc_bulge_test.py`: bulge mass-to-light test on the 31 star-dominated bulge galaxies. The design was fixed in advance; lighter-bulge ratios, lower plausibility bounds and a free-bulge a₀ profile were added post hoc and are labelled so. Result: heavier bulges *raise* a₀; the deep-regime a₀ ≈ 1.6 regardless of bulge or disk M/L; with every bulge free, a₀ = 1.28 ± 0.13. Stellar M/L mis-modelling isn't sufficient. Figure `paper/figures/fig_real_sparc_bulge_test.png`; paper §"Bulge Mass-to-Light Test"; three verified references added (Rodrigues+2018 and replies).
+- `emergent_matter_model/test_sparc_bulge_test.py` (4 offline tests).
+- `docs/ZENODO_RELEASE_v0.10.0.md`: ready-to-use text and steps for publishing the correction release.
 
 ### Fixed
 - `lensing_engine.py` crashed on NumPy ≥ 2 (`np.trapz` was evaluated eagerly); 3 tests now pass.

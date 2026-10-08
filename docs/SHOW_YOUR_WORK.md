@@ -461,10 +461,33 @@ After removing bulges moved a₀ strongly, the complementary bulge galaxies were
 * In the deep regime the law dependence collapses (spread ±0.07 vs ±0.18).
 * **Overall:** reasonable selections give a₀ ≈ 0.84–1.28. The measurement is systematics-limited at ±15–20%, matching the published ±0.24. SPARC mass models alone can't decide whether a₀ = cH₀/2π, so the first-pass "consistent" result shouldn't be read as support.
 
+### Step 4: bulge mass-to-light test (`emergent_matter_model/sparc_bulge_test.py`)
+
+Question: is the bulge discrepancy a stellar-mass modelling problem, or is a₀ not universal? Sample: the 31 star-dominated bulge galaxies.
+
+**Design fixed before running:**
+* Test 1 scales the bulge M/L as Υ_b = r·Υ_d (standard r = 1.4).
+* Test 2 frees each galaxy's Υ_b at fixed a₀ = 0.930 and 1.042.
+* Plausibility, relative to the expected Υ_b ≈ 0.7: ≤ 1.0 plausible, 1.0–1.4 stretched, > 1.4 implausible.
+
+**What went wrong with the plan:** I assumed heavier bulges would lower a₀. The first run showed the opposite. The bulge is pinned by the inner rotation curve; a heavier bulge forces a lighter disk, so the outer curve needs a larger a₀.
+
+**Post hoc additions:** lighter ratios (r = 0.25–0.75); symmetric lower bounds (0.5 plausible, 0.35 stretched); and Test 3 (a₀ profiled with every Υ_b free).
+
+| Check | Result |
+|---|---|
+| All points: Υ_b needed to reach a₀ = 0.930 / 1.042 | 0.34 (implausible) / 0.39 (stretched), with fits worsening (χ²ᵥ 6.4 → 7–9) |
+| Deep points: a₀ across Υ_b = 0.12–2.0 | 1.60–1.63, insensitive to bulge mass |
+| Deep points: a₀ across disk prior Υ₀ = 0.4–0.6 | 1.61–1.64, insensitive to disk mass |
+| Test 3: every Υ_b free | a₀ = 1.28 ± 0.13; Δχ² ≈ 10.7 at 0.930 (~3.3σ), ≈ 4.2 at 1.042 (~2σ) |
+| Test 2: per-galaxy Υ_b at a₀ = 0.930 | median 0.56, 16–84% range 0.26–0.97; 13 plausible, 7 stretched, 11 implausible |
+
+**Conclusion:** stellar mass-to-light mis-modelling isn't sufficient. The bulge galaxies prefer a larger a₀ even in their outer, deep regime, whatever their stellar M/L. The remaining explanations are other galaxy-specific systematics (distances beyond the catalogued errors, non-circular motions, warps) or a non-universal a₀. The universality question is debated in the literature (Rodrigues et al. 2018, Nature Astronomy 2, 668; replies by McGaugh et al. and Kroupa et al. 2018). Either way, a single universal a₀ = cH₀/2π doesn't fit these 31 galaxies with standard mass models. For the hypothesis, that's a mark against, unless a non-stellar systematic is found.
+
 ### What remains open (the honest path forward)
 
 1. **Theory:** construct an action whose weak-field limit is RAR-like. A canonical scalar can't do this; look at AQUAL-type or AeST-type structures (Bekenstein & Milgrom 1984; Skordis & Złośnik 2021).
-2. ~~**Sharpen the a₀ test:** marginalize distance and inclination.~~ **Done** (Step 2). ~~Understand why gas- and star-dominated galaxies disagree.~~ **Done** (Step 3): it's bulges. **Next:** obtain independent bulge and stellar masses (stellar-population fits, or dynamical bulge decompositions) to decide between mis-modelled bulges and a non-universal a₀.
+2. ~~**Sharpen the a₀ test:** marginalize distance and inclination.~~ **Done** (Step 2). ~~Understand why gas- and star-dominated galaxies disagree.~~ **Done** (Step 3): it's bulges. ~~Test whether bulge masses explain it.~~ **Done** (Step 4): stellar M/L alone doesn't. **Next:** independent distances (TRGB, Cepheids) and resolved 2-D kinematics for the 31 bulge galaxies, to tell galaxy-specific systematics apart from a non-universal a₀.
 3. **Redshift evolution:** test a₀ ∝ H(z) against published z ≈ 1–2.5 rotation curves (Genzel+2017; Nestor Shachar+2023), which currently disfavor strong evolution.
 4. **Solar System:** add the External Field Effect quadrupole and compare with Cassini (Hees+2014, 2016).
 5. **Release hygiene:** publish a new Zenodo *version* with the correction statement, so the earlier DOI points readers to the fix.
