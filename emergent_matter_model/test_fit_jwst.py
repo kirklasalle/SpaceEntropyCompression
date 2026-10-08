@@ -25,7 +25,7 @@ except ImportError:
 
 @pytest.fixture
 def jwst_catalog_path() -> Path:
-    return Path(__file__).resolve().parent.parent / "data" / "jwst" / "jwst_kinematics_sample.csv"
+    return Path(__file__).resolve().parent.parent / "data" / "synthetic" / "jwst_kinematics_synthetic.csv"
 
 
 class TestCosmologicalEvolution:
@@ -69,7 +69,7 @@ class TestJWSTCatalogAndEvaluation:
     def test_load_catalog(self, jwst_catalog_path: Path):
         catalog = load_high_z_catalog(jwst_catalog_path)
         assert len(catalog) == 10
-        assert catalog[0].galaxy_id == "COSMOS-10028"
+        assert catalog[0].galaxy_id == "SYN-Z01"
         assert catalog[0].redshift_z == pytest.approx(1.52)
         assert all(g.v_rot_kms > 0 for g in catalog)
         assert all(g.v_rot_err_kms > 0 for g in catalog)

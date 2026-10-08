@@ -1,5 +1,6 @@
-# Pantheon+ Type Ia Supernova Binned Hubble Diagram
-# Reference: Scolnic et al. (2022) / Brout et al. (2022)
+# SYNTHETIC DATA -- NOT OBSERVATIONS. Generated during development as a code-testing fixture.
+# It does NOT come from any telescope, survey or publication and must NOT be cited as data.
+# See data/synthetic/README.md and docs/SHOW_YOUR_WORK.md for the audit that identified it.
 z_hd,mu_obs,mu_err
 0.0100,33.1835,0.0405
 0.0150,34.0615,0.0417

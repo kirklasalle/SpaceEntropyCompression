@@ -1,0 +1,14 @@
+# SYNTHETIC DATA -- NOT OBSERVATIONS. Generated during development as a code-testing fixture.
+# It does NOT come from any telescope, survey or publication and must NOT be cited as data.
+# See data/synthetic/README.md and docs/SHOW_YOUR_WORK.md for the audit that identified it.
+galaxy_id,redshift_z,log_m_bar_solar,log_m_bar_err,v_rot_kms,v_rot_err_kms,r_half_light_kpc,survey,reference
+SYN-Z01,1.52,10.45,0.12,185.0,15.0,2.8,SYNTHETIC,none (synthetic placeholder)
+SYN-Z02,1.86,10.60,0.15,210.0,18.0,3.2,SYNTHETIC,none (synthetic placeholder)
+SYN-Z03,2.22,10.20,0.14,175.0,14.0,2.1,SYNTHETIC,none (synthetic placeholder)
+SYN-Z04,3.15,9.80,0.18,140.0,16.0,1.8,SYNTHETIC,none (synthetic placeholder)
+SYN-Z05,4.26,10.50,0.20,245.0,25.0,3.5,SYNTHETIC,none (synthetic placeholder)
+SYN-Z06,4.38,10.15,0.16,195.0,20.0,2.4,SYNTHETIC,none (synthetic placeholder)
+SYN-Z07,5.18,9.95,0.22,180.0,22.0,1.9,SYNTHETIC,none (synthetic placeholder)
+SYN-Z08,5.94,9.60,0.25,155.0,24.0,1.5,SYNTHETIC,none (synthetic placeholder)
+SYN-Z09,5.66,10.70,0.20,310.0,35.0,3.8,SYNTHETIC,none (synthetic placeholder)
+SYN-Z10,6.80,9.75,0.28,165.0,28.0,1.4,SYNTHETIC,none (synthetic placeholder)

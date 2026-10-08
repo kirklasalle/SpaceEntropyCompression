@@ -3,8 +3,8 @@ message: "If you use this software or theoretical framework, please cite it as b
 authors:
   - family-names: "LaSalle"
     given-names: "Kirk"
-title: "Emergent Matter Research Framework (EMRF): Investigating Space-Entropy Compression Across 10 Relativistic and Cosmological Regimes"
-version: 0.9.1
+title: "Emergent Matter Research Framework (EMRF): A Real-Data Test of the Horizon Hypothesis a0 = cH0/2pi"
+version: 0.10.0
 doi: 10.5281/zenodo.23197308
 date-released: 2026-10-07
 url: "https://github.com/kirklasalle/SpaceEntropyCompression"

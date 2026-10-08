@@ -27,17 +27,16 @@ from emergent_matter_model.cmb_acoustic_engine import (
 
 
 def run_cmb_peaks_stress_test(
-    data_dir: str = "data/cosmology"
+    planck_path: str | None = None,
 ) -> Dict[str, Any]:
-    """Execute full CMB acoustic oscillation stress test."""
-    planck_path = os.path.join(data_dir, "planck_2018_cmb_peaks.csv")
+    """Execute the CMB acoustic template check.
+
+    The template hard-codes Planck peak heights and assumes a CDM-like density, and the default
+    peak table is a SYNTHETIC fixture, so this is a consistency demonstration, not a test of EMRF.
+    """
+    planck_path = planck_path or os.path.join(WORKSPACE_ROOT, "data", "synthetic", "cosmology", "cmb_tt_peaks_synthetic.csv")
     if not os.path.exists(planck_path):
-        parent_dir = os.path.join("..", data_dir)
-        if os.path.exists(os.path.join(parent_dir, "planck_2018_cmb_peaks.csv")):
-            data_dir = parent_dir
-            planck_path = os.path.join(data_dir, "planck_2018_cmb_peaks.csv")
-        else:
-            raise FileNotFoundError(f"Missing Planck data file at {planck_path}")
+        raise FileNotFoundError(f"Missing CMB peak table at {planck_path}")
 
     params = EMRFCMBParams()
     report = evaluate_planck_cmb_peaks(params, planck_path)

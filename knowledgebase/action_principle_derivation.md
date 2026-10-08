@@ -1,114 +1,117 @@
-# Action Principle Derivation on Multidimensional Space $\mathcal{M}^D$ with Cosmic Entropy Horizon Coupling
+# Action Principle on $\mathcal{M}^D$ with Cosmic-Horizon Entropy Coupling: What Is Assumed, What Is Derived
 
-**Emergent Matter Research Framework (EMRF) Theoretical Whitepaper**  
-**Author:** Kirk LaSalle  
-**Date:** 2026-10-05  
-**Knowledgebase Classification:** Theoretical Physics / Variational Mechanics  
+**Emergent Matter Research Framework (EMRF): theoretical note**
+**Author:** Kirk LaSalle
+**Original date:** 2026-10-05 · **Corrected:** 2026-10-07 (see [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md))
 
----
-
-## 1. Dimensional Spatial Ontology & Foundational Definitions
-
-Per the author's spatial ontology (Kirk LaSalle, 2026-10-05):
-1. **Space is strictly dimensional:** Space is represented by a Riemannian or pseudo-Riemannian manifold $\mathcal{M}^D$ of dimension $D = 3 + d_{\text{ext}}$, where coordinates are denoted by:
-   $$X = \{x, y, z, d_0, d_1, d_2, \dots, d_{N-1}\} \in \mathcal{M}^D$$
-   The primary physical coordinates $\{x, y, z\}$ span macroscopic 3-space, while $\{d_0, d_1, d_2\}$ represent internal or compactified spatial degrees of freedom.
-2. **Neither Entropy nor Time is a Spatial Axis:**
-   - Coordinate time $t \in \mathbb{R}$ tracks physical causality, dynamical evolution, and observer reference frames.
-   - Thermodynamic entropy $S(X,t)$ is an **organizational scalar state variable** (measuring microstate enumeration $\Omega$, coarse-grained phase-space volume, or entanglement entropy across spatial boundaries), *not* a geometric coordinate.
-3. **The Compression Functional:**
-   The degree of spatial compression is an invariant functional of local energy density $E(X,t)$, thermodynamic entropy $S(X,t)$, and the intrinsic Riemannian geometry:
-   $$C(X,t) = \mathcal{F}\big(E(X,t),\, S(X,t),\, \text{geom}(X),\, t\big)$$
+> **Correction notice (2026-10-07).** The earlier version of this note contained numerical errors (curvature values wrong by ~10³⁴; a₀ = cH₀ stated as 1.2×10⁻¹⁰ m/s²). It also described steps as "derived" that were in fact assumed. It quoted Δ-BIC results computed from data that were later shown to be synthetic. This version marks every step as **[DERIVED]**, **[ASSUMED]**, or **[OPEN]**. Empirical results now come only from real data ([`emergent_matter_model/sparc_real_analysis.py`](../emergent_matter_model/sparc_real_analysis.py)).
 
 ---
 
-## 2. The Total Action on Spacetime $\mathcal{M}^{D,1}$
+## 1. Spatial ontology (foundational postulates)
 
-We define the total invariant action on the extended spacetime $\mathcal{M}^{D,1} = \mathcal{M}^D \times \mathbb{R}$:
+1. **[ASSUMED]** Space is dimensional: $X = \{x, y, z, d_0, d_1, \dots\} \in \mathcal{M}^D$, with $D = 3 + d_{\text{ext}}$.
+2. **[ASSUMED]** Coordinate time $t$ parameterizes change. Thermodynamic entropy $S(X,t)$ is a scalar state field, not a coordinate.
+3. **[ASSUMED]** A compression functional $C(X,t) = \mathcal{F}(E, S, \text{geom}, t)$ characterizes how energy–momentum is organized.
 
-$$\mathcal{S}_{\text{total}} = \mathcal{S}_{\text{grav}} + \mathcal{S}_{\text{matter}} + \mathcal{S}_{\text{entropy}}$$
+These postulates are a coherent philosophical starting point. By themselves they make no quantitative prediction.
 
-$$\mathcal{S}_{\text{total}} = \int_{\mathcal{M}^{D,1}} d^D X \, dt \sqrt{-g} \left[ \frac{R}{16\pi G_D} + \mathcal{L}_{\text{matter}}(\psi, \nabla\psi, g) + \mathcal{L}_{\text{entropy}}(S, \nabla S, g) \right]$$
+## 2. The action
 
-where:
-- $g_{AB}$ is the metric tensor on $\mathcal{M}^{D,1}$ with determinant $g = \det(g_{AB})$.
-- $R$ is the Ricci scalar curvature on $\mathcal{M}^{D,1}$.
-- $G_D$ is the $D$-dimensional gravitational coupling constant related to Newton's constant $G$ by the compactification volume $V_{\text{ext}} = \int d^{d_{\text{ext}}} d_i \sqrt{g_{\text{ext}}}$ such that $G = G_D / V_{\text{ext}}$.
-- $\mathcal{L}_{\text{entropy}}$ is the thermodynamic state coupling Lagrangian density:
-  $$\mathcal{L}_{\text{entropy}}(S, \nabla S, g) = -\frac{1}{2} \kappa_S g^{AB} \nabla_A S \nabla_B S - V(S)$$
+$$
+\mathcal{S} = \int d^D X\, dt \sqrt{-g}\left[\frac{R}{16\pi G_D} + \mathcal{L}_{\text{matter}} + \mathcal{L}_{\text{entropy}}\right],
+\qquad
+\mathcal{L}_{\text{entropy}} = -\tfrac12 \kappa_S\, g^{AB}\nabla_A S \nabla_B S - V(S).
+$$
 
----
+**[DERIVED]** Varying with respect to $S$ gives $\kappa_S \Box S - V'(S) = J$, where $J$ is whatever source couples $S$ to matter.
 
-## 3. Strong Gravitational Field Regime: Branch A Geometric Collapse
+**[DERIVED, important]** Far from sources, $S$ sits near the minimum of $V$, so $V'(S) \approx m^2 (S - S_{\text{vac}})$ and the field equation is **linear**. Its static solutions scale linearly with the source mass, so any extra force it produces is $\propto M$ (a Newton-like or Yukawa-like $1/r^2$ term). A deep-MOND acceleration $g = \sqrt{G M a_0}/r$ scales as $\sqrt{M}$, which this Lagrangian **cannot** produce. Getting $\sqrt{M}$ scaling requires a non-canonical kinetic term, for example the AQUAL form $\mathcal{L} \propto a_0^2\, F(|\nabla\phi|^2/a_0^2)$ with $F(x) \to \tfrac23 x^{3/2}$ (Bekenstein & Milgrom 1984). A full relativistic theory must also produce lensing and the CMB peaks. For a known working example, see AeST, which uses a scalar field plus a unit time-like vector (Skordis & Złośnik 2021).
 
-Consider a localized compact mass (e.g., the supermassive black hole Sagittarius A*, $M_{\bullet} \approx 4.15 \times 10^6 M_\odot$).
+**[OPEN]** Writing down an EMRF action that actually yields the weak-field law used below is the central unsolved theoretical task of this project.
 
-### 3.1 Curvature Dominance
-The spacetime curvature in the vacuum exterior is characterized by the Kretschmann invariant:
-$$K = R_{\mu\nu\rho\sigma} R^{\mu\nu\rho\sigma} = \frac{48 G^2 M_{\bullet}^2}{c^4 r^6}$$
+## 3. Strong-field regime (black holes, Solar System)
 
-At the pericenter of relativistic S-stars ($r_{\text{peri}} \sim 10 - 100\text{ AU}$):
-- For S2 ($r_{\text{peri}} \approx 120\text{ AU}$): $K \approx 1.25 \times 10^{-24}\text{ m}^{-4}$
-- For S301 ($r_{\text{peri}} \approx 12.2\text{ AU}$): $K \approx 1.4 \times 10^{-18}\text{ m}^{-4}$
-- The local acceleration is $a \approx G M_{\bullet} / r^2 \sim 10^{-1} - 10^1\text{ m/s}^2 \gg a_0 \sim 10^{-10}\text{ m/s}^2$.
+**[DERIVED]** Kretschmann invariant of Schwarzschild: $K = 48 G^2M^2/(c^4 r^6)$. With $M = 4.297\times10^6\,M_\odot$, $GM/c^2 = 6.345\times10^9$ m:
 
-### 3.2 Suppression of the Entropic Gradient
-In this strong-field regime, the energy density associated with local Riemannian curvature completely dominates over the diffuse cosmic entropy background:
-$$\frac{|T_{\mu\nu}^{\text{entropy}}|}{|T_{\mu\nu}^{\text{curvature}}|} \sim \frac{a_0}{a} \le 10^{-9} \ll 1$$
+| Location | r | K (m⁻⁴) |
+|---|---|---|
+| S2 pericentre | 118.3 AU | 6.3×10⁻⁵⁹ |
+| S301 pericentre | 12.2 AU | 5.2×10⁻⁵³ |
+| Galaxy outskirts, 10¹⁰ M☉ at 10 kpc | 10 kpc | 1.2×10⁻⁹⁵ |
 
-Varying the action $\mathcal{S}_{\text{total}}$ with respect to the 4D metric $g_{\mu\nu}$ yields:
-$$G_{\mu\nu} = \frac{8\pi G}{c^4} \left( T_{\mu\nu}^{\text{matter}} + T_{\mu\nu}^{\text{entropy}} \right) \approx \frac{8\pi G}{c^4} T_{\mu\nu}^{\text{matter}}$$
+(The earlier values of 1.25×10⁻²⁴, 1.4×10⁻¹⁸, and 10⁻⁷⁸ were wrong.)
 
-In vacuum ($T_{\mu\nu}^{\text{matter}} = 0$), $G_{\mu\nu} = 0$, recovering the exact Schwarzschild metric at 1PN order.
+**[ASSUMED]** EMRF reduces to General Relativity when $a \gg a_0$. This is a requirement placed on the theory, not a result derived from it. Earlier text saying that EMRF "analytically derives the Schwarzschild geometry" has been withdrawn.
 
-### 3.3 Empirical Confirmation
-This rigorous mathematical suppression explains why the simultaneous 5-star Sgr A* cluster Bayesian model selection decisively favors standard General Relativity ($\mathbf{\Delta\text{BIC}_{\text{joint}} = +70.743 \gg 10.0}$). Any ad-hoc curvature coupling $\beta \frac{K}{K_0}$ with $\beta > 0$ introduces orbital distortions that conflict with observations. The theory strictly enforces **Branch A: Geometric Collapse** in the strong field.
+**[CONSTRAINT]** Whatever weak-field law EMRF adopts must give an anomalous acceleration well below about 10⁻¹³–10⁻¹² m/s² inside the Solar System (planetary ephemerides and Cassini; Hees et al. 2014). See §4.3.
 
----
+## 4. Weak-field regime and the cosmic-horizon scale
 
-## 4. Ultra-Weak Acceleration Regime: The Cosmic Horizon Entropy Floor
+### 4.1 The horizon hypothesis for a₀
 
-Now consider the outer disc and halo outskirts of galaxies (e.g., SPARC galaxies at $r > 5 - 50\text{ kpc}$).
+- Unruh temperature for acceleration $a$: $T_U = \hbar a/(2\pi c k_B)$.
+- Gibbons–Hawking temperature of the de Sitter horizon: $T_{dS} = \hbar H/(2\pi k_B)$.
+- **[DERIVED]** Setting $T_U = T_{dS}$ gives $a = cH_0 \approx 6.5\times10^{-10}$ m/s² for $H_0 = 67.4$. The $2\pi$ factors cancel.
+- **[ASSUMED / hypothesis]** EMRF adopts $a_0 = cH_0/2\pi$ (Milgrom 1999 noted this numerical coincidence; Verlinde 2017 gave an entropic argument for the same scale). Numerically: **1.04×10⁻¹⁰ m/s² (H₀ = 67.4)** and **1.13×10⁻¹⁰ m/s² (H₀ = 73.0)**. The extra $1/2\pi$ isn't derived; it's a hypothesis to be tested against data.
 
-### 4.1 Vanishing Geometric Curvature
-In galaxy outskirts:
-- The baryonic mass is $M \sim 10^9 - 10^{11} M_\odot$.
-- The radius is $r \sim 10 - 50\text{ kpc} \sim 10^{20} - 10^{21}\text{ m}$.
-- The Kretschmann curvature is $K \sim 10^{-78}\text{ m}^{-4} \to 0$.
-- The local baryonic Newtonian acceleration drops below the critical scale:
-  $$g_{\text{bar}} = \frac{G M(r)}{r^2} \ll a_0 \approx 1.2 \times 10^{-10}\text{ m/s}^2$$
+### 4.2 The weak-field law
 
-### 4.2 Cosmic Horizon Entropic Boundary
-In the absence of local curvature, the dominant thermodynamic gradient is set by the **cosmic cosmological horizon** (de Sitter boundary at $R_H = c / H_0$). By the Gibbons-Hawking effect, an observer in de Sitter spacetime experiences a thermal bath with temperature:
-$$T_{\text{dS}} = \frac{\hbar c}{2\pi k_B R_H} = \frac{\hbar H_0}{2\pi k_B}$$
+**[ASSUMED]** $g = g_N\,\nu(g_N/a_0)$ with $\nu(y) \to y^{-1/2}$ for $y \ll 1$ and $\nu \to 1$ for $y \gg 1$.
 
-According to Verlinde's entropic gravity and Unruh's equivalence principle:
-$$a_0 = \frac{2\pi c k_B T_{\text{dS}}}{\hbar} = c H_0 \approx 1.2 \times 10^{-10}\text{ m/s}^2$$
+**[DERIVED]** In the deep regime $g \to \sqrt{a_0 g_N}$. With $g = V^2/r$ this gives $V^4 = G M a_0$, the baryonic Tully–Fisher relation. For $M = 10^{10} M_\odot$: $V_{\text{flat}} = 112$ km/s.
 
-When test particles (gas clouds, stars) undergo circular acceleration $a \ll a_0$, their local Unruh temperature drops below the cosmic background temperature $T_{\text{dS}}$. The system undergoes an entropic phase transition where the entropic action term $\mathcal{L}_{\text{entropy}}$ provides the dominant restoring force:
+### 4.3 Which law? Real-data and Solar-System results
 
-$$g_{\text{eff}} = \sqrt{g_{\text{bar}}^2 + a_0 g_{\text{bar}}}$$
+The earlier text used $\nu(y) = \sqrt{1 + 1/y}$, i.e. $g = \sqrt{g_N^2 + a_0 g_N}$.
 
-In the asymptotic limit $g_{\text{bar}} \ll a_0$:
-$$g_{\text{eff}} \approx \sqrt{a_0 g_{\text{bar}}} = \frac{\sqrt{G M a_0}}{r}$$
+**[DERIVED]** For $g_N \gg a_0$: $\sqrt{g_N^2 + a_0 g_N} = g_N + a_0/2 - a_0^2/(8g_N) + \dots$. That is a constant extra acceleration $a_0/2 \approx 6\times10^{-11}$ m/s² throughout the Solar System, hundreds of times too large.
 
-Setting $g_{\text{eff}} = \frac{V^2}{r}$:
-$$\frac{V^4}{r^2} = \frac{G M a_0}{r^2} \implies V_{\text{flat}} = \big(G M a_0\big)^{1/4}$$
+Results on the **real SPARC database** (153 galaxies, 3,168 points, quality Q ≤ 2, inclination ≥ 30°; per-galaxy $\Upsilon_\star$ with prior 0.5 ± 0.1 dex). Run `python emergent_matter_model/sparc_real_analysis.py` to reproduce.
 
-This reproduces the empirical **Baryonic Tully-Fisher Relation (BTFR)** $M_{\text{bar}} \propto V_{\text{flat}}^4$ and explains why galaxy rotation curves remain asymptotically flat without requiring dark matter halo particles.
+| Law | Best global a₀ (10⁻¹⁰ m/s²), range over Υ treatments | χ² | Contains cH₀/2π? | Solar System |
+|---|---|---|---|---|
+| EMRF $\sqrt{g_N^2 + a_0 g_N}$ | 1.30 – 1.59 | 38,546 | No | **Fails** (+a₀/2) |
+| McGaugh RAR $1/(1 - e^{-\sqrt{y}})$ | 1.03 – 1.22 | **32,106** | **Yes** (both H₀) | Passes* |
+| MOND "simple" | 1.06 – 1.18 | 33,194 | SH0ES only | **Fails** (+a₀) |
+| MOND "standard" | 1.34 – 1.77 | 42,655 | No | Passes* |
 
-### 4.3 Empirical Confirmation
-Across 10 diverse SPARC galaxies (214 data points), this entropic background coupling outperforms pure Newtonian baryonic gravity by:
-$$\mathbf{\Delta\text{BIC}_{\text{joint}} = -52,490.1 \ll -10.0}$$
-completely resolving the missing mass discrepancy in the weak-field regime.
+\*Ignoring the External Field Effect quadrupole, which Cassini also constrains (Hees et al. 2014, 2016). This hasn't been evaluated here.
 
----
+**Cross-check:** with $\Upsilon$ fixed at 0.5/0.7, the RAR fit gives a₀ = 1.22×10⁻¹⁰, reproducing the published 1.20 ± 0.02 (stat) ± 0.24 (sys) (McGaugh, Lelli & Schombert 2016).
 
-## 5. Summary: Dual-Regime Mathematical Synthesis
+**Conclusion of this section (first pass):** the horizon hypothesis $a_0 = cH_0/2\pi$ is **consistent** with real galaxy data **if** the interpolating function is RAR-like. The specific law in the earlier EMRF text is disfavored by both the galaxy data and the Solar System.
 
-| Regime | Acceleration Scale | Dominant Action Term | Governing Equations | Empirical Benchmark | Result |
-|:---|:---|:---|:---|:---|:---|
-| **Strong Field** | $a \gg a_0$ ($r \le 100\text{ AU}$) | $\mathcal{S}_{\text{grav}} = \frac{1}{16\pi G}\int R$ | $G_{\mu\nu} = 0 \implies \text{GR 1PN}$ | Sgr A* 5-Star Cluster ($N=201$) | **Branch A Collapse** ($\Delta\text{BIC} = +70.74$) |
-| **Weak Field** | $a \ll a_0$ ($r \ge 10\text{ kpc}$) | $\mathcal{S}_{\text{entropy}} = \int \mathcal{L}_{\text{entropy}}$ | $g = \sqrt{g_{\text{bar}}^2 + a_0 g_{\text{bar}}}$ | SPARC 10-Galaxy Catalog ($N=214$) | **Entropic Floor** ($\Delta\text{BIC} = -52,490.1$) |
+**Sharpened test (distance and inclination marginalized; [`sparc_marginalized_a0.py`](../emergent_matter_model/sparc_marginalized_a0.py)):** with the RAR law, the full sample gives a₀ = 1.234 ± 0.048. That reproduces the literature value but sits 4.0σ (Planck H₀) and 2.2σ (SH0ES H₀) above cH₀/2π. The 66 gas-dominated galaxies give a₀ = 1.019 ± 0.082, consistent with cH₀/2π (−0.3σ / −1.3σ). The samples disagree at ~2.3σ, so **the hypothesis is neither confirmed nor excluded**. The Λ-tied variant c√(Λ/3)/2π ≈ 0.86 is disfavored at ≈2–3σ even in the gas-dominated sample.
 
-**Conclusion:** The EMRF variational formulation on $\mathcal{M}^{D,1}$ resolves the apparent paradox between solar/galactic-center relativistic tests and galactic rotation curves without introducing ad-hoc dark matter particles.
+**Diagnostics ([`sparc_tension_diagnostics.py`](../emergent_matter_model/sparc_tension_diagnostics.py)):** the disagreement traces to galaxies with bulges. Star-dominated bulge galaxies give a₀ = 1.91 ± 0.18 versus 0.894 ± 0.050 for bulgeless ones (5.4σ), and the gap persists in deep points (4.8σ). Bulgeless gas- and star-dominated galaxies agree, at a₀ ≈ 0.93 ± 0.04, below cH₀/2π. Defensible selections span a₀ ≈ 0.84–1.28, so a₀ is systematics-limited at ±15–20% and SPARC mass models alone can't decide the hypothesis.
+
+### 4.4 Redshift evolution
+
+**[ASSUMED]** If $a_0 = cH(z)/2\pi$, then $a_0$ grows with redshift, by a factor $E(z) \approx 3$ at $z = 2$. Existing rotation-curve studies at $z \approx 1$–2.5 (Genzel et al. 2017; Nestor Shachar et al. 2023) report baryon-dominated inner disks with *lower* dark-matter fractions at higher $z$. That runs opposite to what a growing $a_0$ predicts, so strong $a_0 \propto H(z)$ evolution is **disfavored**, though not formally excluded. Any EMRF claim here must be tested against those real data sets.
+
+## 5. Status summary
+
+| Item | Status |
+|---|---|
+| Ontology (space dimensional, S a state field) | Postulate |
+| Weak-field law from the action | **Open.** The stated canonical Lagrangian cannot produce it. |
+| $a_0 = cH_0/2\pi$ | Hypothesis; consistent with real SPARC data within the Υ systematic, using an RAR-like law |
+| $\sqrt{g_N^2 + a_0 g_N}$ law | Disfavored (worse χ² than RAR; fails Solar System) |
+| $a_0 \propto H(z)$ | Disfavored by existing high-z kinematics; needs a real-data test |
+| GR limit in strong field | Requirement, not a derivation |
+| Bullet Cluster, CMB, lensing | Not addressed by any EMRF calculation; need a relativistic completion |
+
+## References
+
+- Bekenstein, J. & Milgrom, M. (1984), ApJ 286, 7.
+- Genzel, R. et al. (2017), Nature 543, 397.
+- Hees, A., Folkner, W. M., Jacobson, R. A. & Park, R. S. (2014), PRD 89, 102002.
+- Hees, A., Famaey, B., Angus, G. W. & Gentile, G. (2016), MNRAS 455, 449.
+- Lelli, F., McGaugh, S. S. & Schombert, J. M. (2016), AJ 152, 157.
+- Li, P., Lelli, F., McGaugh, S. & Schombert, J. (2018), A&A 615, A3.
+- McGaugh, S. S., Lelli, F. & Schombert, J. M. (2016), PRL 117, 201101.
+- Milgrom, M. (1999), Phys. Lett. A 253, 273.
+- Nestor Shachar, A. et al. (2023), ApJ 944, 78.
+- Skordis, C. & Złośnik, T. (2021), PRL 127, 161302.
+- Verlinde, E. (2017), SciPost Phys. 2, 016.

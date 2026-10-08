@@ -54,7 +54,7 @@ def angular_diameter_distance_flat_lcdm(z: float, h0: float = 70.0, omega_m: flo
     # Numerical integration of 1 / E(z')
     zs = np.linspace(0.0, z, 200)
     ez = np.sqrt(omega_m * (1.0 + zs) ** 3 + (1.0 - omega_m))
-    trap_fn = getattr(np, "trapezoid", np.trapz)
+    trap_fn = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
     dc = c_over_h * trap_fn(1.0 / ez, zs)
     da = dc / (1.0 + z)
     return float(da)

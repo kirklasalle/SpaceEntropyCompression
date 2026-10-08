@@ -17,6 +17,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
+try:
+    from data_provenance import provenance_banner
+except ImportError:  # imported as a package
+    from emergent_matter_model.data_provenance import provenance_banner
 # Physical and Astronomical Constants (SI)
 G_CONST = 6.67430e-11          # Gravitational constant, m^3 kg^-1 s^-2
 C_LIGHT = 2.99792458e8         # Speed of light, m s^-1
@@ -454,16 +458,20 @@ def evaluate_multi_star_bifurcation(
     data_dir: Optional[str | Path] = None,
     candidate_emrf_beta: float = 0.005
 ) -> Dict[str, Any]:
-    """Execute simultaneous multi-star joint Bayesian model evaluation across the S-star cluster.
-    
-    Shared global parameters: M_bh, R_0, and EMRF compression coupling beta.
-    Individual stellar parameters: 6 Keplerian elements per star (a, e, i, Omega, omega, t_p).
+    """Sum fixed-parameter per-star evaluations across the S-star cluster.
+
+    Important limitations (see docs/SHOW_YOUR_WORK.md, Regime 1):
+    - No parameters are fitted. Orbital elements are fixed at the benchmark values and
+      ``candidate_emrf_beta`` is fixed; the "joint" chi^2 is the sum of independent per-star chi^2.
+    - The parameter counts used in the BIC are nominal and do not correspond to fitted parameters.
+    - The bundled astrometry tables are SYNTHETIC fixtures, so the output is a code demonstration only.
     """
     if star_names is None:
         star_names = ["s2", "s29", "s38", "s55", "s301"]
         
     base_dir = Path(__file__).resolve().parent.parent if data_dir is None else Path(data_dir)
-    data_dir_path = base_dir / "data" / "astrometry" if (base_dir / "data" / "astrometry").is_dir() else base_dir
+    candidate = base_dir / "data" / "synthetic" / "astrometry"
+    data_dir_path = candidate if candidate.is_dir() else base_dir
     
     star_reports = {}
     total_data_points = 0
@@ -477,7 +485,7 @@ def evaluate_multi_star_bifurcation(
             raise KeyError(f"Unknown star ID: '{star_id}'. Available: {list(ALL_S_STAR_PARAMS.keys())}")
             
         params = ALL_S_STAR_PARAMS[star_id_lower]
-        csv_filename = f"{star_id_lower}_gravity_vlti.csv" if star_id_lower != "s301" else "s301_nature_2026.csv"
+        csv_filename = f"{star_id_lower}_synthetic.csv"
         csv_path = data_dir_path / csv_filename
         
         report = evaluate_astrometry_bifurcation(csv_path, params, candidate_emrf_beta=candidate_emrf_beta)
@@ -575,7 +583,9 @@ def main():
     if args.dataset.lower() == "all" or "," in args.dataset:
         star_list = ["s2", "s29", "s38", "s55", "s301"] if args.dataset.lower() == "all" else [s.strip().lower() for s in args.dataset.split(",")]
         report = evaluate_multi_star_bifurcation(star_list, base_dir, candidate_emrf_beta=args.beta)
-        
+        banner = provenance_banner(*[base_dir / "data" / "synthetic" / "astrometry" / f"{s}_synthetic.csv" for s in star_list])
+        if banner:
+            print(banner)
         print("\n" + "=" * 76)
         print(" EMRF MULTI-STAR JOINT ASTROMETRIC FIT & BIFURCATION REPORT")
         print("=" * 76)
@@ -600,10 +610,12 @@ def main():
         if args.csv:
             csv_file = Path(args.csv)
         else:
-            csv_filename = f"{star_id}_gravity_vlti.csv" if star_id != "s301" else "s301_nature_2026.csv"
-            csv_file = base_dir / "data" / "astrometry" / csv_filename
+            csv_file = base_dir / "data" / "synthetic" / "astrometry" / f"{star_id}_synthetic.csv"
             
         report = evaluate_astrometry_bifurcation(csv_file, params, candidate_emrf_beta=args.beta)
+        banner = provenance_banner(csv_file)
+        if banner:
+            print(banner)
         
         print("\n" + "=" * 70)
         print(f" EMRF ASTROMETRIC FIT & BIFURCATION REPORT: STAR {report['target_star']}")

@@ -91,7 +91,7 @@ def test_continuous_spectrum_generation():
 
 def test_full_cmb_peaks_stress_test():
     """Verify end-to-end Planck 2018 benchmark passes."""
-    res = run_cmb_peaks_stress_test("data/cosmology")
+    res = run_cmb_peaks_stress_test()
     assert res["status"] == "PASSED"
     assert res["overall_pass"] is True
     assert res["chi2_reduced"] < 1.0

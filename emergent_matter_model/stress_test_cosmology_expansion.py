@@ -29,20 +29,20 @@ from emergent_matter_model.cosmology_expansion import (
 
 
 def run_cosmology_expansion_stress_test(
-    data_dir: str = "data/cosmology"
+    sn_path: str | None = None,
+    desi_path: str | None = None,
 ) -> Dict[str, Any]:
-    """Execute full cosmological expansion stress-test benchmark."""
-    pantheon_path = os.path.join(data_dir, "pantheon_plus_sample.csv")
-    desi_path = os.path.join(data_dir, "desi_2024_bao.csv")
+    """Execute the cosmological expansion benchmark.
+
+    The supernova table defaults to the SYNTHETIC fixture in data/synthetic/cosmology (no real
+    Pantheon+ ingestion exists yet); the DESI table defaults to the official DR1 values.
+    The w0-wa model is standard CPL dark energy; it is not derived from EMRF.
+    """
+    pantheon_path = sn_path or os.path.join(WORKSPACE_ROOT, "data", "synthetic", "cosmology", "sn_hubble_diagram_synthetic.csv")
+    desi_path = desi_path or os.path.join(WORKSPACE_ROOT, "data", "cosmology", "desi_2024_bao.csv")
 
     if not os.path.exists(pantheon_path) or not os.path.exists(desi_path):
-        parent_dir = os.path.join("..", data_dir)
-        if os.path.exists(os.path.join(parent_dir, "pantheon_plus_sample.csv")):
-            data_dir = parent_dir
-            pantheon_path = os.path.join(data_dir, "pantheon_plus_sample.csv")
-            desi_path = os.path.join(data_dir, "desi_2024_bao.csv")
-        else:
-            raise FileNotFoundError(f"Missing cosmology datasets in {data_dir}")
+        raise FileNotFoundError(f"Missing cosmology datasets: {pantheon_path}, {desi_path}")
 
     # 1. Monotonicity & Causality Sanity Check
     params_default = EMRFCosmologyParams()

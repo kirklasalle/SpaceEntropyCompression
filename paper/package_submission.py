@@ -60,7 +60,10 @@ def build_submission_packages(paper_dir: Path) -> tuple[Path, Path]:
         paper_dir / "references.bib",
     ]
     fig_dir = paper_dir / "figures"
-    fig_files = sorted(fig_dir.glob("*.png")) if fig_dir.is_dir() else []
+    tex_text = (paper_dir / "main.tex").read_text(encoding="utf-8")
+    referenced = set(re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{figures/([^}]+)\}", tex_text))
+    # Only package figures the manuscript uses (older figures were built from synthetic data).
+    fig_files = sorted(fig_dir / name for name in referenced if (fig_dir / name).is_file())
     
     tar_path = paper_dir / "arxiv_submission.tar.gz"
     zip_path = paper_dir / "arxiv_submission.zip"

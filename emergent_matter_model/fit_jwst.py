@@ -8,6 +8,9 @@ Compares:
 1. Static acceleration floor: a_0(z) = a_0(0) = const
 2. Cosmological evolving entropic floor: a_0(z) = a_0(0) * sqrt(Omega_m * (1+z)^3 + Omega_Lambda)
 3. Pure Newtonian baryonic gravity without dark matter / entropic enhancement
+
+NOTE: The bundled catalogue data/synthetic/jwst_kinematics_synthetic.csv is a SYNTHETIC
+fixture. No real high-redshift test of a_0(z) has been performed yet (see docs/SHOW_YOUR_WORK.md).
 """
 
 from __future__ import annotations
@@ -21,6 +24,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 import numpy as np
+
+try:
+    from data_provenance import provenance_banner
+except ImportError:  # imported as a package
+    from emergent_matter_model.data_provenance import provenance_banner
 
 # Physical and Cosmological Constants (SI and Astro units)
 G_CONST_SI = 6.67430e-11                  # m^3 kg^-1 s^-2
@@ -97,7 +105,7 @@ def load_high_z_catalog(csv_path: Path | str) -> List[HighZGalaxyRecord]:
 
     records = []
     with open(path, mode="r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(line for line in f if not line.lstrip().startswith("#"))
         for row in reader:
             rec = HighZGalaxyRecord(
                 galaxy_id=row["galaxy_id"].strip(),
@@ -214,10 +222,13 @@ def main():
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parent.parent
-    cat_path = Path(args.catalog) if args.catalog else (repo_root / "data" / "jwst" / "jwst_kinematics_sample.csv")
+    cat_path = Path(args.catalog) if args.catalog else (repo_root / "data" / "synthetic" / "jwst_kinematics_synthetic.csv")
 
     catalog = load_high_z_catalog(cat_path)
     report = evaluate_high_z_kinematics(catalog)
+    banner = provenance_banner(cat_path)
+    if banner:
+        print(banner)
 
     print("\n" + "=" * 80)
     print(" EMRF JWST HIGH-REDSHIFT GALAXY KINEMATICS EVALUATION")

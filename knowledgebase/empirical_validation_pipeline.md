@@ -1,6 +1,8 @@
 # Empirical Validation & Observational Astrophysics Pipeline
 ## Testing Space-Entropy Compression Against Real-World Astronomical Data
 
+> **INTEGRITY NOTICE (2026-10-07).** The benchmark tables in §§ 6–10 of this document (S-star ΔBIC = +70.743, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, "425 observational data points") were computed from data files later shown to be **synthetic**. Those files now live in [`data/synthetic/`](../data/synthetic/README.md). The results **must not be cited**. The real-data replacement for the SPARC regime is [`emergent_matter_model/sparc_real_analysis.py`](../emergent_matter_model/sparc_real_analysis.py), summarized in [`action_principle_derivation.md`](action_principle_derivation.md) §4.3. The full audit is in [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md). The methodology sections (§§ 1–5) remain useful as a plan.
+
 **Project:** Emergent Matter Research Framework (EMRF)  
 **Authors:** Kirk LaSalle & Antigravity  
 **Date:** 2026-10-05  

@@ -73,7 +73,7 @@ def test_bao_observables_scaling():
 def test_pantheon_plus_evaluation():
     """Verify Pantheon+ evaluation returns reasonable reduced chi2."""
     p = EMRFCosmologyParams()
-    res = evaluate_pantheon_plus(p, "data/cosmology/pantheon_plus_sample.csv")
+    res = evaluate_pantheon_plus(p, "data/synthetic/cosmology/sn_hubble_diagram_synthetic.csv")
     assert res["n_points"] == 32
     assert res["chi2_reduced"] < 2.0
     assert res["rms_residual_mag"] < 0.20
@@ -83,13 +83,13 @@ def test_desi_bao_evaluation():
     """Verify DESI 2024 BAO evaluation returns reasonable reduced chi2."""
     p = EMRFCosmologyParams()
     res = evaluate_desi_bao(p, "data/cosmology/desi_2024_bao.csv")
-    assert res["n_points"] == 13
+    assert res["n_points"] == 12  # official DESI DR1 Table 1 rows
     assert res["chi2_reduced"] < 3.50  # Must be competitive with LCDM
 
 
 def test_full_cosmology_expansion_stress_test():
     """Verify full stress-test harness passes all benchmarks."""
-    report = run_cosmology_expansion_stress_test("data/cosmology")
+    report = run_cosmology_expansion_stress_test()
     assert report["status"] == "PASSED"
     assert report["is_monotonic"] is True
     assert report["joint_stats"]["pantheon_chi2_red"] < 1.00

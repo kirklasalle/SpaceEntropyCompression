@@ -18,7 +18,7 @@ def get_sparc_data_dir() -> Path:
     """Return the absolute path to the data/sparc directory."""
     script_dir = Path(__file__).resolve().parent
     repo_root = script_dir.parent
-    return repo_root / "data" / "sparc"
+    return repo_root / "data" / "synthetic" / "sparc"
 
 
 def list_available_galaxies(sparc_dir: Path | None = None) -> List[str]:
@@ -40,7 +40,7 @@ def validate_sparc_table(csv_path: Path) -> Dict[str, Any]:
     rows: List[Dict[str, float]] = []
     
     with open(csv_path, mode="r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(line for line in f if not line.lstrip().startswith("#"))
         fieldnames = set(reader.fieldnames or [])
         missing = required_cols - fieldnames
         if missing:

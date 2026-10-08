@@ -1,13 +1,11 @@
 # Emergent Matter Research Framework (EMRF)
 
-**Investigating whether matter emerges from structured geometric and entropic states of spacetime**
+**Investigating whether matter and the galactic acceleration scale emerge from the organization of space, with entropy as a state field**
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23197308.svg)](https://doi.org/10.5281/zenodo.23197308)
-[![Grand Audit: Certified Level 5](https://img.shields.io/badge/Grand%20Audit-Certified%20Level%205%20(Gold%20Standard)-gold.svg)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](emergent_matter_model/LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://python.org)
-[![Tests: 176/176 Passed](https://img.shields.io/badge/Tests-159%2F159%20Passing-brightgreen.svg)](#quick-start)
-[![Status: Research Release](https://img.shields.io/badge/Status-v0.9.0%20(Case%20001%20Sealed)-orange.svg)](#status)
+[![Status: Corrected research release](https://img.shields.io/badge/Status-corrected%20after%20audit-orange.svg)](docs/SHOW_YOUR_WORK.md)
 
 ![EMRF Space-Entropy Compression Hero Banner](docs/assets/emrf_hero_banner.jpg)
 
@@ -16,33 +14,55 @@
 
 ---
 
-## Methodological Verification & Continuous Integration Pipeline
+## Integrity notice (2026-10-07)
 
-This repository operates under a continuous verification and reproducible open-science standard:
-* **Automated Test Suite:** **178 Automated Unit Tests Passing in 5.51 Seconds** across 19 verification suites
-* **Adversarial Blind Falsification:** **100% Rejection Rate** against unphysical synthetic datasets
-* **Solar System Screening:** Strictly bounded within Cassini limits ($|\Delta a| < 3.2 \times 10^{-14}\text{ m/s}^2$)
-* **Relativistic Consistency:** Hamiltonian stability ($A > 0$), subluminal sound speed ($0.95c \le c_s \le c$), unit slip ($\eta = 1.0$)
-* **Methodological Verification Suite:** [docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md](docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)
-* **Verification Reports:** [Case 001 (EMRF Platform)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md) | [Case 002 (First Use Case)](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md)
-* **Community Ethics & Planetary Stewardship:** [docs/COMMUNITY_ETHICS.md](docs/COMMUNITY_ETHICS.md)
+An independent "show your work" audit ([`docs/SHOW_YOUR_WORK.md`](docs/SHOW_YOUR_WORK.md), reproducible with `python tools/show_your_work_audit.py`) found that **earlier versions of this repository, and the Zenodo release above, reported results computed from synthetic data files labelled as real observations.** Several "stress tests" also returned answers written into the code. Specifically:
 
----
+* The S-star, SPARC, JWST, supernova and CMB tables were not authentic. They are now quarantined, clearly labelled, in [`data/synthetic/`](data/synthetic/README.md). Pipelines that read them print a `SYNTHETIC INPUT DATA` banner.
+* **All earlier headline results are withdrawn:** ΔBIC = +70.743 / +141.3 (S-stars), −52,490.1 (SPARC), −100.08 (JWST), −60.26 (wide binaries), CMB χ²ᵥ = 0.924, "28,700+ constraints", and the "Certified Level 5" and "100/100" audit scores.
+* The DESI BAO table has been corrected to the official DR1 values.
+* The real-data replacement is described below and in the revised paper [`paper/main.tex`](paper/main.tex).
 
+## Current real-data result
 
+On the **real SPARC database** (Lelli, McGaugh & Schombert 2016; 153 galaxies, 3,168 points after standard cuts), a single global acceleration scale was fitted for four candidate laws ([`emergent_matter_model/sparc_real_analysis.py`](emergent_matter_model/sparc_real_analysis.py)):
 
----
+| Law | Best global a₀ (10⁻¹⁰ m/s²), range over M/L treatments | ΔBIC vs RAR | Solar System |
+|---|---|---|---|
+| McGaugh RAR, 1/(1 − exp(−√y)) | 1.03 – 1.22 | 0 | passes |
+| MOND "simple" | 1.06 – 1.18 | +1,088 | fails |
+| **Earlier EMRF law √(g_N² + a₀g_N)** | 1.30 – 1.59 | **+6,440** | **fails (+a₀/2)** |
+| MOND "standard" | 1.34 – 1.77 | +10,548 | passes |
 
-## First Use Case: LaSalle's Spatial Ontology Across Three Frontiers
+* **EMRF's horizon hypothesis a₀ = cH₀/2π** (1.04 for H₀ = 67.4; 1.13 for H₀ = 73.0) is consistent with this first pass within the stellar mass-to-light systematic, when an RAR-like law is used.
+* The specific law in earlier EMRF drafts is **disfavoured** by both galaxies and the Solar System.
+* The pipeline reproduces the published a₀ = 1.20×10⁻¹⁰ m/s² (McGaugh+2016) under the published conventions (it gives 1.22).
+* With distances and inclinations fixed, baryons plus a dark halo are preferred by BIC. This comparison isn't yet like-for-like (see the paper).
 
-A dedicated academic paper and research monograph demonstrating the explanatory power of LaSalle's Spatial Ontology:
-* **Academic Manuscript:** [paper/use_case_lasalle_ontology.tex](paper/use_case_lasalle_ontology.tex)
-* **Research Monograph:** [docs/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md](docs/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md)
-* **Preprint Package:** [paper/use_case_submission.zip](paper/use_case_submission.zip)
-* **Three Horizons Solved:**
-  1. *Microscopic Quantum Genesis:* Particle rest mass (^-$, ^+$, ^0$) emerges from localized standing-wave spatial metric vibrations ( = \frac{1}{c^2}\int C d^3X$).
-  2. *Black Hole Thermodynamics:* Exact derivation of the Bekenstein-Hawking area formula ({\text{BH}} = \frac{k_B A}{4 \ell_P^2}$) from stretched horizon spatial compression saturation.
-  3. *JWST Cosmic Dawn:* Dynamical horizon acceleration (z) = c H(z) / (2\pi)$ solves the *Impossible Early Galaxy* crisis (JADES-GS-z14-0 at =14.32$) by accelerating baryonic gas collapse into stars within \text{ Myr}$.
+### Sharpened test: distance and inclination marginalized ([`sparc_marginalized_a0.py`](emergent_matter_model/sparc_marginalized_a0.py))
+
+This follows the method of Li et al. (2018). It's validated as unbiased on known-answer tests and reproduces their a₀ ≈ 1.2.
+
+| Sample | RAR law a₀ (10⁻¹⁰ m/s²) | vs cH₀/2π (H₀ = 67.4 / 73.0) | vs Λ-tied version (0.863) |
+|---|---|---|---|
+| All 153 galaxies | 1.234 ± 0.048 | **+4.0σ / +2.2σ** (tension) | +7.8σ |
+| 66 gas-dominated galaxies | 1.019 ± 0.082 | −0.3σ / −1.3σ (consistent) | +1.9σ |
+
+**Honest bottom line:** the hypothesis is **neither confirmed nor excluded**. Gas-dominated galaxies, the cleanest probe, agree with it. The full sample sits 2–4σ above it.
+
+### Step 3: where the disagreement comes from ([`sparc_tension_diagnostics.py`](emergent_matter_model/sparc_tension_diagnostics.py))
+
+| Subset (RAR law) | a₀ (10⁻¹⁰ m/s²) | vs cH₀/2π (67.4 / 73.0) |
+|---|---|---|
+| Star-dominated, **with bulges** (31 galaxies; post hoc) | 1.91 ± 0.18 | +4.8σ / +4.3σ |
+| Star-dominated, **bulgeless** (56) | 0.894 ± 0.050 | −3.0σ / −4.7σ |
+| Gas-dominated (66) | 1.019 ± 0.082 | −0.3σ / −1.4σ |
+| All galaxies, deep points only (141) | 1.098 ± 0.062 | +0.9σ / −0.5σ |
+| Bulgeless gas + star combined (post hoc) | 0.930 ± 0.042 | −2.7σ / −4.7σ |
+
+* The gas-vs-star disagreement is really a **bulge-vs-bulgeless disagreement** (5.4σ, and 4.8σ even in the deep regime). Either bulge mass models are wrong, or a₀ isn't universal.
+* Without bulges, gas- and star-dominated galaxies agree, at a₀ ≈ 0.93, which is *below* cH₀/2π.
+* Defensible galaxy selections give a₀ ≈ 0.84–1.28. The measurement is **limited by stellar-mass systematics at ±15–20%**, so current SPARC mass models can't settle the hypothesis. The next lever is independent bulge and stellar mass estimates.
 
 ## Overview
 
@@ -170,27 +190,27 @@ SpaceEntropyCompression/
 ## Quick Start
 
 ```bash
-# Enter the Python project directory
-cd SpaceEntropyCompression/emergent_matter_model
+cd SpaceEntropyCompression
 
-# Run tests (159 tests, 100% passing in ~5 seconds)
-.venv\Scripts\pytest -v
+# Run the test suite (203 tests)
+python -m pytest emergent_matter_model -q
 
-# Run local CI pipeline (all 159 tests, headless physics check, JavaFX compile)
-cd ..
-powershell -ExecutionPolicy Bypass -File emergent_matter_model\ci_local.ps1
+# REAL DATA: download SPARC (checksummed) and test a0 = c H0 / 2 pi with four candidate laws
+python emergent_matter_model/sparc_real_analysis.py      # ~1 minute; writes results/ and paper/figures/
 
-# Run the Bayesian astrometric evaluation engine across the Sgr A* S-star cluster (201 data points)
-python emergent_matter_model\fit_astrometry.py --dataset all
+# Sharpened test: marginalize distance + inclination (Li et al. 2018 method)
+python emergent_matter_model/sparc_marginalized_a0.py    # ~12 minutes
 
-# Run the SPARC galactic rotation curve joint evaluation across all 10 galaxies (214 data points)
-python emergent_matter_model\fit_sparc.py --galaxy all --optimize
+# Diagnose the gas- vs star-dominated disagreement (bulges, deep points)
+python emergent_matter_model/sparc_tension_diagnostics.py  # ~20 minutes
 
-# Run the JWST high-redshift galaxy kinematics evaluation (10 galaxies, z = 1.5 - 6.8)
-python emergent_matter_model\fit_jwst.py
+# Reproduce every number in the audit (docs/SHOW_YOUR_WORK.md)
+python tools/show_your_work_audit.py
 
-# Re-generate all publication-quality vector figures
-python emergent_matter_model\plot_publication_figures.py
+# Code demonstrations on SYNTHETIC fixtures (print a warning banner; not scientific results)
+python emergent_matter_model/fit_astrometry.py --dataset all
+python emergent_matter_model/fit_sparc.py --galaxy all
+python emergent_matter_model/fit_jwst.py
 ```
 
 ## Theoretical Foundation
@@ -204,33 +224,30 @@ EMRF investigates three competing compression formulations:
 | $C_S$ | Entropy-coupled | Does entropy/information dictate gravitational dynamics? |
 | $C_{GSE}$ | Composite | Are all three needed? (Only if simpler branches fail) |
 
-## Empirical Verification Program
+## Empirical status by regime
 
-![EMRF Multiscale Empirical Regimes](docs/assets/emrf_multiscale_regimes.jpg)
+| # | Regime | Status after the audit |
+|---|---|---|
+| 1 | Sgr A* S-stars | No valid result (synthetic data; no fitting). EMRF is *required* to equal GR here, so these orbits can't discriminate it. |
+| 2 | Solar System | Constraint: the earlier EMRF law fails. RAR-like laws pass (EFE quadrupole not yet evaluated). |
+| 3 | **SPARC rotation curves** | **Real-data tests done.** a₀ = cH₀/2π is neither confirmed nor excluded. The gas/star disagreement traces to bulge galaxies (5σ), and a₀ is systematics-limited at ±15–20%. The earlier EMRF law is disfavoured. |
+| 4 | Strong lensing | The code used the standard GR formula; no EMRF prediction exists yet. |
+| 5 | Bullet Cluster | Hand-tuned toy model; withdrawn. MOND-type laws leave residual missing mass (Angus+2007). |
+| 6 | High-z disks (a₀ ∝ H(z)) | No valid result (synthetic data). Existing studies disfavour strong evolution (Genzel+2017; Nestor Shachar+2023). |
+| 7 | GW170817 | The result was asserted in code, not computed. |
+| 8 | Gaia wide binaries | No valid result (hand-entered bins). The literature is contested and leans Newtonian (Banik+2024). |
+| 9 | Cosmic expansion | Standard w₀w_a dark energy relabelled; not an EMRF prediction. DESI table corrected. |
+| 10 | CMB peaks | Circular (peak heights hard-coded; assumes a CDM-like density). Needs a relativistic completion (cf. AeST). |
 
-The empirical program tests EMRF across ten distinct gravitational and cosmological regimes (28,700+ observational constraints):
-1. **Strong Acceleration ($a \gg a_0$, Sgr A* S-Stars, $N=201$):** Multi-star orbital astrometry around Sagittarius A* (S2, S29, S38, S55, S301). Joint fit yields $\mathbf{\Delta\text{BIC} = +141.3 \gg 10.0}$, confirming **Branch A: Geometric Collapse into General Relativity**.
-2. **Precision Solar System ($10^{-6} < a < 10^2\text{ m/s}^2$, $N=9$ Probes):** Evaluates planetary ephemerides and spacecraft tracking (Mercury to Voyager 1). Proves naive unscreened models are ruled out ($\chi^2 = 6.08\times 10^6$), while EMRF geometric compression screening satisfies Cassini ($|\Delta a| < 3.2\times 10^{-14}\text{ m/s}^2$) with zero empirical violation.
-3. **Weak Acceleration ($a \ll a_0$, SPARC Galaxies, $N=214$):** Galactic rotation curves across 10 archetype systems. EMRF cosmic entropic background model outperforms pure Newtonian baryons by $\mathbf{\Delta\text{BIC} = -52,490.1 \ll -10.0}$. Monte Carlo noise injections (300 iterations) confirm zero intrinsic scatter ($0.18\text{ dex}$).
-4. **Relativistic Gravitational Lensing (SLACS Early-Type Lenses, $N=5$):** Solves null geodesic deflection with exact unit relativistic slip $\mathbf{\eta = \Psi/\Phi = 1.0}$, predicting Einstein radii matching HST observations without dark matter parameters ($\chi^2 = 51.75$).
-5. **Cluster Collision Scale (1E 0657-56 Bullet Cluster):** 2D merger simulation demonstrates shock-heated high-entropy gas ($T \sim 1.5\times 10^8\text{ K}$) disrupts metric compression, cleanly shifting lensing peaks outward by $\sim 180\text{ kpc}$ to galaxy clumps.
-6. **Cosmological Horizon Evolution ($z \sim 1 - 7$, JWST/ALMA Disks, $N=10$):** Redshift-dependent horizon acceleration $a_0(z) = c H(z) / (2\pi)$ predicts high-redshift disk rotation velocities with $\mathbf{\Delta\text{BIC} = -100.08 \ll -10.0}$.
-7. **Speed of Gravity & Multi-Messenger (GW170817 / GRB 170817A):** Conformal metric light cone invariance yields $\mathbf{c_{gw} \equiv c}$ identically ($|\Delta c/c| \le 10^{-15}$), surviving where Horndeski and TeVeS fail.
-8. **Wide Binary Stars & External Field Effect (Gaia DR3, $N=26,615$ Pairs):** Galactic compression background ($g_{\text{ext}} \approx 1.2\times 10^{-10}\text{ m/s}^2$) caps velocity boost at $\sim 1.25-1.35$, decisively preferred over Newton ($\mathbf{\Delta\text{BIC} = -60.26}$).
-9. **Late-Time Cosmic Expansion ($z \le 2.33$, Pantheon+ & DESI 2024 BAO):** Void spatial metric compression driving accelerated expansion. Matches 1,701 Pantheon+ SNe ($\chi^2_{\text{red}} = 0.255$) and 13 DESI BAO measurements ($\chi^2_{\text{red}} = 1.652$), beating flat $\Lambda\text{CDM}$ ($\chi^2_{\text{red}} = 3.25$).
-10. **Early-Universe CMB Acoustic Peaks ($z \sim 1100$, Planck 2018 PR3):** Relativistic photon-baryon acoustic oscillations. Non-collisional metric compression maintains potential well depth ($\Phi_C$), sustaining the 3rd acoustic peak ($A_3/A_2 = 0.988$) and matching $l_1=220.6, l_2=537.5, l_3=811.3$ with $\mathbf{\chi^2_{\text{red}} = 0.924 < 1.00}$.
+Open theoretical task: derive an RAR-like interpolating function from an action. The canonical entropy-field Lagrangian can't do it ([`knowledgebase/action_principle_derivation.md`](knowledgebase/action_principle_derivation.md)).
 
-## Status & Due Diligence Certification
+## Status
 
-* **Methodological Verification:** **All 7 Verification Gates Passed** (178/178 Automated Unit Tests Passing in 5.51s, 0/7 Red-Flag Deviations)  
-* **Verification Reports:** [`docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md`](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md) (Case 001) | [`docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md`](docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md) (Case 002)  
-* **Community Ethics Charter:** [`docs/COMMUNITY_ETHICS.md`](docs/COMMUNITY_ETHICS.md)  
-* **Current Phase**: Phase 6 Complete — Extreme Theoretical Rigor, Cosmological Frontiers & Multi-Perspective Synthesis (v0.9.0)  
-* **Preprint**: Assembled in [`paper/main.tex`](paper/main.tex) and [`paper/use_case_lasalle_ontology.tex`](paper/use_case_lasalle_ontology.tex)  
-* **Interactive Visualizer**: Standalone WebGL dashboard in [`tools/interactive_visualizer.html`](tools/interactive_visualizer.html) or live via `/visualizer` endpoint  
-* **Test Suite**: 178 automated unit tests passing in 5.51s across 19 suites  
-* **Release Draft**: Complete walkthrough in [`RELEASE_DRAFT_v0.7.0.md`](RELEASE_DRAFT_v0.7.0.md)  
-See [STATUS.md](STATUS.md) for detailed project status, [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the operational execution plan, and [ROADMAP.md](ROADMAP.md) for planned milestones.
+* **Paper:** [`paper/main.tex`](paper/main.tex) (revised 2026-10-07; real-data SPARC test; correction statement). [`paper/use_case_lasalle_ontology.tex`](paper/use_case_lasalle_ontology.tex) is conceptual; its empirical claims are withdrawn.
+* **Audit:** [`docs/SHOW_YOUR_WORK.md`](docs/SHOW_YOUR_WORK.md).
+* **Tests:** 203 passing. Note that many older tests only check internal consistency, not physics.
+* **Community Ethics Charter:** [`docs/COMMUNITY_ETHICS.md`](docs/COMMUNITY_ETHICS.md).
+* Older planning and status documents (STATUS, ROADMAP, earlier audits) carry an integrity notice at the top.
 
 ## Citation
 
@@ -242,7 +259,7 @@ If you use EMRF in your research, please cite:
   title = {Emergent Matter Research Framework (EMRF)},
   year = {2026},
   url = {https://github.com/kirklasalle/SpaceEntropyCompression},
-  version = {0.9.0}
+  version = {0.10.0}
 }
 ```
 
@@ -251,7 +268,10 @@ If you use EMRF in your research, please cite:
 1. Jacobson, T. (1995). "Thermodynamics of Spacetime: The Einstein Equation of State." *PRL* 75, 1260.
 2. Brown, J.D. & York, J.W. (1993). "Quasilocal energy and conserved charges." *PRD* 47, 1407.
 3. GRAVITY Collaboration (2022). "Mass distribution in the Galactic Centre." *A&A* 657, L12.
-4. GRAVITY Collaboration (2026). "S301: Fastest star orbiting Sagittarius A*." *Nature*.
+4. GRAVITY Collaboration (2026). "Discovery of a star sensitive to the spin of Sgr A*." *Nature*; arXiv:2607.12664.
+6. McGaugh, S., Lelli, F. & Schombert, J. (2016). "Radial Acceleration Relation in Rotationally Supported Galaxies." *PRL* 117, 201101.
+7. Lelli, F., McGaugh, S. & Schombert, J. (2016). "SPARC: Mass Models for 175 Disk Galaxies." *AJ* 152, 157.
+8. Milgrom, M. (1999). "The modified dynamics as a vacuum effect." *Phys. Lett. A* 253, 273.
 5. Verlinde, E. (2011). "On the Origin of Gravity and the Laws of Newton." *JHEP* 2011(4), 29.
 
 ## License

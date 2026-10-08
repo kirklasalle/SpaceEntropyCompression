@@ -63,3 +63,6 @@ htmlcov/
 
 # Distribution
 *.whl
+
+# Real public datasets are downloaded on demand (see emergent_matter_model/fetch_real_data.py)
+data/external/

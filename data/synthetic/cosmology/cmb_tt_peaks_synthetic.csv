@@ -1,6 +1,6 @@
-# Planck 2018 PR3 Temperature Angular Power Spectrum (TT) Binned Peaks & Acoustic Data
-# Reference: Planck Collaboration (2020), A&A 641, A6 (Cosmological Parameters)
-# Columns: multipole_l, D_l_uK2, error_uK2, feature_type
+# SYNTHETIC DATA -- NOT OBSERVATIONS. Generated during development as a code-testing fixture.
+# It does NOT come from any telescope, survey or publication and must NOT be cited as data.
+# See data/synthetic/README.md and docs/SHOW_YOUR_WORK.md for the audit that identified it.
 multipole_l,D_l_uK2,error_uK2,feature_type
 50,1180.5,45.0,Sachs-Wolfe Plateau
 100,1650.0,38.0,Rise to Peak 1

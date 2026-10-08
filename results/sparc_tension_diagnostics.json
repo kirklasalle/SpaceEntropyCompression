@@ -1,0 +1,430 @@
+{
+  "description": "Real SPARC; distance, inclination and Upsilon marginalized (Li et al. 2018 method); pre-registered subsets testing the gas- vs star-dominated a0 disagreement",
+  "cuts": {
+    "gas_dominated_galaxy": "gas fraction > 0.5",
+    "deep_point": "g_bar(Upsilon=0.5) < 0.3 x 1.2e-10 m/s^2",
+    "local_gas_point": "gas > 50% of local V_bar^2 at Upsilon=0.5",
+    "bulge": "any V_bul > 0",
+    "min_points_per_galaxy": 3
+  },
+  "horizon_prediction": {
+    "Planck 2018 (67.4)": 1.0421978813105618e-10,
+    "SH0ES (73.0)": 1.1287899901434867e-10
+  },
+  "rar_subsets": {
+    "gas_dominated": {
+      "n_galaxies": 66,
+      "n_points": 966,
+      "a0": 1.0190960996241841e-10,
+      "sigma_stat_scaled": 7.069911963492833e-12,
+      "sigma_upsilon_sys": 3.641026247087519e-12,
+      "sigma_total": 7.952403869492502e-12,
+      "chi2_reduced": 2.6160154505156132,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 1.0611782273920533e-10,
+          "sigma_stat": 4.6657244305090986e-12,
+          "sigma_scaled": 7.576705764466146e-12,
+          "at_grid_edge": false,
+          "chi2": 2022.6374249587375,
+          "chi2_reduced": 2.637076173349071
+        },
+        "0.5": {
+          "a0": 1.0190960996241841e-10,
+          "sigma_stat": 4.371131315371612e-12,
+          "sigma_scaled": 7.069911963492833e-12,
+          "at_grid_edge": false,
+          "chi2": 2006.4838505454752,
+          "chi2_reduced": 2.6160154505156132
+        },
+        "0.6": {
+          "a0": 9.883577024503029e-11,
+          "sigma_stat": 4.2694740425088556e-12,
+          "sigma_scaled": 6.904588382929905e-12,
+          "at_grid_edge": false,
+          "chi2": 2005.9596615854289,
+          "chi2_reduced": 2.6153320229275474
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": -0.29050060919317905,
+        "SH0ES (73.0)": -1.379380276951439
+      },
+      "implied_H0_kms_mpc": 65.90598421510525,
+      "label": "A: gas-dominated galaxies (reference)"
+    },
+    "star_dominated": {
+      "n_galaxies": 87,
+      "n_points": 2202,
+      "a0": 1.2762442890858006e-10,
+      "sigma_stat_scaled": 5.874506045860082e-12,
+      "sigma_upsilon_sys": 1.8529477076938952e-12,
+      "sigma_total": 6.159808153692347e-12,
+      "chi2_reduced": 5.723106202187854,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 1.2575665884183134e-10,
+          "sigma_stat": 2.3174580861577115e-12,
+          "sigma_scaled": 5.5523772999451786e-12,
+          "at_grid_edge": false,
+          "chi2": 11136.171064216664,
+          "chi2_reduced": 5.74029436299828
+        },
+        "0.5": {
+          "a0": 1.2762442890858006e-10,
+          "sigma_stat": 2.4555877182364656e-12,
+          "sigma_scaled": 5.874506045860082e-12,
+          "at_grid_edge": false,
+          "chi2": 11102.826032244437,
+          "chi2_reduced": 5.723106202187854
+        },
+        "0.6": {
+          "a0": 1.2946255425721913e-10,
+          "sigma_stat": 2.4578957689225056e-12,
+          "sigma_scaled": 5.876705654102262e-12,
+          "at_grid_edge": false,
+          "chi2": 11090.284405383134,
+          "chi2_reduced": 5.716641446073781
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": 3.7995730051259047,
+        "SH0ES (73.0)": 2.3938131718262357
+      },
+      "implied_H0_kms_mpc": 82.53601991227846,
+      "label": "B: star-dominated galaxies, all points"
+    },
+    "star_bulgeless": {
+      "n_galaxies": 56,
+      "n_points": 1070,
+      "a0": 8.939291379248746e-11,
+      "sigma_stat_scaled": 4.986129943926196e-12,
+      "sigma_upsilon_sys": 5.23120090698997e-13,
+      "sigma_total": 5.013496429340543e-12,
+      "chi2_reduced": 4.373999015935726,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 9.007730026643849e-11,
+          "sigma_stat": 2.412500001248622e-12,
+          "sigma_scaled": 5.054135046990891e-12,
+          "at_grid_edge": false,
+          "chi2": 3954.4294404722923,
+          "chi2_reduced": 4.388933896195663
+        },
+        "0.5": {
+          "a0": 8.939291379248746e-11,
+          "sigma_stat": 2.384098815700396e-12,
+          "sigma_scaled": 4.986129943926196e-12,
+          "at_grid_edge": false,
+          "chi2": 3940.973113358089,
+          "chi2_reduced": 4.373999015935726
+        },
+        "0.6": {
+          "a0": 8.903106008504049e-11,
+          "sigma_stat": 2.376405480241737e-12,
+          "sigma_scaled": 4.9670579960754574e-12,
+          "at_grid_edge": false,
+          "chi2": 3936.2453656550447,
+          "chi2_reduced": 4.368751793179849
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": -2.9573920212243947,
+        "SH0ES (73.0)": -4.684572045252356
+      },
+      "implied_H0_kms_mpc": 57.81130913485572,
+      "label": "C: star-dominated, bulgeless galaxies"
+    },
+    "star_deep_points": {
+      "n_galaxies": 75,
+      "n_points": 919,
+      "a0": 1.1622667081545945e-10,
+      "sigma_stat_scaled": 6.354389795620797e-12,
+      "sigma_upsilon_sys": 3.919155187883899e-12,
+      "sigma_total": 7.465791790654693e-12,
+      "chi2_reduced": 2.675108895840917,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 1.2094425705445004e-10,
+          "sigma_stat": 4.077691933659695e-12,
+          "sigma_scaled": 6.704836957340546e-12,
+          "at_grid_edge": false,
+          "chi2": 1873.6171518410042,
+          "chi2_reduced": 2.7036322537388227
+        },
+        "0.5": {
+          "a0": 1.1622667081545945e-10,
+          "sigma_stat": 3.885108208536577e-12,
+          "sigma_scaled": 6.354389795620797e-12,
+          "at_grid_edge": false,
+          "chi2": 1853.8504648177552,
+          "chi2_reduced": 2.675108895840917
+        },
+        "0.6": {
+          "a0": 1.1310594667868224e-10,
+          "sigma_stat": 3.802169736977883e-12,
+          "sigma_scaled": 6.205014173396572e-12,
+          "at_grid_edge": false,
+          "chi2": 1845.6773758557056,
+          "chi2_reduced": 2.6633151166749
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": 1.6082530856851498,
+        "SH0ES (73.0)": 0.4484014415324606
+      },
+      "implied_H0_kms_mpc": 75.16497349918934,
+      "label": "D: star-dominated, deep points only"
+    },
+    "star_local_gas_points": {
+      "n_galaxies": 6,
+      "n_points": 50,
+      "a0": 9.149359616851769e-11,
+      "sigma_stat_scaled": 1.0207174950840616e-11,
+      "sigma_upsilon_sys": 6.615231695028699e-12,
+      "sigma_total": 1.2163375800162569e-11,
+      "chi2_reduced": 0.5655727066121488,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 9.886284138245912e-11,
+          "sigma_stat": 1.0543470042036326e-11,
+          "sigma_scaled": 1.0543470042036326e-11,
+          "at_grid_edge": false,
+          "chi2": 15.291315894802159,
+          "chi2_reduced": 0.49326825467103735
+        },
+        "0.5": {
+          "a0": 9.149359616851769e-11,
+          "sigma_stat": 1.0207174950840616e-11,
+          "sigma_scaled": 1.0207174950840616e-11,
+          "at_grid_edge": false,
+          "chi2": 17.532753904976612,
+          "chi2_reduced": 0.5655727066121488
+        },
+        "0.6": {
+          "a0": 8.563237799240172e-11,
+          "sigma_stat": 9.70553436131397e-12,
+          "sigma_scaled": 9.70553436131397e-12,
+          "at_grid_edge": false,
+          "chi2": 20.047994912728544,
+          "chi2_reduced": 0.646709513313824
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": -1.0462713782442208,
+        "SH0ES (73.0)": -1.7581798998223144
+      },
+      "implied_H0_kms_mpc": 59.169841853866735,
+      "label": "E: star-dominated, locally gas-dominated points"
+    },
+    "star_bulgeless_deep": {
+      "n_galaxies": 50,
+      "n_points": 614,
+      "a0": 8.403463504545458e-11,
+      "sigma_stat_scaled": 4.912522700577851e-12,
+      "sigma_upsilon_sys": 4.310752474671e-12,
+      "sigma_total": 6.5357070146675675e-12,
+      "chi2_reduced": 1.8132018013363551,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 8.920850508891859e-11,
+          "sigma_stat": 3.9631218655218374e-12,
+          "sigma_scaled": 5.395237715200872e-12,
+          "at_grid_edge": false,
+          "chi2": 858.0790642400176,
+          "chi2_reduced": 1.8533025145572735
+        },
+        "0.5": {
+          "a0": 8.403463504545458e-11,
+          "sigma_stat": 3.648224027584832e-12,
+          "sigma_scaled": 4.912522700577851e-12,
+          "at_grid_edge": false,
+          "chi2": 839.5124340187324,
+          "chi2_reduced": 1.8132018013363551
+        },
+        "0.6": {
+          "a0": 8.058700013957659e-11,
+          "sigma_stat": 3.518749266436038e-12,
+          "sigma_scaled": 4.720776103216679e-12,
+          "at_grid_edge": false,
+          "chi2": 833.3571274133978,
+          "chi2_reduced": 1.7999074026207298
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": -3.088442159402443,
+        "SH0ES (73.0)": -4.413350216611757
+      },
+      "implied_H0_kms_mpc": 54.34605561605299,
+      "label": "F: star-dominated, bulgeless, deep points"
+    },
+    "all_deep_points": {
+      "n_galaxies": 141,
+      "n_points": 1859,
+      "a0": 1.0984709791436646e-10,
+      "sigma_stat_scaled": 4.788703115417048e-12,
+      "sigma_upsilon_sys": 3.884755774076828e-12,
+      "sigma_total": 6.166279668635554e-12,
+      "chi2_reduced": 2.6160558473653555,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 1.1443094813795901e-10,
+          "sigma_stat": 3.021263195908355e-12,
+          "sigma_scaled": 4.915538265550106e-12,
+          "at_grid_edge": false,
+          "chi2": 3798.542090397127,
+          "chi2_reduced": 2.647067658813329
+        },
+        "0.5": {
+          "a0": 1.0984709791436646e-10,
+          "sigma_stat": 2.9607000256947365e-12,
+          "sigma_scaled": 4.788703115417048e-12,
+          "at_grid_edge": false,
+          "chi2": 3754.040140969285,
+          "chi2_reduced": 2.6160558473653555
+        },
+        "0.6": {
+          "a0": 1.0666143658980535e-10,
+          "sigma_stat": 2.8968771564025876e-12,
+          "sigma_scaled": 4.679195139968377e-12,
+          "at_grid_edge": false,
+          "chi2": 3743.984631940157,
+          "chi2_reduced": 2.6090485240001096
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": 0.9125939927657322,
+        "SH0ES (73.0)": -0.4916904945787359
+      },
+      "implied_H0_kms_mpc": 71.03923863401226,
+      "label": "G: all galaxies, deep points only"
+    },
+    "star_bulge": {
+      "n_galaxies": 31,
+      "n_points": 1132,
+      "a0": 1.9102313911634922e-10,
+      "sigma_stat_scaled": 1.568002368135334e-11,
+      "sigma_upsilon_sys": 9.120382469946125e-12,
+      "sigma_total": 1.8139584312930165e-11,
+      "chi2_reduced": 6.572939521310625,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 1.81298894715673e-10,
+          "sigma_stat": 5.74808994779786e-12,
+          "sigma_scaled": 1.4761454197795146e-11,
+          "at_grid_edge": false,
+          "chi2": 6845.552873457051,
+          "chi2_reduced": 6.594944964794847
+        },
+        "0.5": {
+          "a0": 1.9102313911634922e-10,
+          "sigma_stat": 6.115991823307475e-12,
+          "sigma_scaled": 1.568002368135334e-11,
+          "at_grid_edge": false,
+          "chi2": 6822.711223120428,
+          "chi2_reduced": 6.572939521310625
+        },
+        "0.6": {
+          "a0": 1.9953965965556525e-10,
+          "sigma_stat": 6.136136868404568e-12,
+          "sigma_scaled": 1.57108209479802e-11,
+          "at_grid_edge": true,
+          "chi2": 6804.638146934644,
+          "chi2_reduced": 6.555528079898501
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": 4.785299899260554,
+        "SH0ES (73.0)": 4.307934446231949
+      },
+      "implied_H0_kms_mpc": 123.53661245455325,
+      "label": "H: star-dominated, bulge galaxies (post hoc)"
+    },
+    "star_bulge_deep": {
+      "n_galaxies": 25,
+      "n_points": 305,
+      "a0": 1.6158560513348265e-10,
+      "sigma_stat_scaled": 1.4763021831728124e-11,
+      "sigma_upsilon_sys": 1.631125234300416e-12,
+      "sigma_total": 1.4852857743008675e-11,
+      "chi2_reduced": 3.8985982440844724,
+      "at_grid_edge": false,
+      "by_upsilon_centre": {
+        "0.4": {
+          "a0": 1.6379113915593216e-10,
+          "sigma_stat": 7.62741536381953e-12,
+          "sigma_scaled": 1.5183009286472913e-11,
+          "at_grid_edge": false,
+          "chi2": 907.3950444117852,
+          "chi2_reduced": 3.962423774723953
+        },
+        "0.5": {
+          "a0": 1.6158560513348265e-10,
+          "sigma_stat": 7.476890502979462e-12,
+          "sigma_scaled": 1.4763021831728124e-11,
+          "at_grid_edge": false,
+          "chi2": 892.7789978953442,
+          "chi2_reduced": 3.8985982440844724
+        },
+        "0.6": {
+          "a0": 1.6052888868733132e-10,
+          "sigma_stat": 7.542865768348773e-12,
+          "sigma_scaled": 1.4804791329922186e-11,
+          "at_grid_edge": false,
+          "chi2": 882.200511042174,
+          "chi2_reduced": 3.8524039783501047
+        }
+      },
+      "pulls_vs_horizon": {
+        "Planck 2018 (67.4)": 3.86227472147095,
+        "SH0ES (73.0)": 3.279275070284737
+      },
+      "implied_H0_kms_mpc": 104.49905897238519,
+      "label": "I: star-dominated, bulge galaxies, deep pts (post hoc)"
+    }
+  },
+  "deep_points_all_laws": {
+    "emrf_sqrt": {
+      "a0": 1.1977396758199723e-10,
+      "sigma_stat_scaled": 5.702645884529985e-12,
+      "chi2_reduced": 2.5928450667305603
+    },
+    "rar_exponential": {
+      "a0": 1.1622667081545945e-10,
+      "sigma_stat_scaled": 6.354389795620797e-12,
+      "chi2_reduced": 2.675108895840917
+    },
+    "simple": {
+      "a0": 1.1827555865334495e-10,
+      "sigma_stat_scaled": 6.416132325981666e-12,
+      "chi2_reduced": 2.6491917428033886
+    },
+    "standard": {
+      "a0": 1.0635853285093321e-10,
+      "sigma_stat_scaled": 5.416237567351003e-12,
+      "chi2_reduced": 2.650131674937739
+    }
+  },
+  "tensions_vs_gas_dominated": {
+    "star_dominated": 2.556393040824549,
+    "star_bulgeless": -1.3314438316919797,
+    "star_deep_points": 1.3125598802796352,
+    "star_local_gas_points": -0.7167479791963901,
+    "star_bulgeless_deep": -1.7365299067608884,
+    "all_deep_points": 0.7887804064867271,
+    "star_bulge": 4.499276216637833,
+    "star_bulge_deep": 3.542066140014583
+  },
+  "independent_comparisons": {
+    "bulge_vs_bulgeless_star_dominated": 5.400215322080013,
+    "bulge_vs_bulgeless_star_dominated_deep": 4.779065269663276
+  }
+}

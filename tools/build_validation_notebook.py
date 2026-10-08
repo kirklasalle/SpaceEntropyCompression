@@ -139,7 +139,7 @@ def create_notebook():
             "source": [
                 "from emergent_matter_model.fit_sparc import get_all_sparc_galaxy_names, evaluate_multi_sparc\n",
                 "\n",
-                "sparc_dir = root_dir / \"data\" / \"sparc\"\n",
+                "sparc_dir = root_dir / \"data\" / \"synthetic\" / \"sparc\"\n",
                 "galaxies = get_all_sparc_galaxy_names(sparc_dir)\n",
                 "print(f\"Available SPARC Galaxies ({len(galaxies)}): {galaxies}\")\n",
                 "\n",
@@ -187,7 +187,7 @@ def create_notebook():
                 "    evaluate_high_z_kinematics,\n",
                 ")\n",
                 "\n",
-                "catalog_path = root_dir / \"data\" / \"jwst\" / \"jwst_kinematics_sample.csv\"\n",
+                "catalog_path = root_dir / \"data\" / \"synthetic\" / \"jwst_kinematics_synthetic.csv\"\n",
                 "jwst_data = load_high_z_catalog(catalog_path)\n",
                 "print(f\"Loaded {len(jwst_data)} JWST/ALMA high-redshift disk galaxies:\")\n",
                 "print(f\"{'Galaxy':16s} | {'z':5s} | {'V_rot (km/s)':16s} | {'log(M_bar/Msun)':16s} | {'Survey':10s}\")\n",

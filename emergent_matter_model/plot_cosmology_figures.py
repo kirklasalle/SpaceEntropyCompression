@@ -31,7 +31,7 @@ os.makedirs(FIG_DIR, exist_ok=True)
 
 def plot_figure_12_cosmology_expansion():
     """Figure 12: Pantheon+ Supernovae & DESI 2024 BAO Cosmic Expansion."""
-    pantheon_path = os.path.join(WORKSPACE_ROOT, "data", "cosmology", "pantheon_plus_sample.csv")
+    pantheon_path = os.path.join(WORKSPACE_ROOT, "data", "synthetic", "cosmology", "sn_hubble_diagram_synthetic.csv")
     desi_path = os.path.join(WORKSPACE_ROOT, "data", "cosmology", "desi_2024_bao.csv")
 
     best_p, stats = fit_joint_cosmology(pantheon_path, desi_path)
@@ -118,7 +118,7 @@ def plot_figure_12_cosmology_expansion():
 
 def plot_figure_13_cmb_acoustic_peaks():
     """Figure 13: Planck 2018 CMB Temperature Power Spectrum & 3rd Peak Preservation."""
-    planck_path = os.path.join(WORKSPACE_ROOT, "data", "cosmology", "planck_2018_cmb_peaks.csv")
+    planck_path = os.path.join(WORKSPACE_ROOT, "data", "synthetic", "cosmology", "cmb_tt_peaks_synthetic.csv")
     p = EMRFCMBParams()
     rep = evaluate_planck_cmb_peaks(p, planck_path)
 

@@ -49,14 +49,15 @@ def test_manuscript_structural_sections(paper_dir: Path):
     tex_content = (paper_dir / "main.tex").read_text(encoding="utf-8")
     
     required_sections = [
+        "Correction statement",
         "Introduction",
         "Theoretical Formulation and Spatial Ontology",
-        "Relativistic Baseline and Astrometric Projection Engine",
-        "The Empirical Astrophysical Crucible: Sgr A* S-Star Cluster",
-        "Simultaneous Multi-Star Bayesian Model Comparison",
-        "Discussion: Branch A as Macroscopic Correspondence with General Relativity",
-        "Low-Acceleration Extension: Testing Cosmic Entropy Gradients (SPARC)",
-        "Conclusion: The Two-Regime Empirical Synthesis",
+        "Candidate Acceleration Laws",
+        "Data and Method",
+        "Results",
+        "Status of Other Regimes and Prior Work",
+        "Conclusion",
+        "Reproducibility and data availability",
     ]
     for sec in required_sections:
         assert f"\\section{{{sec}" in tex_content or f"\\section*{{{sec}" in tex_content, f"Missing section: {sec}"
@@ -64,4 +65,4 @@ def test_manuscript_structural_sections(paper_dir: Path):
     assert "Kirk LaSalle" in tex_content, "Author Kirk LaSalle missing from author metadata"
     assert "Sagittarius~A*" in tex_content
     assert "SPARC" in tex_content
-    assert "Delta-BIC" in tex_content or "\\Delta\\text{BIC}" in tex_content
+    assert any(tok in tex_content for tok in ("Delta-BIC", "\\Delta\\text{BIC}", "\\Delta\\mathrm{BIC}"))

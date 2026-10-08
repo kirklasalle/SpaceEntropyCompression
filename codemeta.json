@@ -2,8 +2,8 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "Emergent Matter Research Framework (EMRF) / Space-Entropy Compression",
-  "version": "0.9.1",
-  "description": "Scientific simulation, observational testing, and relativistic engine confronting the Compressed Space-Time Matter Hypothesis across 10 gravitational and cosmological regimes.",
+  "version": "0.10.0",
+  "description": "Research code for the Emergent Matter Research Framework: real-data test of the hypothesis a0 = c H0 / (2 pi) against the SPARC rotation-curve database, Solar System consistency checks, relativistic orbit utilities, and an independent audit (docs/SHOW_YOUR_WORK.md). Synthetic fixtures are quarantined in data/synthetic/.",
   "license": "https://spdx.org/licenses/MIT",
   "codeRepository": "https://github.com/kirklasalle/SpaceEntropyCompression",
   "programmingLanguage": [

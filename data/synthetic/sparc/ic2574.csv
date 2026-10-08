@@ -1,3 +1,6 @@
+# SYNTHETIC DATA -- NOT OBSERVATIONS. Generated during development as a code-testing fixture.
+# It does NOT come from any telescope, survey or publication and must NOT be cited as data.
+# See data/synthetic/README.md and docs/SHOW_YOUR_WORK.md for the audit that identified it.
 radius_kpc,v_obs_kms,v_obs_err_kms,v_gas_kms,v_disk_kms,v_bulge_kms
 0.55,12.5,4.0,5.0,9.5,0.0
 1.10,18.8,3.5,8.8,14.2,0.0

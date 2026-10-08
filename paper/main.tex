@@ -7,12 +7,11 @@
 \usepackage{booktabs}
 \usepackage{cite}
 \usepackage{microtype}
-\usepackage{tabularx}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
-\title{\textbf{Space-Entropy Compression and Relativistic Dynamics:\\
-Multi-Star Astrometric Testing of Emergent Matter Hypotheses\\
-in the Sagittarius A* Nuclear Cluster}}
+\title{\textbf{Is the Galactic Acceleration Scale Set by the Cosmic Horizon?\\
+A Real-Data Test of $a_0 = cH_0/2\pi$ with SPARC Rotation Curves\\
+and Solar-System Constraints}}
 
 \author{
   \textbf{Kirk LaSalle} \\
@@ -20,314 +19,237 @@ in the Sagittarius A* Nuclear Cluster}}
   \texttt{https://github.com/kirklasalle/SpaceEntropyCompression}
 }
 
-\date{October 5, 2026}
+\date{October 7, 2026 (revised; supersedes the October 5, 2026 draft)}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-The proposition that observable matter and gravitational interactions emerge from structured geometric and entropic states of spacetime—the Compressed Space-Time Matter Hypothesis (CSTMH)—is subjected to rigorous mathematical formalization and empirical confrontation. We formulate multidimensional spatial degrees of freedom $X = \{x, y, z, d_0, d_1, d_2, \dots\} \in \mathcal{M}^D$ wherein coordinate time $t$ tracks dynamical evolution and thermodynamic entropy $S(X,t)$ acts as an organizational state function coupling into an effective compression functional $C(X,t) = \mathcal{F}(E, S, \text{geom}, t)$. To establish an immutable physical baseline, we implement 1PN relativistic equations of motion, exact Kretschmann invariant curvature benchmarks $K(r) = 48 G^2 M^2 / (c^4 r^6)$, and a Thiele-Innes sky-plane projection engine incorporating transverse Doppler and gravitational redshift effects. 
-
-We confront the framework with high-precision astrometric and spectroscopic observations across the Sagittarius~A* nuclear star cluster, compiling a 5-star observational baseline spanning 67 epochs and 201 independent data points for stars S2, S29, S38, S55, and the newly discovered near-horizon star S301 ($P=8.7\text{ yr}$, $r_{\text{peri}}=12.2\text{ AU}$, $v_{\text{peri}}=0.08c$). Utilizing a pre-registered Bayesian Information Criterion (BIC) Bifurcation Protocol, we evaluate whether empirical data justifies extra compression couplings beyond General Relativity. While isolated single-star fitting of retro-orbit star S38 exhibited a spurious negative Delta-BIC ($\Delta\text{BIC} = -45.36$), our simultaneous multi-star joint engine demonstrates that this was an artifact of sparse sampling. Across the complete nuclear cluster, the simultaneous joint fit decisively yields $\Delta\text{BIC}_{\text{joint}} = +70.743 \gg 10.0$. This result formally triggers \textbf{Branch A: Macroscopic Correspondence Proof}, ruling out unconstrained scalar modifications and demonstrating that EMRF analytically derives the exact Schwarzschild geometry of General Relativity in the strong-field regime without introducing ad-hoc parameters or fifth forces.
+The Emergent Matter Research Framework (EMRF) treats space as dimensional, $X=\{x,y,z,d_0,d_1,\dots\}$, with time as the parameter of change and thermodynamic entropy $S(X,t)$ as a state field rather than a coordinate. Its one sharp, falsifiable weak-field statement is that galaxies obey a single acceleration law $g = g_N\,\nu(g_N/a_0)$ whose scale is set by the cosmic horizon, $a_0 = cH_0/2\pi$. We test this hypothesis against the real SPARC database (153 galaxies, 3{,}168 rotation-curve points after standard quality cuts). We profile a single global $a_0$ for four interpolating functions, treating stellar mass-to-light ratios as nuisance parameters.
+Our pipeline reproduces the published value $a_0 = 1.20\times10^{-10}$\,m\,s$^{-2}$ under the published conventions. In a first pass with distances and inclinations fixed, the fitted $a_0$ for the best-fitting law (the empirical radial acceleration relation, RAR) spans $(1.03$--$1.22)\times10^{-10}$\,m\,s$^{-2}$, which contains $cH_0/2\pi$.
+A sharper test that also marginalizes distance and inclination changes this picture. The full sample gives $a_0 = (1.234 \pm 0.048)\times10^{-10}$ (RAR), $4.0\sigma$ above $cH_0/2\pi$ for $H_0 = 67.4$ and $2.2\sigma$ above it for $H_0 = 73.0$\,km\,s$^{-1}$\,Mpc$^{-1}$. The 66 gas-dominated galaxies, the subsample least sensitive to stellar masses, give $a_0 = (1.02$--$1.15)\times10^{-10}$ across four laws, consistent with $cH_0/2\pi$ within $1.3\sigma$. The two samples disagree at about $2.3\sigma$. Diagnostic subsets trace this disagreement to galaxies with bulges: star-dominated bulge galaxies prefer $a_0 = 1.91 \pm 0.18$, $5.4\sigma$ above bulgeless ones ($0.89 \pm 0.05$). Once bulges are removed, gas- and star-dominated galaxies agree and favour $a_0 \approx 0.93 \pm 0.04$, \emph{below} $cH_0/2\pi$. Defensible galaxy selections span $a_0 \approx 0.84$--$1.28$, so the measurement is systematics-limited at $\pm15$--$20\%$. A $\Lambda$-tied variant, $c\sqrt{\Lambda/3}/2\pi$, is disfavoured at $1.6$--$3.4\sigma$. The horizon hypothesis is therefore neither confirmed nor excluded; the limiting factor is the stellar (especially bulge) mass modelling.
+The specific law used in earlier EMRF drafts, $g = \sqrt{g_N^2 + a_0 g_N}$, is disfavoured: it fits worse than the RAR ($\Delta\mathrm{BIC} = +6{,}440$) and adds a constant $a_0/2$ in the Solar System, exceeding ephemeris bounds by orders of magnitude. With distances and inclinations held fixed, baryons plus a dark halo are preferred by BIC over every single-$a_0$ law. We discuss this caveat and state plainly which parts of EMRF are postulates, which are derived, and which remain open. This revision withdraws the empirical results of the earlier draft and Zenodo release, which were computed from synthetic data files.
 \end{abstract}
 
-\noindent\textbf{Keywords:} General Relativity, Emergent Gravity, Spacetime Thermodynamics, Galactic Center, S-Stars, Sagittarius A*, Astrometry, Bayesian Model Selection.
+\noindent\textbf{Keywords:} modified gravity, MOND, radial acceleration relation, SPARC, emergent gravity, de~Sitter horizon, Solar-System tests.
 
-\newpage
+\section*{Correction statement}
+An earlier draft of this work (October 5, 2026), and the associated software release (Zenodo DOI 10.5281/zenodo.23197308), reported Bayesian model comparisons for Sagittarius~A* S-stars, SPARC galaxies, high-redshift disks, wide binaries, cosmic expansion and the CMB. An independent audit (\texttt{docs/SHOW\_YOUR\_WORK.md} in the repository) found that the input tables for those comparisons were synthetic, although they had been labelled with real instruments and citations. Several regime ``tests'' also returned answers written into the code. All of those results are withdrawn. The synthetic files are quarantined in \texttt{data/synthetic/}. Every number in the present paper comes from public data with recorded checksums and can be reproduced with one command (see ``Reproducibility and data availability'').
 
 \section{Introduction}
+The near-universality of the radial acceleration relation (RAR) in rotating galaxies \cite{mcgaugh2016rar,lelli2016sparc,li2018} points to a characteristic acceleration $a_0 \approx 1.2\times10^{-10}$\,m\,s$^{-2}$. That is the scale of Milgrom's modified Newtonian dynamics (MOND) \cite{milgrom1983,famaey2012}. It has long been noted that $a_0 \approx cH_0/2\pi$ \cite{milgrom1999}, and entropic or emergent-gravity arguments have been offered for a horizon origin of this scale \cite{verlinde2011,verlinde2017,jacobson1995}.
 
-The quest to understand whether gravitational dynamics and matter fields possess an underlying thermodynamic or information-theoretic origin constitutes one of the most vibrant arenas of modern theoretical physics. Beginning with Sakharov's induced gravity \cite{sakharov1967}, Jacobson's derivation of Einstein field equations as a thermodynamic equation of state \cite{jacobson1995}, and Verlinde's entropic gravity conjecture \cite{verlinde2011}, substantial theoretical evidence suggests that gravitational acceleration may not represent a primitive fundamental interaction, but rather an emergent macroscopic manifestation of underlying microscopic spacetime degrees of freedom. Recent contemporary formulations by Bianconi \cite{bianconi2026} further formalize gravity as arising from statistical entropy and information geometry.
-
-Within this broader conceptual landscape, the \textbf{Compressed Space-Time Matter Hypothesis (CSTMH)}, operationalized in the Emergent Matter Research Framework (EMRF) \cite{lasalle2026emrf}, posits that observable matter density $M$ is not fundamental, but condenses from structured geometric, energetic, and entropic states of spacetime described at the macroscopic level as \textit{compression}:
-\begin{equation}
-M(X,t) = k \left[ \frac{C(X,t)}{C_0} \right]^\alpha
-\label{eq:ansatz}
-\end{equation}
-where $C(X,t)$ denotes an effective compression functional, $C_0$ is a reference normalization scale, $k$ is a dimensional scaling constant, and $\alpha$ is a dimensionless scaling exponent.
-
-A critical requirement of rigorous scientific modeling is that speculative hypotheses must not be protected by unfalsifiable parameter tuning. In this work, we implement an objective \textbf{Bifurcation Protocol}:
-\begin{enumerate}
-    \item \textbf{Branch A (Macroscopic Correspondence Proof):} If the Geometric Energy Organization functional $C(X,t)$ reduces to an invariant function of the spacetime metric and Riemann curvature tensor $f(g_{\mu\nu}, R^\rho_{\ \sigma\mu\nu})$, the framework demonstrates exact macroscopic correspondence with General Relativity. Analogous to how quantum mechanics corresponds to classical mechanics at macroscopic scales without ``collapsing'', EMRF analytically derives the exact Schwarzschild geometry in the strong-field limit from first principles without introducing ad-hoc physical degrees of freedom.
-    \item \textbf{Branch B (Novel Extension):} If precision empirical data demands $C(X,t) \not\equiv f(g_{\mu\nu})$ through a statistically significant reduction in residuals that justifies the additional model complexity, genuine novel physics is indicated.
-\end{enumerate}
-
-To adjudicate between these branches with millimeter-arcsecond precision, we test the framework against the Sagittarius~A* S-star cluster observed over three decades by ESO VLT (NACO, SINFONI, GRAVITY) \cite{gravity2018, gravity2020, gravity2022} and the newly reported near-horizon star S301 \cite{gravity2026s301}.
-
----
+EMRF starts from an ontological stance: space is dimensional, time parameterizes change, and entropy is an organizational state variable. It asks whether the horizon scale governs galactic dynamics. This paper turns that into a test with real data. We ask three questions. (i) Does a single global $a_0$ fit SPARC? (ii) Is it consistent with $cH_0/2\pi$? (iii) Which interpolating functions survive galaxy and Solar-System constraints together?
 
 \section{Theoretical Formulation and Spatial Ontology}
+\label{sec:theory}
 
-\subsection{Multidimensional Space Coordinates and Thermodynamic Coupling}
-
-A foundational conceptual clarification established by LaSalle (2026) governs the spatial ontology of EMRF. Early phenomenological prototypes frequently made the formal error of treating entropy $S$ or coordinate time $t$ as additional spatial dimensions on a Riemannian manifold. In the formalized EMRF framework:
+\subsection{Postulates}
 \begin{enumerate}
-    \item \textbf{Space is strictly dimensional:} Spatial coordinates span macroscopic spatial dimensions $(x, y, z)$ alongside extended topological or compactified spatial degrees of freedom $(d_0, d_1, d_2, \dots)$, defining coordinates on a $D$-dimensional spatial manifold $\mathcal{M}^D$:
-    \begin{equation}
-    X = \{x, y, z, d_0, d_1, d_2, \dots, d_m\} \in \mathcal{M}^D.
-    \end{equation}
-    \item \textbf{Time is dynamical parameter:} Coordinate time $t$ tracks temporal evolution, observation, and dynamical state changes; it does not serve as a spatial coordinate.
-    \item \textbf{Entropy is an organizational state variable:} Thermodynamic entropy $S(X,t)$ characterizes the local statistical microstate organization and informational configuration of energy-momentum within the spatial degrees of freedom. It couples into the compression functional as a scalar state field rather than a geometric coordinate axis.
+\item Space is dimensional: $X = \{x, y, z, d_0, d_1, \dots, d_m\} \in \mathcal{M}^D$.
+\item Coordinate time $t$ parameterizes change; it isn't a spatial axis.
+\item Entropy $S(X,t)$ is a state field that characterizes the organization of energy--momentum. It enters a compression functional $C(X,t) = \mathcal{F}(E, S, \mathrm{geom}, t)$.
 \end{enumerate}
+These postulates don't by themselves fix any observable. The quantitative content tested here is the horizon hypothesis below.
 
-\subsection{The Geometric Energy Organization (GEO) Functional}
-
-Under the formal mathematical formulation (Layer 3), the compression functional $C(X,t)$ is defined as the Geometric Energy Organization (GEO) functional, representing a synthesis of geometric curvature, quasi-local gravitational energy, and entropic organization:
+\subsection{The horizon hypothesis}
+The Unruh temperature of an accelerated observer is $T_U = \hbar a/(2\pi c k_B)$ \cite{unruh1976}. The Gibbons--Hawking temperature of a de~Sitter horizon is $T_{dS} = \hbar H/(2\pi k_B)$ \cite{gibbons1977}. Equating them gives $a = cH_0 \approx 6.5\times10^{-10}$\,m\,s$^{-2}$, which is too large by a factor of about $2\pi$. We therefore state as a \emph{hypothesis}, not a derivation:
 \begin{equation}
-C(X,t) = \mathcal{F}\Big( E_{\text{geom}}(X,t), \, S(X,t), \, \text{Curvature}(X,t), \, t \Big).
-\label{eq:compression_functional}
+a_0 = \frac{cH_0}{2\pi} =
+\begin{cases}
+1.042\times10^{-10}\ \mathrm{m\,s^{-2}}, & H_0 = 67.4\ \text{\cite{planck2020}},\\
+1.129\times10^{-10}\ \mathrm{m\,s^{-2}}, & H_0 = 73.0\ \text{\cite{riess2022}}.
+\end{cases}
+\label{eq:horizon}
 \end{equation}
-Under the geometric formulation ($C_G$), the local spatial curvature is quantified through coordinate-invariant contractions of the Riemann tensor. For spherically symmetric Schwarzschild backgrounds, the Kretschmann scalar serves as the fundamental curvature invariant:
-\begin{equation}
-K(r) = R^{\alpha\beta\gamma\delta} R_{\alpha\beta\gamma\delta} = \frac{48 G^2 M_{\text{BH}}^2}{c^4 r^6}.
-\label{eq:kretschmann}
-\end{equation}
-The intense $r^{-6}$ falloff of the Kretschmann invariant establishes extreme curvature gradients in the immediate vicinity of a supermassive black hole.
 
----
+\subsection{What is not yet derived}
+A canonical entropy-field Lagrangian $\mathcal{L}_S = -\tfrac12\kappa_S(\nabla S)^2 - V(S)$ linearizes about its vacuum far from sources. Its static fields then scale linearly with source mass, so it can't produce the deep-MOND scaling $g = \sqrt{GMa_0}/r \propto \sqrt{M}$. That requires a non-canonical kinetic structure \cite{bekenstein1984}. A complete relativistic theory must also produce gravitational lensing and the CMB acoustic peaks, as AeST does \cite{skordis2021}. Constructing an EMRF action with these properties is an open problem. Here the interpolating function is therefore treated phenomenologically.
 
-\section{Relativistic Baseline and Astrometric Projection Engine}
-
-\subsection{1PN Equations of Motion}
-
-In General Relativity, the motion of a test body orbiting a central mass $M_{\text{BH}}$ at post-Newtonian (1PN) order in harmonic/isotropic coordinates is governed by the acceleration:
-\begin{equation}
-\mathbf{a}_{\text{1PN}} = -\frac{G M_{\text{BH}}}{r^3} \mathbf{r} + \frac{G M_{\text{BH}}}{c^2 r^3} \left[ \left( 4 \frac{G M_{\text{BH}}}{r} - v^2 \right) \mathbf{r} + 4 (\mathbf{r} \cdot \mathbf{v}) \mathbf{v} \right].
-\label{eq:1pn_accel}
-\end{equation}
-Over one complete orbital revolution of semi-major axis $a$ and eccentricity $e$, Eq.~\eqref{eq:1pn_accel} induces the Schwarzschild pericenter advance:
-\begin{equation}
-\Delta \phi_{\text{GR}} = \frac{6 \pi G M_{\text{BH}}}{c^2 a (1 - e^2)}.
-\label{eq:pericenter_advance}
-\end{equation}
-For star S2 ($a \approx 1020\text{ AU}$, $e \approx 0.884$), Eq.~\eqref{eq:pericenter_advance} predicts $\Delta \phi_{\text{GR}} \approx 12.1'$ per revolution ($0.20^\circ/\text{orbit}$), which was detected by the GRAVITY Collaboration at $>5\sigma$ significance \cite{gravity2020}.
-
-\subsection{Thiele-Innes Sky-Plane Projection}
-
-To directly confront theoretical orbital trajectories with telescope observations, three-dimensional orbital coordinates $(x_{\text{orb}}, y_{\text{orb}}, 0)$ in the orbital plane are transformed to sky-projected astrometric offsets $(\Delta\alpha\cos\delta, \Delta\delta)$ and line-of-sight radial velocities $v_r$ using the Campbell/Thiele-Innes transformation:
+\section{Candidate Acceleration Laws}
+\label{sec:laws}
+We write $g = g_N\,\nu(y)$ with $y = g_N/a_0$ and compare four functions:
 \begin{align}
-\Delta\alpha\cos\delta &= \frac{r}{R_0} \Big( \cos\Omega \cos(\omega + \nu) - \sin\Omega \sin(\omega + \nu) \cos i \Big) \cdot \text{mas\_scale}, \\
-\Delta\delta &= \frac{r}{R_0} \Big( \sin\Omega \cos(\omega + \nu) + \cos\Omega \sin(\omega + \nu) \cos i \Big) \cdot \text{mas\_scale},
+\nu_{\mathrm{EMRF}}(y) &= \sqrt{1 + 1/y} &&\Leftrightarrow\ g = \sqrt{g_N^2 + a_0 g_N},\\
+\nu_{\mathrm{RAR}}(y) &= \left[1 - e^{-\sqrt{y}}\right]^{-1} && \text{\cite{mcgaugh2016rar}},\\
+\nu_{\mathrm{simple}}(y) &= \tfrac12 + \sqrt{\tfrac14 + 1/y},\\
+\nu_{\mathrm{standard}}(y) &= \sqrt{\tfrac12 + \tfrac12\sqrt{1 + 4/y^2}}.
 \end{align}
-where $\nu$ is the true anomaly, $i$ is orbital inclination, $\Omega$ is longitude of the ascending node, $\omega$ is argument of periapsis, and $R_0 \approx 8275\text{ pc}$ is the distance to the Galactic Center.
-
-The observed radial velocity $v_r$ incorporates the Newtonian kinematic projection, first-order transverse Doppler shift, and gravitational redshift:
+All four give $g \to \sqrt{a_0 g_N}$ for $y \ll 1$, and hence the baryonic Tully--Fisher relation $V^4 = GMa_0$. In the strong field they differ sharply:
 \begin{equation}
-v_r(t) = v_{z,0} + \Big[ \dot{z}_{\text{kin}}(t) \Big] + \frac{v(t)^2}{2 c} + \frac{G M_{\text{BH}}}{c \, r(t)}.
-\label{eq:radial_velocity}
+g - g_N \xrightarrow{y\gg1}
+\begin{cases}
+a_0/2 & \text{(EMRF law)},\\
+a_0 & \text{(simple)},\\
+a_0^2/(2g_N) & \text{(standard)},\\
+\propto g_N e^{-\sqrt{y}} & \text{(RAR)}.
+\end{cases}
+\label{eq:strong}
 \end{equation}
+Planetary ephemerides and Cassini radio tracking constrain anomalous accelerations in the outer Solar System far below $10^{-10}$\,m\,s$^{-2}$ \cite{hees2014,hees2016}. We adopt a deliberately generous bound of $10^{-12}$\,m\,s$^{-2}$. Even so, the EMRF and simple laws fail by roughly two orders of magnitude, while the RAR and standard laws pass. Our check ignores the External Field Effect quadrupole, which provides an additional Cassini constraint \cite{hees2014,hees2016}.
 
----
+\section{Data and Method}
+\label{sec:method}
+\textbf{Data.} We use the public SPARC rotation-curve files and galaxy table \cite{lelli2016sparc}, downloaded by \texttt{fetch\_real\_data.py}, which records SHA-256 checksums. We apply the standard cuts: quality flag $Q \le 2$ and inclination $i \ge 30^\circ$. This leaves 153 galaxies and 3{,}168 points. Velocity errors are floored at 1\,km\,s$^{-1}$. Distances and inclinations are fixed at catalogue values.
 
-\section{The Empirical Astrophysical Crucible: Sgr A* S-Star Cluster}
+\textbf{Baryons.} $V_{\mathrm{bar}}^2 = V_{\mathrm{gas}}|V_{\mathrm{gas}}| + \Upsilon_d V_d|V_d| + 1.4\,\Upsilon_d V_b|V_b|$. Each galaxy has one nuisance parameter $\Upsilon_d$ (3.6\,$\mu$m mass-to-light ratio) with a log-normal prior $0.5 \pm 0.1$\,dex \cite{li2018}. As systematic variants we also use (a) $\Upsilon_d = 0.5$, $\Upsilon_b = 0.7$ fixed, the convention of Ref.~\cite{mcgaugh2016rar}, and (b) $\Upsilon_d$ free without a prior.
 
-We compiled an observational catalog of 67 distinct epochs across 5 key relativistic stars orbiting Sagittarius~A*, yielding 201 individual astrometric and spectroscopic data points:
+\textbf{Global $a_0$.} For each law we profile $\chi^2 + \sum(\text{prior penalties})$ over a single global $a_0$, minimizing $\Upsilon_d$ galaxy by galaxy at each trial $a_0$. Statistical errors come from the profile curvature, rescaled by $\sqrt{\chi^2_\nu}$. We compare models with $\mathrm{BIC} = \chi^2 + k\ln N$ \cite{schwarz1978bic}.
+
+\textbf{Comparators.} Newtonian baryons only, and baryons plus a pseudo-isothermal dark halo (two extra parameters per galaxy).
+
+\textbf{Validation.} The pipeline is unit-tested on in-memory galaxies generated with known $a_0$. Under the conventions of Ref.~\cite{mcgaugh2016rar} it returns $a_0 = 1.222\times10^{-10}$\,m\,s$^{-2}$ for the RAR function, reproducing their $1.20 \pm 0.02\,(\mathrm{stat}) \pm 0.24\,(\mathrm{sys})$.
+
+\section{Results}
+\label{sec:results}
 
 \begin{table}[h!]
 \centering
 \small
-\caption{Orbital elements and physical parameters of the 5 evaluated S-stars orbiting Sgr A* ($M_{\text{BH}} = 4.3 \times 10^6 M_\odot$, $R_0 = 8275\text{ pc}$).}
-\label{tab:s_stars}
-\vspace{0.2cm}
-\begin{tabularx}{\textwidth}{lccccccX}
+\caption{Real SPARC results (153 galaxies, $N = 3{,}168$). $a_0$ in units of $10^{-10}$\,m\,s$^{-2}$. Baseline: $\Upsilon$ prior; the range spans the three $\Upsilon$ treatments. $\Delta$BIC is relative to the RAR. ``Solar'': anomalous acceleration at Saturn's orbit compared with a generous $10^{-12}$\,m\,s$^{-2}$ bound.}
+\label{tab:results}
+\begin{tabular}{lccccccc}
 \toprule
-\textbf{Star} & \textbf{Period (yr)} & \textbf{$a$ (AU)} & \textbf{Eccentricity $e$} & \textbf{Inclination $i$} & \textbf{$r_{\text{peri}}$ (AU)} & \textbf{$v_{\text{peri}} / c$} & \textbf{Observational Baseline} \\
+Law & $a_0$ (baseline) & $a_0$ range & stat.\ $\sigma$ & $\chi^2$ & $\chi^2_\nu$ & $\Delta$BIC & Solar \\
 \midrule
-\textbf{S2}   & 16.05 & 1020 & 0.884 & $134.5^\circ$ & 118.3 & 2.56\% & 21 epochs (2002--2022); GRAVITY VLTI \\
-\textbf{S29}  & 90.0  & 3448 & 0.969 & $144.3^\circ$ & 106.9 & 2.90\% & 12 epochs (2012--2024); high-eccentricity \\
-\textbf{S38}  & 19.2  & 1162 & 0.820 & $171.1^\circ$ & 209.2 & 1.50\% & 9 epochs (2003--2022); retrograde orbit \\
-\textbf{S55}  & 12.8  & 887  & 0.720 & $150.0^\circ$ & 248.4 & 1.70\% & 10 epochs (2004--2022); S0-102 \\
-\textbf{S301} & 8.7   & 620  & 0.960 & $78.0^\circ$  & 12.2  & 8.00\% & 15 epochs (2020--2026); Nature 2026 discovery \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{The Extreme Testing Crucible of Star S301}
-
-The discovery of star S301 by the GRAVITY Collaboration in Nature (August 2026) \cite{gravity2026s301} introduces a qualitatively new testing regime. Orbiting Sgr A* with a period of only 8.7 years, S301 plunges to within $12.2\text{ AU}$ of the black hole at $8\%$ of the speed of light ($24,000\text{ km/s}$). Because the Kretschmann invariant scales as $r^{-6}$ (Eq.~\eqref{eq:kretschmann}), S301 experiences a tidal curvature gradient:
-\begin{equation}
-\frac{K_{\text{peri}}(\text{S301})}{K_{\text{peri}}(\text{S2})} = \left( \frac{118.3\text{ AU}}{12.2\text{ AU}} \right)^6 \approx 8.2 \times 10^5 \approx 10^6.
-\end{equation}
-S301 experiences approximately one million times stronger tidal curvature than S2, providing an unprecedented crucible for any hypothesized space-compression coupling.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.88\textwidth]{figures/fig1_sgr_a_orbits.png}
-\caption{Simultaneous relativistic orbital trajectories of 5 S-stars (S2, S29, S38, S55, and the extreme near-horizon star S301) orbiting Sagittarius~A* ($M_{\text{BH}} = 4.3 \times 10^6 M_\odot$, $R_0 = 8275\text{ pc}$). The central black hole is marked by the black cross at $(0,0)$. S301 reaches a pericenter of $12.2\text{ AU}$ at $0.08c$, sampling tidal curvature $K \propto r^{-6}$ six orders of magnitude stronger than S2.}
-\label{fig:sgr_a_orbits}
-\end{figure}
-
----
-
-\section{Simultaneous Multi-Star Bayesian Model Comparison}
-
-\subsection{Statistical Methodology: Joint Log-Likelihood and Information Criteria}
-
-To evaluate whether the addition of an effective compression parameter $\beta$ is statistically justified, we construct the simultaneous joint log-likelihood over all $N_{\text{stars}} = 5$ stars:
-\begin{equation}
-\ln \mathcal{L}_{\text{joint}} = -\frac{1}{2} \sum_{j=1}^{5} \sum_{k=1}^{N_j} \left[ \frac{(\Delta \alpha_{j,k}^* - \Delta \hat{\alpha}_{j,k}^*)^2}{\sigma_{\alpha,j,k}^2} + \frac{(\Delta \delta_{j,k} - \Delta \hat{\delta}_{j,k})^2}{\sigma_{\delta,j,k}^2} + \frac{(v_{r,j,k} - \hat{v}_{r,j,k})^2}{\sigma_{v,j,k}^2} \right].
-\end{equation}
-Model selection is evaluated using the Bayesian Information Criterion (BIC) \cite{schwarz1978bic} and Akaike Information Criterion (AIC) \cite{akaike1974aic}:
-\begin{equation}
-\text{BIC} = K \ln(N_{\text{total}}) - 2 \ln \hat{\mathcal{L}}, \qquad \text{AIC} = 2 K - 2 \ln \hat{\mathcal{L}},
-\end{equation}
-where $N_{\text{total}} = 201$ and $K$ represents the free model parameters. In accordance with standard Jeffreys' scale for model evidence, $\Delta\text{BIC} = \text{BIC}_{\text{EMRF}} - \text{BIC}_{\text{GR}} \ge +10.0$ represents decisive evidence against the additional complexity of the model (favoring standard GR), whereas $\Delta\text{BIC} \le -10.0$ would signify decisive discovery evidence favoring novel physics.
-
-\subsection{Individual Star Results vs. Simultaneous Multi-Star Resolution}
-
-When evaluated on individual star datasets in isolation, the results revealed a critical methodological phenomenon:
-
-\begin{table}[h!]
-\centering
-\caption{Single-star model comparison versus simultaneous cluster joint fit.}
-\label{tab:bifurcation_results}
-\vspace{0.2cm}
-\begin{tabular}{lcccccc}
-\toprule
-\textbf{Target} & \textbf{Data Points} & \textbf{GR 1PN $\chi^2_{\text{red}}$} & \textbf{EMRF $\chi^2_{\text{red}}$} & \textbf{$\Delta\text{BIC} (\text{EMRF} - \text{GR})$} & \textbf{Single-Star Decision} \\
+EMRF $\sqrt{g_N^2 + a_0 g_N}$ & 1.300 & 1.30--1.59 & 0.017 & 38{,}546 & 12.8 & $+6{,}440$ & fail ($6.5\times10^{-11}$) \\
+RAR & 1.032 & 1.03--1.22 & 0.014 & 32{,}106 & 10.7 & 0 & pass \\
+simple & 1.060 & 1.06--1.18 & 0.015 & 33{,}194 & 11.0 & $+1{,}088$ & fail ($1.1\times10^{-10}$) \\
+standard & 1.344 & 1.34--1.77 & 0.017 & 42{,}655 & 14.2 & $+10{,}548$ & pass \\
 \midrule
-Star S2         & 63  & 238,283.9 & 242,696.8 & \textbf{+15.127} & Branch A (Favors GR) \\
-Star S29        & 36  & 1,610,175.8 & 1,669,812.0 & \textbf{+3.828}  & Inconclusive ($|\Delta\text{BIC}| < 10$) \\
-Star S38        & 27  & 324,977.5 & 343,029.1 & \textbf{-45.362}* & Branch B (Spurious Anomaly) \\
-Star S55        & 30  & 202,436.9 & 212,077.5 & \textbf{+18.114} & Branch A (Favors GR) \\
-Star S301       & 45  & 532,853.5 & 547,657.4 & \textbf{+91.964} & Branch A (Favors GR) \\
+Newton (baryons only) & --- & --- & --- & 364{,}991 & --- & $+332{,}876$ & --- \\
+Baryons + isothermal halo & --- & --- & --- & 7{,}009 & --- & $-22{,}639$ & --- \\
 \midrule
-\textbf{Cluster Joint} & \textbf{201} & \textbf{88,534,305.2} & \textbf{88,534,370.6} & \textbf{+70.743} & \textbf{Branch A (Macroscopic Correspondence)} \\
+\multicolumn{8}{l}{Horizon hypothesis $cH_0/2\pi$: 1.042 ($H_0 = 67.4$), 1.129 ($H_0 = 73.0$).}\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\noindent\textit{*Methodological Analysis of S38 Pseudo-Anomaly:}  
-In isolation, star S38 exhibited a negative Delta-BIC of $-45.362$. Without rigorous multi-star validation, an investigator might prematurely claim evidence for a novel non-GR compression force. However, S38 has only 9 observational epochs and an extreme orbital inclination ($i = 171.1^\circ$). When subjected to the **simultaneous joint cluster fit** where all stars share global physical parameters, the S38 anomaly is completely eliminated by the combined weight of S2, S29, S55, and S301. This demonstrates the indispensable necessity of multi-star simultaneous orbital modeling in relativistic astrophysics.
-
----
-
-\section{Discussion: Branch A as Macroscopic Correspondence with General Relativity}
-
-The global cluster result $\Delta\text{BIC}_{\text{joint}} = \mathbf{+70.743} \gg 10.0$ establishes that introducing an independent compression coupling $\beta$ into the orbital equations of motion is statistically rejected across the Sagittarius~A* nuclear cluster.
-
-Crucially, in the epistemology of the Emergent Matter Research Framework, \textbf{Branch A is not a failure, but a definitive scientific outcome}. Rather than introducing an ad-hoc fifth force or scalar modification that contradicts established relativistic tests, the Geometric Energy Organization functional $C(X,t)$ demonstrates exact macroscopic correspondence with the Schwarzschild geometry:
-\begin{equation}
-C(X,t) \equiv f(g_{\mu\nu}, R^{\alpha}_{\ \beta\gamma\delta}).
-\end{equation}
-This confirms that in the high-curvature, strong-field regime ($a \gg a_0$), EMRF operates as a valid geometric and thermodynamic dual representation of General Relativity, precisely matching the theoretical conclusions of Jacobson (1995) and Sakharov (1967).
-
----
-
-\section{Low-Acceleration Extension: Testing Cosmic Entropy Gradients (SPARC)}
-
-While the strong-field regime of Sagittarius~A* demonstrates Branch~A macroscopic correspondence with standard General Relativity, EMRF posits a distinct observational domain in the ultra-weak acceleration regime ($a \ll a_0 \approx 1.2 \times 10^{-10}\text{ m/s}^2$). In the outer disks of rotationally supported galaxies, local geometric Riemannian curvature vanishes ($K \propto r^{-6} \to 0$). In this regime, the dominant contribution to the effective gravitational acceleration arises from the cosmological de Sitter horizon entropy gradient $T_{\text{dS}} = \hbar c / (2\pi k_B R_H)$, providing an asymptotic acceleration floor:
-\begin{equation}
-g_{\text{eff}} = \sqrt{g_{\text{bar}}^2 + a_0 g_{\text{bar}}}, \quad a_0 \approx \frac{c H_0}{2\pi} \approx 1.20 \times 10^{-10}\text{ m/s}^2.
-\end{equation}
-
-To empirically test this weak-field prediction without fine-tuned dark matter halos, we ingested high-precision rotation curves from the Spitzer Photometry \& Accurate Rotation Curves (SPARC) database \cite{lelli2016sparc, mcgaugh2016rar} spanning 10 diverse archetype systems: gas-dominated dwarfs (DDO~154, IC~2574), low-surface-brightness spirals (NGC~1560), intermediate field spirals (NGC~2403, NGC~2903, NGC~6503, NGC~3198), and massive bulge-dominated giants (NGC~2841, NGC~7331, UGC~2885).
-
-Across 214 independent radial data points, we evaluated pure Newtonian baryonic gravity (no dark matter), the empirical Radial Acceleration Relation (RAR), and the EMRF cosmic entropy background model under Bayesian model selection.
-
-\begin{table}[h!]
+\begin{figure}[h!]
 \centering
-\small
-\caption{Empirical Model Comparison across 10 SPARC Galactic Rotation Curves (214 Data Points).}
-\label{tab:sparc_results}
-\begin{tabular}{lcccccc}
-\toprule
-\textbf{Galaxy} & \textbf{Type} & \textbf{Points} & \textbf{$\chi^2_{\text{Newton}}$} & \textbf{$\chi^2_{\text{RAR}}$} & \textbf{$\chi^2_{\text{EMRF}}$} & \textbf{$\Delta\text{BIC}$ (vs.\ Newton)} \\
-\midrule
-DDO~154   & IBm  & 18  & 1,420.5   & 710.2   & 712.4   & $-702.7$ \\
-IC~2574   & SABm & 22  & 1,890.1   & 742.0   & 745.8   & $-1,138.2$ \\
-NGC~1560  & Sd   & 20  & 845.2     & 18.5    & 24.1    & $-818.1$ \\
-NGC~2403  & Sc   & 25  & 3,210.4   & 24.2    & 38.6    & $-3,168.6$ \\
-NGC~2841  & Sb   & 15  & 4,890.0   & 85.0    & 112.4   & $-4,774.9$ \\
-NGC~2903  & SBbc & 22  & 6,450.8   & 310.4   & 380.2   & $-6,065.3$ \\
-NGC~3198  & Sc   & 25  & 8,720.0   & 412.0   & 520.1   & $-8,196.7$ \\
-NGC~6503  & Scd  & 28  & 4,110.2   & 12.8    & 18.4    & $-4,088.5$ \\
-NGC~7331  & Sb   & 20  & 11,240.0  & 920.5   & 1,180.2 & $-10,056.8$ \\
-UGC~2885  & Sc   & 19  & 19,057.0  & 4,617.6 & 5,606.5 & $-13,445.1$ \\
-\midrule
-\textbf{Joint Catalog} & \textbf{All 10} & \textbf{214} & \textbf{61,834.2} & \textbf{6,953.2} & \textbf{9,338.7} & $\mathbf{-52,490.1}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-As documented in Table~\ref{tab:sparc_results}, pure Newtonian baryonic gravity without dark matter fails catastrophically ($\chi^2 \approx 61,834$). The EMRF cosmic entropy background coupling captures the asymptotic flattening across all morphological types, decisively outperforming Newtonian baryons by $\mathbf{\Delta\text{BIC}_{\text{joint}} = -52,490.1 \ll -10.0}$. When stellar mass-to-light ratios ($\Upsilon_{\text{disk}}$) are fitted via L-BFGS-B bounded optimization, gas-dominated dwarfs yield physically expected negligible stellar weights ($\Upsilon_{\text{disk}} \approx 0.05$), while massive spirals recover standard population synthesis values ($\Upsilon_{\text{disk}} \approx 0.7 - 1.4$).
+\includegraphics[width=0.85\textwidth]{figures/fig_real_sparc_a0_profile.png}
+\caption{Profile of the global $a_0$ for the four laws (real SPARC data; $\Delta\chi^2$ rescaled by $\chi^2_\nu$). Dashed lines: $cH_0/2\pi$ for $H_0 = 67.4$ and $73.0$. Shaded: systematic band of Ref.~\cite{mcgaugh2016rar}.}
+\label{fig:profile}
+\end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/fig2_sparc_rotation_curves.png}
-\caption{Empirical rotation curves across four archetype SPARC galaxies spanning dwarf to giant morphologies (DDO~154, NGC~1560, NGC~3198, NGC~2841). Data points with error bars represent observed velocities $V_{\text{obs}}$. Grey dotted lines show pure Newtonian baryonic predictions ($V_{\text{bar}}$). Green dashed lines show the empirical Radial Acceleration Relation (RAR), and solid cyan lines show the EMRF cosmic horizon entropy acceleration floor $g_{\text{eff}} = \sqrt{g_{\text{bar}}^2 + a_0 g_{\text{bar}}}$, capturing the flat outer velocity profile without particle dark matter.}
-\label{fig:sparc_rotation_curves}
+\includegraphics[width=0.7\textwidth]{figures/fig_real_sparc_rar.png}
+\caption{Radial acceleration relation for the real SPARC sample, with the four laws at their best-fitting $a_0$. Lower panel: residuals with respect to the EMRF law.}
+\label{fig:rar}
 \end{figure}
 
----
-
-\section{Cosmological Redshift Evolution: Confronting JWST High-Redshift Kinematics}
-
-\subsection{Redshift Evolution of the Horizon Acceleration Scale}
-
-In the EMRF variational formulation, the critical weak-field acceleration scale $a_0$ is fundamentally dictated by the Gibbons-Hawking thermodynamic temperature of the cosmic de Sitter horizon:
-\begin{equation}
-T_{\text{dS}}(t) = \frac{\hbar c}{2\pi k_B R_H(t)} = \frac{\hbar H(t)}{2\pi k_B} \implies a_0(t) = \frac{c H(t)}{2\pi}.
-\end{equation}
-In an expanding Friedmann-Lema\^{\i}tre-Robertson-Walker (FLRW) spacetime with matter density $\Omega_m$ and dark energy $\Omega_\Lambda$ \cite{planck2020}, the expansion rate $H(z)$ evolves as:
-\begin{equation}
-H(z) = H_0 \sqrt{\Omega_m (1+z)^3 + \Omega_\Lambda}.
-\end{equation}
-Consequently, the entropic acceleration floor is not a static universal constant, but evolves deterministically with cosmological epoch:
-\begin{equation}
-a_0(z) = a_0(0) \cdot E(z) = a_0(0) \sqrt{\Omega_m (1+z)^3 + \Omega_\Lambda}.
-\label{eq:a0_redshift}
-\end{equation}
-
-\subsection{Baryonic Tully-Fisher Evolution and Empirical JWST Confrontation}
-
-In the deep entropic regime ($g \ll a_0$), the asymptotic circular rotation velocity scales as:
-\begin{equation}
-V_{\text{flat}}(z) = \left[ G M_{\text{bar}} a_0(z) \right]^{1/4} = V_{\text{flat}}(0) \cdot \left[ E(z) \right]^{1/4}.
-\label{eq:vflat_scaling}
-\end{equation}
-Eq.~\eqref{eq:vflat_scaling} delivers an unambiguous, testable prediction: disk galaxies at fixed baryonic mass rotate $+32\%$ faster at $z=2$ ($E(z) \approx 3.03$) and $+59\%$ faster at $z=4$ ($E(z) \approx 6.34$) relative to local counterparts.
-
-To test this prediction against recent observations from the James Webb Space Telescope (JWST NIRSpec) and ALMA \cite{degraaff2024}, we assembled a curated sample of 10 high-redshift disk galaxies spanning $z = 1.52$ to $z = 6.80$. We compared the EMRF evolving horizon model $a_0(z)$ against the standard static acceleration hypothesis ($a_0 = \text{const}$).
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.88\textwidth]{figures/fig4_jwst_redshift_evolution.png}
-\caption{Evolution of asymptotic galactic rotation velocity $V_{\text{flat}}(z)$ versus cosmological redshift $z$ normalized to a fiducial baryonic mass $M_{\text{bar}} = 10^{10} M_\odot$. Observational data points from JWST NIRSpec and ALMA ($z=1.52 - 6.80$) are shown with empirical error bars. The static acceleration model ($a_0 = \text{const}$, red dashed line) severely underpredicts early rotation velocities ($\chi^2 = 101.32$). The EMRF evolving horizon acceleration floor ($a_0(z) = c H(z) / 2\pi$, solid cyan curve) matches the data with high fidelity ($\chi^2 = 1.20$, $\Delta\text{BIC} = -100.08$).}
-\label{fig:jwst_evolution}
-\end{figure}
-
-The empirical results decisively favor the evolving horizon model:
-\begin{itemize}
-    \item \textbf{Static $a_0$ model:} $\chi^2 = 101.32$, with systematic negative residuals ($<-3\sigma$) at $z > 3$.
-    \item \textbf{EMRF Evolving $a_0(z)$:} $\chi^2 = 1.20$, with residuals strictly bounded within $|\sigma| < 0.61\sigma$ across all 10 galaxies.
-    \item \textbf{Bayesian Model Selection:} $\mathbf{\Delta\text{BIC} = -100.08 \ll -10.0}$, providing decisive statistical evidence for the cosmic horizon acceleration evolution.
-\end{itemize}
-
----
-
-\section{Conclusion: The Two-Regime Empirical Synthesis}
-
-Through rigorous mathematical formalization and automated continuous integration, the Emergent Matter Research Framework (EMRF) has transitioned from a speculative scaling ansatz to an empirically tested research platform. By confronting the model with both strong-field relativistic astrometry, weak-field galactic rotation curves, and high-redshift cosmological kinematics, we establish a unified multi-regime synthesis:
+The main findings (Table~\ref{tab:results}, Figs.~\ref{fig:profile}--\ref{fig:rar}) are:
 \begin{enumerate}
-    \item \textbf{Strong-Field Relativistic Regime ($a \gg a_0$, Sgr~A* Nuclear Cluster, $N=201$):} Tidal Kretschmann curvature ($K \propto r^{-6}$) suppresses diffuse background entropy gradients. Simultaneous multi-star fitting across S2, S29, S38, S55, and S301 decisively favors General Relativity ($\mathbf{\Delta\text{BIC} = +70.743}$). EMRF analytically derives the Schwarzschild geometry in the strong-field limit, establishing exact macroscopic correspondence (\textbf{Branch~A: Macroscopic Correspondence Proof}).
-    \item \textbf{Weak-Field Galactic Regime ($a \ll a_0$, SPARC Catalog, $N=214$):} Local curvature vanishes, allowing the de Sitter cosmic horizon entropy gradient to supply an asymptotic acceleration floor $g \approx \sqrt{a_0 g_{\text{bar}}}$. The model decisively outperforms Newtonian baryonic gravity by $\mathbf{\Delta\text{BIC} = -52,490.1}$, naturally reproducing flat rotation curves and the Baryonic Tully-Fisher Relation without non-baryonic particle dark matter.
-    \item \textbf{High-Redshift Horizon Evolution ($z = 1.5 - 6.8$, JWST/ALMA Sample, $N=10$):} Expansion of the cosmic de Sitter horizon leads to an epoch-dependent acceleration floor $a_0(z) = c H(z) / 2\pi$. The model captures the observed high rotation velocities of early disk galaxies ($\mathbf{\Delta\text{BIC} = -100.08}$).
-    \item \textbf{Methodological Precedent:} Simultaneous cluster-wide joint fitting eliminated a false-positive anomaly in S38 (single-star $\Delta\text{BIC} = -45.36$), proving the absolute necessity of multi-target constraints in modified gravity testing.
+\item \textbf{First pass: the horizon hypothesis is consistent with the data, but not confirmed} (superseded by the sharper test in Sec.~\ref{sec:marginalized}). For the RAR function the fitted $a_0$ spans $1.03$--$1.22$, which contains both values in Eq.~\eqref{eq:horizon}. The statistical uncertainty ($\sim$1\%) is much smaller than the $\Upsilon$ systematic ($\sim$20\%), in line with the published $\pm 0.24$ systematic \cite{mcgaugh2016rar}. A precision test would need independent stellar-mass and distance calibration.
+\item \textbf{The earlier EMRF law is disfavoured.} $\sqrt{g_N^2 + a_0 g_N}$ fits worse than the RAR by $\Delta\mathrm{BIC} = +6{,}440$, its preferred $a_0$ (1.30--1.59) lies above $cH_0/2\pi$, and its $a_0/2$ Solar-System offset is excluded.
+\item \textbf{Only the RAR function passes both tests} among those considered: it has the best galaxy fit and a negligible strong-field residual.
+\item \textbf{Caveat on dark halos.} With distances and inclinations fixed, halo fits (two extra parameters per galaxy) are preferred by BIC. Ref.~\cite{li2018} shows that marginalizing over distance and inclination substantially improves single-$a_0$ fits, so this comparison isn't yet like-for-like. We don't claim that the data rule out, or require, dark matter.
 \end{enumerate}
 
+\section{Sharpened Test: Marginalizing Distance and Inclination}
+\label{sec:marginalized}
+Holding distances and inclinations at their catalogue values understates the uncertainties and biases $a_0$. Following Ref.~\cite{li2018}, each galaxy now carries three nuisance parameters with Gaussian priors: $\log\Upsilon_d$ ($\pm0.1$\,dex), a distance factor $f_D$ ($\sigma = e_D/D$) and the inclination ($\sigma = e_i$). Under $D \to f_D D$, $g_{\mathrm{bar}}$ is invariant while $g_{\mathrm{obs}} \propto 1/f_D$; under $i \to i'$, the observed velocities scale by $\sin i/\sin i'$. In the deep regime $a_0$ and the stellar mass scale are degenerate ($g \simeq \sqrt{a_0 g_{\mathrm{bar}}}$ with $g_{\mathrm{bar}} \propto \Upsilon$). We therefore decided before fitting to report the 66 \emph{gas-dominated} galaxies (gas fraction $> 0.5$; 966 points) separately, and to vary the prior centre $\Upsilon_0 \in \{0.4, 0.5, 0.6\}$. The estimator is unbiased on in-memory galaxies generated with wrong catalogue distances and inclinations. For the RAR function and the full sample it returns $a_0 = 1.234\times10^{-10}$\,m\,s$^{-2}$, matching the value of Ref.~\cite{li2018} obtained with this method ($1.20 \pm 0.02$).
+
+\begin{table}[h!]
+\centering
+\small
+\caption{Global $a_0$ ($10^{-10}$\,m\,s$^{-2}$) with distance, inclination and $\Upsilon_\star$ marginalized ($\Upsilon_0 = 0.5$). Errors combine the $\chi^2_\nu$-rescaled statistical error with half the range over $\Upsilon_0$. Pulls are relative to $cH_0/2\pi$ for $H_0 = 67.4$ / $73.0$ and to $c\sqrt{\Lambda/3}/2\pi = 0.863$.}
+\label{tab:marginalized}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{3}{c}{All 153 galaxies ($\chi^2_\nu \approx 4.8$--$5.9$)} & \multicolumn{3}{c}{66 gas-dominated ($\chi^2_\nu \approx 2.6$)} \\
+Law & $a_0$ & pull (67.4 / 73.0) & pull ($\Lambda$) & $a_0$ & pull (67.4 / 73.0) & pull ($\Lambda$) \\
+\midrule
+RAR & $1.234 \pm 0.048$ & $+4.0$ / $+2.2$ & $+7.8$ & $1.019 \pm 0.082$ & $-0.3$ / $-1.3$ & $+1.9$ \\
+simple & $1.301 \pm 0.051$ & $+5.1$ / $+3.4$ & $+8.6$ & $1.023 \pm 0.081$ & $-0.2$ / $-1.3$ & $+2.0$ \\
+EMRF $\sqrt{g_N^2 + a_0 g_N}$ & $1.583 \pm 0.061$ & $+8.8$ / $+7.4$ & $+11.8$ & $1.145 \pm 0.083$ & $+1.2$ / $+0.2$ & $+3.4$ \\
+standard & $1.602 \pm 0.061$ & $+9.2$ / $+7.8$ & $+12.1$ & $1.144 \pm 0.087$ & $+1.2$ / $+0.2$ & $+3.2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/fig3_two_regime_synthesis.png}
-\caption{The unified 14-order-of-magnitude acceleration landscape of the Emergent Matter Research Framework. In the strong-field relativistic regime of Sagittarius~A* ($a/a_0 \sim 10^3 - 10^9$), tidal Kretschmann curvature establishes Branch~A macroscopic correspondence with General Relativity ($\Delta\text{BIC} = +70.74$). In the weak-field regime of SPARC galaxies ($a/a_0 \lesssim 1$), cosmological horizon entropy establishes an asymptotic acceleration floor ($\Delta\text{BIC} = -52,490.1$). In the high-redshift cosmological regime ($z \sim 1.5 - 6.8$), cosmic horizon expansion drives kinematic evolution ($\Delta\text{BIC} = -100.08$).}
-\label{fig:two_regime_synthesis}
+\includegraphics[width=0.8\textwidth]{figures/fig_real_sparc_a0_marginalized.png}
+\caption{Global $a_0$ with distance, inclination and $\Upsilon_\star$ marginalized, for all galaxies (blue) and the gas-dominated subsample (green). Dashed lines: $cH_0/2\pi$ (Planck, SH0ES). Dotted red line: the $\Lambda$-tied variant.}
+\label{fig:marginalized}
 \end{figure}
 
-All code, observational tables, and automated test suites (159+ passing tests) are open-source and reproducible at \url{https://github.com/kirklasalle/SpaceEntropyCompression}.
+The results (Table~\ref{tab:marginalized}, Fig.~\ref{fig:marginalized}) sharpen, and complicate, the conclusion of Sec.~\ref{sec:results}:
+\begin{enumerate}
+\item \textbf{Gas-dominated galaxies}, the subsample least sensitive to stellar masses and to the choice of law (spread $\pm0.06$ across laws), give $a_0 \approx 1.02$--$1.15$, consistent with $cH_0/2\pi$ within $1.3\sigma$ for both values of $H_0$ and every law.
+\item \textbf{The full sample} gives a higher, law-dependent $a_0$ (spread $\pm0.18$). For the best-fitting RAR law it lies $4.0\sigma$ (Planck) and $2.2\sigma$ (SH0ES) above $cH_0/2\pi$.
+\item \textbf{The two samples disagree} at about $2.3\sigma$ for the RAR law. Either the star-dominated galaxies carry unmodelled systematics (stellar-population gradients, bulges, non-circular motions), or a single $\nu(y)$ with a single $a_0$ doesn't describe both populations. Fits remain imperfect ($\chi^2_\nu > 1$). Section~\ref{sec:diagnostics} traces the disagreement to bulges.
+\item \textbf{The $\Lambda$-tied variant} $a_0 = c\sqrt{\Lambda/3}/2\pi$, which would make $a_0$ constant in time, is disfavoured at $1.9$--$3.4\sigma$ even in the gas-dominated sample. The $H(z)$-tracking variant is disfavoured by high-redshift kinematics (Sec.~\ref{sec:other}). Each of the two natural readings of the horizon hypothesis therefore faces tension.
+\item \textbf{The implied $H_0 = 2\pi a_0/c$} from the gas-dominated sample is $66 \pm 5$ (RAR) to $74 \pm 6$ (EMRF law)\,km\,s$^{-1}$\,Mpc$^{-1}$. That's too uncertain, and too dependent on the law, to inform the Hubble tension.
+\end{enumerate}
+
+\section{Diagnosing the Disagreement: Bulges, Not Gas}
+\label{sec:diagnostics}
+To find out where the gas/star disagreement comes from, we re-fitted the star-dominated galaxies after removing the places where stellar modelling, or the shape of the interpolating function, could bias $a_0$. The subsets were fixed before fitting: bulgeless galaxies only; ``deep'' points only ($g_{\mathrm{bar}} < 0.3\times1.2\times10^{-10}$\,m\,s$^{-2}$ at $\Upsilon = 0.5$, where every law reduces to $\sqrt{a_0 g_{\mathrm{bar}}}$); and locally gas-dominated points. Because removing bulges moved $a_0$ strongly, we then also fitted the complementary bulge galaxies. That step was added after seeing the first result, and we label it post hoc. All fits use the RAR law with distance, inclination and $\Upsilon_\star$ marginalized as in Sec.~\ref{sec:marginalized}.
+
+\begin{table}[h!]
+\centering
+\small
+\caption{Global $a_0$ ($10^{-10}$\,m\,s$^{-2}$) for diagnostic subsets of the real SPARC sample (RAR law). Pulls are relative to $cH_0/2\pi$ for $H_0 = 67.4$ / $73.0$.}
+\label{tab:diagnostics}
+\begin{tabular}{llrrccc}
+\toprule
+& Subset & Gal. & Pts & $a_0$ & $\chi^2_\nu$ & pull (67.4 / 73.0) \\
+\midrule
+A & gas-dominated (reference) & 66 & 966 & $1.019 \pm 0.080$ & 2.6 & $-0.3$ / $-1.4$ \\
+B & star-dominated, all points & 87 & 2202 & $1.276 \pm 0.062$ & 5.7 & $+3.8$ / $+2.4$ \\
+C & star-dominated, bulgeless & 56 & 1070 & $0.894 \pm 0.050$ & 4.4 & $-3.0$ / $-4.7$ \\
+D & star-dominated, deep points & 75 & 919 & $1.162 \pm 0.075$ & 2.7 & $+1.6$ / $+0.4$ \\
+E & star-dominated, local-gas points & 6 & 50 & $0.915 \pm 0.122$ & 0.6 & $-1.0$ / $-1.8$ \\
+F & star-dominated, bulgeless, deep & 50 & 614 & $0.840 \pm 0.065$ & 1.8 & $-3.1$ / $-4.4$ \\
+G & all galaxies, deep points & 141 & 1859 & $1.098 \pm 0.062$ & 2.6 & $+0.9$ / $-0.5$ \\
+H & star-dominated, with bulge (post hoc) & 31 & 1132 & $1.910 \pm 0.181$ & 6.6 & $+4.8$ / $+4.3$ \\
+I & with bulge, deep points (post hoc) & 25 & 305 & $1.616 \pm 0.149$ & 3.9 & $+3.9$ / $+3.3$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/fig_real_sparc_tension_diagnostics.png}
+\caption{Global $a_0$ for the diagnostic subsets of Table~\ref{tab:diagnostics}. Purple: deep or locally gas-dominated points only.}
+\label{fig:diagnostics}
+\end{figure}
+
+The findings are:
+\begin{enumerate}
+\item \textbf{The disagreement is driven by galaxies with bulges.} The 31 star-dominated bulge galaxies prefer $a_0 = 1.91 \pm 0.18$, $5.4\sigma$ above the 56 bulgeless star-dominated galaxies ($0.894 \pm 0.050$; independent samples). The gap persists in deep points alone ($4.8\sigma$), so it isn't confined to the inner, bulge-dominated radii. Bulge galaxies also fit worst ($\chi^2_\nu = 6.6$).
+\item \textbf{A single universal $a_0$ can't fit both populations with the current mass models.} Either the bulge mass models are wrong (in the deep regime $a_0$ and the baryonic mass are degenerate, so underestimated bulge masses or $\Upsilon_{\mathrm{bulge}}$ would mimic a larger $a_0$), or $a_0$ isn't universal. The second option would undermine MOND-type phenomenology and the horizon hypothesis alike. Distinguishing the two needs independent bulge mass estimates.
+\item \textbf{Once bulges are removed, gas- and star-dominated galaxies agree} ($1.3\sigma$). Their inverse-variance combination (post hoc) is $a_0 = 0.930 \pm 0.042$, which lies \emph{below} $cH_0/2\pi$ ($-2.7\sigma$ Planck, $-4.7\sigma$ SH0ES) and above the $\Lambda$-tied value ($+1.6\sigma$).
+\item \textbf{In the deep regime the law dependence collapses:} for subset D the four laws give $1.06$--$1.20$ (half-range $0.07$, versus $0.18$ for all points). Deep points of all galaxies give $1.098 \pm 0.062$, consistent with $cH_0/2\pi$ ($+0.9\sigma$ / $-0.5\sigma$), but that sample still includes bulge galaxies.
+\end{enumerate}
+Different defensible galaxy selections thus give $a_0$ between $0.84$ and $1.28$ (excluding the bulge-only subsets), a spread much larger than the formal errors. The determination of $a_0$ from current SPARC mass models is limited by systematics at the $\pm15$--$20\%$ level, in line with the $\pm0.24$ systematic of Ref.~\cite{mcgaugh2016rar}. At that level the data can't decide whether $a_0 = cH_0/2\pi$, and this test can't settle the hypothesis.
+
+\section{Status of Other Regimes and Prior Work}
+\label{sec:other}
+\textbf{Sagittarius~A* S-stars.} EMRF is \emph{required} to reduce to General Relativity when $a \gg a_0$. At the pericentres of S2 or S301 ($g \sim 1$--$100$\,m\,s$^{-2}$) every law in Sec.~\ref{sec:laws} differs from Newton by $\lesssim a_0$. These orbits therefore can't discriminate EMRF from GR, beyond confirming GR itself \cite{gravity2018,gravity2020,gravity2022,gravity2026s301}. The earlier claim that EMRF ``derives'' the Schwarzschild metric is withdrawn.
+
+\textbf{Redshift evolution.} If $a_0 = cH(z)/2\pi$, then $a_0$ grows by a factor $\simeq 3$ by $z = 2$. Rotation curves at $z \approx 1$--2.5 show baryon-dominated inner disks with \emph{lower} dark-matter fractions at higher redshift \cite{genzel2017,shachar2023}. That runs opposite to the trend expected from a growing $a_0$, so strong evolution is disfavoured. A real-data test is future work.
+
+\textbf{Wide binaries, clusters, lensing, CMB.} Gaia wide-binary analyses disagree \cite{chae2023,banik2024}, and careful treatments of triple-star contamination favour Newtonian dynamics \cite{banik2024}. MOND-type laws leave residual missing mass in clusters, including the Bullet Cluster \cite{clowe2006,angus2007}. Lensing and the CMB need a relativistic completion \cite{skordis2021}. EMRF currently makes no calculation in these regimes. Verlinde's entropic formula, a close relative of the horizon idea, was found inconsistent with the RAR of individual galaxies \cite{lelli2017verlinde}.
+
+\section{Conclusion}
+\label{sec:conclusion}
+Tested against real data, EMRF's horizon hypothesis $a_0 = cH_0/2\pi$ is neither confirmed nor excluded. Gas-dominated galaxies, the cleanest probe, agree with it. The full sample, which reproduces the literature value $a_0 \approx 1.2\times10^{-10}$, sits $2$--$4\sigma$ above it. That excess is driven by galaxies with bulges; bulgeless galaxies instead sit somewhat below $cH_0/2\pi$. With current mass models, $a_0$ is uncertain by $\pm15$--$20\%$, too much to decide the question. Neither natural reading of the hypothesis is free of tension: an $H(z)$-tracking $a_0$ runs against high-redshift kinematics, and a $\Lambda$-tied $a_0$ is too small. The specific law used in earlier EMRF drafts is disfavoured by both galaxies and the Solar System. The framework's open tasks are:
+(1) obtain independent bulge and stellar mass estimates (e.g.\ from stellar-population or dynamical modelling), so the bulge discrepancy can be attributed either to mass models or to a non-universal $a_0$;
+(2) derive an RAR-like interpolating function from an action with a non-canonical kinetic term;
+(3) test redshift evolution against published high-$z$ kinematics;
+(4) address lensing, clusters and the CMB with a relativistic completion.
+
+\section*{Reproducibility and data availability}
+\label{sec:repro}
+All code is at \url{https://github.com/kirklasalle/SpaceEntropyCompression}. \texttt{python emergent\_matter\_model/sparc\_real\_analysis.py} downloads SPARC \cite{lelli2016sparc}, verifies and records checksums, and regenerates Table~\ref{tab:results} and Figs.~\ref{fig:profile}--\ref{fig:rar} (results file \texttt{results/sparc\_real\_analysis.json}). \texttt{python emergent\_matter\_model/sparc\_marginalized\_a0.py} regenerates Table~\ref{tab:marginalized} and Fig.~\ref{fig:marginalized} (about 12 minutes; \texttt{results/sparc\_marginalized\_a0.json}). \texttt{python emergent\_matter\_model/sparc\_tension\_diagnostics.py} regenerates Table~\ref{tab:diagnostics} and Fig.~\ref{fig:diagnostics} (about 20 minutes; \texttt{results/sparc\_tension\_diagnostics.json}). The audit that motivated this revision, with every hand calculation written out, is in \texttt{docs/SHOW\_YOUR\_WORK.md}, and it is reproduced by \texttt{tools/show\_your\_work\_audit.py}.
 
 \section*{Acknowledgments}
-The author acknowledges the computational verification and architectural co-development provided by Antigravity (Google DeepMind). The author expresses deep appreciation for the public data archives of the European Southern Observatory (ESO), the GRAVITY Collaboration, and the SPARC Database Collaboration. The ethical principles, open-source planetary stewardship, and governance charter of the project are formalized separately in the repository community charter (\texttt{docs/COMMUNITY\_ETHICS.md}).
+The author thanks the SPARC team for making their data public. Software development and the audit were assisted by AI coding tools. All numerical claims were independently recomputed from public data, and the author takes responsibility for the content.
 
 \bibliographystyle{unsrt}
 \bibliography{references}

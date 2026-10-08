@@ -8,6 +8,9 @@ Compares:
 1. Pure Baryonic Newtonian gravity (no dark matter)
 2. Empirical Radial Acceleration Relation (RAR / McGaugh et al. 2016)
 3. EMRF Cosmic Entropy Gradient formulation (entropic compression boundary)
+
+NOTE: The CSV tables bundled in data/synthetic/sparc are SYNTHETIC code-testing fixtures,
+not SPARC data. The analysis of the real SPARC database lives in sparc_real_analysis.py.
 """
 
 from __future__ import annotations
@@ -21,6 +24,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+
+try:
+    from data_provenance import provenance_banner, skip_comment_lines
+except ImportError:  # imported as a package
+    from emergent_matter_model.data_provenance import provenance_banner, skip_comment_lines
 
 # Physical & Astrometric Constants (SI)
 G_CONST = 6.67430e-11                # Gravitational constant, m^3 kg^-1 s^-2
@@ -58,7 +66,7 @@ def load_sparc_galaxy(csv_path: Path | str) -> Tuple[str, List[SPARCDataPoint]]:
     points: List[SPARCDataPoint] = []
     
     with open(path, mode="r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(skip_comment_lines(f))
         for row in reader:
             pt = SPARCDataPoint(
                 radius_kpc=float(row["radius_kpc"]),
@@ -297,7 +305,7 @@ def evaluate_multi_sparc(
 ) -> Dict[str, Any]:
     """Evaluates multiple SPARC galaxies simultaneously."""
     base = Path(base_dir)
-    sparc_dir = base / "data" / "sparc"
+    sparc_dir = base / "data" / "synthetic" / "sparc"
     
     reports: List[Dict[str, Any]] = []
     total_points = 0
@@ -353,9 +361,9 @@ def evaluate_multi_sparc(
             "delta_bic_emrf_vs_newton": joint_delta_bic_newton,
             "delta_bic_emrf_vs_rar": joint_delta_bic_rar,
             "verdict": (
-                f"EMRF entropic background model decisively outperforms pure Newtonian baryonic gravity "
-                f"(Joint Delta-BIC = {joint_delta_bic_newton:.1f} << -10.0 across {total_points} data points). "
-                f"This demonstrates that EMRF naturally reproduces flat galactic rotation curves via entropic compression."
+                f"Joint Delta-BIC (EMRF - Newtonian) = {joint_delta_bic_newton:.1f} and "
+                f"(EMRF - RAR) = {joint_delta_bic_rar:+.1f} across {total_points} data points. "
+                "Any MOND-type law beats baryons-only Newtonian gravity; the RAR comparison is the informative one."
             )
         },
         "per_galaxy_reports": reports
@@ -384,11 +392,14 @@ def main():
     
     args = parser.parse_args()
     base_dir = Path(__file__).resolve().parent.parent
-    sparc_dir = base_dir / "data" / "sparc"
+    sparc_dir = base_dir / "data" / "synthetic" / "sparc"
     
     if args.galaxy.lower() == "all":
         galaxies = get_all_sparc_galaxy_names(sparc_dir)
         report = evaluate_multi_sparc(galaxies, base_dir, a_entropy=args.a0)
+        banner = provenance_banner(*[sparc_dir / f"{g}.csv" for g in galaxies])
+        if banner:
+            print(banner)
         
         print("\n" + "=" * 78)
         print(" EMRF SPARC GALACTIC ROTATION CURVE JOINT EVALUATION REPORT")
@@ -417,6 +428,9 @@ def main():
         gal_name = args.galaxy.lower().strip()
         csv_file = Path(args.csv) if args.csv else (sparc_dir / f"{gal_name}.csv")
         report = evaluate_sparc_galaxy(csv_file, a_entropy=args.a0)
+        banner = provenance_banner(csv_file)
+        if banner:
+            print(banner)
         
         print("\n" + "=" * 70)
         print(f" EMRF SPARC ROTATION CURVE EVALUATION: GALAXY {report['galaxy']}")

@@ -1,0 +1,16 @@
+# SYNTHETIC DATA -- NOT OBSERVATIONS. Generated during development as a code-testing fixture.
+# It does NOT come from any telescope, survey or publication and must NOT be cited as data.
+# See data/synthetic/README.md and docs/SHOW_YOUR_WORK.md for the audit that identified it.
+epoch,ra_mas,ra_err_mas,dec_mas,dec_err_mas,vr_kms,vr_err_kms,instrument
+2012.350,142.50,1.20,-240.20,1.40,680.0,25.0,SYNTHETIC
+2014.520,121.80,1.00,-205.60,1.20,950.0,20.0,SYNTHETIC
+2016.480,98.40,0.40,-168.10,0.45,1340.0,15.0,SYNTHETIC
+2018.380,68.20,0.15,-121.40,0.18,2100.0,10.0,SYNTHETIC
+2019.550,42.10,0.10,-82.50,0.12,3150.0,8.0,SYNTHETIC
+2020.620,12.80,0.06,-35.10,0.08,5420.0,6.0,SYNTHETIC
+2021.350,-4.50,0.04,-5.20,0.05,8450.0,5.0,SYNTHETIC
+2021.410,-8.12,0.03,-1.15,0.04,8680.0,4.0,SYNTHETIC
+2021.550,-12.40,0.04,18.60,0.05,7120.0,5.0,SYNTHETIC
+2022.380,-21.80,0.06,72.40,0.07,3890.0,7.0,SYNTHETIC
+2023.250,-26.40,0.08,114.20,0.10,2150.0,9.0,SYNTHETIC
+2024.150,-28.90,0.12,148.60,0.15,1420.0,12.0,SYNTHETIC

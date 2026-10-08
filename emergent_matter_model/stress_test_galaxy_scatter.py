@@ -37,7 +37,7 @@ KMS_TO_MS = 1000.0
 def compile_master_rar_dataset(data_dir: str | Path | None = None) -> List[dict]:
     """Compile all 214 SPARC points into a list of dictionaries using standard library csv."""
     if data_dir is None:
-        data_dir = Path(__file__).resolve().parent.parent / "data" / "sparc"
+        data_dir = Path(__file__).resolve().parent.parent / "data" / "synthetic" / "sparc"
     else:
         data_dir = Path(data_dir)
 
@@ -54,7 +54,7 @@ def compile_master_rar_dataset(data_dir: str | Path | None = None) -> List[dict]
 
     all_rows = []
     with open(summary_file, mode="r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(line for line in f if not line.lstrip().startswith("#"))
         for row in reader:
             gal_name = row["galaxy_id"]
             csv_path = data_dir / f"{gal_name.lower()}.csv"

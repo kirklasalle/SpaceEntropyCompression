@@ -88,7 +88,7 @@ def generate_figure_2_sparc_curves(output_dir: Path):
     axes = axes.flatten()
 
     repo_root = output_dir.parent.parent
-    sparc_dir = repo_root / "data" / "sparc"
+    sparc_dir = repo_root / "data" / "synthetic" / "sparc"
 
     targets = [
         {"file": "ddo154.csv", "name": "DDO 154 (Gas-Dominated Dwarf)", "ax_idx": 0},

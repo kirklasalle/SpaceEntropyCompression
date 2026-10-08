@@ -80,7 +80,10 @@ Taking the characteristic curvature scale $C_{\text{geom}}(r) \propto \sqrt{K(r)
 $$M(r, S) = k \left[ \frac{w_r \frac{r_s}{r^3} + w_S C_S(S)}{C_0} \right]^\alpha$$
 - If $\alpha = 1$, radial matter density decays as $r^{-3}$.
 - If $\alpha = 2$, radial matter density decays as $r^{-6}$ (matching tidal energy density).
-- If $\alpha = 1/3$, radial matter density decays as $r^{-1}$ (matching isothermal halo / flat rotation curve profiles).
+- If $\alpha = 1/3$, radial matter density decays as $r^{-1}$. (Correction 2026-10-07: this does **not** give flat rotation curves. $\rho \propto r^{-1}$ gives $M(r) \propto r^2$ and a rising $V \propto r^{1/2}$.)
+- If $\alpha = 2/3$, radial matter density decays as $r^{-2}$, the isothermal profile that gives a flat rotation curve.
+
+> Note: the scaling ansatz is phenomenological. It has free constants $(k, C_0, \alpha, w_i)$ and isn't derived from an action. See [`action_principle_derivation.md`](action_principle_derivation.md) for what is and isn't derived, and [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md) for the audit.
 
 ---
 

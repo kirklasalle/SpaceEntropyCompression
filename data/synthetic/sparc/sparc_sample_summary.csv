@@ -1,3 +1,6 @@
+# SYNTHETIC DATA -- NOT OBSERVATIONS. Generated during development as a code-testing fixture.
+# It does NOT come from any telescope, survey or publication and must NOT be cited as data.
+# See data/synthetic/README.md and docs/SHOW_YOUR_WORK.md for the audit that identified it.
 galaxy_id,hubble_type,distance_mpc,disk_scale_length_kpc,v_flat_kms,log_l_36_solar,n_points,description
 NGC2841,Sb,14.1,3.8,285.0,10.60,15,Massive bulge-dominated spiral
 NGC3198,Sc,13.8,3.2,150.0,10.05,25,Canonical benchmark spiral (van Albada 1985)

@@ -5,6 +5,32 @@ All notable changes to the EMRF / Space-Entropy Compression project are document
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-10-07: Integrity correction and first real-data test
+
+### Withdrawn
+- All empirical results of v0.5–v0.9.1 that were computed from synthetic data presented as observations, or from code with the answer built in. This covers S-star ΔBIC = +70.743 / +141.3, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, wide-binary ΔBIC = −60.26, CMB χ²ᵥ = 0.924, "28,700+ constraints", "Certified Level 5" / "100/100" audit scores, and the claim that EMRF "analytically derives the Schwarzschild metric". The full audit is in `docs/SHOW_YOUR_WORK.md`, reproducible with `tools/show_your_work_audit.py`.
+
+### Changed
+- **Data quarantine:** every non-authentic table moved to `data/synthetic/` with a `# SYNTHETIC DATA` banner. Real instrument and survey names were replaced (`SYN-Z01…`, `SYNTHETIC`), and a README explains the provenance. Pipelines that read these files print a `SYNTHETIC INPUT DATA` warning (`emergent_matter_model/data_provenance.py`).
+- **DESI BAO table** replaced with the official DR1 values (arXiv:2404.03002 Table 1, including correlation coefficients). Five of the 13 previous rows were wrong.
+- **`paper/main.tex` rewritten:** a real-data SPARC test of a₀ = cH₀/2π, a correction statement, and explicit assumed/derived/open labels. `paper/references.bib` has a corrected S301 entry, flags unverified entries, and adds verified references.
+- **`knowledgebase/action_principle_derivation.md` rewritten** with corrected numbers: Kretschmann values (off by ~10³⁴); a₀ = cH₀ ≈ 6.5×10⁻¹⁰ vs the cH₀/2π hypothesis; α = 2/3 (not 1/3) for flat rotation curves. It also shows that the canonical entropy Lagrangian can't produce MOND scaling.
+- Integrity notices added to 35 older documents; `.zenodo.json`, `codemeta.json`, `CITATION.cff` and `README.md` corrected.
+- `fit_astrometry.py`, `fit_sparc.py`, `fit_jwst.py`: docstrings and verdict text no longer overstate results.
+- The submission packager now includes only figures referenced by the manuscript.
+
+### Added
+- `emergent_matter_model/fetch_real_data.py`: downloads official SPARC files into the git-ignored `data/external/` and records SHA-256 checksums.
+- `emergent_matter_model/sparc_real_analysis.py`: global-a₀ profile for four interpolating functions on real SPARC (153 galaxies, 3,168 points), with Υ⋆ systematic variants, Newton and dark-halo comparators, a Solar-System check, results JSON, and two figures. It reproduces the published a₀ = 1.20×10⁻¹⁰ (gives 1.22) under the published conventions.
+- `emergent_matter_model/test_sparc_real_analysis.py` (13 offline tests).
+- `emergent_matter_model/sparc_marginalized_a0.py`: sharpened a₀ test with distance, inclination and Υ⋆ marginalized (Li et al. 2018 method), reported separately for gas-dominated galaxies, plus a Λ-tied variant and the implied H₀. Result: full sample 1.234 ± 0.048 (2–4σ above cH₀/2π); gas-dominated 1.019 ± 0.082 (consistent); the samples disagree at ~2.3σ. Figure `paper/figures/fig_real_sparc_a0_marginalized.png`; results in `results/sparc_marginalized_a0.json`.
+- `emergent_matter_model/test_sparc_marginalized_a0.py` (6 tests, including an unbiasedness test with deliberately wrong catalogue distances and inclinations).
+- `emergent_matter_model/sparc_tension_diagnostics.py`: subsets defined before fitting (bulgeless, deep-regime points, locally gas-dominated points), plus post hoc bulge-galaxy subsets. Result: the gas/star disagreement traces to bulge galaxies (a₀ = 1.91 ± 0.18 vs 0.894 ± 0.050 bulgeless, 5.4σ; 4.8σ in deep points). Bulgeless galaxies combined give 0.930 ± 0.042. Selections span 0.84–1.28, so a₀ is systematics-limited at ±15–20%. Figure `paper/figures/fig_real_sparc_tension_diagnostics.png`; results in `results/sparc_tension_diagnostics.json`; paper §"Diagnosing the Disagreement".
+- `emergent_matter_model/test_sparc_tension_diagnostics.py` (6 offline tests).
+
+### Fixed
+- `lensing_engine.py` crashed on NumPy ≥ 2 (`np.trapz` was evaluated eagerly); 3 tests now pass.
+
 ## [0.9.1] - 2026-10-07
 
 ### Refactored & Enhanced (Peer-Review Hardening per Audio Dossiers)

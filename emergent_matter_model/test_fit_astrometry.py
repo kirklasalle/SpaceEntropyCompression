@@ -97,7 +97,7 @@ class TestAstrometryCSVDataset:
 
     def test_load_s2_csv(self):
         base_dir = Path(__file__).resolve().parent.parent
-        csv_path = base_dir / "data" / "astrometry" / "s2_gravity_vlti.csv"
+        csv_path = base_dir / "data" / "synthetic" / "astrometry" / "s2_synthetic.csv"
         data = load_astrometry_csv(csv_path)
 
         assert len(data["epoch"]) == 21
@@ -108,7 +108,7 @@ class TestAstrometryCSVDataset:
 
     def test_load_s301_csv(self):
         base_dir = Path(__file__).resolve().parent.parent
-        csv_path = base_dir / "data" / "astrometry" / "s301_nature_2026.csv"
+        csv_path = base_dir / "data" / "synthetic" / "astrometry" / "s301_synthetic.csv"
         data = load_astrometry_csv(csv_path)
 
         assert len(data["epoch"]) == 15
@@ -143,7 +143,7 @@ class TestBayesianModelEvaluation:
 
     def test_s2_bifurcation_evaluation(self):
         base_dir = Path(__file__).resolve().parent.parent
-        csv_path = base_dir / "data" / "astrometry" / "s2_gravity_vlti.csv"
+        csv_path = base_dir / "data" / "synthetic" / "astrometry" / "s2_synthetic.csv"
         report = evaluate_astrometry_bifurcation(csv_path, S2_BENCHMARK_PARAMS, candidate_emrf_beta=0.005)
 
         assert report["target_star"] == "S2"
@@ -156,11 +156,11 @@ class TestBayesianModelEvaluation:
 
     def test_load_all_secondary_s_stars(self):
         base_dir = Path(__file__).resolve().parent.parent
-        data_dir = base_dir / "data" / "astrometry"
+        data_dir = base_dir / "data" / "synthetic" / "astrometry"
 
-        data_s29 = load_astrometry_csv(data_dir / "s29_gravity_vlti.csv")
-        data_s38 = load_astrometry_csv(data_dir / "s38_gravity_vlti.csv")
-        data_s55 = load_astrometry_csv(data_dir / "s55_gravity_vlti.csv")
+        data_s29 = load_astrometry_csv(data_dir / "s29_synthetic.csv")
+        data_s38 = load_astrometry_csv(data_dir / "s38_synthetic.csv")
+        data_s55 = load_astrometry_csv(data_dir / "s55_synthetic.csv")
 
         assert len(data_s29["epoch"]) == 12
         assert len(data_s38["epoch"]) == 9
@@ -173,7 +173,7 @@ class TestBayesianModelEvaluation:
         base_dir = Path(__file__).resolve().parent.parent
         report = evaluate_multi_star_bifurcation(
             star_names=["s2", "s29", "s38", "s55", "s301"],
-            data_dir=base_dir / "data" / "astrometry",
+            data_dir=base_dir / "data" / "synthetic" / "astrometry",
             candidate_emrf_beta=0.005
         )
 

@@ -35,7 +35,7 @@ except ImportError:
 
 @pytest.fixture
 def sparc_data_dir() -> Path:
-    return Path(__file__).resolve().parent.parent / "data" / "sparc"
+    return Path(__file__).resolve().parent.parent / "data" / "synthetic" / "sparc"
 
 
 class TestSPARCLoader:
@@ -130,7 +130,7 @@ class TestModelComparison:
         assert rep["models"]["emrf_entropic"]["chi2"] < rep["models"]["newtonian_baryon"]["chi2"]
 
     def test_evaluate_multi_sparc_all_ten_galaxies(self, sparc_data_dir: Path):
-        base_dir = sparc_data_dir.parent.parent
+        base_dir = sparc_data_dir.parent.parent.parent
         galaxies = get_all_sparc_galaxy_names(sparc_data_dir)
         rep = evaluate_multi_sparc(galaxies, base_dir)
         assert rep["n_galaxies"] >= 10
