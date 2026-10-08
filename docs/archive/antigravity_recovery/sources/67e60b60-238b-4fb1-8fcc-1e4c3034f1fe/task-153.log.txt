@@ -1,0 +1,30 @@
+........................................................................ [ 40%]
+.........F.............................................................. [ 80%]
+..................................                                       [100%]
+================================== FAILURES ===================================
+_____________________ test_manuscript_structural_sections _____________________
+
+paper_dir = WindowsPath('D:/Projects/SpaceEntropyCompression/paper')
+
+    def test_manuscript_structural_sections(paper_dir: Path):
+        tex_content = (paper_dir / "main.tex").read_text(encoding="utf-8")
+    
+        required_sections = [
+            "Introduction",
+            "Theoretical Formulation and Spatial Ontology",
+            "Relativistic Baseline and Astrometric Projection Engine",
+            "The Empirical Astrophysical Crucible: Sgr A* S-Star Cluster",
+            "Simultaneous Multi-Star Bayesian Model Comparison",
+            "Discussion: Branch A as a Geometric Reformulation of GR",
+            "Low-Acceleration Extension: Testing Cosmic Entropy Gradients (SPARC)",
+            "Conclusion: The Two-Regime Empirical Synthesis",
+        ]
+        for sec in required_sections:
+>           assert f"\\section{{{sec}" in tex_content or f"\\section*{{{sec}" in tex_content, f"Missing section: {sec}"
+E           AssertionError: Missing section: Discussion: Branch A as a Geometric Reformulation of GR
+E           assert ('\\section{Discussion: Branch A as a Geometric Reformulation of GR' in '\\documentclass[11pt,a4paper]{article}\n\n\\usepackage[utf8]{inputenc}\n\\usepackage[margin=1in]{geometry}\n\\usepack...(\\texttt{docs/COMMUNITY\\_ETHICS.md}).\n\n\\bibliographystyle{unsrt}\n\\bibliography{references}\n\n\\end{document}\n' or '\\section*{Discussion: Branch A as a Geometric Reformulation of GR' in '\\documentclass[11pt,a4paper]{article}\n\n\\usepackage[utf8]{inputenc}\n\\usepackage[margin=1in]{geometry}\n\\usepack...(\\texttt{docs/COMMUNITY\\_ETHICS.md}).\n\n\\bibliographystyle{unsrt}\n\\bibliography{references}\n\n\\end{document}\n')
+
+test_paper_submission.py:62: AssertionError
+=========================== short test summary info ===========================
+FAILED test_paper_submission.py::test_manuscript_structural_sections - Assert...
+1 failed, 177 passed in 12.18s

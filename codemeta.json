@@ -2,8 +2,7 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "Emergent Matter Research Framework (EMRF) / Space-Entropy Compression",
-  "version": "0.10.0",
-  "description": "Research code for the Emergent Matter Research Framework: real-data test of the hypothesis a0 = c H0 / (2 pi) against the SPARC rotation-curve database, Solar System consistency checks, relativistic orbit utilities, and an independent audit (docs/SHOW_YOUR_WORK.md). Synthetic fixtures are quarantined in data/synthetic/.",
+  "description": "Research software for geometric interpretations within general relativity, authenticated SPARC comparisons, covariance-aware Pantheon+/DESI baselines, and evidence/provenance audits. Candidate A is selected as a direction; the precise functional remains under review. No new matter/entropy theorem or all-regime empirical confirmation is established. Historical synthetic claims are withdrawn. Cite the exact main-branch commit; this metadata does not identify a new tagged or Zenodo release.",
   "license": "https://spdx.org/licenses/MIT",
   "codeRepository": "https://github.com/kirklasalle/SpaceEntropyCompression",
   "programmingLanguage": [
@@ -26,7 +25,7 @@
       "roleName": "Advanced Agentic Coding Partner"
     }
   ],
-  "datePublished": "2026-10-07",
+  "dateModified": "2026-10-08",
   "keywords": [
     "theoretical physics",
     "general relativity",

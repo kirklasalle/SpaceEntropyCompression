@@ -1,0 +1,50 @@
+{
+  "evidence_type": "software_algebra_diagnostics_not_observations",
+  "empirical_validation": false,
+  "quantum_mass_normalization": [
+    {
+      "name": "Electron",
+      "input_mass_kg": 9.1093837015e-31,
+      "reported_mass_kg": 9.1093837015e-31,
+      "relative_difference": 0.0,
+      "interpretation": "input mass recovered by explicit normalization; not a prediction"
+    },
+    {
+      "name": "Proton",
+      "input_mass_kg": 1.67262192369e-27,
+      "reported_mass_kg": 1.67262192369e-27,
+      "relative_difference": 0.0,
+      "interpretation": "input mass recovered by explicit normalization; not a prediction"
+    },
+    {
+      "name": "Higgs Boson",
+      "input_mass_kg": 2.233e-25,
+      "reported_mass_kg": 2.233e-25,
+      "relative_difference": 0.0,
+      "interpretation": "input mass recovered by explicit normalization; not a prediction"
+    }
+  ],
+  "black_hole_identity": {
+    "input_mass_msun": 4297000.0,
+    "area_m2": 2.023798569903952e+21,
+    "entropy_J_per_K": 2.6740578616312148e+67,
+    "coefficient_S_lP2_over_kBA": 0.25000000000000006,
+    "interpretation": "quarter coefficient assumed in standard formula, not derived"
+  },
+  "temperature_equality": {
+    "a_over_cH": 1.0,
+    "hypothesis_a0_over_cH": 0.15915494309189535,
+    "interpretation": "equating the two temperatures cancels both 2pi factors"
+  },
+  "conditional_density_scaling": {
+    "rho_power": "-3 alpha if C proportional to sqrt(K) proportional to r^-3",
+    "V2_power": "2 - 3 alpha under stated spherical integral assumptions",
+    "flat_speed_alpha": 0.6666666666666666,
+    "interpretation": "conditional algebra, not self-consistent field solution"
+  },
+  "source_sha256": {
+    "emergent_matter_model\\quantum_vibrational_compression.py": "b5682d894639fbae44e5d83f1bcf4e9a19c73fcc63c9b1f7f136ea2d8dd5db31",
+    "emergent_matter_model\\black_hole_horizon_entropy.py": "8ea2a5b4d1c3cf89399a5f811bf6acf8edb1517ceefa841bae9e9f89efe849c1",
+    "tools\\check_compression_claims.py": "576e453b55fb268f528cc45080ea28a08596ccd4d7c1b31104b4be2ec728fe54"
+  }
+}

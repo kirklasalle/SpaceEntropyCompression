@@ -1,0 +1,123 @@
+{
+  "evidence_kind": "exact_background_algebra_not_observations",
+  "physical_model_implemented": false,
+  "author_selected_specific_functional": false,
+  "assumptions": [
+    "Four-dimensional GR, signature (-+++), unit timelike n.n=-1, x0=ct",
+    "Einstein equation includes explicit cosmological constant",
+    "Perfect-fluid probes use the comoving observer",
+    "Schwarzschild probes have Lambda=0, spherical symmetry and r > r_s",
+    "Brown-York uses the static slice, round boundary, flat reference and positive convention",
+    "Mass/radius and fluid values are stipulated mathematical benchmarks, not measurements"
+  ],
+  "perfect_fluid_same_energy_density": {
+    "input_epsilon_J_m3": 90000000000.0,
+    "dust": {
+      "ricci_scalar_m_minus2": 1.8689826985604745e-32,
+      "einstein_projection_minus_lambda_m_minus2": 1.8689826985604745e-32,
+      "ricci_timelike_projection_m_minus2": 9.344913492802372e-33,
+      "observer_energy_mass_density_kg_m3": 1.0013850504482567e-06
+    },
+    "radiation": {
+      "ricci_scalar_m_minus2": 0.0,
+      "einstein_projection_minus_lambda_m_minus2": 1.8689826985604745e-32,
+      "ricci_timelike_projection_m_minus2": 1.8689826985604745e-32,
+      "observer_energy_mass_density_kg_m3": 1.0013850504482567e-06
+    },
+    "conclusion": "Ricci scalar alone misses nonzero trace-free radiation energy"
+  },
+  "einstein_projection_mapping": {
+    "alpha": 1.0,
+    "C0_m_minus2": 1e-20,
+    "k_kg_m3": 535791.5036985318,
+    "mapped_density_kg_m3": 1.0013850504482564e-06,
+    "meaning": "GR energy-density identity; not baryonic rest density or emergent-matter proof"
+  },
+  "vacuum_and_quasilocal": [
+    {
+      "mass_input_kg": 1.98847e+30,
+      "areal_radius_m": 2982.872775887547,
+      "r_over_rs": 1.01,
+      "kretschmann_m_minus4": 1.48593419419186e-13,
+      "tidal_curvature_sqrtK_m_minus2": 3.854781698347988e-07,
+      "ricci_scalar_m_minus2": 0.0,
+      "local_stress_energy_mass_density_kg_m3": 0.0,
+      "misner_sharp_mass_kg": 1.9884700000000003e+30,
+      "brown_york_energy_over_c2_kg": 3.6170318764733966e+30,
+      "mass_from_K_and_areal_radius_kg": 1.98847e+30
+    },
+    {
+      "mass_input_kg": 1.98847e+30,
+      "areal_radius_m": 5906.678764133757,
+      "r_over_rs": 2.0,
+      "kretschmann_m_minus4": 2.4646079525026845e-15,
+      "tidal_curvature_sqrtK_m_minus2": 4.964481798237037e-08,
+      "ricci_scalar_m_minus2": 0.0,
+      "local_stress_energy_mass_density_kg_m3": 0.0,
+      "misner_sharp_mass_kg": 1.98847e+30,
+      "brown_york_energy_over_c2_kg": 2.3296375152559435e+30,
+      "mass_from_K_and_areal_radius_kg": 1.98847e+30
+    },
+    {
+      "mass_input_kg": 1.98847e+30,
+      "areal_radius_m": 29533.393820668785,
+      "r_over_rs": 10.0,
+      "kretschmann_m_minus4": 1.5773490896017179e-19,
+      "tidal_curvature_sqrtK_m_minus2": 3.9715854385896295e-10,
+      "ricci_scalar_m_minus2": 0.0,
+      "local_stress_energy_mass_density_kg_m3": 0.0,
+      "misner_sharp_mass_kg": 1.9884699999999994e+30,
+      "brown_york_energy_over_c2_kg": 2.0408344465098966e+30,
+      "mass_from_K_and_areal_radius_kg": 1.98847e+30
+    },
+    {
+      "mass_input_kg": 1.98847e+30,
+      "areal_radius_m": 2953339.3820668785,
+      "r_over_rs": 1000.0,
+      "kretschmann_m_minus4": 1.5773490896017183e-31,
+      "tidal_curvature_sqrtK_m_minus2": 3.97158543858963e-16,
+      "ricci_scalar_m_minus2": 0.0,
+      "local_stress_energy_mass_density_kg_m3": 0.0,
+      "misner_sharp_mass_kg": 1.9884700000000017e+30,
+      "brown_york_energy_over_c2_kg": 1.988967366214208e+30,
+      "mass_from_K_and_areal_radius_kg": 1.9884700000000003e+30
+    }
+  ],
+  "same_K_different_mass_and_radius": [
+    {
+      "mass_input_kg": 1.98847e+30,
+      "areal_radius_m": 29533.393820668785,
+      "r_over_rs": 10.0,
+      "kretschmann_m_minus4": 1.5773490896017179e-19,
+      "tidal_curvature_sqrtK_m_minus2": 3.9715854385896295e-10,
+      "ricci_scalar_m_minus2": 0.0,
+      "local_stress_energy_mass_density_kg_m3": 0.0,
+      "misner_sharp_mass_kg": 1.9884699999999994e+30,
+      "brown_york_energy_over_c2_kg": 2.0408344465098966e+30,
+      "mass_from_K_and_areal_radius_kg": 1.98847e+30
+    },
+    {
+      "mass_input_kg": 1.590776e+31,
+      "areal_radius_m": 59066.78764133757,
+      "r_over_rs": 2.5,
+      "kretschmann_m_minus4": 1.5773490896017179e-19,
+      "tidal_curvature_sqrtK_m_minus2": 3.9715854385896295e-10,
+      "ricci_scalar_m_minus2": 0.0,
+      "local_stress_energy_mass_density_kg_m3": 0.0,
+      "misner_sharp_mass_kg": 1.5907759999999995e+31,
+      "brown_york_energy_over_c2_kg": 1.7928310444535502e+31,
+      "mass_from_K_and_areal_radius_kg": 1.590776e+31
+    }
+  ],
+  "conclusions": [
+    "sqrt(K)>0 can coexist with zero local material density",
+    "Scalar K alone does not determine enclosed mass without further geometric information",
+    "Brown-York and Misner-Sharp are different specified regional quantities",
+    "Conventional curvature data do not determine a thermal entropy or heating rate alone",
+    "These statements do not disprove every compression functional"
+  ],
+  "source_sha256": {
+    "tools\\check_candidate_a_definitions.py": "b734832782f108ec550fa72bd8cc9b2e93cb4008a658bae8c53520a7ab128707",
+    "emergent_matter_model\\physics_baseline.py": "eaf4bb6e966dab274daaa7fd99ced3e4aea5f054436ddf4b1833e198d43a00e0"
+  }
+}

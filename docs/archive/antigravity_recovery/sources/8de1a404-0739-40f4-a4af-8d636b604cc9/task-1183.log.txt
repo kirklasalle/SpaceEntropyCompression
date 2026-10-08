@@ -1,0 +1,168 @@
+[1/3] Python tests & physics check
+============================= test session starts =============================
+platform win32 -- Python 3.10.0, pytest-8.4.2, pluggy-1.6.0 -- D:\Projects\theory\SpaceEntropyCompression\emergent_matter_model\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\Projects\theory\SpaceEntropyCompression\emergent_matter_model
+configfile: pyproject.toml
+testpaths: .
+collecting ... collected 99 items
+
+test_fit_astrometry.py::TestKeplerAndTrueAnomaly::test_zero_mean_anomaly PASSED [  1%]
+test_fit_astrometry.py::TestKeplerAndTrueAnomaly::test_pi_mean_anomaly PASSED [  2%]
+test_fit_astrometry.py::TestKeplerAndTrueAnomaly::test_array_convergence PASSED [  3%]
+test_fit_astrometry.py::TestKeplerAndTrueAnomaly::test_true_anomaly_boundary_conditions PASSED [  4%]
+test_fit_astrometry.py::TestSkyPlaneProjection::test_distance_inverse_scaling PASSED [  5%]
+test_fit_astrometry.py::TestSkyPlaneProjection::test_relativistic_redshift_positivity PASSED [  6%]
+test_fit_astrometry.py::TestAstrometryCSVDataset::test_load_s2_csv PASSED [  7%]
+test_fit_astrometry.py::TestAstrometryCSVDataset::test_load_s301_csv PASSED [  8%]
+test_fit_astrometry.py::TestAstrometryCSVDataset::test_missing_csv_raises_file_not_found PASSED [  9%]
+test_fit_astrometry.py::TestBayesianModelEvaluation::test_zero_residuals_perfect_fit PASSED [ 10%]
+test_fit_astrometry.py::TestBayesianModelEvaluation::test_s2_bifurcation_evaluation PASSED [ 11%]
+test_fit_astrometry.py::TestBayesianModelEvaluation::test_load_all_secondary_s_stars PASSED [ 12%]
+test_fit_astrometry.py::TestBayesianModelEvaluation::test_multi_star_joint_bifurcation_evaluation PASSED [ 13%]
+test_fit_astrometry.py::TestBayesianModelEvaluation::test_unknown_star_raises_key_error PASSED [ 14%]
+test_fit_jwst.py::TestCosmologicalEvolution::test_hubble_factor_at_z_zero PASSED [ 15%]
+test_fit_jwst.py::TestCosmologicalEvolution::test_hubble_factor_monotonically_increases PASSED [ 16%]
+test_fit_jwst.py::TestCosmologicalEvolution::test_negative_redshift_raises PASSED [ 17%]
+test_fit_jwst.py::TestCosmologicalEvolution::test_critical_acceleration_at_z_zero PASSED [ 18%]
+test_fit_jwst.py::TestCosmologicalEvolution::test_critical_acceleration_at_high_z PASSED [ 19%]
+test_fit_jwst.py::TestBTFRPrediction::test_predict_flat_velocity_scaling PASSED [ 20%]
+test_fit_jwst.py::TestJWSTCatalogAndEvaluation::test_load_catalog PASSED [ 21%]
+test_fit_jwst.py::TestJWSTCatalogAndEvaluation::test_evaluate_kinematics_evolving_favored PASSED [ 22%]
+test_fit_sparc.py::TestSPARCLoader::test_load_sparc_galaxy_ngc6503 PASSED [ 23%]
+test_fit_sparc.py::TestSPARCLoader::test_load_all_ten_galaxies PASSED    [ 24%]
+test_fit_sparc.py::TestSPARCLoader::test_load_sparc_missing_file_raises PASSED [ 25%]
+test_fit_sparc.py::TestCatalogValidation::test_list_available_galaxies PASSED [ 26%]
+test_fit_sparc.py::TestCatalogValidation::test_validate_sparc_table_valid PASSED [ 27%]
+test_fit_sparc.py::TestCatalogValidation::test_validate_catalog_total_points PASSED [ 28%]
+test_fit_sparc.py::TestVelocityFormulations::test_baryonic_velocity_positive PASSED [ 29%]
+test_fit_sparc.py::TestVelocityFormulations::test_rar_velocity_exceeds_baryons_in_weak_acceleration PASSED [ 30%]
+test_fit_sparc.py::TestVelocityFormulations::test_emrf_entropic_velocity_exceeds_baryons PASSED [ 31%]
+test_fit_sparc.py::TestVelocityFormulations::test_boundary_zero_radius_or_velocity PASSED [ 32%]
+test_fit_sparc.py::TestModelComparison::test_evaluate_single_galaxy_ngc6503 PASSED [ 33%]
+test_fit_sparc.py::TestModelComparison::test_evaluate_gas_dominated_dwarf_ddo154 PASSED [ 34%]
+test_fit_sparc.py::TestModelComparison::test_evaluate_multi_sparc_all_ten_galaxies PASSED [ 35%]
+test_fit_sparc.py::TestParameterOptimization::test_optimize_sparc_galaxy_ngc6503 PASSED [ 36%]
+test_fit_sparc.py::TestParameterOptimization::test_optimize_gas_dominated_dwarf_ddo154 PASSED [ 37%]
+test_model.py::TestConstruction::test_basic PASSED                       [ 38%]
+test_model.py::TestConstruction::test_weights_normalised PASSED          [ 39%]
+test_model.py::TestConstruction::test_mismatched_weights_raises PASSED   [ 40%]
+test_model.py::TestConstruction::test_from_spatial_and_entropy PASSED    [ 41%]
+test_model.py::TestConstruction::test_n_alias PASSED                     [ 42%]
+test_model.py::TestConstruction::test_repr PASSED                        [ 43%]
+test_model.py::TestCurvature::test_uniform_weights_identity_funcs PASSED [ 44%]
+test_model.py::TestCurvature::test_weighted PASSED                       [ 45%]
+test_model.py::TestCurvature::test_nonlinear_funcs PASSED                [ 46%]
+test_model.py::TestMatter::test_basic PASSED                             [ 47%]
+test_model.py::TestMatter::test_k_scaling PASSED                         [ 48%]
+test_model.py::TestMatter::test_alpha_power PASSED                       [ 49%]
+test_model.py::TestMatter::test_C0_normalisation PASSED                  [ 50%]
+test_model.py::TestMatter::test_C0_zero_returns_nan PASSED               [ 51%]
+test_model.py::TestMatter::test_negative_curvature_odd_alpha PASSED      [ 52%]
+test_model.py::TestSimulateGrid::test_shape PASSED                       [ 53%]
+test_model.py::TestSimulateGrid::test_mismatched_grid_raises PASSED      [ 54%]
+test_model.py::TestSimulateGrid::test_values_match_pointwise PASSED      [ 55%]
+test_model.py::TestSimulateGridVectorized3D::test_shape PASSED           [ 56%]
+test_model.py::TestSimulateGridVectorized3D::test_matches_brute_force PASSED [ 57%]
+test_model.py::TestSimulateGridVectorized3D::test_fallback_for_non4d PASSED [ 58%]
+test_model.py::TestEntropyAsDimension::test_entropy_contributes_to_curvature PASSED [ 59%]
+test_model.py::TestEntropyAsDimension::test_entropy_weight_matters PASSED [ 60%]
+test_model.py::TestEntropyAsDimension::test_monotonic_entropy_curvature PASSED [ 61%]
+test_model.py::TestTheoreticalFormulationsAndBifurcation::test_geometry_formulation_cg PASSED [ 62%]
+test_model.py::TestTheoreticalFormulationsAndBifurcation::test_energy_formulation_ce PASSED [ 63%]
+test_model.py::TestTheoreticalFormulationsAndBifurcation::test_entropy_formulation_cs PASSED [ 64%]
+test_model.py::TestTheoreticalFormulationsAndBifurcation::test_bifurcation_branch_a_geometric_collapse PASSED [ 65%]
+test_model.py::TestTheoreticalFormulationsAndBifurcation::test_bifurcation_branch_b_novel_extension PASSED [ 66%]
+test_paper_submission.py::test_manuscript_files_exist PASSED             [ 67%]
+test_paper_submission.py::test_citation_keys_resolve PASSED              [ 68%]
+test_paper_submission.py::test_labels_and_refs_resolve PASSED            [ 69%]
+test_paper_submission.py::test_manuscript_structural_sections PASSED     [ 70%]
+test_physics_baseline.py::TestKeplerSolver::test_circular_orbit_zero_eccentricity PASSED [ 71%]
+test_physics_baseline.py::TestKeplerSolver::test_kepler_residual_convergence PASSED [ 72%]
+test_physics_baseline.py::TestKeplerSolver::test_invalid_eccentricity_raises PASSED [ 73%]
+test_physics_baseline.py::TestKeplerianOrbit::test_period_and_vis_viva_conservation PASSED [ 74%]
+test_physics_baseline.py::TestKretschmannInvariant::test_kretschmann_r6_falloff PASSED [ 75%]
+test_physics_baseline.py::TestKretschmannInvariant::test_kretschmann_array_input PASSED [ 76%]
+test_physics_baseline.py::TestKretschmannInvariant::test_zero_or_negative_radius_raises PASSED [ 77%]
+test_physics_baseline.py::TestRelativisticSchwarzschild::test_star_s2_pericenter_precession PASSED [ 78%]
+test_physics_baseline.py::TestRelativisticSchwarzschild::test_star_s301_extreme_precession PASSED [ 79%]
+test_physics_baseline.py::TestRelativisticSchwarzschild::test_1pn_acceleration_direction_and_magnitude PASSED [ 80%]
+test_physics_baseline.py::TestRelativisticSchwarzschild::test_short_orbit_integration PASSED [ 81%]
+test_server_api.py::test_simulate_success PASSED                         [ 82%]
+test_server_api.py::test_legacy_route_parity PASSED                      [ 83%]
+test_server_api.py::test_missing_required_field PASSED                   [ 84%]
+test_server_api.py::test_non_json_body PASSED                            [ 85%]
+test_server_api.py::test_n_must_be_integer PASSED                        [ 86%]
+test_server_api.py::test_n_must_be_positive PASSED                       [ 87%]
+test_server_api.py::test_weights_length_must_match_n PASSED              [ 88%]
+test_server_api.py::test_weights_must_be_finite_numeric PASSED           [ 89%]
+test_server_api.py::test_weights_sum_not_zero PASSED                     [ 90%]
+test_server_api.py::test_x_grid_length_must_match_n PASSED               [ 91%]
+test_server_api.py::test_x_grid_axis_not_empty PASSED                    [ 92%]
+test_server_api.py::test_x_grid_axis_must_be_numeric PASSED              [ 93%]
+test_server_api.py::test_optional_params_must_be_finite PASSED           [ 94%]
+test_server_api.py::test_health_endpoint PASSED                          [ 95%]
+test_server_api.py::test_rate_limiting_triggered PASSED                  [ 96%]
+test_validation_notebook.py::test_notebook_file_exists PASSED            [ 97%]
+test_validation_notebook.py::test_notebook_valid_json_structure PASSED   [ 98%]
+test_validation_notebook.py::test_notebook_code_cells_syntax_and_execution FAILED [100%]
+
+================================== FAILURES ===================================
+________________ test_notebook_code_cells_syntax_and_execution ________________
+
+notebook_path = WindowsPath('D:/Projects/theory/SpaceEntropyCompression/notebooks/emrf_two_regime_validation.ipynb')
+
+    def test_notebook_code_cells_syntax_and_execution(notebook_path: Path):
+        data = json.loads(notebook_path.read_text(encoding="utf-8"))
+        code_cells = [c for c in data["cells"] if c["cell_type"] == "code"]
+    
+        # Execute non-display cells in safe local namespace
+        local_ns = {}
+        for cell in code_cells:
+            code_str = "".join(cell["source"])
+            if "IPython.display" in code_str:
+                continue
+>           exec(code_str, local_ns)
+
+test_validation_notebook.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   ???
+E   ModuleNotFoundError: No module named 'emergent_matter_model'
+
+<string>:1: ModuleNotFoundError
+---------------------------- Captured stdout call -----------------------------
+EMRF Environment Initialized. Workspace Root: D:\Projects\theory\SpaceEntropyCompression\emergent_matter_model
+=========================== short test summary info ===========================
+FAILED test_validation_notebook.py::test_notebook_code_cells_syntax_and_execution
+======================== 1 failed, 98 passed in 2.22s =========================
+
+Expected log-log slope: -6.00
+Measured log-log slope: -0.80
+Match: approximate
+[2/3] Ensure Maven available
+Apache Maven 3.9.6 (bc0240f3c744dd6b6ec2920b3cd08dcc295161ae)
+Maven home: D:\Projects\gtd\tools\apache-maven\apache-maven-3.9.6
+Java version: 25.0.2, vendor: Oracle Corporation, runtime: G:\Program Files\Java\jdk-25.0.2
+Default locale: en_US, platform encoding: UTF-8
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
+[3/3] JavaFX compile
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< org.example:javafx-client >----------------------
+[INFO] Building javafx-client 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ javafx-client ---
+[INFO] skip non existing resourceDirectory D:\Projects\theory\SpaceEntropyCompression\emergent_matter_model\javafx_client\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ javafx-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.052 s
+[INFO] Finished at: 2026-10-05T19:13:56-04:00
+[INFO] ------------------------------------------------------------------------
+Local CI checks passed successfully.

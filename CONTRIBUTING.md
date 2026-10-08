@@ -9,7 +9,7 @@ Thank you for your interest in contributing to the **Emergent Matter Research Fr
 All contributions must respect the foundational principles of the framework:
 
 1. **Dimensional Spatial Ontology:** Space is represented by a Riemannian manifold $\mathcal{M}^D$ with coordinates $X = \{x, y, z, d_0, d_1, d_2, \dots\}$. Neither coordinate time $t$ nor thermodynamic entropy $S(X,t)$ is a spatial coordinate axis. Time parameterizes dynamical change, and entropy is an organizational thermodynamic state variable.
-2. **Strict Falsifiability & Bifurcation Protocol:** We do not protect speculative models with post-hoc fine-tuning. If a model collapses to General Relativity in high-curvature regimes ($\Delta\text{BIC} \ge +10.0$), it is celebrated as **Branch A: Geometric Collapse**. Null and negative results must be published with equal prominence.
+2. **Evidence and falsifiability:** Report null and negative results. A BIC non-preference does not prove equivalence to GR, and penalized nuisance objectives are not automatically valid BIC likelihoods. Candidate A is the selected research direction, not an equivalence theorem. See the [model card](MODEL_CARD.md) and [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
 3. **Zero-Regression Testing:** Every new physics module, data parser, or mathematical formulation must be accompanied by automated unit tests passing under `pytest`.
 
 ---
@@ -18,40 +18,36 @@ All contributions must respect the foundational principles of the framework:
 
 The project uses Python 3.10+ and a standard virtual environment.
 
-```bash
+```powershell
 # Clone the repository
-git clone https://github.com/emergent-matter/space-entropy-compression.git
-cd space-entropy-compression/emergent_matter_model
+git clone https://github.com/kirklasalle/SpaceEntropyCompression.git
+Set-Location SpaceEntropyCompression
 
 # Activate virtual environment
-.venv\Scripts\activate      # Windows PowerShell/CMD
-# source .venv/bin/activate  # Linux / macOS
+python -m venv emergent_matter_model\.venv
 
 # Install package in editable mode with development dependencies
-pip install -e ".[dev]"
+& .\emergent_matter_model\.venv\Scripts\python.exe -m pip install -e ".\emergent_matter_model[dev]"
 ```
 
 ---
 
 ## 3. Running Tests and Quality Checks
 
-Before submitting any Pull Request, ensure that all tests and lint checks pass cleanly:
+Before submitting changes, run the relevant tests and existing lint rules.
+The legacy repository is not claimed to be globally lint/type-clean; do not
+hide new failures behind pre-existing diagnostics.
 
-```bash
-# 1. Run all unit and integration tests
-pytest -v
-
-# 2. Run Ruff linter and code formatter
-ruff check .
-ruff format --check .
-
-# 3. Run Mypy static type checker
-mypy model.py physics_baseline.py fit_astrometry.py fit_sparc.py
-
-# 4. Run full local CI runner (includes headless check and JavaFX compile)
-cd ..
-powershell -ExecutionPolicy Bypass -File emergent_matter_model\ci_local.ps1
+```powershell
+& .\emergent_matter_model\.venv\Scripts\python.exe -m pytest emergent_matter_model -q
+# Apply Ruff to the changed files; example:
+& .\emergent_matter_model\.venv\Scripts\python.exe -m ruff check tools\check_candidate_a_definitions.py
 ```
+
+Keep observational data separate from fixtures; record sources, hashes, units,
+selection and covariance. Tests of generated inputs are software checks only.
+Do not add a new physical mechanism or silently choose C on the author's behalf.
+Preserve historical source copies and qualify graph entries by evidence type.
 
 ---
 
@@ -77,5 +73,5 @@ powershell -ExecutionPolicy Bypass -File emergent_matter_model\ci_local.ps1
 
 ## 5. Contact & Discussion
 
-- **Lead Investigator:** Kirk LaSalle (`theory@emergentmatter.org`)
-- **Repository Issues:** [GitHub Issues](https://github.com/emergent-matter/space-entropy-compression/issues)
+- **Lead Investigator:** Kirk LaSalle
+- **Repository Issues:** [GitHub Issues](https://github.com/kirklasalle/SpaceEntropyCompression/issues)

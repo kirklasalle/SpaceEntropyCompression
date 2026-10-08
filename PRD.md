@@ -1,5 +1,11 @@
 # Product & Project Requirements Document (PRD)
 
+> **Historical requirements, superseded as the active research baseline.**
+> Current scope is in [MODEL_CARD.md](MODEL_CARD.md), [STATUS.md](STATUS.md) and
+> the [Candidate A comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
+> Claims of completed derivation or empirical validation below must not override
+> the current audits and explicit scientific blockers.
+
 ## Space-Entropy Compression & Emergent Matter Research Framework (EMRF)
 
 **Document Version:** 1.0.0  

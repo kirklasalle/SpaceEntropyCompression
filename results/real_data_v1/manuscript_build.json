@@ -1,0 +1,28 @@
+{
+  "compiler": "Tectonic 0.17.0",
+  "command": [
+    "--untrusted",
+    "--keep-logs",
+    "sparc_horizon_test.tex"
+  ],
+  "completed_utc": "2026-10-08T16:48:10.729794+00:00",
+  "returncode": 0,
+  "source_sha256": {
+    "paper\\sparc_horizon_test.tex": "bc39672406f037616d2cc3c6ba32e232f4c2f483be4ef59e257566231657c9f4",
+    "paper\\sparc_horizon_results.tex": "d349aa556e4dbab0c0c48f57dacf5a7ed6bda3ef5f0e2619b4b5c18e36918c31",
+    "paper\\sparc_horizon_references.bib": "bd12054ed91591e2ef0f94bc186ac52ec2e61cb234fdd7a6551a72d0d16c2e24",
+    "paper\\figures\\sparc_fresh_profiles.png": "62e998512b96c9c59b4cf6a416af2fc32c50ea0116d1cac4364c5a01fca6db78"
+  },
+  "stdout": "note: Running TeX ...\nnote: downloading size11.clo\nnote: downloading inputenc.sty\nnote: downloading fontenc.sty\nnote: downloading t1lmr.fd\nnote: downloading ec-lmr10.tfm\nnote: downloading geometry.sty\nnote: downloading ifvtex.sty\nnote: downloading color.sty\nnote: downloading color.cfg\nnote: downloading ec-lmr17.tfm\nnote: downloading ec-lmr12.tfm\nnote: downloading cmr12.tfm\nnote: downloading cmr8.tfm\nnote: downloading cmr6.tfm\nnote: downloading cmmi12.tfm\nnote: downloading cmmi8.tfm\nnote: downloading cmmi6.tfm\nnote: downloading cmsy8.tfm\nnote: downloading cmsy6.tfm\nnote: downloading cmex8.tfm\nnote: downloading ec-lmbx10.tfm\nnote: downloading ec-lmbx12.tfm\nnote: downloading ec-lmri10.tfm\nnote: downloading t1lmtt.fd\nnote: downloading ec-lmtt10.tfm\nnote: Running BibTeX on sparc_horizon_test.aux ...\nnote: downloading plain.bst\nnote: Rerunning TeX because bibtex was run ...\nnote: Rerunning TeX because \"sparc_horizon_test.aux\" changed ...\nnote: Running xdvipdfmx ...\nnote: downloading lm-ec.enc\nnote: downloading lmr17.pfb\nnote: downloading lmr12.pfb\nnote: downloading lmbx10.pfb\nnote: downloading lmr10.pfb\nnote: downloading cmr8.pfb\nnote: downloading cmsy10.pfb\nnote: downloading cmsy8.pfb\nnote: downloading lmbx12.pfb\nnote: downloading cmex10.pfb\nnote: downloading cmmi8.pfb\nnote: downloading msbm10.pfb\nnote: downloading cmmi6.pfb\nnote: downloading lmri10.pfb\nnote: downloading lmtt10.pfb\nnote: Writing `sparc_horizon_test.blg` (219 B)\nnote: Writing `sparc_horizon_test.pdf` (137.873046875 KiB)\nnote: Writing `sparc_horizon_test.log` (12.529296875 KiB)\nnote: Skipped writing 3 intermediate files (use --keep-intermediates to keep them)\n",
+  "stderr": "Fontconfig error: Cannot load default config file: No such file: (null)\n",
+  "pdf_sha256": "79088a2ea7c3de2fdb5aa0cf6f2c7bdfb0b31d933a7983458ce85fc096e990e8",
+  "pdf_bytes": 141182,
+  "content_validation": {
+    "parser": "pypdf",
+    "pages": 6,
+    "normalized_text_characters": 14696,
+    "principal_findings_present": true,
+    "references_present": true,
+    "replacement_glyphs_present": false
+  }
+}

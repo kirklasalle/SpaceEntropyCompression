@@ -1,0 +1,18 @@
+{
+  "preserved_records_verified": 47,
+  "derived_extracts_verified": 2,
+  "original_source_hashes_verified": 47,
+  "graph_nodes": 91,
+  "graph_edges": 108,
+  "recovery_claims": 10,
+  "historical_nodes_preserved": 81,
+  "arithmetic_checks": {
+    "evidence_type": "mathematical_diagnostic_not_observations",
+    "quantum_unnormalized_mass_ratio": 0.34359933398697157,
+    "integration_estimated_error": 2.2857978871475835e-10,
+    "schwarzschild_radius_m_for_1e_minus18_solar_masses": 2.9533393820668788e-15,
+    "historical_table_radius_m": 2.95e-45,
+    "interpretation": "Normalization identity and historical table error, not new physics"
+  },
+  "verification_script_sha256": "19d69fa688c9c9c64983c449ab32dbed1990541320ef2a0f07624abd4fc0365c"
+}

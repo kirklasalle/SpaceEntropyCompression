@@ -1,0 +1,27 @@
+{
+  "full_suite_passed": 226,
+  "full_suite_failed": 0,
+  "pytest_command": "emergent_matter_model\\.venv\\Scripts\\python.exe -m pytest emergent_matter_model -q",
+  "new_pantheon_fit": {
+    "artifact": "pantheon_baseline.json",
+    "evidence": "baseline_only_not_EMRF",
+    "authentic_full_covariance_used": true,
+    "manual_bytes_matched_pinned_release": true
+  },
+  "collision_illustration": {
+    "artifact": "bullet_illustration_audit.json",
+    "evidence": "synthetic_static_illustration",
+    "numerical_offsets_preserved_kpc": [0, 180],
+    "observational_pass_claim_removed": true,
+    "plot_visually_inspected": true
+  },
+  "static_checks": {
+    "focused_ruff_passed": true,
+    "focused_mypy_passed": true,
+    "mypy_limitations": "Explicit namespace bases and exclusion of untyped third-party imports",
+    "interactive_visualizer_inline_javascript_parsed": true,
+    "interactive_browser_test_performed": false
+  },
+  "scope": "Scientific-correctness audit and identified reporting fixes, not exhaustive security review",
+  "remaining_scientific_blocker": "User-intended evolution of C that generates thermodynamics is not specified by the reviewed implementations; no substitute mechanism was invented"
+}

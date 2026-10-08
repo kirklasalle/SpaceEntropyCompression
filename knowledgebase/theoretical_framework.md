@@ -65,6 +65,13 @@ where:
 ## 4. Coordinate Invariance & Relativistic Benchmarks
 
 ### 4.1 The Coordinate Invariance Challenge
+
+> **Candidate A clarification:** tensors and observer-specified contractions can
+> describe physical measurements; scalar curvature invariants are not the only
+> physical quantities. The [functional comparison](../docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
+> separates coordinate invariance from observer independence and local matter
+> energy from vacuum tides. The universal-density interpretation of sqrt(K)
+> below fails in Schwarzschild vacuum if M means local material density.
 In General Relativity, coordinate components $g_{\mu\nu}$ and coordinate derivatives are not physical observables because they change under coordinate transformations $x^\mu \to x'^\mu$. Only **diffeomorphism invariants** (curvature scalars) possess objective physical reality:
 1. **Ricci Scalar:** $R = g^{\mu\nu} R_{\mu\nu}$
 2. **Kretschmann Invariant:** $K = R^{\alpha\beta\gamma\delta} R_{\alpha\beta\gamma\delta}$
@@ -132,6 +139,12 @@ where:
 ---
 
 ## 7. The Bifurcation Protocol (Branch A vs. Branch B)
+
+> **Historical inference warning:** a lack of BIC preference for an extension
+> does not prove equivalence to GR or a thermodynamic interpretation. The tree
+> below records the earlier protocol; it is not an accepted proof rule for the
+> currently selected Candidate A. Equation/constraint/observable equivalence
+> must be established independently.
 
 To guarantee epistemological rigor and prevent confirmation bias, EMRF enforces a binary falsification tree:
 

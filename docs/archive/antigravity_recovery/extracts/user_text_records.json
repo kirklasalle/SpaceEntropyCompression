@@ -1,0 +1,37 @@
+[
+  {
+    "source": "6b8936a8-e8bd-4753-bc6d-92072ee9c464\\.system_generated\\messages\\02187847-3660-4f74-a8a8-f3b84b555188.json",
+    "timestamp": "2026-10-06T18:41:47.456364500Z",
+    "source_sha256": "23dee311da54b0a319d587072dbfdfb987adb4dee881f13c40bbb37d83881761",
+    "extraction": "base64 protobuf observed field path 19.2; other fields excluded",
+    "text": "remove all except for the Speceentropycompression folder., then move the contents to the root"
+  },
+  {
+    "source": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\messages\\080a9192-4033-47d4-89b7-ed0464fff1a0.json",
+    "timestamp": "2026-10-06T19:58:37.495463200Z",
+    "source_sha256": "0aea42b286fc4c13dfd0c52fedc38e3e939e629b53ee73e6d19a06b5c7b16d96",
+    "extraction": "base64 protobuf observed field path 19.2; other fields excluded",
+    "text": "we already have the Case 001 Formal Audit,"
+  },
+  {
+    "source": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\messages\\7cc879f7-c1ac-40fb-945a-2b5c831e5b83.json",
+    "timestamp": "2026-10-06T19:57:16.892062900Z",
+    "source_sha256": "be23859bf2e2ad815ef404504ba97eea8b70b75ffaa3b71aaba1be884778157e",
+    "extraction": "base64 protobuf observed field path 19.2; other fields excluded",
+    "text": "D:\\Projects\\SpaceEntropyCompression"
+  },
+  {
+    "source": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\messages\\be32f7af-4684-47d3-9eb9-f811652d6fa6.json",
+    "timestamp": "2026-10-06T17:25:18.880285500Z",
+    "source_sha256": "74671aa7c22f05ab334459e972c5840a824f88f26e9a3b767409f65621fb8a31",
+    "extraction": "base64 protobuf observed field path 19.2; other fields excluded",
+    "text": "please research if there is any other  documents or standards to learn and accomodate."
+  },
+  {
+    "source": "d803e888-ab27-4c55-8e38-0005c1439c10\\.system_generated\\messages\\0e1092da-a791-4782-aec1-b30fd796325a.json",
+    "timestamp": "2026-10-06T18:35:58.910978900Z",
+    "source_sha256": "ecdffcefc5fdad5b1fd2768eee226e3d413cc538b20f8dc901780b5c2a511341",
+    "extraction": "base64 protobuf observed field path 19.2; other fields excluded",
+    "text": "my local projects\nD:\\Projects\\theory\\SpaceEntropyCompression"
+  }
+]

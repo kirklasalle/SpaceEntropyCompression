@@ -1,5 +1,32 @@
 # EMRF Knowledgebase & Graph Memory System
 
+## Current recovered-evidence entry points
+
+- [Candidate A functional comparison](../docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md):
+  precise definitions, normalization, vacuum/radiation counterexamples and a
+  recommended local energy reference awaiting author selection. These are
+  mathematical diagnostics, not new observational results.
+
+- [Collision candidate specification](../docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md)
+  and [candidate ledger](thermodynamic_collision_candidates.json): Kirk selected
+  Candidate A (geometry/energy re-description). Its exact functional remains
+  unspecified. Candidate B is an unselected AI proposal retained for history;
+  neither selection nor a proposal is observational confirmation.
+
+- [Antigravity recovery audit](../docs/ANTIGRAVITY_RECOVERY_AUDIT.md): search
+  coverage, preserved sources, original conceptual distinctions and limits.
+- [Recovered theory intentions](antigravity_recovered_theory.md): downstream
+  thermodynamics, separate geometric entropy, C families, U and multi-star design.
+- [Curated claim ledger](antigravity_recovery_claims.json) and
+  [qualified graph](GRAPH_MEMORY.json): source hashes and attribution, not
+  historical AI certification.
+
+The graph is now v2.1.0. Legacy nodes are preserved but explicitly marked as
+historical or source-review-dependent. In particular, old "validated" dataset
+labels and `validated_by` relationships must not be used as current empirical
+evidence. The old graph has been preserved in the recovery archive.
+The directory tree and version descriptions below are historical.
+
 > **Integrity notice (2026-10-07).** This document predates the independent audit in [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md). Empirical results quoted here (for example S-star ΔBIC = +70.743 or +141.3, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, wide-binary ΔBIC = −60.26, CMB χ²ᵥ = 0.924, "28,700+ observational constraints") were computed from synthetic data files (now quarantined in [`data/synthetic/`](../data/synthetic/README.md)) or from code whose answer was built in, so they **must not be cited**. "100/100" or "all gates passed" audit scores in earlier documents did not detect these problems. Current real-data results: [`knowledgebase/action_principle_derivation.md`](action_principle_derivation.md) §4.3.
 
 

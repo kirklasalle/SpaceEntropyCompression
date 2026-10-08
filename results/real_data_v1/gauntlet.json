@@ -1,0 +1,373 @@
+{
+  "generated_utc": "2026-10-08T16:44:18.009796+00:00",
+  "python": "3.10.0",
+  "cases": [
+    {
+      "id": "R01",
+      "name": "Sgr A* S-stars",
+      "source_url": "https://arxiv.org/abs/2004.07187",
+      "citation": "GRAVITY Collaboration (2020), Schwarzschild precession in S2",
+      "status": "not_yet_testable",
+      "blocker": "Astrometric/RV time-series ingestion and a derived EMRF orbital deviation are absent.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R02",
+      "name": "Solar System",
+      "source_url": "https://arxiv.org/abs/1402.6950",
+      "citation": "Hees et al. (2014), constraints on MOND using Cassini radio tracking",
+      "status": "not_yet_testable",
+      "blocker": "Cassini external-field quadrupole constraint is not a direct constant-acceleration bound; no matching ephemeris likelihood.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R03",
+      "name": "SPARC",
+      "source_url": "https://astroweb.case.edu/SPARC/",
+      "citation": "Lelli et al. (2016), SPARC",
+      "status": "conditional_model_comparison",
+      "blocker": "Conditional profiles do not calibrate discovery significance; unknown radial covariance remains.",
+      "source_kind": "official_measurement_archive",
+      "source_retrieved": true
+    },
+    {
+      "id": "R04",
+      "name": "SLACS lensing",
+      "source_url": "https://arxiv.org/abs/0805.1931",
+      "citation": "Bolton et al. (2008), SLACS V: full ACS strong-lens sample",
+      "status": "not_yet_testable",
+      "blocker": "No derived EMRF lensing potential and joint stellar-dynamical likelihood.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R05",
+      "name": "Bullet Cluster",
+      "source_url": "https://arxiv.org/abs/astro-ph/0608407",
+      "citation": "Clowe et al. (2006), direct empirical proof of dark matter",
+      "status": "not_yet_testable",
+      "blocker": "No absolute EMRF shear/convergence prediction or calibrated aligned-map likelihood.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R06",
+      "name": "High-z disk kinematics",
+      "source_url": "https://almascience.nrao.edu/aq/",
+      "citation": "ALMA Science Archive",
+      "status": "not_yet_testable",
+      "blocker": "No frozen resolved-disk sample with pressure/beam/inclination likelihood; no new fit claimed.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R07",
+      "name": "GW170817 propagation",
+      "source_url": "https://arxiv.org/abs/1710.05834",
+      "citation": "LIGO/Virgo et al. (2017), GW170817 and GRB 170817A",
+      "status": "not_yet_testable",
+      "blocker": "No EMRF-derived tensor/photon propagation; imposed luminal speed is not evidence.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R08",
+      "name": "Gaia wide binaries",
+      "source_url": "https://arxiv.org/abs/2101.05282",
+      "citation": "El-Badry et al. (2021), million-binary Gaia eDR3 catalogue",
+      "status": "not_yet_testable",
+      "blocker": "Pair-level contamination, projection and external-field likelihood not implemented; no synthetic forward-model fallback.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R09",
+      "name": "Late expansion",
+      "source_url": "https://github.com/PantheonPlusSH0ES/DataRelease",
+      "citation": "Pantheon+ public data release; Brout et al. (2022)",
+      "status": "not_yet_testable",
+      "blocker": "Authentic SN measurements do not supply EMRF expansion dynamics; full covariance/calibration fit not performed.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "R10",
+      "name": "CMB",
+      "source_url": "https://pla.esac.esa.int/",
+      "citation": "ESA Planck Legacy Archive",
+      "status": "not_yet_testable",
+      "blocker": "No EMRF perturbation spectrum; downloading spectra cannot fix copied-peak circularity.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "H01",
+      "name": "Quantum matter",
+      "source_url": "https://physics.nist.gov/cuu/Constants/",
+      "citation": "NIST CODATA reference constants",
+      "status": "not_yet_testable",
+      "blocker": "Input mass is normalized back into the answer; no independent mass prediction.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    },
+    {
+      "id": "H02",
+      "name": "Black-hole entropy",
+      "source_url": "https://doi.org/10.1103/PhysRevD.7.2333",
+      "citation": "Bekenstein (1973), Black holes and entropy",
+      "status": "not_yet_testable",
+      "blocker": "Quarter-area coefficient assumed, not independently derived; no direct horizon-entropy data.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": false,
+      "retrieval_error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "id": "H03",
+      "name": "JWST cosmic dawn",
+      "source_url": "https://arxiv.org/abs/2405.18485",
+      "citation": "Carniani et al. (2024), two luminous galaxies at z about 14",
+      "status": "not_yet_testable",
+      "blocker": "No assembly/population prediction; observed redshifts do not validate a chosen collapse time.",
+      "source_kind": "reference_or_archive_page_not_measurement_table",
+      "source_retrieved": true
+    }
+  ],
+  "source_records": [
+    {
+      "url": "https://arxiv.org/abs/2004.07187",
+      "resolved_url": "https://arxiv.org/abs/2004.07187",
+      "citation": "GRAVITY Collaboration (2020), Schwarzschild precession in S2",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R01_source.html",
+      "sha256": "5829f8371e216bbea3c171fbd7e5ffc051f021dfed2b67b93a4eb46860d50cb0",
+      "bytes": 55604,
+      "retrieved_utc": "2026-10-08T16:44:18.343394+00:00"
+    },
+    {
+      "url": "https://arxiv.org/abs/1402.6950",
+      "resolved_url": "https://arxiv.org/abs/1402.6950",
+      "citation": "Hees et al. (2014), constraints on MOND using Cassini radio tracking",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R02_source.html",
+      "sha256": "7bae27339c9951c681560faac0dc8380a8d8faa972b90c8fb0e9f74870a5e899",
+      "bytes": 43708,
+      "retrieved_utc": "2026-10-08T16:44:18.521420+00:00"
+    },
+    {
+      "url": "https://astroweb.case.edu/SPARC/",
+      "resolved_url": "https://astroweb.case.edu/SPARC/",
+      "citation": "Lelli et al. (2016), SPARC",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R03_source.html",
+      "sha256": "ee7e3eab83de7d698bc14d9eeb91d87a939221dd452e907ea5ad7dedae886038",
+      "bytes": 7895,
+      "retrieved_utc": "2026-10-08T16:44:18.859718+00:00"
+    },
+    {
+      "url": "https://arxiv.org/abs/0805.1931",
+      "resolved_url": "https://arxiv.org/abs/0805.1931",
+      "citation": "Bolton et al. (2008), SLACS V: full ACS strong-lens sample",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R04_source.html",
+      "sha256": "44c694d95a71b160f41dce2fb86db59907f186785ba433ef20edcbc9e3a8d893",
+      "bytes": 45906,
+      "retrieved_utc": "2026-10-08T16:44:19.028434+00:00"
+    },
+    {
+      "url": "https://arxiv.org/abs/astro-ph/0608407",
+      "resolved_url": "https://arxiv.org/abs/astro-ph/0608407",
+      "citation": "Clowe et al. (2006), direct empirical proof of dark matter",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R05_source.html",
+      "sha256": "3a03317f27b8acfcffacb3bd1c0bace55a16af788d4a26752b5a8f6500cb3178",
+      "bytes": 43881,
+      "retrieved_utc": "2026-10-08T16:44:19.159592+00:00"
+    },
+    {
+      "url": "https://almascience.nrao.edu/aq/",
+      "resolved_url": "https://almascience.nrao.edu/aq/",
+      "citation": "ALMA Science Archive",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R06_source.html",
+      "sha256": "61ddb6784d15c0977e4827427ea2b4f92cc30d4219c412bfd626d838b9194c92",
+      "bytes": 559,
+      "retrieved_utc": "2026-10-08T16:44:19.522341+00:00"
+    },
+    {
+      "url": "https://arxiv.org/abs/1710.05834",
+      "resolved_url": "https://arxiv.org/abs/1710.05834",
+      "citation": "LIGO/Virgo et al. (2017), GW170817 and GRB 170817A",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R07_source.html",
+      "sha256": "a0b75cbe37eec436fdf371c23adc075ada2cd5b11da09d2c8a4fc198cb91747b",
+      "bytes": 46840,
+      "retrieved_utc": "2026-10-08T16:44:19.760222+00:00"
+    },
+    {
+      "url": "https://arxiv.org/abs/2101.05282",
+      "resolved_url": "https://arxiv.org/abs/2101.05282",
+      "citation": "El-Badry et al. (2021), million-binary Gaia eDR3 catalogue",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R08_source.html",
+      "sha256": "78565473345d00590741abbad3c9c3439edd45b9ad7a872e961e8a8aef837641",
+      "bytes": 45703,
+      "retrieved_utc": "2026-10-08T16:44:19.976073+00:00"
+    },
+    {
+      "url": "https://github.com/PantheonPlusSH0ES/DataRelease",
+      "resolved_url": "https://github.com/PantheonPlusSH0ES/DataRelease",
+      "citation": "Pantheon+ public data release; Brout et al. (2022)",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R09_source.html",
+      "sha256": "a1d15d50bfafba90e6e0f6d973ebf93f3d4465564eee6dc273ab37546ab1ed3c",
+      "bytes": 234062,
+      "retrieved_utc": "2026-10-08T16:44:20.777917+00:00"
+    },
+    {
+      "url": "https://pla.esac.esa.int/",
+      "resolved_url": "https://pla.esac.esa.int/",
+      "citation": "ESA Planck Legacy Archive",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\R10_source.html",
+      "sha256": "25b399238d7269df25928aad625596e8ec39cd5376e9430b4e64ecc84ece8ab3",
+      "bytes": 3185,
+      "retrieved_utc": "2026-10-08T16:44:21.280341+00:00"
+    },
+    {
+      "url": "https://physics.nist.gov/cuu/Constants/",
+      "resolved_url": "https://physics.nist.gov/cuu/Constants/",
+      "citation": "NIST CODATA reference constants",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\H01_source.html",
+      "sha256": "7169acfac7010877bca19ca397738fe793368e1fe467de9a97fc73c8368f450e",
+      "bytes": 13560,
+      "retrieved_utc": "2026-10-08T16:44:21.546106+00:00"
+    },
+    {
+      "url": "https://arxiv.org/abs/2405.18485",
+      "resolved_url": "https://arxiv.org/abs/2405.18485",
+      "citation": "Carniani et al. (2024), two luminous galaxies at z about 14",
+      "kind": "reference_or_archive_page_not_measurement_table",
+      "file": "data\\external\\real_data_v1\\H03_source.html",
+      "sha256": "6499041ffb17f1bb183c157198fd293e253b5b35d836fd743a005ce9a05c5133",
+      "bytes": 52154,
+      "retrieved_utc": "2026-10-08T16:44:22.209175+00:00"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/c447f0fea703fcd0fff57de5000947b5ca81286b/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat",
+      "resolved_url": "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/c447f0fea703fcd0fff57de5000947b5ca81286b/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat",
+      "citation": "PantheonPlusSH0ES/DataRelease official collaboration repository",
+      "kind": "published_measurement_table",
+      "file": "data\\external\\real_data_v1\\Pantheon+SH0ES.dat",
+      "sha256": "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8",
+      "bytes": 579283,
+      "retrieved_utc": "2026-10-08T16:44:23.381134+00:00"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/bb0c1c9009dc76d1391300e169e8df38fd1096db/desi_2024_gaussian_bao_ALL_GCcomb_mean.txt",
+      "resolved_url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/bb0c1c9009dc76d1391300e169e8df38fd1096db/desi_2024_gaussian_bao_ALL_GCcomb_mean.txt",
+      "citation": "DESI DR1 likelihood data distributed by CobayaSampler/bao_data",
+      "kind": "published_likelihood_distribution_not_raw_tracking",
+      "file": "data\\external\\real_data_v1\\desi_2024_gaussian_bao_ALL_GCcomb_mean.txt",
+      "sha256": "dd2873a0b88459a491af3c0c0307ba059f62df9211d5b976760f310565a1be68",
+      "bytes": 376,
+      "retrieved_utc": "2026-10-08T16:44:23.762819+00:00"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/bb0c1c9009dc76d1391300e169e8df38fd1096db/desi_2024_gaussian_bao_ALL_GCcomb_cov.txt",
+      "resolved_url": "https://raw.githubusercontent.com/CobayaSampler/bao_data/bb0c1c9009dc76d1391300e169e8df38fd1096db/desi_2024_gaussian_bao_ALL_GCcomb_cov.txt",
+      "citation": "DESI DR1 likelihood data distributed by CobayaSampler/bao_data",
+      "kind": "published_likelihood_distribution_not_raw_tracking",
+      "file": "data\\external\\real_data_v1\\desi_2024_gaussian_bao_ALL_GCcomb_cov.txt",
+      "sha256": "bbafa9074b51cf1a45e0d10e4f37db8c0e80a5d1d1788857abb7fc49fb21abcc",
+      "bytes": 2170,
+      "retrieved_utc": "2026-10-08T16:44:24.020573+00:00"
+    }
+  ],
+  "scope": "real-data retrieval and computations; scientific blockers are not passes",
+  "sparc": {
+    "galaxies": 153,
+    "points": 3168,
+    "raw_manifest": {
+      "sparc/Rotmod_LTG.zip": {
+        "file": "data/external/sparc/Rotmod_LTG.zip",
+        "url": "https://astroweb.case.edu/SPARC/Rotmod_LTG.zip",
+        "citation": "Lelli, F., McGaugh, S. S. & Schombert, J. M. (2016), AJ 152, 157",
+        "bytes": 110737,
+        "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588",
+        "retrieved_utc": "2026-10-07T22:39:18+00:00"
+      },
+      "sparc/SPARC_Lelli2016c.mrt": {
+        "file": "data/external/sparc/SPARC_Lelli2016c.mrt",
+        "url": "https://astroweb.case.edu/SPARC/SPARC_Lelli2016c.mrt",
+        "citation": "Lelli, F., McGaugh, S. S. & Schombert, J. M. (2016), AJ 152, 157",
+        "bytes": 28259,
+        "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243",
+        "retrieved_utc": "2026-10-07T22:39:18+00:00"
+      }
+    }
+  },
+  "solar_algebra_only": {
+    "a0": 1.0421978813105618e-10,
+    "constant_high_acceleration_limit_m_s2": 5.210989406552809e-11,
+    "empirical_exclusion": false,
+    "reason": "No independently verified constant-acceleration constraint applied"
+  },
+  "pantheon_observed_summary": {
+    "rows": 1701,
+    "zHD_min": 0.00122,
+    "zHD_max": 2.26137,
+    "likelihood_evaluated": false,
+    "source": {
+      "url": "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/c447f0fea703fcd0fff57de5000947b5ca81286b/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat",
+      "resolved_url": "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/c447f0fea703fcd0fff57de5000947b5ca81286b/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat",
+      "citation": "PantheonPlusSH0ES/DataRelease official collaboration repository",
+      "kind": "published_measurement_table",
+      "file": "data\\external\\real_data_v1\\Pantheon+SH0ES.dat",
+      "sha256": "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8",
+      "bytes": 579283,
+      "retrieved_utc": "2026-10-08T16:44:23.381134+00:00"
+    },
+    "note": "Rows are observations, not necessarily unique supernovae; covariance fit absent"
+  },
+  "desi_transcription_check": {
+    "max_absolute_rounding_difference": 0.00487072999999949,
+    "consistent_with_two_decimal_rounding": true,
+    "local_sha256": "fe4946745e51c433c52f266f5d94b9c8a070a43eddec60c7467d0227de12af3a"
+  },
+  "desi_summary": {
+    "measurements": 12,
+    "covariance_shape": [
+      12,
+      12
+    ],
+    "positive_definite": true,
+    "likelihood_evaluated": false,
+    "source_level": "version-pinned public likelihood distribution"
+  },
+  "desi_baseline": {
+    "model": "flat LCDM with free c/(H0 rd), negligible late-time radiation",
+    "evidence_grade": "baseline_only_not_EMRF",
+    "omega_m": 0.29389244786507435,
+    "c_over_H0_rd": 29.40966881551545,
+    "chi2": 12.740532402824421,
+    "n": 12,
+    "k": 2,
+    "degrees_of_freedom": 10,
+    "covariance_used": true,
+    "minus2log_likelihood": 11.315436711039013,
+    "BIC": 16.285250010615012,
+    "BIC_note": "single Gaussian-baseline score; no EMRF comparator or preference",
+    "boundary_minimum": false
+  },
+  "sparc_profile": {
+    "path": "results\\real_data_v1\\sparc_profile_validation.json",
+    "sha256": "0b01abdbd8a7e2cc9ec68a2713fad12016d4be951b796460cadd48cd76b81bcc",
+    "complete": true
+  },
+  "source_sha256": {
+    "tools\\run_real_data_gauntlet.py": "78d374b6dd6b75ac054c783fee2571275fad6d8cb8bbeb71f22cb07098ba5656"
+  }
+}

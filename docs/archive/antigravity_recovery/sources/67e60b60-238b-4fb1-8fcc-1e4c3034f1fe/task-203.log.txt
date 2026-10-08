@@ -1,0 +1,18 @@
+........................................................................ [ 40%]
+........................................................................ [ 80%]
+..................................                                       [100%]
+178 passed in 5.85s
+ M ../CHANGELOG.md
+ M ../README.md
+ M ../STATUS.md
+ M ../docs/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md
+ M quantum_vibrational_compression.py
+ M test_paper_submission.py
+ M test_three_horizons.py
+ M ../paper/COVER_LETTER.md
+ M ../paper/main.tex
+ M ../paper/use_case_lasalle_ontology.tex
+?? ../docs/COMMUNITY_ETHICS.md
+?? ../docs/FORWARD_DOCUMENT_EMRF_PEER_REVIEW_REFINEMENT.md
+?? ../docs/audio/
+?? ../docs/images/

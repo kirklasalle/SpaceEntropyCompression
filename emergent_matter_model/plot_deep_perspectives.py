@@ -166,8 +166,9 @@ def plot_fig6_gravitational_lensing(output_path: Path):
 
 
 def plot_fig7_bullet_cluster(output_path: Path):
-    """Plot Fig 7: Bullet Cluster 4-Panel 2D Simulation & Entropy Separation."""
+    """Plot prescribed maps, clearly distinguished from observed cluster maps."""
     fig, axes = plt.subplots(2, 2, figsize=(11, 10))
+    fig.suptitle("Static synthetic illustration -- not observational validation", fontsize=13)
     sim = BulletClusterSimulation(grid_size_kpc=450.0, resolution=101)
 
     sigma_gas, sigma_stars, sigma_tot = sim.generate_baryonic_distributions()
@@ -179,26 +180,25 @@ def plot_fig7_bullet_cluster(output_path: Path):
 
     # Panel A: X-ray Gas (85% baryons)
     im0 = axes[0, 0].imshow(sigma_gas, extent=extent, origin="lower", cmap="plasma")
-    axes[0, 0].set_title("(a) Collisional X-ray Gas $\\Sigma_{\\mathrm{gas}}$ (85% Baryons)", fontsize=11, fontweight="bold")
+    axes[0, 0].set_title("(a) Prescribed gas surface-density shape", fontsize=11, fontweight="bold")
     axes[0, 0].set_ylabel("y [kpc]", fontsize=10)
     fig.colorbar(im0, ax=axes[0, 0], shrink=0.8)
 
     # Panel B: Turbulent Entropy Field S(X,y)
     im1 = axes[0, 1].imshow(entropy, extent=extent, origin="lower", cmap="magma")
-    axes[0, 1].set_title("(b) Thermodynamic Entropy $S(X,y)$ (Shock Heated)", fontsize=11, fontweight="bold")
+    axes[0, 1].set_title("(b) Prescribed entropy field (not evolved)", fontsize=11, fontweight="bold")
     fig.colorbar(im1, ax=axes[0, 1], shrink=0.8)
 
-    # Panel C: Naive MOND Convergence (Falsified)
+    # Historical API names are retained; neither map solves a lensing field equation.
     im2 = axes[1, 0].imshow(kappa_naive, extent=extent, origin="lower", cmap="viridis")
-    axes[1, 0].set_title("(c) Naive MOND Lensing $\\kappa$ (Peaks Trapped on Gas)", fontsize=11, fontweight="bold")
+    axes[1, 0].set_title("(c) Normalized baryonic proxy", fontsize=11, fontweight="bold")
     axes[1, 0].set_xlabel("x [kpc]", fontsize=10)
     axes[1, 0].set_ylabel("y [kpc]", fontsize=10)
     axes[1, 0].contour(sim.X, sim.Y, kappa_naive, levels=5, colors="white", alpha=0.6)
     fig.colorbar(im2, ax=axes[1, 0], shrink=0.8)
 
-    # Panel D: EMRF Entropy-Coupled Lensing Convergence (Passed)
     im3 = axes[1, 1].imshow(kappa_emrf, extent=extent, origin="lower", cmap="viridis")
-    axes[1, 1].set_title("(d) EMRF Entropy-Coupled Lensing $\\kappa$ (Displaced $\\sim 180$ kpc)", fontsize=11, fontweight="bold")
+    axes[1, 1].set_title("(d) Normalized entropy-weighted proxy", fontsize=11, fontweight="bold")
     axes[1, 1].set_xlabel("x [kpc]", fontsize=10)
     axes[1, 1].contour(sim.X, sim.Y, kappa_emrf, levels=5, colors="cyan", alpha=0.8)
     fig.colorbar(im3, ax=axes[1, 1], shrink=0.8)

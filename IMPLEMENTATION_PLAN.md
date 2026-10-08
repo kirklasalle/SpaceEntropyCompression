@@ -1,4 +1,9 @@
 # EMRF Implementation Plan: The Path Forward
+
+> **Historical plan, not the current execution status.** Follow
+> [ROADMAP.md](ROADMAP.md), [TASKS.md](TASKS.md) and the
+> [Candidate A decision/specification](docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md).
+> Old milestones and success statements do not certify physical results.
 ## Operational Roadmap for Theory Formalization, Relativistic Modeling, and Empirical Validation
 
 **Document Title:** EMRF Master Implementation Plan  

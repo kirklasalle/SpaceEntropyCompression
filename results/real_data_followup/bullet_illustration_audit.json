@@ -1,0 +1,52 @@
+{
+  "evidence": {
+    "kind": "synthetic_static_illustration",
+    "observations_ingested": false,
+    "entropy_is_an_input": true,
+    "entropy_production_computed": false,
+    "absolute_lensing_prediction": false,
+    "reason": "No observational likelihood or derived dynamical prediction"
+  },
+  "gas_peaks": {
+    "main": [
+      -60.0,
+      0.0
+    ],
+    "bullet": [
+      60.0,
+      0.0
+    ]
+  },
+  "naive_mond": {
+    "main_peak": [
+      -60.0,
+      0.0
+    ],
+    "bullet_peak": [
+      60.0,
+      0.0
+    ],
+    "offset_from_gas_kpc": 0.0,
+    "illustrative_offset_exceeds_100_kpc": false,
+    "matches_observation": null,
+    "status": "NOT TESTED (prescribed baryonic proxy, not a MOND field solution)"
+  },
+  "emrf_entropy_compression": {
+    "main_peak": [
+      -230.0,
+      0.0
+    ],
+    "bullet_peak": [
+      240.0,
+      0.0
+    ],
+    "offset_from_gas_kpc": 180.0,
+    "illustrative_offset_exceeds_100_kpc": true,
+    "matches_observation": null,
+    "status": "NOT TESTED (assumed entropy weighting, not an empirical EMRF prediction)"
+  },
+  "audit_metadata": {
+    "module_sha256": "2512600ad961d974e51a825da468ac7994f73c7ebc083a0ae818e0979a429a16",
+    "purpose": "software illustration verification, not observational evidence"
+  }
+}

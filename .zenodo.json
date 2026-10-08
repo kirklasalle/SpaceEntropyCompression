@@ -1,6 +1,6 @@
 {
-  "title": "Emergent Matter Research Framework (EMRF): Space-Entropy Compression Across 10 Relativistic and Cosmological Regimes",
-  "description": "Open-source research framework for the Compressed Space-Time Matter Hypothesis (CSTMH) / Emergent Matter Research Framework (EMRF): spatial ontology X = {x, y, z, d0, d1, ...} with entropy S(X,t) as a state field, and the hypothesis that the galactic acceleration scale is a0 = c H0 / (2 pi). Version note (2026-10-07): an independent audit (docs/SHOW_YOUR_WORK.md) found that earlier releases reported results computed from synthetic data files labelled as observations; those files are now quarantined in data/synthetic/ and those results are withdrawn. The current real-data analysis (SPARC, 153 galaxies, distances and inclinations marginalized) finds the hypothesis a0 = c H0 / (2 pi) neither confirmed nor excluded: gas-dominated galaxies agree with it, the full sample lies 2-4 sigma above it, and the excess comes from galaxies with bulges (5.4 sigma), which no plausible stellar mass-to-light ratio removes (galaxy-specific systematics or a non-universal a0). Bulgeless galaxies prefer a0 ~ 0.93e-10 m/s^2, below c H0 / (2 pi); a0 is systematics-limited at 15-20 percent. The law g = sqrt(g_N^2 + a0 g_N) used in earlier versions is disfavoured by both the galaxy data and Solar System bounds.",
+  "title": "Emergent Matter Research Framework (EMRF): Geometric Interpretations and Reproducible Astronomical Baselines",
+  "description": "Research software and auditable development records, not a validated fundamental theory. Candidate A investigates a geometric/energy re-description within GR without an additional heating reservoir; no precise functional has yet been author-selected. Real-data work includes SPARC penalized profiles (not Bayesian marginalization), an independently checked single-galaxy influence diagnostic, and covariance-aware Pantheon+/DESI baselines. A baseline fit is not an EMRF cosmology prediction. Earlier releases mislabeled synthetic data and included circular tests; their headline empirical and self-certification claims are withdrawn. Missing regime predictions remain not yet testable. Read README.md, MODEL_CARD.md and docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md for current scope. This file prepares accurate metadata for a separately authorized future archive; it does not state that main has a new DOI or that the historical Zenodo record contains these changes.",
   "creators": [
     {
       "name": "LaSalle, Kirk",
@@ -10,27 +10,17 @@
   "access_right": "open",
   "license": "MIT",
   "keywords": [
-    "theoretical physics",
+    "research software",
     "general relativity",
-    "emergent gravity",
-    "emergent matter",
+    "geometric interpretation",
+    "space-entropy compression",
     "astrophysics",
-    "cosmology",
-    "sagittarius a*",
-    "s-star cluster",
-    "sparc database",
-    "galactic rotation curves",
-    "james webb space telescope",
-    "jwst",
-    "pantheon plus",
-    "desi 2024 bao",
-    "planck 2018 cmb",
-    "bullet cluster",
-    "gravitational lensing",
-    "gw170817",
-    "gaia dr3",
-    "bayesian model selection",
-    "bifurcation protocol"
+    "SPARC",
+    "Pantheon+",
+    "DESI BAO",
+    "data provenance",
+    "reproducibility",
+    "penalized profiling"
   ],
   "upload_type": "software"
 }

@@ -412,6 +412,13 @@
     <div class="main-layout">
         <!-- Sidebar Controls -->
         <div class="sidebar">
+            <div class="panel-section" role="note">
+                <h3>Historical demonstrations only</h3>
+                <p>These schematic/template displays are not real-data validation.
+                Legacy pass labels and statistics are not scientific conclusions.
+                The Bullet Cluster view draws prescribed shapes; it does not evolve
+                gravitational wells or generate entropy.</p>
+            </div>
             <div class="panel-section">
                 <h3>Theoretical Scaling</h3>
                 <div class="control-group">
@@ -829,8 +836,8 @@
                 title.textContent = "3D Multidimensional Spatial Fabric M^D";
                 desc.textContent = "Spatial coordinates: X = (x, y, z, d₀). Thermodynamic entropy S(X) disrupts coherent metric compression. Watch high entropy flatten the peak!";
             } else if (activeTab === "bullet") {
-                title.textContent = "Bullet Cluster (1E 0657-56) Entropy Separation";
-                desc.textContent = "X-ray gas (high thermal entropy, 85% mass) vs. Collisionless Galaxies (cold, low entropy). Entropy damping displaces lensing peaks outward by ~180 kpc!";
+                title.textContent = "Bullet Cluster: static schematic, not an observed fit";
+                desc.textContent = "Gas, galaxy and contour positions are drawn by hand. No moving wells, entropy-production calculation or absolute lensing prediction is evaluated.";
             } else if (activeTab === "rar") {
                 title.textContent = "Universal RAR Acceleration Landscape (N=214)";
                 desc.textContent = "214 radial points across 10 SPARC archetype galaxies. Measured residual scatter (0.18 dex) matches Monte Carlo observational uncertainties.";
@@ -1037,9 +1044,9 @@
             // Labels
             ctx.fillStyle = "#ffffff";
             ctx.font = "12px sans-serif";
-            ctx.fillText("X-ray Gas Peak (High Entropy S_gas ~ 8.5)", cx - 60, cy + 90 * scale);
-            ctx.fillText("Lensing Centroid (Low Entropy S_star ~ 0.2)", cx + 130 * scale, cy - 60 * scale);
-            ctx.fillText("Offset: ~180 kpc", cx + 160 * scale, cy - 40 * scale);
+            ctx.fillText("Prescribed gas/entropy shape", cx - 60, cy + 90 * scale);
+            ctx.fillText("Drawn contour, not predicted lensing", cx + 130 * scale, cy - 60 * scale);
+            ctx.fillText("Illustrative displacement only", cx + 160 * scale, cy - 40 * scale);
         }
 
         function drawRARLandscape(cx, cy) {

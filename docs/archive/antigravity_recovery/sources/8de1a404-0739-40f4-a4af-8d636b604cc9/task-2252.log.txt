@@ -1,0 +1,28 @@
+============================= test session starts =============================
+platform win32 -- Python 3.10.0, pytest-8.4.2, pluggy-1.6.0
+rootdir: D:\Projects\SpaceEntropyCompression\emergent_matter_model
+configfile: pyproject.toml
+testpaths: .
+collected 159 items
+
+test_bullet_cluster.py .....                                             [  3%]
+test_fit_astrometry.py ..............                                    [ 11%]
+test_fit_jwst.py ........                                                [ 16%]
+test_fit_sparc.py ...............                                        [ 26%]
+test_lensing_engine.py .......                                           [ 30%]
+test_model.py .............................                              [ 49%]
+test_paper_submission.py ....                                            [ 51%]
+test_physics_baseline.py ...........                                     [ 58%]
+test_server_api.py ................                                      [ 68%]
+test_stress_test_blind_challenge.py ......                               [ 72%]
+test_stress_test_cmb_peaks.py .......                                    [ 76%]
+test_stress_test_cosmology_expansion.py .......                          [ 81%]
+test_stress_test_equivalence_principle.py .....                          [ 84%]
+test_stress_test_galaxy_scatter.py ....                                  [ 86%]
+test_stress_test_gw_speed.py ....                                        [ 89%]
+test_stress_test_solar_system.py ......                                  [ 93%]
+test_stress_test_stability_ghosts.py ....                                [ 95%]
+test_stress_test_wide_binaries.py ....                                   [ 98%]
+test_validation_notebook.py ...                                          [100%]
+
+============================ 159 passed in 12.49s =============================

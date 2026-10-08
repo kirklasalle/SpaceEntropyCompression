@@ -1,5 +1,14 @@
 # Developer Guide
 
+## Current research and validation entry points
+
+See the [root README](../README.md) for environment setup and supported
+real-data commands, and [CONTRIBUTING.md](../CONTRIBUTING.md) for evidence rules.
+New verification runners live in [tools](../tools/); old stress-test scripts
+may use synthetic inputs or imposed answers. Passing software tests does not
+establish physical confirmation. The workflow file under this package's
+`.github` directory is historical and is not a root GitHub Actions workflow.
+
 ## Project Structure
 - `model.py`: Core mathematical model (spatial dimensions + entropy state evaluation)
 - `server.py`: Python REST API

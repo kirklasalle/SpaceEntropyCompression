@@ -1,0 +1,22 @@
+{
+  "method": "linear propagation sigma(a0)=c sigma(H0)/(2pi)",
+  "H0_units": "km/s/Mpc",
+  "acceleration_units": "m/s^2",
+  "not_combined_with_SPARC_profiles": true,
+  "references": {
+    "Planck base LCDM": {
+      "H0": 67.4,
+      "quoted_uncertainty": 0.5,
+      "a0_m_s2": 1.0421978813105618e-10,
+      "a0_uncertainty_m_s2": 7.731438288654018e-13,
+      "source": "https://arxiv.org/abs/1807.06209"
+    },
+    "SH0ES Cepheid-SN": {
+      "H0": 73.04,
+      "quoted_uncertainty": 1.04,
+      "a0_m_s2": 1.1294085052065791e-10,
+      "a0_uncertainty_m_s2": 1.6081391640400358e-12,
+      "source": "https://arxiv.org/abs/2112.04510"
+    }
+  }
+}

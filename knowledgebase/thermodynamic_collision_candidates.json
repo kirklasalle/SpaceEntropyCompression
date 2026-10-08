@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "phase": "candidate_a_selected_functional_pending",
+  "author_approved": true,
+  "approval_scope": "Candidate A direction only; no specific functional, implementation or validation approved",
+  "author_decision": {
+    "author": "Kirk LaSalle",
+    "date": "2026-10-08",
+    "statement": "I'm for candidate A.",
+    "selected_candidate": "candidate-a",
+    "unselected_candidate": "candidate-b",
+    "specific_functional_selected": false
+  },
+  "new_mechanism_implemented": false,
+  "empirically_validated": false,
+  "functional_comparison": {
+    "author_followup": {
+      "author": "Kirk LaSalle",
+      "statement": "why can't we find this inside of GR?",
+      "interpretation": "Investigate an internal GR formulation; not approval of a specific C definition"
+    },
+    "document": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
+    "diagnostic_artifact": "results/candidate_a_definition_checks.json",
+    "status": "assistant_recommendation_for_author_review",
+    "author_selected_specific_functional": false,
+    "recommended_local_reference": {
+      "symbol": "C_m",
+      "definition": "(G_mu_nu + Lambda g_mu_nu) n^mu n^nu",
+      "units": "m^-2",
+      "observer_normalization": "g_mu_nu n^mu n^nu = -1; x0 = ct; signature (-+++)",
+      "mapped_quantity": "observer non-gravitational energy-equivalent density epsilon_(n)/c^2",
+      "alpha_for_GR_identity": 1,
+      "normalization_for_GR_identity": "k = c^2 C0/(8 pi G)",
+      "assumption": "Einstein equation with Lambda on geometric side",
+      "limitation": "Conditional scalar GR identity, not matter creation or full dynamical equivalence"
+    },
+    "separate_tidal_diagnostic": {
+      "definition": "sqrt(K) restricted to domains where K >= 0, or a specified observer tidal tensor",
+      "limitation": "Nonzero vacuum curvature is not local material density; K alone does not uniquely determine enclosed mass"
+    },
+    "regional_energy_options": [
+      "Misner-Sharp with spherical symmetry and areal radius",
+      "Brown-York with specified boundary, slice, observers and reference"
+    ],
+    "energy_sector_added": false,
+    "counterexamples": [
+      "Trace-free radiation: R=0 for Lambda=0 despite nonzero energy",
+      "Schwarzschild exterior: sqrt(K)>0 while local T_mu_nu=0",
+      "M -> 8M and r -> 2r leaves Schwarzschild K unchanged",
+      "Brown-York energy/c^2 differs from Misner-Sharp mass at finite radius"
+    ],
+    "evidence_kind": "exact_background_algebra_not_observations"
+  },
+  "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
+  "policy": "Candidate A is selected as the direction. Keep recovered intent, standard physics and proposed definitions separate. Candidate B remains an unselected historical proposal. Define and review C before implementation; selection is not physical validation.",
+  "sources": [
+    {
+      "id": "recovered_intent",
+      "path": "knowledgebase/antigravity_recovered_theory.md",
+      "locator": "sections 1-2",
+      "kind": "curated_source_recovery",
+      "limitation": "Archived working-document formulation, not a complete original user transcript"
+    },
+    {
+      "id": "entropy_decision",
+      "path": "docs/T03_ENTROPY_ONTOLOGY_DECISION_2026-10-07.md",
+      "locator": "Working definitions and Open items",
+      "kind": "project_decision",
+      "limitation": "Entropy evolution and coupling remain open"
+    },
+    {
+      "id": "normal_shock",
+      "url": "https://www.grc.nasa.gov/www/k-12/airplane/normal.html",
+      "kind": "authoritative_baseline_reference",
+      "verified_scope": "normal-shock equations and explicit ideal-gas assumptions read",
+      "limitation": "Not a full cluster-plasma model or new observation"
+    },
+    {
+      "id": "cluster_shock_review",
+      "url": "https://arxiv.org/abs/astro-ph/0701821",
+      "doi": "10.1016/j.physrep.2007.01.001",
+      "kind": "literature_review",
+      "verified_scope": "metadata and abstract topics, including electron-ion equilibrium",
+      "limitation": "Not a new full-text reanalysis"
+    },
+    {
+      "id": "bullet_electron_heating",
+      "url": "https://arxiv.org/abs/astro-ph/0511345",
+      "kind": "observational_study",
+      "verified_scope": "metadata and abstract describe shock/equilibration measurement",
+      "limitation": "No measurement table ingested or independent fit performed"
+    },
+    {
+      "id": "bullet_lensing",
+      "url": "https://arxiv.org/abs/astro-ph/0608407",
+      "doi": "10.1086/508162",
+      "kind": "observational_study",
+      "verified_scope": "metadata and abstract describe plasma/lensing segregation",
+      "limitation": "Not a supplied likelihood for the candidate thermodynamic mechanism"
+    },
+    {
+      "id": "xray_reduction",
+      "url": "https://cxc.cfa.harvard.edu/ciao/threads/extended/",
+      "kind": "instrument_workflow",
+      "verified_scope": "source/background extraction and response-product requirements",
+      "limitation": "Example observation is not asserted to be a selected Bullet Cluster observation"
+    },
+    {
+      "id": "jacobson",
+      "url": "https://arxiv.org/abs/gr-qc/9504004",
+      "doi": "10.1103/PhysRevLett.75.1260",
+      "kind": "theoretical_precedent",
+      "verified_scope": "abstract explicitly states entropy-area and Clausius assumptions",
+      "limitation": "Not a derivation of all thermodynamic laws from EMRF"
+    }
+  ],
+  "claims": [
+    {
+      "id": "thermal-geometric-distinction",
+      "classification": "recovered",
+      "statement": "Downstream macroscopic thermodynamics and candidate geometric/information entropy can have distinct roles.",
+      "sources": ["recovered_intent", "entropy_decision"],
+      "attribution": "Recovered project intention; distinct symbols proposed for bookkeeping",
+      "limitation": "No equation connecting the entropy types is supplied"
+    },
+    {
+      "id": "fluid-entropy-budget",
+      "classification": "established_baseline",
+      "statement": "Gibbs relation plus fluid balances and positive Newtonian/Fourier transport coefficients gives conditional nonnegative local entropy production.",
+      "sources": ["normal_shock", "cluster_shock_review"],
+      "attribution": "Standard local-equilibrium continuum thermodynamics, explicitly derived in specification section 3.1",
+      "limitation": "Transport closure is assumed, not derived from C; real cluster plasma can depart from the reference assumptions"
+    },
+    {
+      "id": "candidate-a",
+      "classification": "proposed",
+      "selection_status": "selected_direction_functional_pending",
+      "statement": "C is a geometry/energy diagnostic without an additional heat channel.",
+      "sources": ["recovered_intent"],
+      "attribution": "Recovered model-family direction; precise F remains unselected",
+      "limitation": "An exact re-description has no distinguishing observable; equivalence requires more than one curve match"
+    },
+    {
+      "id": "candidate-b",
+      "classification": "proposed",
+      "selection_status": "not_selected_retained_for_history",
+      "statement": "A local driven internal coordinate can transfer dissipated energy to a thermal bath with paired source/sink bookkeeping.",
+      "sources": [],
+      "attribution": "New AI-proposed generic effective ansatz, not Kirk's recovered law or a novel physical discovery",
+      "equations": [
+        "xi = C/C0",
+        "u_C = I_C dot(xi)^2/2 + V_C(xi)",
+        "I_C ddot(xi) + Gamma_C dot(xi) + V_C'(xi) = J",
+        "dot(u_th) = Gamma_C dot(xi)^2",
+        "dot(u_drive) = -J dot(xi)"
+      ],
+      "limitation": "Local fixed-volume accounting only; physical drive, spatial momentum, gravity, geometric entropy and transport closure remain missing"
+    },
+    {
+      "id": "candidate-b-conditional-identity",
+      "classification": "derived_conditionally",
+      "statement": "The stipulated local equations conserve the sum of three energy densities and give dot(s_th,vol)=Gamma_C dot(xi)^2/T >= 0.",
+      "sources": [],
+      "attribution": "Algebraic consequence of proposed equations, with proof in specification section 5.2",
+      "assumptions": [
+        "homogeneous element of fixed physical volume and composition",
+        "constant I_C > 0 and Gamma_C >= 0",
+        "differentiable potential bounded below",
+        "T > 0 and positive thermal heat capacity",
+        "thermal local-equilibrium du_th = T ds_th,vol",
+        "no unaccounted heat, mass, radiative or boundary flux",
+        "driving reservoir energy explicitly included"
+      ],
+      "limitation": "Does not establish total generalized entropy including an unspecified S_geom, a full collision model, novelty or the origin of thermodynamics"
+    },
+    {
+      "id": "candidate-b-closure",
+      "classification": "unresolved",
+      "statement": "F, J, backreaction, spatial stress/momentum, damping physics and independent parameter constraints are not specified.",
+      "sources": ["recovered_intent", "entropy_decision"],
+      "attribution": "Identified missing inputs, not hidden fitted quantities",
+      "limitation": "No unique new physical prediction or observational model comparison is available yet"
+    },
+    {
+      "id": "heat-is-not-entropy",
+      "classification": "established_baseline",
+      "statement": "Reversible adiabatic compression can heat a gas without entropy production.",
+      "sources": ["normal_shock"],
+      "attribution": "Standard thermodynamics",
+      "limitation": "Shocks are irreversible; neither temperature rise alone nor a fitted entropy map proves a new law"
+    },
+    {
+      "id": "shock-observable",
+      "classification": "proposed",
+      "statement": "Use independently constrained density and temperature jumps under explicit plasma/projection assumptions as a first joint diagnostic.",
+      "sources": ["normal_shock", "cluster_shock_review", "bullet_electron_heating", "xray_reduction"],
+      "attribution": "Proposed data gate based on established shock diagnostics",
+      "limitation": "Shared errors and ordinary plasma alternatives can mimic a residual; unspecified Candidate B is not identifiable"
+    }
+  ],
+  "review_gate": {
+    "required": true,
+    "state": "candidate_a_selected_functional_pending",
+    "questions": [
+      "Which precise geometry/energy functional defines C within Candidate A?",
+      "What units, normalization, domain and information are retained by that definition?",
+      "Does M = k(C/C0)^alpha make an independent statement or reuse the mass used to define C?",
+      "What mapping establishes equivalence or exposes a difference from the reference equations?",
+      "Which observations can test the resulting mapping without implying a new heating channel?"
+    ],
+    "not_authorized": [
+      "implementing a new physical mechanism",
+      "running a collision simulation",
+      "fitting a newly invented C heating law to observations",
+      "claiming a new theorem, entropy solution or empirical confirmation"
+    ]
+  }
+}

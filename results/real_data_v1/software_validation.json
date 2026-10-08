@@ -1,0 +1,31 @@
+{
+  "pytest": {
+    "command": "emergent_matter_model\\.venv\\Scripts\\python.exe -m pytest emergent_matter_model -q",
+    "returncode": 0,
+    "passed": 219,
+    "failed": 0,
+    "scope": "software tests, including legacy synthetic demonstrations; not 219 empirical confirmations"
+  },
+  "ruff": {
+    "returncode": 0,
+    "scope": "changed provenance, validation, report, build, package and regression-test files"
+  },
+  "mypy": {
+    "returncode": 0,
+    "source_files": 9,
+    "flags": [
+      "--explicit-package-bases",
+      "--follow-imports=silent",
+      "--disable-error-code=import-untyped"
+    ],
+    "limitation": "SciPy stubs are not installed; untyped third-party imports are explicitly excluded, not certified"
+  },
+  "empirical_validation": {
+    "source": "sparc_profile_validation.json",
+    "maximum_primary_scan_order_objective_difference": 4.740286385640502e-9,
+    "tolerance": 0.1,
+    "independent_influence_refit": "sparc_influence_crosscheck.json",
+    "gauntlet": "gauntlet.json",
+    "meaning": "numerical checks do not establish statistical coverage, novel physics or a theorem"
+  }
+}

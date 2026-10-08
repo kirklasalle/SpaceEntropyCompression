@@ -1,12 +1,9 @@
 cff-version: 1.2.0
-message: "If you use this software or theoretical framework, please cite it as below."
+message: "Cite this research software with the exact Git commit used. Current main is not a newly tagged release or the historical Zenodo snapshot; empirical claims require the current evidence reports."
 authors:
   - family-names: "LaSalle"
     given-names: "Kirk"
-title: "Emergent Matter Research Framework (EMRF): A Real-Data Test of the Horizon Hypothesis a0 = cH0/2pi"
-version: 0.10.0
-doi: 10.5281/zenodo.23197308
-date-released: 2026-10-07
+title: "Emergent Matter Research Framework (EMRF): Geometric Interpretations and Reproducible Astronomical Baselines"
 url: "https://github.com/kirklasalle/SpaceEntropyCompression"
 repository-code: "https://github.com/kirklasalle/SpaceEntropyCompression"
 license: MIT
@@ -17,9 +14,10 @@ keywords:
   - "space-entropy compression"
   - "sagittarius a*"
   - "s-star cluster"
-  - "s301"
   - "astrometry"
-  - "bayesian model selection"
+  - "penalized profiling"
+  - "research software"
+  - "data provenance"
   - "kretschmann invariant"
   - "sparc database"
   - "jwst kinematics"

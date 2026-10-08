@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "source_root": "C:\\Users\\kirkl\\.gemini\\antigravity-ide\\brain",
+  "generated_utc": "2026-10-08T18:04:44.108084+00:00",
+  "coverage": {
+    "files_inventoried": 9007,
+    "total_bytes": 2400925490,
+    "october_modified_files": 490,
+    "scan_counts": {
+      "nontext_format": 2864,
+      "text_scanned": 6136,
+      "over_16MiB": 7
+    },
+    "serialized_payloads_examined": 105,
+    "user_text_slots_recovered": 98,
+    "user_text_extraction_errors": 0,
+    "preserved_project_user_records": 5
+  },
+  "scope_limits": [
+    "Archive artifacts are not a guaranteed full transcript of Antigravity conversations",
+    "Only observed user-text protobuf slot 19.2 extracted; other internal fields excluded",
+    "No archive scripts executed; no private material uploaded",
+    "Unrelated projects and model-internal signatures not copied",
+    "No exhaustive OCR of unrelated images; project screenshots and animation reviewed",
+    "Existing audio matched byte-for-byte; existing transcripts reviewed, not retranscribed",
+    "Historical draft dates/metadata do not prove user authorship or empirical validity"
+  ],
+  "records": [
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\EMRF_MASTER_AUDIT_2026-10-05.md",
+      "sha256": "6033b4a31202849133b2f1ee27dd4f6a50f2cf77c43b0b54fbbc63e36c1458dd",
+      "bytes": 32722,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T21:09:39.546045+00:00",
+      "existing_same_name_candidates": [
+        "docs\\EMRF_MASTER_AUDIT_2026-10-05.md"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\EMRF_MASTER_AUDIT_2026-10-05.md"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\COSMOLOGICAL_FRONTIERS_IMPLEMENTATION_PLAN.md",
+      "sha256": "f9a4ce24ae4c4a56e4bd57e495b9a2fdac0bfb2533f007430403a1afb2aa29c7",
+      "bytes": 10665,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T15:42:44.577022+00:00",
+      "existing_same_name_candidates": [
+        "docs\\COSMOLOGICAL_FRONTIERS_PLAN.md"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\COSMOLOGICAL_FRONTIERS_IMPLEMENTATION_PLAN.md"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\GRAND_AUDIT_TEMPLATE_REVIEW.md",
+      "sha256": "88e1441c83e96f082a1a71e24006dfb6fe248af98120d103abf2e74f8c10f4a0",
+      "bytes": 12804,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:54:35.612578+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\GRAND_AUDIT_TEMPLATE_REVIEW.md"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md",
+      "sha256": "68e4652271232df51948e239b2740b041b2a0fd6e6fdd6cf91b3f23499dc2af5",
+      "bytes": 16974,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:55:30.023140+00:00",
+      "existing_same_name_candidates": [
+        "docs\\FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md",
+      "sha256": "11c0b541cf6fdf9783303266560844c78a38a11944279e84c1c956b47c314441",
+      "bytes": 31125,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T21:34:19.939473+00:00",
+      "existing_same_name_candidates": [
+        "docs\\GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\GRAND_DUE_DILIGENCE_AUDIT_CASE_002_FIRST_USE_CASE.md"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\use_case_lasalle_ontology.tex",
+      "sha256": "af835b2a88ddaa1d1d0f3b5976bb87446e2bc5879ecef9bc192cffff98dd3155",
+      "bytes": 17200,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:57:28.115786+00:00",
+      "existing_same_name_candidates": [
+        "paper\\use_case_lasalle_ontology.tex"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\use_case_lasalle_ontology.tex.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\black_hole_horizon_entropy.py",
+      "sha256": "8ea2a5b4d1c3cf89399a5f811bf6acf8edb1517ceefa841bae9e9f89efe849c1",
+      "bytes": 6876,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:48:22.161274+00:00",
+      "existing_same_name_candidates": [
+        "emergent_matter_model\\black_hole_horizon_entropy.py"
+      ],
+      "disposition": "already_preserved_exact",
+      "destination": "emergent_matter_model\\black_hole_horizon_entropy.py"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\quantum_vibrational_compression.py",
+      "sha256": "1a67fe8e1211d9803627f31f5e58190c37ae1e7fb1aa773b3814d769cc497337",
+      "bytes": 5162,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:50:42.394809+00:00",
+      "existing_same_name_candidates": [
+        "emergent_matter_model\\quantum_vibrational_compression.py"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\quantum_vibrational_compression.py.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\jwst_highz_early_galaxies.py",
+      "sha256": "7dc6fb36035ef7fcedb06c847198e72c6a4d2cfc63e776376f4346b64388dcf1",
+      "bytes": 6546,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:50:27.721099+00:00",
+      "existing_same_name_candidates": [
+        "emergent_matter_model\\jwst_highz_early_galaxies.py"
+      ],
+      "disposition": "already_preserved_exact",
+      "destination": "emergent_matter_model\\jwst_highz_early_galaxies.py"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\plot_three_horizons_figures.py",
+      "sha256": "7e6bb0403a44eddf8910b47450f13ac0a0dd1288b2b3866cc95326e4c0bfe770",
+      "bytes": 9528,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:54:29.063473+00:00",
+      "existing_same_name_candidates": [
+        "emergent_matter_model\\plot_three_horizons_figures.py"
+      ],
+      "disposition": "already_preserved_exact",
+      "destination": "emergent_matter_model\\plot_three_horizons_figures.py"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\test_three_horizons.py",
+      "sha256": "730210b49b2343ad38c53a2e6758e0ca7c28b1d7f57652fa6878d87bfcf976f5",
+      "bytes": 7478,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:50:59.526290+00:00",
+      "existing_same_name_candidates": [
+        "emergent_matter_model\\test_three_horizons.py"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\test_three_horizons.py.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\test_use_case_submission.py",
+      "sha256": "127207f76717bf03ebc2fd9041c70f152ca2a5d0be426e75aee0e4361305a3fa",
+      "bytes": 2275,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T21:00:28.216345+00:00",
+      "existing_same_name_candidates": [
+        "emergent_matter_model\\test_use_case_submission.py"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\test_use_case_submission.py.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\package_use_case_submission.py",
+      "sha256": "f53e5b7c3fefdbb412d08f94e5afb9881ead366d01fc71715cb12fb8aad7be5d",
+      "bytes": 1977,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:59:50.367930+00:00",
+      "existing_same_name_candidates": [
+        "paper\\package_use_case_submission.py"
+      ],
+      "disposition": "already_preserved_exact",
+      "destination": "paper\\package_use_case_submission.py"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\scratch\\generate_compendium.py",
+      "sha256": "c1b5b2b7c0d03a540a0c7fbb0fd4b9ebd1d9a2e932c8c455b3253d9844aef892",
+      "bytes": 19211,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:06:22.346832+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\generate_compendium.py.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\browser\\scratchpad_0tiaazre.md",
+      "sha256": "bfb3acc292cde2df2025455cfcb988a7e048d5b9b61ba272889e5abe34bd6f65",
+      "bytes": 1036,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:19:13.720760+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\scratchpad_0tiaazre.md"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\visualizer_initial_state_1791306927723.png",
+      "sha256": "3f28eaceb02e12e4c6c69f3aadde24cb00bfbd4df1d06e556868d058a61b8926",
+      "bytes": 201090,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:15:27.725315+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\visualizer_initial_state_1791306927723.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\rar_scatter_tab_1791306996881.png",
+      "sha256": "f7af4dbe7f637d9645fe0f1eaedc35d264edd23e29080c9903997b5d1d56167c",
+      "bytes": 160595,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:16:36.883148+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\rar_scatter_tab_1791306996881.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\cosmic_expansion_regime_1791307013899.png",
+      "sha256": "13f421d7d2c87e0fb46052aba2c64108ebb488c44b6e5eb44a538e30bbf0caef",
+      "bytes": 177460,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:16:53.901732+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\cosmic_expansion_regime_1791307013899.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\cmb_peaks_regime_1791307030494.png",
+      "sha256": "919d09c84de94b8159ca06cf205721f22f156010f737a78370cecaf74fb91be0",
+      "bytes": 188503,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:17:10.494550+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\cmb_peaks_regime_1791307030494.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\returned_3d_tab_1791307103916.png",
+      "sha256": "21e1a81c8cfe82202d0ff8462f64204d896fba4bc54bd28b8ab5f61d60818d19",
+      "bytes": 206436,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:18:23.923077+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\returned_3d_tab_1791307103916.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\sidebar_collapsed_1791307056781.png",
+      "sha256": "16e827cbd68ae376983897d58de54c831c525e246566f050fc9c6890875903ea",
+      "bytes": 119693,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:17:36.785172+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\sidebar_collapsed_1791307056781.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\sidebar_expanded_1791307081750.png",
+      "sha256": "bbea36e1fca2d9107290401864c51d46e5402148f61c57dee9964d2f618fcb8f",
+      "bytes": 185322,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:18:01.756221+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\sidebar_expanded_1791307081750.png"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\test_visualizer_1791306915824.webp",
+      "sha256": "21e721f3bd243e2758b5155d8320539b2ba9714add09e7fe994234b9f8f2095a",
+      "bytes": 4399446,
+      "kind": "historical_visualization",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:20:47.534892+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\test_visualizer_1791306915824.webp"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\forward_document_emrf_peer_review_refinement.md",
+      "sha256": "3cc715c51dba0a2709dba1084bd2f1389d067ffd9f6bd776614fc63b6898495c",
+      "bytes": 15915,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-07T01:07:15.690291+00:00",
+      "existing_same_name_candidates": [
+        "docs\\forward_document_emrf_peer_review_refinement.md",
+        "docs\\FORWARD_DOCUMENT_EMRF_PEER_REVIEW_REFINEMENT.md"
+      ],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\forward_document_emrf_peer_review_refinement.md"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\scratch\\release_notes_v0.9.1.md",
+      "sha256": "b2060033e4bce3864a5e3757f2eb1c58b4b7db45c8bd7d4f8ecc57a0c5e9c8d8",
+      "bytes": 3291,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-07T18:52:53.399134+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\release_notes_v0.9.1.md"
+    },
+    {
+      "source_relative_path": "e5da707a-459a-4d74-91d8-b0c8df2a569a\\scratch\\emrf_full_text.txt",
+      "sha256": "e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025",
+      "bytes": 23746,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-09-29T15:46:01.165101+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\e5da707a-459a-4d74-91d8-b0c8df2a569a\\emrf_full_text.txt"
+    },
+    {
+      "source_relative_path": "e5da707a-459a-4d74-91d8-b0c8df2a569a\\scratch\\emrf_dump.txt",
+      "sha256": "845c0ed49b45432178e23d9a92410d5bb9d11d2543b8c0f97f3f4c5e64e56e54",
+      "bytes": 23636,
+      "kind": "historical_draft",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-09-29T15:42:24.220962+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\e5da707a-459a-4d74-91d8-b0c8df2a569a\\emrf_dump.txt"
+    },
+    {
+      "source_relative_path": "e5da707a-459a-4d74-91d8-b0c8df2a569a\\scratch\\build_emrf_all.py",
+      "sha256": "b005d85e97faa8a5830dd1cc23f1986a31a4d4a25e8f83e5fb1ceb836e02f386",
+      "bytes": 62600,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-09-29T21:18:48.561971+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\e5da707a-459a-4d74-91d8-b0c8df2a569a\\build_emrf_all.py.txt"
+    },
+    {
+      "source_relative_path": "e5da707a-459a-4d74-91d8-b0c8df2a569a\\scratch\\build_emrf_docs.py",
+      "sha256": "4f4d0e23ce1a0636cb95c1931b264ba34fd3ac03e3be691a024ca7cb60562adb",
+      "bytes": 43342,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-09-29T15:55:23.633354+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\e5da707a-459a-4d74-91d8-b0c8df2a569a\\build_emrf_docs.py.txt"
+    },
+    {
+      "source_relative_path": "e5da707a-459a-4d74-91d8-b0c8df2a569a\\scratch\\update_emrf_docx.py",
+      "sha256": "eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83",
+      "bytes": 21336,
+      "kind": "historical_code_snapshot",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-09-29T21:13:39.705388+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\e5da707a-459a-4d74-91d8-b0c8df2a569a\\update_emrf_docx.py.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-276.log",
+      "sha256": "bd241bfb27ea2c453368eb9da4c512daeee9033ffddcceae491c4d53e3ffab41",
+      "bytes": 5961,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T21:38:35.738295+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-276.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-1183.log",
+      "sha256": "092d6f66417ce22c1e744673fdfa9a0e5aa2f2e6680ee6dc96b6a6b066d17207",
+      "bytes": 12310,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T23:13:56.526357+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-1183.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-1196.log",
+      "sha256": "1cd266dc1d131684ffd09b1b8ad0c2c78be1fa33c6dc0c007ace467b0e83cbf0",
+      "bytes": 10934,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T23:17:01.413297+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-1196.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-1241.log",
+      "sha256": "974162a15ed1b44e9c0a1541f41215b1e924e15269a158b2c9247e87555263a3",
+      "bytes": 10934,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T23:23:20.715594+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-1241.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-1376.log",
+      "sha256": "b31f5e8d06013cc8308986f03f7841b69c5862786872383e17e4082e95fa117d",
+      "bytes": 13523,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T23:38:22.302939+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-1376.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-1413.log",
+      "sha256": "e3aee488d0eefaaafa55c9c7745ac594c6f43677f822af2e88595f52a4125c49",
+      "bytes": 13523,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-05T23:45:02.966678+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-1413.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-1598.log",
+      "sha256": "941a527beb441b06f04b41b9077a048497ab5cfb08fc2e643ea0b50049547296",
+      "bytes": 16283,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T00:16:29.087034+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-1598.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-2073.log",
+      "sha256": "59f905affb175b271d2c9540b8b81866bc24b96572c4d44b9665a657470edb53",
+      "bytes": 264,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T17:25:23.028803+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-2073.log.txt"
+    },
+    {
+      "source_relative_path": "8de1a404-0739-40f4-a4af-8d636b604cc9\\.system_generated\\tasks\\task-2252.log",
+      "sha256": "d8eb6df34ab8b35e6dc73e1848e87cd32f62d7b4744e250925693abe27a9f96f",
+      "bytes": 1897,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-06T20:47:41.375988+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\8de1a404-0739-40f4-a4af-8d636b604cc9\\task-2252.log.txt"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\.system_generated\\tasks\\task-153.log",
+      "sha256": "8f361a23a29cf7b4039f49bf1666216132107ac819e2ad577b205bc03285ac02",
+      "bytes": 2344,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-07T15:01:38.677520+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\task-153.log.txt"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\.system_generated\\tasks\\task-168.log",
+      "sha256": "2f91b4d52abc2027e905aa5881d5ee6d38159761defd9c47ace6c49585ecef60",
+      "bytes": 264,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-07T15:09:18.045086+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\task-168.log.txt"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\.system_generated\\tasks\\task-203.log",
+      "sha256": "01cc6a76d48c2577678f4aff05183c9b607f6d7ae76b7a292b5500310127ca2c",
+      "bytes": 679,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-07T15:47:38.666927+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\task-203.log.txt"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\.system_generated\\tasks\\task-330.log",
+      "sha256": "8d1f643f06871a9c09d08886cfabd63ba60066368697fba6fa3d04454ccb83e2",
+      "bytes": 265,
+      "kind": "historical_execution_log",
+      "evidence_status": "historical_not_new_validation",
+      "source_modified_utc": "2026-10-07T20:28:23.371166+00:00",
+      "existing_same_name_candidates": [],
+      "disposition": "copied_exact",
+      "destination": "docs\\archive\\antigravity_recovery\\sources\\67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\task-330.log.txt"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\.tempmediaStorage\\media_1791333042941.mp4",
+      "sha256": "d61f28c9702c380398d5ff718bcf983df2ecbe6b776220b384b944309307bb1b",
+      "bytes": 22562100,
+      "kind": "existing_audio_attachment",
+      "disposition": "already_preserved_exact",
+      "destination": "docs\\audio\\Preparing_EMRF_Physics_for_Peer_Review.m4a",
+      "evidence_status": "existing_review_audio_not_physics_validation"
+    },
+    {
+      "source_relative_path": "67e60b60-238b-4fb1-8fcc-1e4c3034f1fe\\.tempmediaStorage\\media_1791333057512.mp4",
+      "sha256": "4ab6c40e9e689e9471199ab780eea01837fdfc4efb77e47f4e1b932f59a8f816",
+      "bytes": 17524457,
+      "kind": "existing_audio_attachment",
+      "disposition": "already_preserved_exact",
+      "destination": "docs\\audio\\Refining_the_Emergent_Matter_Research_Framework.m4a",
+      "evidence_status": "existing_review_audio_not_physics_validation"
+    },
+    {
+      "source_relative_path": "fde69dc2-de73-40cc-b2d0-0e1e2de57be7\\scratch\\deep_analysis.json",
+      "source_sha256": "2ffb17ff9129fc95c61b337c298fd1bff743839aab9c24e87a510ae6062c6cba",
+      "sha256": "d87e7c4e777f417a66f97d6341901d3bf5949aafcd59b3644b0ab9477058008c",
+      "destination": "docs\\archive\\antigravity_recovery\\extracts\\august_deep_analysis.json",
+      "disposition": "project_only_json_extraction",
+      "selection": "theory subtree; only explicitly SpaceEntropyCompression fields",
+      "kind": "historical_inventory",
+      "evidence_status": "not_observational_data"
+    },
+    {
+      "source_relative_path": "fde69dc2-de73-40cc-b2d0-0e1e2de57be7\\scratch\\inventory.json",
+      "source_sha256": "75c4fd622714d8d9eedf27a4d5b0f26384ca9c371bdf72f6a356c5f73dde56a2",
+      "sha256": "315c20d1cf28470eb7b4ba26ff8c1d56c455fe2609cb1255e23a6938a5f90dd4",
+      "destination": "docs\\archive\\antigravity_recovery\\extracts\\august_inventory.json",
+      "disposition": "project_only_json_extraction",
+      "selection": "theory subtree; only explicitly SpaceEntropyCompression fields",
+      "kind": "historical_inventory",
+      "evidence_status": "not_observational_data"
+    }
+  ],
+  "derived_extracts": [
+    {
+      "destination": "docs\\archive\\antigravity_recovery\\extracts\\user_text_records.json",
+      "sha256": "a3d1f391e7fd92c85bd566bc595d3fa55c73790ff881cb80a0340ad1b6fd5581",
+      "kind": "user_text_extraction"
+    },
+    {
+      "destination": "docs\\archive\\antigravity_recovery\\extracts\\execution_events.json",
+      "sha256": "74f62d6468ab67ed87a0f6792d83f8faf7508e2531fd991c46a4d9176d44e387",
+      "kind": "visible_execution_events"
+    }
+  ]
+}

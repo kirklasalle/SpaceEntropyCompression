@@ -1,5 +1,15 @@
 # Publishing the v0.10.0 correction release on Zenodo
 
+> **Superseded instructions: do not execute this historical release checklist
+> as a current publication procedure.** The current repository work is not a new
+> tagged release. Citation/Zenodo metadata now separates `main` from the historical
+> DOI. Consult [current status](../STATUS.md) and the
+> [model card](../MODEL_CARD.md); any new release or deposit needs an explicit
+> version/scope decision. Historical suggested descriptions below are not current
+> validated claims.
+
+> **Historical release instructions:** subsequent statistical review distinguishes penalized profiling from marginalization and does not certify the historical significance/BIC claims. Review the [new research draft](SPARC_HORIZON_TEST_PAPER.md) and [reproducibility/release-staging guide](REAL_DATA_REPRODUCIBILITY.md) before publishing anything. No release upload or external submission has been performed by the current task.
+
 The earlier Zenodo record (DOI [10.5281/zenodo.23197308](https://doi.org/10.5281/zenodo.23197308)) contains results that have since been withdrawn. Publishing v0.10.0 as a **new version of the same record** keeps the history intact and points readers to the correction. Zenodo doesn't delete earlier versions; new versions are linked under the same "concept" DOI and the newest one is shown first.
 
 ## Steps (about 10 minutes)

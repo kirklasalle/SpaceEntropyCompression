@@ -5,6 +5,68 @@ All notable changes to the EMRF / Space-Entropy Compression project are document
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - Real-observation validation and research draft
+
+### Candidate A and current publication surfaces
+- Recorded Kirk's selection of Candidate A and his suggestion to seek a
+  formulation inside GR. Candidate B is unselected, retained for history.
+- Compared Ricci/tidal curvature, observer energy and regional mass; documented
+  the conditional alpha=1 Einstein-projection identity and its limits.
+- Rewrote the README from badges through citation/license, and replaced obsolete
+  current-status/model-card/task/roadmap claims. Citation metadata identifies
+  research software by revision, not a misleading new DOI/version association.
+- Current complete local suite: **244 tests passed**. This is software
+  verification, not empirical confirmation of every regime.
+- Added byte-preserving Git attributes for hashed sources and evidence, and
+  corrected a legacy packaging test to build in a temporary directory rather
+  than require a git-ignored local ZIP. The original test is preserved in the
+  historical recovery archive.
+
+### Antigravity development-history recovery
+- Inventoried the authorized IDE brain archive, searched text/revisions and
+  recovered available user-text slots without copying model-internal fields.
+- Preserved selected historical drafts/code/logs/images, linked exact duplicates,
+  and extracted project-only material from mixed inventories with source hashes.
+- Added a recovery audit, curated theory note and claim ledger. The recovered
+  record distinguishes downstream thermodynamics from candidate geometric
+  entropy and preserves the original multi-star experiment.
+- Updated graph memory with qualified source-linked claims and preserved its
+  previous bytes. Historical "validated" labels no longer imply current
+  empirical confirmation.
+
+### Manual-data and theory/toolkit follow-up
+- Authenticated the manually downloaded Pantheon+ STAT+SYS covariance against
+  the pinned official release, then fitted a full-covariance, uncalibrated
+  flat-LCDM baseline to 1,590 measurement rows. This does not infer H0 or
+  constitute an EMRF prediction.
+- Added a top-down audit preserving the previously defined compression families
+  and the original statement that thermodynamics is an output of the theory.
+- Corrected the static Bullet Cluster report, figure labels and interactive
+  schematic: prescribed shapes and input entropy no longer declare a physical
+  pass/failure. Historical numerical shapes and offsets are unchanged.
+
+### Added
+- A separate full SPARC research draft, ten-regime/three-horizon evidence audit,
+  compression proof-obligation audit, and reproducibility/reviewer guide.
+- A fresh residual-based SPARC profiling path with deterministic multistarts,
+  scan-order validation, four interpolation laws, stellar/bulge/selection
+  sensitivities, and observed-data leave-one-galaxy-out checks.
+- Version-pinned Pantheon+ observations and DESI likelihood ingestion; a
+  covariance-aware flat-LCDM BAO baseline is explicitly not an EMRF prediction.
+- Generated evidence tables, source hashes, numerical regression tests, and
+  local review-package tooling. No external release or submission is performed.
+
+### Corrected
+- Nuisance optimization is penalized profiling, not Bayesian marginalization.
+  Historical significance and BIC claims below are not certified by this work.
+- Cached SPARC archives and extracted tables are verified against recorded bytes;
+  unknown or changed observational inputs are rejected by the new provenance path.
+- A failed initial scan-order check is retained as diagnostic history rather than
+  presented as validated inference. Report generation requires numerical verification.
+- Regimes lacking a derived prediction remain explicitly not yet testable.
+  Algebraic input-mass recovery and an assumed quarter-area entropy coefficient
+  are not empirical confirmations or new theorems.
+
 ## [0.10.0] - 2026-10-07: Integrity correction and first real-data test
 
 ### Withdrawn

@@ -1,0 +1,28 @@
+{
+  "top_level_items": [
+    "SpaceEntropyCompression"
+  ],
+  "manifests": [
+    "SpaceEntropyCompression\\emergent_matter_model\\pyproject.toml",
+    "SpaceEntropyCompression\\emergent_matter_model\\requirements.txt",
+    "SpaceEntropyCompression\\emergent_matter_model\\javafx_client\\pom.xml"
+  ],
+  "readmes": [
+    "SpaceEntropyCompression\\emergent_matter_model\\README_3D.md",
+    "SpaceEntropyCompression\\emergent_matter_model\\javafx_client\\README.md",
+    "SpaceEntropyCompression\\tools\\apache-maven\\apache-maven-3.9.6\\README.txt",
+    "SpaceEntropyCompression\\tools\\apache-maven\\apache-maven-3.9.6\\lib\\ext\\README.txt",
+    "SpaceEntropyCompression\\tools\\apache-maven\\apache-maven-3.9.6\\lib\\ext\\hazelcast\\README.txt",
+    "SpaceEntropyCompression\\tools\\apache-maven\\apache-maven-3.9.6\\lib\\ext\\redisson\\README.txt",
+    "SpaceEntropyCompression\\tools\\apache-maven\\apache-maven-3.9.6\\lib\\jansi-native\\README.txt"
+  ],
+  "sample_code_files": [
+    "SpaceEntropyCompression\\emergent_matter_model\\compare_schwarzschild.py",
+    "SpaceEntropyCompression\\emergent_matter_model\\model.py",
+    "SpaceEntropyCompression\\emergent_matter_model\\server.py",
+    "SpaceEntropyCompression\\emergent_matter_model\\test_model.py",
+    "SpaceEntropyCompression\\emergent_matter_model\\test_server_api.py",
+    "SpaceEntropyCompression\\emergent_matter_model\\visualize.py",
+    "SpaceEntropyCompression\\emergent_matter_model\\viz3d.py"
+  ]
+}

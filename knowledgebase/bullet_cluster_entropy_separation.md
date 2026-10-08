@@ -1,5 +1,12 @@
 # The Bullet Cluster (1E 0657-56) & Thermodynamic Entropy Spatial Separation
 
+> **2026-10-08 executable correction:** the current module is a static synthetic
+> illustration, not a measured collision/lensing test. It prescribes entropy
+> rather than generating it, uses exponent **2.2** (not the historical 2 below),
+> and normalizes each proxy map to its maximum. Its executable report now says
+> **NOT TESTED**, with no empirical match verdict. The historical conclusion
+> below is unsupported. See the [top-down audit](../docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md).
+
 > **Integrity notice (2026-10-07).** This document predates the independent audit in [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md). Empirical results quoted here (for example S-star ΔBIC = +70.743 or +141.3, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, wide-binary ΔBIC = −60.26, CMB χ²ᵥ = 0.924, "28,700+ observational constraints") were computed from synthetic data files (now quarantined in [`data/synthetic/`](../data/synthetic/README.md)) or from code whose answer was built in, so they **must not be cited**. "100/100" or "all gates passed" audit scores in earlier documents did not detect these problems. Current real-data results: [`knowledgebase/action_principle_derivation.md`](action_principle_derivation.md) §4.3.
 
 

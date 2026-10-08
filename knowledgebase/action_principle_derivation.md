@@ -8,6 +8,8 @@
 
 ---
 
+> **Subsequent inference clarification (2026-10-08):** the numerical summaries below are historical. Their nuisance treatment is penalized profiling, not Bayesian marginalization; quoted σ levels and BIC rankings are not independently calibrated discovery evidence. See the [fresh paper](../docs/SPARC_HORIZON_TEST_PAPER.md), [profile results](../docs/SPARC_FRESH_RESULTS.md), and [compression audit](../docs/EMRF_COMPRESSION_AND_HORIZONS_AUDIT.md). The linearized argument below is conditional on its background/coupling assumptions, not a no-go theorem for every nonlinear completion.
+
 ## 1. Spatial ontology (foundational postulates)
 
 1. **[ASSUMED]** Space is dimensional: $X = \{x, y, z, d_0, d_1, \dots\} \in \mathcal{M}^D$, with $D = 3 + d_{\text{ext}}$.

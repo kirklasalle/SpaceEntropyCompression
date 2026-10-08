@@ -76,18 +76,34 @@ def fetch_sparc(force: bool = False) -> Path:
             print(f"Downloading {url}")
             download(url, dest)
             _record(f"sparc/{name}", url, dest, SPARC_CITATION)
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    for name, url in SPARC_FILES.items():
+        entry = manifest.get(f"sparc/{name}", {})
+        if (entry.get("url") != url or entry.get("sha256") != sha256_of(out / name)
+                or entry.get("bytes") != (out / name).stat().st_size):
+            raise ValueError(f"Unverified or modified SPARC cache: {name}; use --force")
     rot_dir = out / "Rotmod_LTG"
-    if force or not rot_dir.is_dir() or not any(rot_dir.glob("*_rotmod.dat")):
-        rot_dir.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(out / "Rotmod_LTG.zip") as z:
-            for member in z.namelist():
-                if member.endswith("_rotmod.dat"):
-                    (rot_dir / Path(member).name).write_bytes(z.read(member))
+    rot_dir.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(out / "Rotmod_LTG.zip") as z:
+        expected = set()
+        for member in z.namelist():
+            if member.endswith("_rotmod.dat"):
+                dest = rot_dir / Path(member).name
+                expected.add(dest.name)
+                raw = z.read(member)
+                if not dest.exists() or force:
+                    dest.write_bytes(raw)
+                elif dest.read_bytes() != raw:
+                    raise ValueError(f"Extracted SPARC file differs from archive: {dest.name}")
+        if {p.name for p in rot_dir.glob("*_rotmod.dat")} != expected:
+            raise ValueError("Unexpected rotation files in SPARC cache")
     return out
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     ap.add_argument("--sparc", action="store_true", help="download the SPARC database (Lelli+2016)")
     ap.add_argument("--force", action="store_true", help="re-download even if cached")
     args = ap.parse_args()

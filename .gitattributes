@@ -1,0 +1,6 @@
+# Preserve exact bytes used in source/artifact SHA-256 provenance across platforms.
+*.py -text whitespace=cr-at-eol
+paper/*.tex -text whitespace=cr-at-eol
+paper/*.bib -text whitespace=cr-at-eol
+results/** -text whitespace=cr-at-eol
+docs/archive/antigravity_recovery/** -text -whitespace

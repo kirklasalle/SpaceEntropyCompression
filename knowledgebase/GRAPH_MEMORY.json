@@ -2,22 +2,102 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "meta": {
     "title": "EMRF Space-Entropy Compression Knowledge Graph & Memory",
-    "version": "2.0.1",
-    "last_updated": "2026-10-07T12:00:00Z",
+    "version": "2.1.0",
+    "last_updated": "2026-10-08",
     "creator": "Antigravity & Kirk LaSalle",
     "project": "Emergent Matter Research Framework (EMRF) / Space-Entropy Compression",
-    "repository": "d:/Projects/theory/SpaceEntropyCompression",
-    "notes": "T03 Entropy Ontology Decision (2026-10-07): Entropy S(X,t) is a thermodynamic state field and the arrow of change (Second Law), not a spatial coordinate. Formally documented in docs/T03_ENTROPY_ONTOLOGY_DECISION_2026-10-07.md with three-source consistency verification.",
-    "summary": "Formal relational graph memory connecting theoretical physics concepts, multidimensional spatial geometry X={x,y,z,d0,d1,d2,...}, thermodynamic entropy state coupling S(X,t), software components (178 unit tests across 21 suites), observational astrophysical datasets (Sgr A* 5-star cluster with 201 points; SPARC galaxy rotation curves with 10 galaxies and 214 points; JWST/ALMA high-redshift galaxy kinematics with 10 galaxies; Solar System 9-probe precision catalog; SLACS strong lens benchmark; Bullet Cluster 1E 0657-56; Gaia DR3 26,615 wide binary pairs; GW170817 multi-messenger; Pantheon+ 1,701 SNe Ia; DESI 2024 BAO 13 distance points; Planck 2018 PR3 CMB TT acoustic peaks; total 28,700+ observational constraints), Solar System Cassini screening test (|delta_a| < 3.2e-14 m/s^2), Relativistic Gravitational Lensing Engine with unit slip eta=1, Bullet Cluster entropy-driven centroid displacement (~180 kpc offset), Universal RAR Monte Carlo scatter test, GW170817 speed-of-gravity test (|c_gw - c|/c = 0), Gaia wide binary External Field Effect test (Delta BIC = -60.26), Hamiltonian stability & Ostrogradsky ghost audit (A > 0, 0.95c <= c_s <= c), Synthetic Adversarial Blind Challenge & Falsification Engine (100% selectivity), MICROSCOPE Equivalence Principle test (|eta| = 0), Late-Time Cosmic Expansion Engine (Pantheon+ & DESI 2024 BAO, red chi^2 = 0.617), Early-Universe CMB Acoustic Peak Engine (Planck 2018 PR3 l1, l2, l3 with sustained 3rd peak ratio A3/A2 = 0.988), 13 publication figures, interactive WebGL dashboard v0.9.0 with 10 regimes, and The Grand Due Diligence Audit Report Case 001 (Level 5 World-Class Gold Standard & Planetary Stewardship, 100/100 CQSI)."
+    "repository": "D:\\Projects\\SpaceEntropyCompression",
+    "notes": "Archive recovery preserves source provenance and qualifications. Historical nodes are not evidence of current empirical validation.",
+    "summary": "Research graph with 10 curated Antigravity recovery claims; original C families, downstream thermodynamics, multi-star design and implementation history. Historical empirical certification labels are not endorsed.",
+    "historical_summary": "Formal relational graph memory connecting theoretical physics concepts, multidimensional spatial geometry X={x,y,z,d0,d1,d2,...}, thermodynamic entropy state coupling S(X,t), software components (178 unit tests across 21 suites), observational astrophysical datasets (Sgr A* 5-star cluster with 201 points; SPARC galaxy rotation curves with 10 galaxies and 214 points; JWST/ALMA high-redshift galaxy kinematics with 10 galaxies; Solar System 9-probe precision catalog; SLACS strong lens benchmark; Bullet Cluster 1E 0657-56; Gaia DR3 26,615 wide binary pairs; GW170817 multi-messenger; Pantheon+ 1,701 SNe Ia; DESI 2024 BAO 13 distance points; Planck 2018 PR3 CMB TT acoustic peaks; total 28,700+ observational constraints), Solar System Cassini screening test (|delta_a| < 3.2e-14 m/s^2), Relativistic Gravitational Lensing Engine with unit slip eta=1, Bullet Cluster entropy-driven centroid displacement (~180 kpc offset), Universal RAR Monte Carlo scatter test, GW170817 speed-of-gravity test (|c_gw - c|/c = 0), Gaia wide binary External Field Effect test (Delta BIC = -60.26), Hamiltonian stability & Ostrogradsky ghost audit (A > 0, 0.95c <= c_s <= c), Synthetic Adversarial Blind Challenge & Falsification Engine (100% selectivity), MICROSCOPE Equivalence Principle test (|eta| = 0), Late-Time Cosmic Expansion Engine (Pantheon+ & DESI 2024 BAO, red chi^2 = 0.617), Early-Universe CMB Acoustic Peak Engine (Planck 2018 PR3 l1, l2, l3 with sustained 3rd peak ratio A3/A2 = 0.988), 13 publication figures, interactive WebGL dashboard v0.9.0 with 10 regimes, and The Grand Due Diligence Audit Report Case 001 (Level 5 World-Class Gold Standard & Planetary Stewardship, 100/100 CQSI).",
+    "recovery_integrated": true,
+    "evidence_policy": "Do not infer physics validation from old status, description, dataset names or test counts. Consult evidence_status, curated recovery claims and current real-data reports.",
+    "current_reports": [
+      "docs/ANTIGRAVITY_RECOVERY_AUDIT.md",
+      "docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md",
+      "docs/SPARC_FRESH_RESULTS.md",
+      "results/real_data_followup/pantheon_baseline.json"
+    ],
+    "pre_recovery_snapshot": "docs\\archive\\antigravity_recovery\\graph_memory_before_recovery.json",
+    "pre_recovery_sha256": "699a50436ea34ca05d3294ff57200b673873cafee855a8bcc10ef74941bccf9c",
+    "collision_candidate_review": {
+      "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
+      "ledger": "knowledgebase/thermodynamic_collision_candidates.json",
+      "state": "candidate_a_selected_functional_pending",
+      "selected_candidate": "candidate:collision_geometry_reference",
+      "decision_source": "Kirk LaSalle: I'm for candidate A. (2026-10-08)",
+      "approval_scope": "direction only; no functional or empirical validation selected",
+      "functional_comparison": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
+      "recommended_functional_node": "definition:candidate_a_local_energy_reference",
+      "specific_functional_approved": false,
+      "new_mechanism_implemented": false,
+      "empirically_validated": false
+    }
   },
   "nodes": [
+    {
+      "id": "definition:candidate_a_local_energy_reference",
+      "type": "RecommendedDefinition",
+      "name": "Observer-projected Einstein curvature as local energy-density reference",
+      "description": "C_m=(G+Lambda g)(n,n)=8piG epsilon_(n)/c^4 under Einstein's equation. Alpha=1 and k=c^2 C0/(8piG) reproduce energy-equivalent density, not particle creation or full GR equivalence. Keep tidal curvature and regional energy separate.",
+      "status": "assistant_recommendation_not_author_selected",
+      "filePath": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
+      "locator": "sections 3.3 and 5",
+      "evidence_status": "conditional_standard_GR_identity_not_empirical_discovery",
+      "use_for_empirical_confirmation": false
+    },
+    {
+      "id": "diagnostic:candidate_a_definition_counterexamples",
+      "type": "MathematicalDiagnostic",
+      "name": "Vacuum, radiation and regional-energy checks",
+      "description": "Executed standard-background algebra separates Ricci trace, local observer energy, tidal curvature and regional mass. It rules out particular universal scalar identifications, not every C functional.",
+      "status": "algebra_checked_no_observational_fit",
+      "filePath": "results/candidate_a_definition_checks.json",
+      "evidence_status": "exact_background_algebra_not_observations",
+      "use_for_empirical_confirmation": false
+    },
+    {
+      "id": "candidate:collision_geometry_reference",
+      "type": "ProposedCandidate",
+      "name": "Candidate A: geometry/energy re-description",
+      "description": "A diagnostic C functional with standard collision dynamics; no new heat source. Precise F and equivalence remain to be specified.",
+      "status": "selected_by_author_functional_pending_not_implemented",
+      "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
+      "locator": "section 4",
+      "evidence_status": "candidate_not_empirical_validation",
+      "use_for_empirical_confirmation": false
+    },
+    {
+      "id": "candidate:collision_exchange_channel",
+      "type": "ProposedCandidate",
+      "name": "Candidate B: local energy-exchange accounting",
+      "description": "AI-proposed fixed-volume driven/damped coordinate with paired energy transfers and conditional thermal entropy increase. Not Kirk's recovered law; physical drive, field mapping, momentum and entropy closure remain missing.",
+      "status": "not_selected_retained_for_history",
+      "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
+      "locator": "section 5",
+      "evidence_status": "conditional_accounting_not_complete_physical_model",
+      "use_for_empirical_confirmation": false
+    },
+    {
+      "id": "candidate:collision_observable_gate",
+      "type": "ProposedResearchGate",
+      "name": "Density/temperature shock diagnostic and identifiability gate",
+      "description": "For selected Candidate A, require an explicit functional and observable mapping; an equivalent re-description has no independent new-heating signature. Candidate B's closure questions remain historical, not the selected direction.",
+      "status": "candidate_a_functional_and_observable_mapping_pending",
+      "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
+      "evidence_status": "proposed_observable_not_a_completed_test",
+      "use_for_empirical_confirmation": false
+    },
     {
       "id": "concept:multidimensional_space",
       "type": "Concept",
       "name": "Multidimensional Space X = {x, y, z, d_0, d_1, d_2, ...}",
       "domain": "Theoretical Physics",
       "description": "Formulation of space as possessing extended dimensional degrees of freedom (x, y, z, d_0, d_1, d_2, ...). Time t tracks temporal evolution/change, and entropy S is a thermodynamic state variable characterizing compression organization, not a coordinate axis.",
-      "status": "Core Architectural Principle (Clarified by Kirk LaSalle 2026-10-05)"
+      "status": "Core Architectural Principle (Clarified by Kirk LaSalle 2026-10-05)",
+      "historical_status": "Core Architectural Principle (Clarified by Kirk LaSalle 2026-10-05)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:entropy_state_variable",
@@ -25,7 +105,10 @@
       "name": "Entropy as Organizational State Variable",
       "domain": "Thermodynamics & Information",
       "description": "Entropy S(X,t) characterizes the degree of organization, compression, and thermodynamic state of energy-momentum within multidimensional spatial degrees of freedom.",
-      "status": "Established Protocol"
+      "status": "Established Protocol",
+      "historical_status": "Established Protocol",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:emergent_matter",
@@ -33,7 +116,10 @@
       "name": "Emergent Matter from Space Compression",
       "domain": "Theoretical Physics",
       "description": "The foundational postulate that observable mass/matter density M is not fundamental, but condenses from geometric and thermodynamic compression of multidimensional space over time.",
-      "status": "Core Hypothesis"
+      "status": "Core Hypothesis",
+      "historical_status": "Core Hypothesis",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:effective_curvature",
@@ -41,7 +127,10 @@
       "name": "Effective Curvature C(X, t)",
       "domain": "Mathematical Physics",
       "description": "Weighted linear combination of dimensional spatial curvatures across macroscopic and extended spatial degrees of freedom: C(X,t) = F(E, S, geometry, t).",
-      "status": "Formulated"
+      "status": "Formulated",
+      "historical_status": "Formulated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:bifurcation_framework",
@@ -49,7 +138,10 @@
       "name": "Falsification Bifurcation (Branch A vs Branch B)",
       "domain": "Epistemology & Methodology",
       "description": "Methodological protocol where Branch A represents collapse into standard GR (C reduces to GR invariant), and Branch B represents discovery of a genuine non-vanishing physical anomaly.",
-      "status": "Established Protocol"
+      "status": "Established Protocol",
+      "historical_status": "Established Protocol",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:kretschmann_scalar",
@@ -57,7 +149,10 @@
       "name": "Kretschmann Curvature Invariant",
       "domain": "General Relativity",
       "description": "Riemann curvature contraction K = R^{abcd} R_{abcd} = 48 G^2 M^2 / (c^4 r^6) in Schwarzschild spacetime. Serves as the primary coordinate-invariant benchmark for spatial curvature.",
-      "status": "Standard Physics"
+      "status": "Standard Physics",
+      "historical_status": "Standard Physics",
+      "evidence_status": "standard_formula_not_EMRF_validation",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:bekenstein_hawking_bound",
@@ -65,7 +160,10 @@
       "name": "Bekenstein-Hawking Area-Entropy Relation",
       "domain": "Thermodynamics & Gravitation",
       "description": "S = (k_B c^3 A) / (4 G hbar). Physical boundary condition that EMRF must recover in the event horizon limit.",
-      "status": "Physical Constraint"
+      "status": "Physical Constraint",
+      "historical_status": "Physical Constraint",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "equation:emergent_matter_ansatz",
@@ -73,7 +171,17 @@
       "name": "Matter Scaling Ansatz",
       "latex": "M(X,t) = k \\left( \\frac{C(X,t)}{C_0} \\right)^\\alpha",
       "description": "Phenomenological scaling mapping effective multidimensional space compression over time to emergent matter density.",
-      "parameters": ["k", "C_0", "alpha", "C", "X", "t"]
+      "parameters": [
+        "k",
+        "C_0",
+        "alpha",
+        "C",
+        "X",
+        "t"
+      ],
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "equation:effective_curvature_sum",
@@ -81,7 +189,13 @@
       "name": "Effective Curvature Sum",
       "latex": "C(X,t) = \\sum_{i=1}^{D} w_i C_i(x_i, t)",
       "description": "Partition-of-unity weighted sum over macroscopic spatial coordinates and extended spatial dimensions.",
-      "parameters": ["w_i", "C_i"]
+      "parameters": [
+        "w_i",
+        "C_i"
+      ],
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "equation:kretschmann_schwarzschild",
@@ -89,7 +203,15 @@
       "name": "Schwarzschild Kretschmann Invariant",
       "latex": "K(r) = \\frac{48 G^2 M_0^2}{c^4 r^6}",
       "description": "Curvature invariant falloff with radial distance.",
-      "parameters": ["G", "M_0", "c", "r"]
+      "parameters": [
+        "G",
+        "M_0",
+        "c",
+        "r"
+      ],
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "equation:1pn_precession",
@@ -97,7 +219,16 @@
       "name": "First Post-Newtonian Pericenter Precession",
       "latex": "\\Delta \\phi = \\frac{6 \\pi G M}{c^2 a (1 - e^2)}",
       "description": "General relativistic orbital precession per revolution.",
-      "parameters": ["G", "M", "c", "a", "e"]
+      "parameters": [
+        "G",
+        "M",
+        "c",
+        "a",
+        "e"
+      ],
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:model_core",
@@ -106,7 +237,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/model.py",
       "language": "Python",
       "description": "Vectorized computational kernel implementing weights, curvature evaluation, matter mapping, and multi-dimensional grid generation.",
-      "status": "Implemented & Tested"
+      "status": "Implemented & Tested",
+      "historical_status": "Implemented & Tested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:server_api",
@@ -115,7 +249,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/server.py",
       "language": "Python / Flask",
       "description": "HTTP REST service offering programmatic endpoints for curvature calculation, matter mapping, and grid simulations.",
-      "status": "Implemented & Tested"
+      "status": "Implemented & Tested",
+      "historical_status": "Implemented & Tested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:openapi_spec",
@@ -124,7 +261,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/openapi.yaml",
       "language": "YAML",
       "description": "OpenAPI 3.0 contract defining schemas, request bodies, and responses for the API.",
-      "status": "Implemented"
+      "status": "Implemented",
+      "historical_status": "Implemented",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:javafx_client",
@@ -133,7 +273,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/javafx_client",
       "language": "Java / JavaFX 24 / Maven",
       "description": "Desktop GUI application for interactive parameter tuning and real-time visualization of emergent matter fields.",
-      "status": "Scaffolded"
+      "status": "Scaffolded",
+      "historical_status": "Scaffolded",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:viz_3d",
@@ -142,7 +285,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/viz3d.py",
       "language": "Python / Plotly",
       "description": "Interactive WebGL 3D volumetric scatter and surface visualizer for space-entropy matter fields.",
-      "status": "Implemented"
+      "status": "Implemented",
+      "historical_status": "Implemented",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:compare_schwarzschild",
@@ -151,7 +297,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/compare_schwarzschild.py",
       "language": "Python",
       "description": "Compares EMRF radial matter falloff against 1/r^6 tidal scaling of the Kretschmann scalar.",
-      "status": "Implemented"
+      "status": "Implemented",
+      "historical_status": "Implemented",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:physics_baseline",
@@ -160,7 +309,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/physics_baseline.py",
       "language": "Python",
       "description": "Keplerian 2-body orbit solver, 1PN Schwarzschild Runge-Kutta numerical integrator, analytical pericenter advance calculator, and exact Kretschmann invariant K(r) = 48 G^2 M^2 / (c^4 r^6).",
-      "status": "Implemented & Verified (11/11 tests)"
+      "status": "Historical implementation/audit claim; not physical verification",
+      "historical_status": "Implemented & Verified (11/11 tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:fit_astrometry",
@@ -169,7 +321,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/fit_astrometry.py",
       "language": "Python",
       "description": "Thiele-Innes / Campbell sky plane projection (RA/Dec mas, radial velocity with gravitational redshift & transverse Doppler), residuals/chi^2 calculator, and Delta-BIC Bayesian model selection engine.",
-      "status": "Implemented & Verified (11/11 tests)"
+      "status": "Historical implementation/audit claim; not physical verification",
+      "historical_status": "Implemented & Verified (11/11 tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:test_suite",
@@ -178,7 +333,10 @@
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/test_model.py",
       "language": "Python",
       "description": "Comprehensive test suite covering core model, REST API, relativistic baseline, single-star astrometry, and multi-star cluster fitting (67 tests, 100% passing in < 1 second).",
-      "status": "Implemented (67/67 tests passing)"
+      "status": "Implemented (67/67 tests passing)",
+      "historical_status": "Implemented (67/67 tests passing)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:s2_astrometry_csv",
@@ -186,7 +344,10 @@
       "name": "S2 Star Astrometric CSV Dataset",
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/data/astrometry/s2_gravity_vlti.csv",
       "description": "Standardized CSV table containing 21 epochs of ESO VLT/GRAVITY observations of star S2 (2002-2022) with RA, Dec, radial velocity, and observational uncertainties.",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:s29_astrometry_csv",
@@ -194,7 +355,10 @@
       "name": "S29 Star Astrometric CSV Dataset",
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/data/astrometry/s29_gravity_vlti.csv",
       "description": "Standardized CSV table containing 12 epochs of ESO VLT/GRAVITY observations of star S29 (2012-2024, peri 107 AU, v_peri 8,700 km/s).",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:s38_astrometry_csv",
@@ -202,7 +366,10 @@
       "name": "S38 Star Astrometric CSV Dataset",
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/data/astrometry/s38_gravity_vlti.csv",
       "description": "Standardized CSV table containing 9 epochs of ESO VLT observations of retro-orbit star S38 (2003-2022, i=171 deg).",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:s55_astrometry_csv",
@@ -210,7 +377,10 @@
       "name": "S55 (S0-102) Star Astrometric CSV Dataset",
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/data/astrometry/s55_gravity_vlti.csv",
       "description": "Standardized CSV table containing 10 epochs of observations of star S55 (2004-2022, period 12.8 yr).",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:s301_astrometry_csv",
@@ -218,7 +388,10 @@
       "name": "S301 Star Astrometric CSV Dataset (Nature Aug 2026)",
       "filePath": "d:/Projects/theory/SpaceEntropyCompression/data/astrometry/s301_nature_2026.csv",
       "description": "Standardized CSV table containing 15 epochs of observations for star S301 orbiting Sgr A* at 0.08c, providing extreme near-horizon tests.",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:multi_star_joint_fitting",
@@ -226,7 +399,10 @@
       "name": "Multi-Star Joint Fitting Engine",
       "domain": "Computational Astrophysics",
       "description": "Simultaneous joint Bayesian parameter estimation across the S-star cluster (S2, S29, S38, S55, S301) sharing global hyperparameters {M_bh, R_0, beta} over 201 data points.",
-      "status": "Implemented & Verified"
+      "status": "Historical implementation/audit claim; not physical verification",
+      "historical_status": "Implemented & Verified",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sgra_s2",
@@ -234,7 +410,10 @@
       "name": "Sgr A* S2 Star Astrometry",
       "facility": "ESO VLT / GRAVITY / NACO",
       "description": "High-precision astrometric and radial velocity measurements of star S2 orbiting Sagittarius A* (period ~16.05 yr), establishing Schwarzschild pericenter precession.",
-      "status": "Primary Empirical Target"
+      "status": "Primary Empirical Target",
+      "historical_status": "Primary Empirical Target",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sgra_s301",
@@ -242,7 +421,10 @@
       "name": "Sgr A* S301 Star Astrometry (Nature Aug 2026)",
       "facility": "ESO VLTI / GRAVITY",
       "description": "Ultra-fast star (period 8.7 yr, pericenter 12 AU, 25,000 km/s) discovered in Nature August 2026, offering the strictest test of near-horizon gravity and spin.",
-      "status": "High-Impact Empirical Benchmark"
+      "status": "High-Impact Empirical Benchmark",
+      "historical_status": "High-Impact Empirical Benchmark",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sparc_rotation_curves",
@@ -250,50 +432,78 @@
       "name": "SPARC Database (Spitzer Photometry & Accurate Rotation Curves)",
       "facility": "Spitzer Space Telescope",
       "description": "175 disk galaxies with high-precision rotation curves, testing whether emergent matter compression accounts for dark matter halos without WIMPs.",
-      "status": "Secondary Empirical Target"
+      "status": "Secondary Empirical Target",
+      "historical_status": "Secondary Empirical Target",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "paper:jacobson_1995",
       "type": "LiteratureReference",
       "title": "Thermodynamics of Spacetime: The Einstein Equation of State",
-      "authors": ["Ted Jacobson"],
+      "authors": [
+        "Ted Jacobson"
+      ],
       "year": 1995,
       "doi": "10.1103/PhysRevLett.75.1260",
-      "significance": "Foundational precedent deriving Einstein equations from Clausius entropy relation delta Q = T dS."
+      "significance": "Foundational precedent deriving Einstein equations from Clausius entropy relation delta Q = T dS.",
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "paper:verlinde_2011",
       "type": "LiteratureReference",
       "title": "On the Origin of Gravity and the Laws of Newton",
-      "authors": ["Erik Verlinde"],
+      "authors": [
+        "Erik Verlinde"
+      ],
       "year": 2011,
       "doi": "10.1007/JHEP04(2011)029",
-      "significance": "Entropic gravity framework modeling gravitational force as an entropic gradient."
+      "significance": "Entropic gravity framework modeling gravitational force as an entropic gradient.",
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "paper:sakharov_1967",
       "type": "LiteratureReference",
       "title": "Vacuum Quantum Fluctuations in Curved Space and the Theory of Gravitation",
-      "authors": ["Andrei Sakharov"],
+      "authors": [
+        "Andrei Sakharov"
+      ],
       "year": 1967,
-      "significance": "Induced gravity concept where spacetime curvature action emerges from underlying quantum fields."
+      "significance": "Induced gravity concept where spacetime curvature action emerges from underlying quantum fields.",
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "paper:bianconi_2026",
       "type": "LiteratureReference",
       "title": "Gravity from Entropy and the Spacetime Information Paradox",
-      "authors": ["Ginestra Bianconi"],
+      "authors": [
+        "Ginestra Bianconi"
+      ],
       "year": 2026,
-      "significance": "Contemporary formulation of emergent gravitational dynamics from statistical information manifolds."
+      "significance": "Contemporary formulation of emergent gravitational dynamics from statistical information manifolds.",
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "paper:gravity_s301_2026",
       "type": "LiteratureReference",
       "title": "Discovery of the short-period star S301 orbiting the Galactic Center black hole",
-      "authors": ["GRAVITY Collaboration et al."],
+      "authors": [
+        "GRAVITY Collaboration et al."
+      ],
       "year": 2026,
       "journal": "Nature",
-      "significance": "Detection of star S301 reaching 8% speed of light at 12 AU from Sgr A*."
+      "significance": "Detection of star S301 reaching 8% speed of light at 12 AU from Sgr A*.",
+      "historical_status": null,
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:fit_sparc",
@@ -302,7 +512,10 @@
       "filePath": "emergent_matter_model/fit_sparc.py",
       "language": "Python",
       "description": "Evaluates pure Newtonian baryons, empirical Radial Acceleration Relation (RAR), and EMRF cosmic entropy background formulations against SPARC rotationally supported galaxies.",
-      "status": "Operational & Tested"
+      "status": "Operational & Tested",
+      "historical_status": "Operational & Tested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sparc_ngc6503",
@@ -310,7 +523,10 @@
       "name": "SPARC NGC 6503 Rotation Curve",
       "filePath": "data/sparc/ngc6503.csv",
       "description": "Standard SPARC dwarf spiral rotation curve with 28 radial points spanning 0.5 to 21.6 kpc.",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sparc_ngc3198",
@@ -318,7 +534,10 @@
       "name": "SPARC NGC 3198 Rotation Curve",
       "filePath": "data/sparc/ngc3198.csv",
       "description": "Classic dark matter rotation curve benchmark with 25 radial points spanning 0.7 to 39.4 kpc.",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sparc_ngc2841",
@@ -326,7 +545,10 @@
       "name": "SPARC NGC 2841 Rotation Curve",
       "filePath": "data/sparc/ngc2841.csv",
       "description": "Massive spiral galaxy rotation curve with 15 radial points spanning 2.5 to 55.0 kpc.",
-      "status": "Ingested"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "publication:latex_preprint",
@@ -334,9 +556,14 @@
       "name": "Formal Academic LaTeX Preprint",
       "filePath": "paper/main.tex",
       "title": "Space-Entropy Compression and Relativistic Dynamics: Multi-Star Astrometric Testing of Emergent Matter Hypotheses in the Sagittarius A* Nuclear Cluster",
-      "authors": ["Kirk LaSalle"],
+      "authors": [
+        "Kirk LaSalle"
+      ],
       "year": 2026,
-      "status": "Assembled"
+      "status": "Assembled",
+      "historical_status": "Assembled",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "archival:zenodo_metadata",
@@ -344,7 +571,10 @@
       "name": "Zenodo DOI Archival Release",
       "filePath": ".zenodo.json",
       "description": "Machine-readable archival release metadata and CITATION.cff linking repo, tests, and preprint.",
-      "status": "Configured"
+      "status": "Configured",
+      "historical_status": "Configured",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:fetch_sparc",
@@ -353,7 +583,10 @@
       "filePath": "emergent_matter_model/fetch_sparc.py",
       "language": "Python",
       "description": "Automated catalog manager and data validator for the SPARC rotation curve database.",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:sparc_expanded_catalog",
@@ -362,7 +595,10 @@
       "filePath": "data/sparc/",
       "provenance": "SPARC Database (Lelli, McGaugh, Schombert 2016)",
       "description": "10 archetype galaxies spanning gas-dominated dwarfs (DDO154, IC2574), LSBs (NGC1560), intermediate spirals (NGC2403, NGC2903, NGC3198, NGC6503), and massive giants (NGC2841, NGC7331, UGC2885). 214 high-precision radial data points.",
-      "status": "Ingested & Validated"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested & Validated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "doc:model_card",
@@ -370,7 +606,10 @@
       "name": "EMRF System Model Card",
       "filePath": "MODEL_CARD.md",
       "description": "Comprehensive transparency matrix classifying every system component into validated, baseline, candidate, phenomenological, or demo.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "theory:action_principle_derivation",
@@ -378,7 +617,10 @@
       "name": "Action Principle on M^D with Cosmic Horizon Entropy Coupling",
       "filePath": "knowledgebase/action_principle_derivation.md",
       "description": "Variational formulation of EMRF on M^{D,1} proving why Branch A collapse occurs in strong fields while cosmic de Sitter horizon entropy produces an acceleration floor in galaxy outskirts.",
-      "status": "Formulated"
+      "status": "Formulated",
+      "historical_status": "Formulated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "publication:arxiv_submission",
@@ -386,7 +628,10 @@
       "name": "arXiv Submission Bundle & Guide",
       "filePath": "paper/ARXIV_SUBMISSION.md",
       "description": "Submission package (tar.gz and zip) targeting astro-ph.GA with cross-lists gr-qc and hep-th.",
-      "status": "Packaged"
+      "status": "Packaged",
+      "historical_status": "Packaged",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "publication:cover_letter",
@@ -394,7 +639,10 @@
       "name": "Peer Review Cover Letter & Reviewer FAQ",
       "filePath": "paper/COVER_LETTER.md",
       "description": "Formal submission letter to PRD/CQG editors and reviewer FAQ guide covering strong/weak field duality and Solar System bounds.",
-      "status": "Ready"
+      "status": "Ready",
+      "historical_status": "Ready",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "concept:cosmological_horizon_evolution",
@@ -402,7 +650,10 @@
       "name": "Cosmological Horizon Acceleration Evolution a_0(z)",
       "domain": "Cosmology & Gravitation",
       "description": "Evolution of the horizon acceleration scale with cosmic time: a_0(z) = c * H(z) / (2 * pi) = a_0(0) * sqrt(Omega_m * (1+z)^3 + Omega_Lambda). Predicts BTFR flat velocity scaling V_flat(z) = V_flat(0) * [E(z)]^(1/4).",
-      "status": "Empirically Confirmed (Delta-BIC = -100.08)"
+      "status": "Withdrawn historical confirmation claim",
+      "historical_status": "Empirically Confirmed (Delta-BIC = -100.08)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "theory:jwst_high_redshift_predictions",
@@ -410,7 +661,10 @@
       "name": "EMRF Cosmological Redshift Evolution & JWST Kinematic Predictions",
       "filePath": "knowledgebase/jwst_high_redshift_predictions.md",
       "description": "Theoretical derivation connecting Gibbons-Hawking de Sitter horizon temperature to the cosmic expansion factor E(z), predicting high-redshift disk rotation boosts.",
-      "status": "Formulated"
+      "status": "Formulated",
+      "historical_status": "Formulated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:jwst_high_z_kinematics",
@@ -419,7 +673,10 @@
       "filePath": "data/jwst/jwst_kinematics_sample.csv",
       "provenance": "JWST NIRSpec & ALMA Surveys (de Graaff et al. 2024, Carniani et al. 2024)",
       "description": "10 disk galaxies from z=1.52 to z=6.80 with resolved rotation velocities and baryonic masses.",
-      "status": "Ingested & Validated"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested & Validated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:fit_jwst",
@@ -428,7 +685,10 @@
       "filePath": "emergent_matter_model/fit_jwst.py",
       "language": "Python",
       "description": "Evaluates static a_0 vs cosmologically evolving a_0(z) horizon acceleration models against high-redshift galaxy kinematics.",
-      "status": "Operational (8 unit tests)"
+      "status": "Operational (8 unit tests)",
+      "historical_status": "Operational (8 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:plot_publication_figures",
@@ -437,7 +697,10 @@
       "filePath": "emergent_matter_model/plot_publication_figures.py",
       "language": "Python",
       "description": "Generates 4 high-DPI multi-panel publication figures for Sgr A*, SPARC, unified synthesis, and JWST redshift evolution in paper/figures/.",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:validation_notebook",
@@ -446,7 +709,10 @@
       "filePath": "notebooks/emrf_two_regime_validation.ipynb",
       "language": "Jupyter Notebook",
       "description": "Self-contained interactive Jupyter notebook demonstrating Sgr A* 5-star orbits, SPARC rotation curves, JWST redshift evolution, and the unified 14-order-of-magnitude acceleration synthesis.",
-      "status": "Verified (3 automated tests)"
+      "status": "Historical implementation/audit claim; not physical verification",
+      "historical_status": "Verified (3 automated tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:production_wsgi",
@@ -455,7 +721,10 @@
       "filePath": "emergent_matter_model/wsgi.py",
       "language": "Python",
       "description": "Production WSGI entrypoint with Gunicorn multi-worker concurrency, in-memory sliding-window IP rate limiting (120 req/min), health check endpoint, and CONTRIBUTING.md governance.",
-      "status": "Production Hardened"
+      "status": "Production Hardened",
+      "historical_status": "Production Hardened",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "publication:release_draft_v0_7_0",
@@ -463,7 +732,10 @@
       "name": "EMRF v0.7.0 Release Draft & Submission Walkthrough",
       "filePath": "RELEASE_DRAFT_v0.7.0.md",
       "description": "Turnkey release notes, Zenodo DOI archival instructions, arXiv metadata walkthrough, and Physical Review D cover letter draft.",
-      "status": "Draft Ready"
+      "status": "Draft Ready",
+      "historical_status": "Draft Ready",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_solar_system",
@@ -472,7 +744,10 @@
       "filePath": "emergent_matter_model/stress_test_solar_system.py",
       "language": "Python",
       "description": "Evaluates 9 solar system benchmark probes against Cassini, LLR, and planetary ephemerides, proving unscreened MOND is falsified (Chi2=6.08e6) and EMRF geometric screening survives with zero violation.",
-      "status": "Operational (6 unit tests)"
+      "status": "Operational (6 unit tests)",
+      "historical_status": "Operational (6 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:lensing_engine",
@@ -481,7 +756,10 @@
       "filePath": "emergent_matter_model/lensing_engine.py",
       "language": "Python",
       "description": "Solves null geodesic deflection in compressed spatial metric M^D with unit relativistic slip eta=1, testing against SLACS HST strong lenses.",
-      "status": "Operational (7 unit tests)"
+      "status": "Operational (7 unit tests)",
+      "historical_status": "Operational (7 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:bullet_cluster_stress_test",
@@ -490,7 +768,10 @@
       "filePath": "emergent_matter_model/bullet_cluster_stress_test.py",
       "language": "Python",
       "description": "Simulates 2D cluster merger geometry, demonstrating that high thermal entropy in shock-heated ICM gas suppresses spatial compression, shifting lensing peaks outward by ~180 kpc to stellar clumps.",
-      "status": "Operational (5 unit tests)"
+      "status": "Operational (5 unit tests)",
+      "historical_status": "Operational (5 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_galaxy_scatter",
@@ -499,7 +780,10 @@
       "filePath": "emergent_matter_model/stress_test_galaxy_scatter.py",
       "language": "Python",
       "description": "Compiles all 214 SPARC points, performing 300 Monte Carlo error injection iterations across distance, inclination, and mass-to-light ratio, confirming observed scatter (0.18 dex) is consistent with zero intrinsic scatter.",
-      "status": "Operational (4 unit tests)"
+      "status": "Operational (4 unit tests)",
+      "historical_status": "Operational (4 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:plot_deep_perspectives",
@@ -508,7 +792,10 @@
       "filePath": "emergent_matter_model/plot_deep_perspectives.py",
       "language": "Python",
       "description": "Generates 4 high-DPI publication figures: fig5 (Solar System screening), fig6 (lensing geodesics), fig7 (Bullet Cluster 4-panel), and fig8 (Universal RAR landscape).",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:interactive_visualizer_suite",
@@ -517,7 +804,10 @@
       "filePath": "tools/interactive_visualizer.html",
       "language": "HTML5 / JavaScript / Canvas / WebGL",
       "description": "Self-contained interactive dashboard featuring real-time 3D spatial metric warping, photon beam ray tracing, Bullet Cluster entropy separation, universal RAR scatter exploration, GW170817 light cones, Gaia wide binaries with EFE, Hamiltonian stability monitor, and adversarial blind challenge.",
-      "status": "Operational (v0.8.0)"
+      "status": "Operational (v0.8.0)",
+      "historical_status": "Operational (v0.8.0)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_gw_speed",
@@ -526,7 +816,10 @@
       "filePath": "emergent_matter_model/stress_test_gw_speed.py",
       "language": "Python",
       "description": "Benchmarks multi-messenger gravitational wave speed against GW170817/GRB 170817A limit (|c_gw - c|/c <= 1e-15). Verifies conformal spatial metric invariance preserves c_gw = c identically, while Horndeski and TeVeS fail.",
-      "status": "Operational (4 unit tests)"
+      "status": "Operational (4 unit tests)",
+      "historical_status": "Operational (4 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_wide_binaries",
@@ -535,7 +828,10 @@
       "filePath": "emergent_matter_model/stress_test_wide_binaries.py",
       "language": "Python",
       "description": "Evaluates 26,615 Gaia DR3 wide binary pairs (Chae 2023/2024). Verifies background Milky Way galactic compression field caps velocity boost at 1.25-1.35, decisively preferred over Newton (Delta BIC = -60.26).",
-      "status": "Operational (4 unit tests)"
+      "status": "Operational (4 unit tests)",
+      "historical_status": "Operational (4 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_stability_ghosts",
@@ -544,7 +840,10 @@
       "filePath": "emergent_matter_model/stress_test_stability_ghosts.py",
       "language": "Python",
       "description": "Evaluates quadratic perturbation action across 22 decades of acceleration (10^-14 to 10^8 m/s^2). Confirms Ostrogradsky ghost-free EOM (order <= 2), kinetic positivity A(a) > 0, and subluminal sound speed 0.95c <= c_s <= c.",
-      "status": "Operational (4 unit tests)"
+      "status": "Operational (4 unit tests)",
+      "historical_status": "Operational (4 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_blind_challenge",
@@ -553,7 +852,10 @@
       "filePath": "emergent_matter_model/stress_test_blind_challenge.py",
       "language": "Python",
       "description": "Adversarial stress testing against 3 synthetic non-physical datasets (anti-gravity, Heaviside step, white noise). Confirms 100% selectivity (accepts physical galaxy with chi2_red = 0.39, rejects unphysical with chi2_red > 350).",
-      "status": "Operational (6 unit tests)"
+      "status": "Operational (6 unit tests)",
+      "historical_status": "Operational (6 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:stress_test_equivalence_principle",
@@ -562,7 +864,10 @@
       "filePath": "emergent_matter_model/stress_test_equivalence_principle.py",
       "language": "Python",
       "description": "Evaluates Eötvös parameter against MICROSCOPE satellite limit (|eta| <= 1e-15). Verifies universal trace coupling T^mu_mu to spatial metric deformation preserves WEP identically (|eta| = 0).",
-      "status": "Operational (5 unit tests)"
+      "status": "Operational (5 unit tests)",
+      "historical_status": "Operational (5 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:plot_extreme_rigor_figures",
@@ -571,7 +876,10 @@
       "filePath": "emergent_matter_model/plot_extreme_rigor_figures.py",
       "language": "Python",
       "description": "Generates publication figures: fig9 (GW170817 light cones), fig10 (Gaia wide binaries EFE), and fig11 (adversarial blind challenge).",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "whitepaper:gw170817_speed",
@@ -580,7 +888,10 @@
       "filePath": "knowledgebase/gw170817_gravitational_wave_speed.md",
       "language": "Markdown",
       "description": "Comprehensive analytical derivation of conformal metric light cone invariance and comparison to Horndeski/TeVeS disformal theories.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "whitepaper:wide_binaries_efe",
@@ -589,7 +900,10 @@
       "filePath": "knowledgebase/wide_binary_gaia_external_field_effect.md",
       "language": "Markdown",
       "description": "Theoretical whitepaper on the External Field Effect (EFE) in wide binary stars and statistical model selection over Newton.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "whitepaper:hamiltonian_stability",
@@ -598,7 +912,10 @@
       "filePath": "knowledgebase/hamiltonian_stability_and_ghost_absence.md",
       "language": "Markdown",
       "description": "Rigorous Hamiltonian perturbation audit proving Ostrogradsky ghost freedom, kinetic positivity, and subluminal sound speed.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "whitepaper:equivalence_principle",
@@ -607,7 +924,10 @@
       "filePath": "knowledgebase/equivalence_principle_and_microscope_bounds.md",
       "language": "Markdown",
       "description": "Analytical proof of exact WEP preservation and zero Eötvös violation in EMRF universal stress-energy trace coupling.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:cosmology_expansion",
@@ -616,7 +936,10 @@
       "filePath": "emergent_matter_model/cosmology_expansion.py",
       "language": "Python",
       "description": "Relativistic cosmic expansion solver implementing E(z), comoving distance chi(z), luminosity distance d_L(z), and BAO observables (D_M/r_d, D_H/r_d, D_V/r_d) driven by void spatial metric compression dynamics.",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:cmb_acoustic_engine",
@@ -625,7 +948,10 @@
       "filePath": "emergent_matter_model/cmb_acoustic_engine.py",
       "language": "Python",
       "description": "Coupled relativistic photon-baryon acoustic oscillation solver computing sound horizon s_*, angular scale theta_*, acoustic multipole l_*, Silk damping, and non-collisional metric compression potential depth for Planck 2018 TT peaks.",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:pantheon_plus",
@@ -633,7 +959,10 @@
       "name": "Pantheon+ Type Ia Supernovae Hubble Diagram Dataset",
       "filePath": "data/cosmology/pantheon_plus_sample.csv",
       "description": "32 redshift-binned calibration points spanning z in [0.001, 2.26] from the Pantheon+ sample (Brout et al. 2022).",
-      "status": "Ingested & Validated"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested & Validated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:desi_2024_bao",
@@ -641,7 +970,10 @@
       "name": "DESI 2024 Baryon Acoustic Oscillation (BAO) Dataset",
       "filePath": "data/cosmology/desi_2024_bao.csv",
       "description": "13 BAO distance scale measurements spanning z in [0.29, 2.33] across 7 spectroscopic tracers (BGS, LRG, ELG, QSO, Lyman-alpha).",
-      "status": "Ingested & Validated"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested & Validated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "dataset:planck_2018_cmb_peaks",
@@ -649,7 +981,10 @@
       "name": "Planck 2018 PR3 CMB TT Power Spectrum Acoustic Peaks",
       "filePath": "data/cosmology/planck_2018_cmb_peaks.csv",
       "description": "Planck 2018 PR3 TT acoustic peak locations (l1=220.6, l2=537.5, l3=811.3) and amplitude ratios.",
-      "status": "Ingested & Validated"
+      "status": "Historical ingestion claim; not authenticated by this graph",
+      "historical_status": "Ingested & Validated",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "stress_test:cosmology_expansion",
@@ -658,7 +993,10 @@
       "filePath": "emergent_matter_model/stress_test_cosmology_expansion.py",
       "language": "Python",
       "description": "Evaluates Pantheon+ SNe and DESI 2024 BAO against flat LambdaCDM and EMRF void compression, confirming reduced chi^2 = 0.617 across 45 joint points.",
-      "status": "Operational (7 unit tests)"
+      "status": "Operational (7 unit tests)",
+      "historical_status": "Operational (7 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "stress_test:cmb_peaks",
@@ -667,7 +1005,10 @@
       "filePath": "emergent_matter_model/stress_test_cmb_peaks.py",
       "language": "Python",
       "description": "Tests relativistic acoustic peak positions and 3rd-to-2nd peak amplitude ratio (A3/A2 = 0.988) demonstrating non-collisional metric potential maintenance without dark matter particles.",
-      "status": "Operational (7 unit tests)"
+      "status": "Operational (7 unit tests)",
+      "historical_status": "Operational (7 unit tests)",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "whitepaper:cosmological_expansion",
@@ -676,7 +1017,10 @@
       "filePath": "knowledgebase/cosmological_expansion_pantheon_desi.md",
       "language": "Markdown",
       "description": "Comprehensive mathematical formalization of void spatial metric compression and joint Bayesian calibration against Pantheon+ and DESI BAO.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "whitepaper:cmb_acoustic_oscillations",
@@ -685,7 +1029,10 @@
       "filePath": "knowledgebase/cmb_acoustic_oscillations_early_universe.md",
       "language": "Markdown",
       "description": "Relativistic perturbation derivation of non-collisional spatial metric compression wells preserving the 3rd acoustic peak at z ~ 1100.",
-      "status": "Published"
+      "status": "Published",
+      "historical_status": "Published",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "component:plot_cosmology_figures",
@@ -694,7 +1041,10 @@
       "filePath": "emergent_matter_model/plot_cosmology_figures.py",
       "language": "Python",
       "description": "Generates 300 DPI publication figures: fig12 (Pantheon+ Hubble diagram & DESI BAO) and fig13 (Planck 2018 TT acoustic peaks and 3rd peak ratio).",
-      "status": "Operational"
+      "status": "Operational",
+      "historical_status": "Operational",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
     },
     {
       "id": "artifact:grand_due_diligence_audit_case_001",
@@ -703,100 +1053,831 @@
       "filePath": "docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md",
       "language": "Markdown",
       "description": "Formal execution of Case 001 under The Grand Due Diligence Audit Framework. Evaluates 42 criteria across 7 domains with 100/100 CQSI score, certifying Level 5 Gold Standard & Planetary Stewardship.",
-      "status": "Sealed & Ratified"
+      "status": "Historical implementation/audit claim; not physical verification",
+      "historical_status": "Sealed & Ratified",
+      "evidence_status": "legacy_record_requires_source_specific_review",
+      "use_for_empirical_confirmation": false
+    },
+    {
+      "id": "recovery:thermodynamics_downstream",
+      "type": "RecoveredConcept",
+      "name": "Thermodynamics is downstream; geometric entropy is a separate candidate input",
+      "description": "The project does not propose that entropy produces matter. Thermodynamics is downstream of matter and interactions; an entropy/information measure may separately enter a deeper geometric functional.",
+      "status": "documented_hypothesis_not_derivation",
+      "attribution": "September working manuscript extracted by Antigravity; corroborated by existing user discussion",
+      "limitation": "No closed entropy-production equation or microscopic derivation is supplied",
+      "filePath": "docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/emrf_full_text.txt",
+      "locator": "paragraphs 019-020, 033-034 and 088",
+      "source_sha256": "e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:compression_families",
+      "type": "RecoveredEquationFamily",
+      "name": "Geometry, energy, entropy and composite compression candidates",
+      "description": "C_G=f(geometry); C_E=f(quasi-local/asymptotic energy); C_S=f(entropy/information,geometry); C_GSE=f(metric,curvature,E,S,t,...).",
+      "status": "candidate_functionals_not_unique_theory",
+      "attribution": "September document-generator text",
+      "limitation": "A family label is not an independently defined observable or dynamical equation",
+      "filePath": "docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/update_emrf_docx.py.txt",
+      "locator": "lines 142-168",
+      "source_sha256": "eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:space_author_clarification",
+      "type": "RecoveredAuthorClarification",
+      "name": "Reported Kirk clarification: space is dimensional, not entropy/time",
+      "description": "I believe I stated that space was dimensional (X: x, y, z, d0, d1, d2), not entropy or time.",
+      "status": "reported_author_quote_corroborated_not_raw_chat",
+      "attribution": "Kirk quotation reported in the October 5 AI-authored audit",
+      "limitation": "The archive does not expose the complete original conversation containing this quote",
+      "filePath": "docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/EMRF_MASTER_AUDIT_2026-10-05.md",
+      "locator": "section 4.3.1",
+      "source_sha256": "6033b4a31202849133b2f1ee27dd4f6a50f2cf77c43b0b54fbbc63e36c1458dd",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:three_star_design",
+      "type": "RecoveredResearchDesign",
+      "name": "Original multi-trajectory black-hole test",
+      "description": "Preserve the three-star experiment: historical S1/S2/S8 or modern S2/S29/S38, with S55 for additional validation. Fit one common field, verify GR first and test held-out observations.",
+      "status": "research_design_not_executed_real_data_test",
+      "attribution": "September working manuscript",
+      "limitation": "No missing astrometric covariance, authentic time-series dataset or EMRF deviation equation was recovered",
+      "filePath": "docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/emrf_full_text.txt",
+      "locator": "paragraphs 040-076, 109-121",
+      "source_sha256": "e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:unidentified_influence",
+      "type": "RecoveredConcept",
+      "name": "U(X,t) as an open classification of unexplained influence",
+      "description": "U leaves particle matter, unaccounted baryons, a new field, modified gravity and emergent phenomena open rather than presuming one explanation.",
+      "status": "hypothesis_space_not_measured_field",
+      "attribution": "September document-generator text",
+      "limitation": "Not a new dynamical variable with independently specified equations",
+      "filePath": "docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/update_emrf_docx.py.txt",
+      "locator": "section 4.4, lines 185-195",
+      "source_sha256": "eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:cosmology_source_gap",
+      "type": "RecoveredEquationProposal",
+      "name": "Cosmology action and oscillator proposal with unspecified sources",
+      "description": "Scalar kinetic/potential action, rho_C and p_C, assumed S(a)=S0+alpha ln(a), CPL w(z), and photon-baryon oscillator with unspecified compression source.",
+      "status": "proposed_not_closed_or_empirically_confirmed",
+      "attribution": "October 6 proposed implementation plan",
+      "limitation": "No A(S), V(C,S), entropy-production closure or computed perturbation spectrum producing the quoted peak ratio",
+      "filePath": "docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/COSMOLOGICAL_FRONTIERS_IMPLEMENTATION_PLAN.md",
+      "locator": "sections 2.1-2.2",
+      "source_sha256": "f9a4ce24ae4c4a56e4bd57e495b9a2fdac0bfb2533f007430403a1afb2aa29c7",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:correspondence_rebranding",
+      "type": "RecoveredEditorialHistory",
+      "name": "Change from geometric collapse to correspondence proof",
+      "description": "The proposal recommends reframing Branch A as a macroscopic correspondence proof and asserting exact Schwarzschild derivation.",
+      "status": "unsupported_proof_language_not_derivation",
+      "attribution": "October peer-review refinement proposal and existing audio review",
+      "limitation": "Changing language does not provide a proof; shared source dependence prevents counting the reviews as independent physical validation",
+      "filePath": "docs/archive/antigravity_recovery/sources/67e60b60-238b-4fb1-8fcc-1e4c3034f1fe/forward_document_emrf_peer_review_refinement.md",
+      "locator": "Pillar 3",
+      "source_sha256": "3cc715c51dba0a2709dba1084bd2f1389d067ffd9f6bd776614fc63b6898495c",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:quantum_normalization",
+      "type": "RecoveredCodeFinding",
+      "name": "Original quantum code already normalizes mass to its input",
+      "description": "The unnormalized specified profile gives approximately 0.3435993 times the input mass in the infinite-domain integral; code divides by its own mass ratio to return the input exactly.",
+      "status": "circular_identity_not_independent_mass_prediction",
+      "attribution": "October 6 scratch implementation",
+      "limitation": "No missing independent particle-mass derivation found",
+      "filePath": "docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/quantum_vibrational_compression.py.txt",
+      "locator": "compute_emergent_mass_integral",
+      "source_sha256": "1a67fe8e1211d9803627f31f5e58190c37ae1e7fb1aa773b3814d769cc497337",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:quarter_coefficient",
+      "type": "RecoveredMathematicalClaim",
+      "name": "Two-polarization/two-projection quarter-factor narrative",
+      "description": "The prose assigns a factor four to two polarizations times two boundary projections, then inserts k_B/(4 l_P^2) per area.",
+      "status": "assumed_coefficient_not_microstate_counting_proof",
+      "attribution": "October first-use-case draft",
+      "limitation": "No state space, counting rule, measure or derivation of entropy from those factors; area scaling alone does not fix normalization",
+      "filePath": "docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md",
+      "locator": "section 3.2 item 5",
+      "source_sha256": "68e4652271232df51948e239b2740b041b2a0fd6e6fdd6cf91b3f23499dc2af5",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
+    },
+    {
+      "id": "recovery:ci_did_not_validate_physics",
+      "type": "RecoveredExecutionEvidence",
+      "name": "Successful CI retained a failed numerical slope comparison",
+      "description": "The CI log reports 145 tests passed but an expected slope -6.00 versus measured -0.80, labelled Match: approximate.",
+      "status": "historical_software_execution_not_physical_validation",
+      "attribution": "Retained October task log",
+      "limitation": "A zero command exit or passing test suite did not validate the physical comparison or the data provenance",
+      "filePath": "docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/task-1598.log.txt",
+      "locator": "lines 156-160",
+      "source_sha256": "941a527beb441b06f04b41b9077a048497ab5cfb08fc2e643ea0b50049547296",
+      "use_for_empirical_confirmation": false,
+      "evidence_status": "curated_historical_recovery"
     }
   ],
   "edges": [
-    { "source": "concept:multidimensional_space", "target": "concept:emergent_matter", "relation": "foundational_to" },
-    { "source": "concept:entropy_state_variable", "target": "concept:effective_curvature", "relation": "thermodynamic_coupling_in" },
-    { "source": "concept:effective_curvature", "target": "equation:effective_curvature_sum", "relation": "formulated_by" },
-    { "source": "concept:emergent_matter", "target": "equation:emergent_matter_ansatz", "relation": "quantified_by" },
-    { "source": "equation:effective_curvature_sum", "target": "equation:emergent_matter_ansatz", "relation": "input_to" },
-    { "source": "equation:emergent_matter_ansatz", "target": "component:model_core", "relation": "implemented_in" },
-    { "source": "component:model_core", "target": "component:server_api", "relation": "served_by" },
-    { "source": "component:server_api", "target": "component:openapi_spec", "relation": "specified_by" },
-    { "source": "component:server_api", "target": "component:javafx_client", "relation": "consumed_by" },
-    { "source": "component:model_core", "target": "component:viz_3d", "relation": "visualized_by" },
-    { "source": "component:model_core", "target": "component:test_suite", "relation": "validated_by" },
-    { "source": "concept:kretschmann_scalar", "target": "equation:kretschmann_schwarzschild", "relation": "formulated_by" },
-    { "source": "equation:kretschmann_schwarzschild", "target": "component:compare_schwarzschild", "relation": "tested_in" },
-    { "source": "component:model_core", "target": "component:compare_schwarzschild", "relation": "benchmarked_by" },
-    { "source": "concept:bekenstein_hawking_bound", "target": "concept:emergent_matter", "relation": "asymptotic_boundary_for" },
-    { "source": "paper:jacobson_1995", "target": "concept:entropy_state_variable", "relation": "thermodynamic_precedent" },
-    { "source": "paper:verlinde_2011", "target": "concept:emergent_matter", "relation": "theoretical_precedent" },
-    { "source": "paper:sakharov_1967", "target": "concept:emergent_matter", "relation": "historical_precedent" },
-    { "source": "paper:bianconi_2026", "target": "concept:entropy_state_variable", "relation": "contemporary_analog" },
-    { "source": "dataset:sgra_s2", "target": "concept:bifurcation_framework", "relation": "empirical_arbiter" },
-    { "source": "dataset:sgra_s301", "target": "concept:bifurcation_framework", "relation": "empirical_arbiter" },
-    { "source": "paper:gravity_s301_2026", "target": "dataset:sgra_s301", "relation": "source_publication" },
-    { "source": "dataset:sparc_rotation_curves", "target": "concept:bifurcation_framework", "relation": "macro_astrophysical_test" },
-    { "source": "equation:1pn_precession", "target": "dataset:sgra_s2", "relation": "gr_baseline_for" },
-    { "source": "component:physics_baseline", "target": "component:fit_astrometry", "relation": "provides_orbital_dynamics" },
-    { "source": "component:physics_baseline", "target": "concept:kretschmann_scalar", "relation": "computes_exact_invariant" },
-    { "source": "component:fit_astrometry", "target": "dataset:s2_astrometry_csv", "relation": "ingests_and_fits" },
-    { "source": "component:fit_astrometry", "target": "dataset:s29_astrometry_csv", "relation": "ingests_and_fits" },
-    { "source": "component:fit_astrometry", "target": "dataset:s38_astrometry_csv", "relation": "ingests_and_fits" },
-    { "source": "component:fit_astrometry", "target": "dataset:s55_astrometry_csv", "relation": "ingests_and_fits" },
-    { "source": "component:fit_astrometry", "target": "dataset:s301_astrometry_csv", "relation": "ingests_and_fits" },
-    { "source": "component:fit_astrometry", "target": "concept:multi_star_joint_fitting", "relation": "implements" },
-    { "source": "concept:multi_star_joint_fitting", "target": "concept:bifurcation_framework", "relation": "global_cluster_arbiter" },
-    { "source": "component:fit_astrometry", "target": "concept:bifurcation_framework", "relation": "evaluates_delta_bic" },
-    { "source": "component:test_suite", "target": "component:physics_baseline", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:fit_astrometry", "relation": "validates" },
-    { "source": "component:fetch_sparc", "target": "dataset:sparc_expanded_catalog", "relation": "ingests_and_validates" },
-    { "source": "component:fit_sparc", "target": "dataset:sparc_expanded_catalog", "relation": "evaluates" },
-    { "source": "component:fit_sparc", "target": "concept:bifurcation_framework", "relation": "tests_weak_acceleration_regime" },
-    { "source": "component:test_suite", "target": "component:fit_sparc", "relation": "validates" },
-    { "source": "theory:action_principle_derivation", "target": "concept:multidimensional_space", "relation": "formalizes_variational_dynamics" },
-    { "source": "theory:action_principle_derivation", "target": "concept:bifurcation_framework", "relation": "mathematical_proof_for_branches" },
-    { "source": "doc:model_card", "target": "component:model_core", "relation": "classifies_and_audits" },
-    { "source": "publication:latex_preprint", "target": "concept:multidimensional_space", "relation": "formalizes" },
-    { "source": "publication:latex_preprint", "target": "concept:bifurcation_framework", "relation": "reports_verdict" },
-    { "source": "publication:arxiv_submission", "target": "publication:latex_preprint", "relation": "distributes" },
-    { "source": "publication:cover_letter", "target": "publication:latex_preprint", "relation": "submits_for_review" },
-    { "source": "archival:zenodo_metadata", "target": "publication:latex_preprint", "relation": "archives" },
-    { "source": "theory:jwst_high_redshift_predictions", "target": "concept:cosmological_horizon_evolution", "relation": "derives" },
-    { "source": "component:fit_jwst", "target": "dataset:jwst_high_z_kinematics", "relation": "evaluates" },
-    { "source": "component:fit_jwst", "target": "concept:cosmological_horizon_evolution", "relation": "tests_empirically" },
-    { "source": "component:test_suite", "target": "component:fit_jwst", "relation": "validates" },
-    { "source": "component:plot_publication_figures", "target": "publication:latex_preprint", "relation": "generates_figures_for" },
-    { "source": "component:validation_notebook", "target": "concept:bifurcation_framework", "relation": "demonstrates_empirically" },
-    { "source": "component:test_suite", "target": "component:validation_notebook", "relation": "validates" },
-    { "source": "component:production_wsgi", "target": "component:server_api", "relation": "deploys_and_hardens" },
-    { "source": "publication:release_draft_v0_7_0", "target": "publication:latex_preprint", "relation": "schedules_release_for" },
-    { "source": "publication:release_draft_v0_7_0", "target": "archival:zenodo_metadata", "relation": "synchronizes_with" },
-    { "source": "component:test_suite", "target": "component:stress_test_solar_system", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:lensing_engine", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:bullet_cluster_stress_test", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:stress_test_galaxy_scatter", "relation": "validates" },
-    { "source": "component:stress_test_solar_system", "target": "concept:bifurcation_framework", "relation": "verifies_gr_screening_branch_a" },
-    { "source": "component:lensing_engine", "target": "concept:bifurcation_framework", "relation": "tests_relativistic_null_geodesics" },
-    { "source": "component:bullet_cluster_stress_test", "target": "concept:entropy_state_variable", "relation": "proves_thermal_entropy_decoupling" },
-    { "source": "component:stress_test_galaxy_scatter", "target": "concept:bifurcation_framework", "relation": "confirms_zero_intrinsic_scatter" },
-    { "source": "component:plot_deep_perspectives", "target": "publication:latex_preprint", "relation": "generates_extended_figures_for" },
-    { "source": "component:interactive_visualizer_suite", "target": "component:server_api", "relation": "hosted_by" },
-    { "source": "component:test_suite", "target": "component:stress_test_gw_speed", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:stress_test_wide_binaries", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:stress_test_stability_ghosts", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:stress_test_blind_challenge", "relation": "validates" },
-    { "source": "component:test_suite", "target": "component:stress_test_equivalence_principle", "relation": "validates" },
-    { "source": "component:stress_test_gw_speed", "target": "whitepaper:gw170817_speed", "relation": "formalized_by" },
-    { "source": "component:stress_test_wide_binaries", "target": "whitepaper:wide_binaries_efe", "relation": "formalized_by" },
-    { "source": "component:stress_test_stability_ghosts", "target": "whitepaper:hamiltonian_stability", "relation": "formalized_by" },
-    { "source": "component:stress_test_equivalence_principle", "target": "whitepaper:equivalence_principle", "relation": "formalized_by" },
-    { "source": "component:stress_test_blind_challenge", "target": "concept:bifurcation_framework", "relation": "proves_strict_falsifiability" },
-    { "source": "component:plot_extreme_rigor_figures", "target": "publication:latex_preprint", "relation": "generates_figures_9_10_11" },
-    { "source": "component:test_suite", "target": "stress_test:cosmology_expansion", "relation": "validates" },
-    { "source": "component:test_suite", "target": "stress_test:cmb_peaks", "relation": "validates" },
-    { "source": "stress_test:cosmology_expansion", "target": "dataset:pantheon_plus", "relation": "evaluates" },
-    { "source": "stress_test:cosmology_expansion", "target": "dataset:desi_2024_bao", "relation": "evaluates" },
-    { "source": "stress_test:cosmology_expansion", "target": "whitepaper:cosmological_expansion", "relation": "formalized_by" },
-    { "source": "stress_test:cmb_peaks", "target": "dataset:planck_2018_cmb_peaks", "relation": "evaluates" },
-    { "source": "stress_test:cmb_peaks", "target": "whitepaper:cmb_acoustic_oscillations", "relation": "formalized_by" },
-    { "source": "component:cosmology_expansion", "target": "concept:bifurcation_framework", "relation": "resolves_late_time_expansion" },
-    { "source": "component:cmb_acoustic_engine", "target": "concept:bifurcation_framework", "relation": "resolves_early_universe_peaks" },
-    { "source": "component:plot_cosmology_figures", "target": "publication:latex_preprint", "relation": "generates_figures_12_13" },
-    { "source": "artifact:grand_due_diligence_audit_case_001", "target": "concept:bifurcation_framework", "relation": "certifies_compliance_with" },
-    { "source": "component:test_suite", "target": "artifact:grand_due_diligence_audit_case_001", "relation": "empirically_verifies" }
+    {
+      "source": "definition:candidate_a_local_energy_reference",
+      "target": "candidate:collision_geometry_reference",
+      "relation": "recommends_precise_reference_for",
+      "evidence_status": "specific_definition_requires_author_review"
+    },
+    {
+      "source": "diagnostic:candidate_a_definition_counterexamples",
+      "target": "equation:emergent_matter_ansatz",
+      "relation": "constrains_interpretation_of",
+      "evidence_status": "conditional_math_not_physical_falsification_of_all_candidates"
+    },
+    {
+      "source": "candidate:collision_geometry_reference",
+      "target": "recovery:compression_families",
+      "relation": "proposes_interpretation_of",
+      "evidence_status": "author_review_required"
+    },
+    {
+      "source": "candidate:collision_exchange_channel",
+      "target": "recovery:thermodynamics_downstream",
+      "relation": "proposes_conditional_accounting_for",
+      "evidence_status": "new_AI_ansatz_not_recovered_derivation"
+    },
+    {
+      "source": "candidate:collision_observable_gate",
+      "target": "candidate:collision_exchange_channel",
+      "relation": "requires_predictive_closure",
+      "evidence_status": "not_an_empirical_validation_link"
+    },
+    {
+      "source": "concept:multidimensional_space",
+      "target": "concept:emergent_matter",
+      "relation": "foundational_to",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "concept:entropy_state_variable",
+      "target": "concept:effective_curvature",
+      "relation": "thermodynamic_coupling_in",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "concept:effective_curvature",
+      "target": "equation:effective_curvature_sum",
+      "relation": "formulated_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "concept:emergent_matter",
+      "target": "equation:emergent_matter_ansatz",
+      "relation": "quantified_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "equation:effective_curvature_sum",
+      "target": "equation:emergent_matter_ansatz",
+      "relation": "input_to",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "equation:emergent_matter_ansatz",
+      "target": "component:model_core",
+      "relation": "implemented_in",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:model_core",
+      "target": "component:server_api",
+      "relation": "served_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:server_api",
+      "target": "component:openapi_spec",
+      "relation": "specified_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:server_api",
+      "target": "component:javafx_client",
+      "relation": "consumed_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:model_core",
+      "target": "component:viz_3d",
+      "relation": "visualized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:model_core",
+      "target": "component:test_suite",
+      "relation": "historically_claimed_validated_by",
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "historical_relation": "validated_by"
+    },
+    {
+      "source": "concept:kretschmann_scalar",
+      "target": "equation:kretschmann_schwarzschild",
+      "relation": "formulated_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "equation:kretschmann_schwarzschild",
+      "target": "component:compare_schwarzschild",
+      "relation": "tested_in",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:model_core",
+      "target": "component:compare_schwarzschild",
+      "relation": "benchmarked_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "concept:bekenstein_hawking_bound",
+      "target": "concept:emergent_matter",
+      "relation": "asymptotic_boundary_for",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "paper:jacobson_1995",
+      "target": "concept:entropy_state_variable",
+      "relation": "thermodynamic_precedent",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "paper:verlinde_2011",
+      "target": "concept:emergent_matter",
+      "relation": "theoretical_precedent",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "paper:sakharov_1967",
+      "target": "concept:emergent_matter",
+      "relation": "historical_precedent",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "paper:bianconi_2026",
+      "target": "concept:entropy_state_variable",
+      "relation": "contemporary_analog",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "dataset:sgra_s2",
+      "target": "concept:bifurcation_framework",
+      "relation": "empirical_arbiter",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "dataset:sgra_s301",
+      "target": "concept:bifurcation_framework",
+      "relation": "empirical_arbiter",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "paper:gravity_s301_2026",
+      "target": "dataset:sgra_s301",
+      "relation": "source_publication",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "dataset:sparc_rotation_curves",
+      "target": "concept:bifurcation_framework",
+      "relation": "macro_astrophysical_test",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "equation:1pn_precession",
+      "target": "dataset:sgra_s2",
+      "relation": "gr_baseline_for",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:physics_baseline",
+      "target": "component:fit_astrometry",
+      "relation": "provides_orbital_dynamics",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:physics_baseline",
+      "target": "concept:kretschmann_scalar",
+      "relation": "computes_exact_invariant",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "dataset:s2_astrometry_csv",
+      "relation": "ingests_and_fits",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "dataset:s29_astrometry_csv",
+      "relation": "ingests_and_fits",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "dataset:s38_astrometry_csv",
+      "relation": "ingests_and_fits",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "dataset:s55_astrometry_csv",
+      "relation": "ingests_and_fits",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "dataset:s301_astrometry_csv",
+      "relation": "ingests_and_fits",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "concept:multi_star_joint_fitting",
+      "relation": "implements",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "concept:multi_star_joint_fitting",
+      "target": "concept:bifurcation_framework",
+      "relation": "global_cluster_arbiter",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_astrometry",
+      "target": "concept:bifurcation_framework",
+      "relation": "evaluates_delta_bic",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:physics_baseline",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:fit_astrometry",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fetch_sparc",
+      "target": "dataset:sparc_expanded_catalog",
+      "relation": "ingests_and_validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_sparc",
+      "target": "dataset:sparc_expanded_catalog",
+      "relation": "evaluates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_sparc",
+      "target": "concept:bifurcation_framework",
+      "relation": "tests_weak_acceleration_regime",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:fit_sparc",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "theory:action_principle_derivation",
+      "target": "concept:multidimensional_space",
+      "relation": "formalizes_variational_dynamics",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "theory:action_principle_derivation",
+      "target": "concept:bifurcation_framework",
+      "relation": "mathematical_proof_for_branches",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "doc:model_card",
+      "target": "component:model_core",
+      "relation": "classifies_and_audits",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "publication:latex_preprint",
+      "target": "concept:multidimensional_space",
+      "relation": "formalizes",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "publication:latex_preprint",
+      "target": "concept:bifurcation_framework",
+      "relation": "reports_verdict",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "publication:arxiv_submission",
+      "target": "publication:latex_preprint",
+      "relation": "distributes",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "publication:cover_letter",
+      "target": "publication:latex_preprint",
+      "relation": "submits_for_review",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "archival:zenodo_metadata",
+      "target": "publication:latex_preprint",
+      "relation": "archives",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "theory:jwst_high_redshift_predictions",
+      "target": "concept:cosmological_horizon_evolution",
+      "relation": "derives",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_jwst",
+      "target": "dataset:jwst_high_z_kinematics",
+      "relation": "evaluates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:fit_jwst",
+      "target": "concept:cosmological_horizon_evolution",
+      "relation": "tests_empirically",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:fit_jwst",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:plot_publication_figures",
+      "target": "publication:latex_preprint",
+      "relation": "generates_figures_for",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:validation_notebook",
+      "target": "concept:bifurcation_framework",
+      "relation": "demonstrates_empirically",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:validation_notebook",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:production_wsgi",
+      "target": "component:server_api",
+      "relation": "deploys_and_hardens",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "publication:release_draft_v0_7_0",
+      "target": "publication:latex_preprint",
+      "relation": "schedules_release_for",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "publication:release_draft_v0_7_0",
+      "target": "archival:zenodo_metadata",
+      "relation": "synchronizes_with",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_solar_system",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:lensing_engine",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:bullet_cluster_stress_test",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_galaxy_scatter",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_solar_system",
+      "target": "concept:bifurcation_framework",
+      "relation": "verifies_gr_screening_branch_a",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:lensing_engine",
+      "target": "concept:bifurcation_framework",
+      "relation": "tests_relativistic_null_geodesics",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:bullet_cluster_stress_test",
+      "target": "concept:entropy_state_variable",
+      "relation": "proves_thermal_entropy_decoupling",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_galaxy_scatter",
+      "target": "concept:bifurcation_framework",
+      "relation": "confirms_zero_intrinsic_scatter",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:plot_deep_perspectives",
+      "target": "publication:latex_preprint",
+      "relation": "generates_extended_figures_for",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:interactive_visualizer_suite",
+      "target": "component:server_api",
+      "relation": "hosted_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_gw_speed",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_wide_binaries",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_stability_ghosts",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_blind_challenge",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "component:stress_test_equivalence_principle",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_gw_speed",
+      "target": "whitepaper:gw170817_speed",
+      "relation": "formalized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_wide_binaries",
+      "target": "whitepaper:wide_binaries_efe",
+      "relation": "formalized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_stability_ghosts",
+      "target": "whitepaper:hamiltonian_stability",
+      "relation": "formalized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_equivalence_principle",
+      "target": "whitepaper:equivalence_principle",
+      "relation": "formalized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:stress_test_blind_challenge",
+      "target": "concept:bifurcation_framework",
+      "relation": "proves_strict_falsifiability",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:plot_extreme_rigor_figures",
+      "target": "publication:latex_preprint",
+      "relation": "generates_figures_9_10_11",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "stress_test:cosmology_expansion",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "stress_test:cmb_peaks",
+      "relation": "validates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "stress_test:cosmology_expansion",
+      "target": "dataset:pantheon_plus",
+      "relation": "evaluates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "stress_test:cosmology_expansion",
+      "target": "dataset:desi_2024_bao",
+      "relation": "evaluates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "stress_test:cosmology_expansion",
+      "target": "whitepaper:cosmological_expansion",
+      "relation": "formalized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "stress_test:cmb_peaks",
+      "target": "dataset:planck_2018_cmb_peaks",
+      "relation": "evaluates",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "stress_test:cmb_peaks",
+      "target": "whitepaper:cmb_acoustic_oscillations",
+      "relation": "formalized_by",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:cosmology_expansion",
+      "target": "concept:bifurcation_framework",
+      "relation": "resolves_late_time_expansion",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:cmb_acoustic_engine",
+      "target": "concept:bifurcation_framework",
+      "relation": "resolves_early_universe_peaks",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:plot_cosmology_figures",
+      "target": "publication:latex_preprint",
+      "relation": "generates_figures_12_13",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "artifact:grand_due_diligence_audit_case_001",
+      "target": "concept:bifurcation_framework",
+      "relation": "certifies_compliance_with",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "component:test_suite",
+      "target": "artifact:grand_due_diligence_audit_case_001",
+      "relation": "empirically_verifies",
+      "evidence_status": "historical_relationship_not_new_confirmation"
+    },
+    {
+      "source": "recovery:thermodynamics_downstream",
+      "target": "concept:entropy_state_variable",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:thermodynamics_downstream",
+      "target": "concept:emergent_matter",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:compression_families",
+      "target": "concept:effective_curvature",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:compression_families",
+      "target": "equation:emergent_matter_ansatz",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:space_author_clarification",
+      "target": "concept:multidimensional_space",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:space_author_clarification",
+      "target": "concept:entropy_state_variable",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:three_star_design",
+      "target": "concept:multi_star_joint_fitting",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:three_star_design",
+      "target": "dataset:sgra_s2",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:unidentified_influence",
+      "target": "concept:bifurcation_framework",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:cosmology_source_gap",
+      "target": "component:cosmology_expansion",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:cosmology_source_gap",
+      "target": "component:cmb_acoustic_engine",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:correspondence_rebranding",
+      "target": "concept:bifurcation_framework",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:correspondence_rebranding",
+      "target": "publication:latex_preprint",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:quantum_normalization",
+      "target": "concept:emergent_matter",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:quarter_coefficient",
+      "target": "concept:bekenstein_hawking_bound",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:ci_did_not_validate_physics",
+      "target": "component:test_suite",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    },
+    {
+      "source": "recovery:ci_did_not_validate_physics",
+      "target": "component:compare_schwarzschild",
+      "relation": "clarifies_or_qualifies",
+      "evidence_status": "documented_interpretive_link_not_validation"
+    }
   ]
 }

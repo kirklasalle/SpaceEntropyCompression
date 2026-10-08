@@ -8,6 +8,7 @@ labelled when printed.
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 
@@ -30,6 +31,27 @@ def is_synthetic(path: str | Path) -> bool:
             if SYNTHETIC_MARKER in line:
                 return True
     return False
+
+
+def verify_observation_file(path: str | Path, entry: dict) -> str:
+    """Fail closed on missing source metadata, synthetic files or changed bytes."""
+    p = Path(path)
+    if not p.is_file():
+        raise FileNotFoundError(p)
+    if SYNTHETIC_DIR in p.resolve().parents:
+        raise ValueError("Synthetic fixtures are not observations")
+    if not entry.get("url", "").startswith("https://") or not entry.get("citation"):
+        raise ValueError("Missing source URL or citation")
+    expected = entry.get("sha256", "")
+    if len(expected) != 64:
+        raise ValueError("Missing SHA-256 provenance")
+    data = p.read_bytes()
+    if SYNTHETIC_MARKER.encode() in data[:4096]:
+        raise ValueError("Synthetic marker in observational input")
+    digest = hashlib.sha256(data).hexdigest()
+    if digest != expected or len(data) != entry.get("bytes"):
+        raise ValueError(f"Provenance mismatch: {p.name}")
+    return digest
 
 
 def skip_comment_lines(lines: Iterable[str]) -> Iterator[str]:
