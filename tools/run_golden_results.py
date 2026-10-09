@@ -7,6 +7,7 @@ import json
 import math
 import os
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -26,6 +27,7 @@ class GoldenCase:
     args: tuple[str, ...] = ()
     ignored_paths: tuple[str, ...] = ()
     requires: tuple[str, ...] = ()
+    rtol: float = DEFAULT_RTOL
 
 
 CASES = (
@@ -35,6 +37,7 @@ CASES = (
         "results/sparc_real_analysis.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol=1e-8,
     ),
     GoldenCase(
         "sparc-marginalized-a0",
@@ -114,6 +117,11 @@ _BY_NAME = {case.command: case for case in CASES}
 
 class GoldenMismatch(AssertionError):
     pass
+
+
+def _remove_readonly(function: Any, path: str, _error: Any) -> None:
+    os.chmod(path, stat.S_IWRITE)
+    function(path)
 
 
 def _ignored(path: str, ignored_paths: set[str]) -> bool:
@@ -210,7 +218,12 @@ def compare_values(
 def compare_json(expected_path: Path, actual_path: Path, case: GoldenCase) -> None:
     expected = json.loads(expected_path.read_text(encoding="utf-8"))
     actual = json.loads(actual_path.read_text(encoding="utf-8"))
-    errors = compare_values(expected, actual, ignored_paths=set(case.ignored_paths))
+    errors = compare_values(
+        expected,
+        actual,
+        ignored_paths=set(case.ignored_paths),
+        rtol=case.rtol,
+    )
     if errors:
         shown = "\n".join(f"  - {error}" for error in errors[:50])
         suffix = f"\n  ... {len(errors) - 50} more" if len(errors) > 50 else ""
@@ -317,7 +330,7 @@ def run(selected: list[str], keep_workspace: bool = False) -> Path | None:
     finally:
         if not keep_workspace:
             try:
-                shutil.rmtree(temporary)
+                shutil.rmtree(temporary, onerror=_remove_readonly)
             except OSError as exc:
                 raise RuntimeError(
                     f"Failed to remove isolated golden workspace: {temporary}"

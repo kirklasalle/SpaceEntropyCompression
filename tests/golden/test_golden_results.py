@@ -71,6 +71,13 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
     for case in golden.CASES:
         assert (ROOT / case.script).is_file()
         assert (ROOT / case.output).is_file()
+    by_name = {case.command: case for case in golden.CASES}
+    assert by_name["sparc-real-analysis"].rtol == 1e-8
+    assert all(
+        case.rtol == golden.DEFAULT_RTOL
+        for case in golden.CASES
+        if case.command != "sparc-real-analysis"
+    )
 
 
 @pytest.mark.golden

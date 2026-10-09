@@ -5,7 +5,7 @@ import argparse
 import hashlib
 import json
 import math
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from scipy.integrate import quad
 
@@ -17,24 +17,28 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def project_path(root: Path, serialized_path: str) -> Path:
+    return root.joinpath(*PureWindowsPath(serialized_path).parts)
+
+
 def verify(brain: Path | None = None) -> dict:
     manifest = json.loads((ARCHIVE / "manifest.json").read_text())
     source_checks = 0
     for record in manifest["records"]:
-        destination = ROOT / record["destination"]
+        destination = project_path(ROOT, record["destination"])
         if sha(destination) != record["sha256"]:
             raise ValueError(f"Recovered artifact changed: {destination}")
         if brain is not None:
-            source = brain / record["source_relative_path"]
+            source = project_path(brain, record["source_relative_path"])
             expected = record.get("source_sha256", record["sha256"])
             if sha(source) != expected:
                 raise ValueError(f"Original source changed: {source}")
             source_checks += 1
     for record in manifest["derived_extracts"]:
-        if sha(ROOT / record["destination"]) != record["sha256"]:
+        if sha(project_path(ROOT, record["destination"])) != record["sha256"]:
             raise ValueError("Derived extract changed")
     graph = json.loads((ROOT / "knowledgebase" / "GRAPH_MEMORY.json").read_text())
-    snapshot = ROOT / graph["meta"]["pre_recovery_snapshot"]
+    snapshot = project_path(ROOT, graph["meta"]["pre_recovery_snapshot"])
     if sha(snapshot) != graph["meta"]["pre_recovery_sha256"]:
         raise ValueError("Historical graph snapshot changed")
     old = json.loads(snapshot.read_text())
@@ -47,7 +51,7 @@ def verify(brain: Path | None = None) -> dict:
     claims = json.loads((ROOT / "knowledgebase" / "antigravity_recovery_claims.json").read_text())
     for claim in claims["claims"]:
         node = next(n for n in graph["nodes"] if n["id"] == claim["id"])
-        if node["source_sha256"] != sha(ROOT / claim["source"]):
+        if node["source_sha256"] != sha(project_path(ROOT, claim["source"])):
             raise ValueError("Claim source hash mismatch")
         if node["use_for_empirical_confirmation"]:
             raise ValueError("Recovered claims are not new empirical confirmation")

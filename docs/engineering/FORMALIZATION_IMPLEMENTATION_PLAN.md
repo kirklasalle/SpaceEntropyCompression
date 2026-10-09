@@ -59,7 +59,8 @@ Implemented locally:
 
 * isolated golden-result runner for all eight fixed real-data analysis
   commands, with exact integer/string comparisons and `rtol=1e-10` for
-  floats;
+  floats; the platform-sensitive isothermal-halo optimizer in
+  `sparc-real-analysis` uses a documented `rtol=1e-8`;
 * `coverage.py`, Hypothesis and pytest-xdist development dependencies;
 * Windows/Linux CI on Python 3.10 and 3.12, plus a separate real-data golden
   job;

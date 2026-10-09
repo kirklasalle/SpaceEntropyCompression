@@ -4,7 +4,7 @@ import importlib.util
 import json
 import math
 import re
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from urllib.parse import unquote
 
 import pytest
@@ -88,4 +88,5 @@ def test_document_graph_and_ledger_preserve_review_boundary():
     artifact = root / comparison["diagnostic_artifact"]
     result = json.loads(artifact.read_text())
     for path_string, expected in result["source_sha256"].items():
-        assert hashlib.sha256((root / path_string).read_bytes()).hexdigest() == expected
+        source = root.joinpath(*PureWindowsPath(path_string).parts)
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected
