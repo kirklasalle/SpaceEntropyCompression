@@ -62,6 +62,7 @@ def test_gauntlet_sources_are_downloaded_and_verified(
     raw = b"pinned observation data"
     record = {
         "url": "https://example.invalid/data",
+        "kind": "published_measurement_table",
         "file": r"data\external\real_data_v1\sample.dat",
         "bytes": len(raw),
         "sha256": hashlib.sha256(raw).hexdigest(),
@@ -87,6 +88,28 @@ def test_gauntlet_sources_are_downloaded_and_verified(
 
     downloaded = workspace / "data" / "external" / "real_data_v1" / "sample.dat"
     assert downloaded.read_bytes() == raw
+
+
+def test_gauntlet_reference_pages_are_not_treated_as_observation_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source"
+    workspace = tmp_path / "workspace"
+    record = {
+        "url": "https://example.invalid/reference",
+        "kind": golden.REFERENCE_SOURCE_KIND,
+        "file": r"data\external\real_data_v1\reference.html",
+        "bytes": 1,
+        "sha256": "not-downloaded",
+    }
+    manifest = source / "results" / "real_data_v1" / "gauntlet.json"
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text(json.dumps({"source_records": [record]}), encoding="utf-8")
+    monkeypatch.setattr(golden, "ROOT", source)
+
+    golden._hydrate_gauntlet_sources(workspace)
+
+    assert not workspace.exists()
 
 
 def test_isolated_workspace_has_git_metadata(
@@ -155,6 +178,10 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
         "isothermal_halo.bic": 1e-7,
         "isothermal_halo.chi2": 1e-7,
     }
+    assert {
+        "inputs.sparc/Rotmod_LTG.zip.retrieved_utc",
+        "inputs.sparc/SPARC_Lelli2016c.mrt.retrieved_utc",
+    } <= set(by_name["sparc-profile-validation"].ignored_paths)
 
 
 @pytest.mark.golden

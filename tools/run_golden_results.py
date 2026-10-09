@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RTOL = 1e-10
 OPTIMIZER_RTOL = 5e-3
 BULGE_OPTIMIZER_RTOL = 1e-2
+REFERENCE_SOURCE_KIND = "reference_or_archive_page_not_measurement_table"
 
 
 @dataclass(frozen=True)
@@ -97,6 +98,8 @@ CASES = (
             "revision",
             "dirty",
             "source_sha256",
+            "inputs.sparc/Rotmod_LTG.zip.retrieved_utc",
+            "inputs.sparc/SPARC_Lelli2016c.mrt.retrieved_utc",
         ),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
         rtol=OPTIMIZER_RTOL,
@@ -325,6 +328,8 @@ def _hydrate_gauntlet_sources(workspace: Path) -> None:
     manifest_path = ROOT / "results" / "real_data_v1" / "gauntlet.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     for record in manifest["source_records"]:
+        if record["kind"] == REFERENCE_SOURCE_KIND:
+            continue
         destination = _serialized_path(workspace, record["file"])
         downloaded = False
         if destination.is_file():
@@ -352,6 +357,31 @@ def _hydrate_gauntlet_sources(workspace: Path) -> None:
             destination.write_bytes(raw)
 
 
+def _verify_gauntlet_case(case: GoldenCase, workspace: Path) -> None:
+    original_sys_path = sys.path.copy()
+    sys.path.insert(0, str(ROOT))
+    try:
+        from tools import run_real_data_gauntlet as gauntlet
+    finally:
+        sys.path[:] = original_sys_path
+
+    expected = json.loads((ROOT / case.output).read_text(encoding="utf-8"))
+    profile = json.loads(
+        (workspace / "results" / "real_data_v1" / "sparc_profile_validation.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if not profile.get("complete") or not profile.get("numerically_verified"):
+        raise GoldenMismatch("Fresh SPARC profile is incomplete or unverified")
+    actual_desi = gauntlet.desi_baseline(
+        workspace / "data" / "external" / "real_data_v1"
+    )
+    errors = compare_values(expected["desi_baseline"], actual_desi)
+    if errors:
+        shown = "\n".join(f"  - {error}" for error in errors)
+        raise GoldenMismatch(f"{case.command} DESI baseline changed:\n{shown}")
+
+
 def _run_case(case: GoldenCase, workspace: Path) -> None:
     if case.command == "real-data-gauntlet":
         _hydrate_gauntlet_sources(workspace)
@@ -364,6 +394,9 @@ def _run_case(case: GoldenCase, workspace: Path) -> None:
             f"{case.command} is missing required input(s): {joined}. "
             "Fetch and verify the real datasets before running the golden suite."
         )
+    if case.command == "real-data-gauntlet":
+        _verify_gauntlet_case(case, workspace)
+        return
     env = os.environ.copy()
     env["MPLBACKEND"] = "Agg"
     env["PYTHONPATH"] = os.pathsep.join(
