@@ -63,6 +63,8 @@ emrf doctor
 The package includes the new `emrf` namespace and preserves the existing
 top-level modules and script paths. Namespace migration is incremental; do
 not remove a legacy import until its compatibility test is migrated.
+New code may import the core phenomenological model from `emrf.physics` and
+the standard gravity/orbital benchmarks from `emrf.physics.baselines`.
 
 ## Extending the Model
 - Add new spatial curvature functions in `model.py` — each `c_func` takes one

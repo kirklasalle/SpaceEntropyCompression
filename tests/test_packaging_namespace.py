@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import physics_baseline as legacy_baselines
 import pytest
 from emrf import API_VERSION, __version__
 from emrf.interfaces.cli import main
 from emrf.physics import EmergentMatterModel as PackagedModel
+from emrf.physics import baselines as packaged_baselines
 from model import EmergentMatterModel as LegacyModel
 
 
@@ -21,3 +23,12 @@ def test_console_entry_point_supports_version(capsys) -> None:
 
 def test_physics_namespace_preserves_legacy_model_identity() -> None:
     assert PackagedModel is LegacyModel
+
+
+def test_physics_baselines_preserve_legacy_function_identity() -> None:
+    assert packaged_baselines.solve_kepler is legacy_baselines.solve_kepler
+    assert (
+        packaged_baselines.kretschmann_invariant
+        is legacy_baselines.kretschmann_invariant
+    )
+    assert packaged_baselines.G == legacy_baselines.G
