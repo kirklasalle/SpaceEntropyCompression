@@ -59,11 +59,10 @@ Implemented locally:
 
 * isolated golden-result runner for all eight fixed real-data analysis
   commands, with exact integer/string comparisons and `rtol=1e-10` for
-  floats; the platform-sensitive isothermal-halo optimizer in
-  `sparc-real-analysis` uses a documented `rtol=1e-8`;
+  floats on the Windows x86-64 baseline platform;
 * `coverage.py`, Hypothesis and pytest-xdist development dependencies;
-* Windows/Linux CI on Python 3.10 and 3.12, plus a separate real-data golden
-  job, constrained to the measured baseline dependency versions;
+* Windows/Linux CI on Python 3.10 and 3.12, plus a separate Windows real-data
+  golden job constrained to the measured baseline dependency versions;
 * pre-commit whitespace, JSON/TOML, large-file and Ruff hooks;
 * correctness lint cleanup outside hash-pinned evidence files; the remaining
   exceptions are declared narrowly for two pinned files;

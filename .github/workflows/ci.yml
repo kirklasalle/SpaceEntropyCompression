@@ -43,8 +43,8 @@ jobs:
         run: python emergent_matter_model/emrf_cli.py doctor
 
   golden:
-    name: Real-data golden results / Ubuntu / Python 3.12
-    runs-on: ubuntu-latest
+    name: Real-data golden results / Windows / Python 3.12
+    runs-on: windows-latest
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4

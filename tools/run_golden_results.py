@@ -37,7 +37,6 @@ CASES = (
         "results/sparc_real_analysis.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
-        rtol=1e-8,
     ),
     GoldenCase(
         "sparc-marginalized-a0",
