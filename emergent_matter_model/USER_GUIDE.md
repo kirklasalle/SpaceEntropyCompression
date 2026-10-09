@@ -19,7 +19,8 @@ When simulating, the model evaluates C and M at each point in the spatial grid f
 
 ## Getting Started
 1. Install Python requirements (`requirements.txt`).
-2. Check the installation:
+2. For an installed CLI, run `python -m pip install .` from the
+   `emergent_matter_model` directory. Check the installation:
    `python emergent_matter_model/emrf_cli.py doctor`.
 3. List all supported operations:
    `python emergent_matter_model/emrf_cli.py list`.
@@ -31,6 +32,9 @@ When simulating, the model evaluates C and M at each point in the spatial grid f
 Legacy commands such as `python emergent_matter_model/server.py` remain
 supported. Use `python emergent_matter_model/emrf_cli.py run NAME -- ARGS`
 for registered research, audit and release programs.
+
+After installation, the equivalent supported command is `emrf doctor` or
+`emrf list`; both use the same registry and preserve the legacy behavior.
 
 ## Features
 - Simulate emergent matter models across spatial dimensions with entropy state sweep

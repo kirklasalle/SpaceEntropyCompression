@@ -51,6 +51,19 @@ Discrete/quantum versions, parameter inference, and falsifiable predictions are 
 2. Configure JavaFX SDK path in `pom.xml`
 3. Run Python server and JavaFX client
 
+For the supported Python package and console entry point, install from the
+package directory:
+
+```powershell
+python -m pip install .[dev]
+emrf --version
+emrf doctor
+```
+
+The package includes the new `emrf` namespace and preserves the existing
+top-level modules and script paths. Namespace migration is incremental; do
+not remove a legacy import until its compatibility test is migrated.
+
 ## Extending the Model
 - Add new spatial curvature functions in `model.py` — each `c_func` takes one
   argument: `c_func(x_i) -> float`

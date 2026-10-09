@@ -100,7 +100,9 @@ interpreted as observational uncertainty.
 **Why:** `pip install` currently ships 8 of ~40 modules and the flat
 namespace is fragile.
 
-1. Create `src/emrf/` with the layered layout of spec section 3.1.
+1. Create `src/emrf/` with the layered layout of spec section 3.1. The
+   initial increment establishes the public namespace, package version, and
+   `emrf` console entry point without relocating legacy implementations.
 2. Move modules one layer at a time (core -> physics -> data -> inference ->
    validation -> interfaces), leaving a one-line shim at each old path
    (`from emrf.physics.engines.lensing import *`) so every legacy import and
@@ -113,6 +115,11 @@ namespace is fragile.
 5. Regenerate the review manifest for intentionally changed files, recorded
    as a new evidence version; the old manifest is archived, not overwritten.
 6. `import-linter` contracts enforce layer direction.
+
+**Phase 2 increment status (2026-10-09):** the compatibility-preserving
+`src/emrf` namespace and installed `emrf` console entry point are implemented.
+The existing flat modules remain explicitly packaged, so legacy imports and
+scripts are not removed while the layered migration proceeds.
 
 **Exit gate:** `pip install .` in a clean venv runs every registry command;
 `emrf` console script works; all legacy paths work; preservation gate.

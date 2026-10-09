@@ -31,7 +31,16 @@ py-modules = [
     "physics_baseline",
     "fit_astrometry",
     "fit_sparc",
+    "emrf_cli",
+    "emrf_registry",
+    "emrf_version",
 ]
+
+packages = ["emrf", "emrf.interfaces"]
+package-dir = {emrf = "src/emrf", "emrf.interfaces" = "src/emrf/interfaces"}
+
+[project.scripts]
+emrf = "emrf.interfaces.cli:main"
 
 [project.optional-dependencies]
 dev = [
