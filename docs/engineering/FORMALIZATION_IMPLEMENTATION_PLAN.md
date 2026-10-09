@@ -127,7 +127,9 @@ compatibility pattern now exposes the standard orbital and Schwarzschild
 benchmarks as `emrf.physics.baselines`, with function identity tests preventing
 numerical divergence from `physics_baseline.py`. The first data-layer bridge,
 `emrf.data.provenance`, exposes the existing fail-closed synthetic-data and
-observation-integrity checks without changing their legacy consumers.
+observation-integrity checks without changing their legacy consumers. The
+installed REST surface is available as `emrf.interfaces.api`, re-exporting the
+same Flask application and simulation function used by `server.py`.
 
 **Exit gate:** `pip install .` in a clean venv runs every registry command;
 `emrf` console script works; all legacy paths work; preservation gate.

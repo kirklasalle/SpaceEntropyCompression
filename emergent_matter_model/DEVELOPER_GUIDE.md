@@ -67,6 +67,8 @@ New code may import the core phenomenological model from `emrf.physics` and
 the standard gravity/orbital benchmarks from `emrf.physics.baselines`.
 Data consumers should use `emrf.data.provenance` for synthetic-input labelling
 and byte-level observation verification.
+WSGI hosts and Python clients may import the existing Flask application from
+`emrf.interfaces.api`; `server.py` and `wsgi.py` remain supported.
 
 ## Extending the Model
 - Add new spatial curvature functions in `model.py` — each `c_func` takes one
