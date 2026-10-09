@@ -187,8 +187,13 @@ def section_sstars() -> None:
         n = 3 * len(obs["epoch"])
         chi_gr = fa.compute_residuals_and_chi2(obs, fa.project_orbital_position_to_sky(params, obs["epoch"], "gr_1pn"))[0]
 
-        def chi_beta(b: float) -> float:
-            return fa.compute_residuals_and_chi2(obs, fa.project_orbital_position_to_sky(params, obs["epoch"], "emrf", b))[0]
+        def chi_beta(b: float, observations=obs, star_params=params) -> float:
+            return fa.compute_residuals_and_chi2(
+                observations,
+                fa.project_orbital_position_to_sky(
+                    star_params, observations["epoch"], "emrf", b
+                ),
+            )[0]
 
         dchi = chi_beta(0.005) - chi_gr
         betas = np.linspace(-50, 50, 2001)

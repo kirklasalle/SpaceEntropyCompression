@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Emergent Matter Simulation API
-  version: 1.0.0
+  version: 1.1.0
   description: |
     REST API for emergent matter simulation. Entropy S(X,t) is a thermodynamic state
     field (the arrow of change per Second Law), not a spatial coordinate. The last
@@ -9,6 +9,163 @@ info:
 servers:
   - url: http://127.0.0.1:5000
 paths:
+  /api/v1/health:
+    get:
+      summary: Service health check
+      operationId: health
+      responses:
+        '200':
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string}
+                  service: {type: string}
+                  version: {type: string}
+  /api/v1/version:
+    get:
+      summary: Software and API version
+      operationId: version
+      responses:
+        '200':
+          description: Version information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version: {type: string}
+                  api_version: {type: string}
+  /api/v1/doctor:
+    get:
+      summary: Environment and dependency diagnostics (same as `emrf doctor`)
+      operationId: doctor
+      responses:
+        '200':
+          description: Read-only diagnostics report
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /api/v1/commands:
+    get:
+      summary: List every registered program (same as `emrf list`)
+      operationId: listCommands
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [data, analysis, stress-test, figures, visualization, service, audit, release]
+      responses:
+        '200':
+          description: Registered programs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run_enabled: {type: boolean}
+                  commands:
+                    type: array
+                    items: {$ref: '#/components/schemas/Command'}
+        '400':
+          description: Unknown category
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorResponse'}
+  /api/v1/commands/{name}:
+    get:
+      summary: Describe one registered program
+      operationId: getCommand
+      parameters:
+        - {name: name, in: path, required: true, schema: {type: string}}
+      responses:
+        '200':
+          description: Program description
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Command'}
+        '404':
+          description: Unknown program
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorResponse'}
+  /api/v1/commands/{name}/run:
+    post:
+      summary: Run a registered program (same as `emrf run`)
+      description: |
+        Disabled (403) unless the server process has EMRF_API_ALLOW_RUN=1. Enable only on
+        trusted hosts. GUI and service programs are refused. No shell is used; args are
+        passed verbatim to the program.
+      operationId: runCommand
+      parameters:
+        - {name: name, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                args:
+                  type: array
+                  items: {type: string}
+                timeout:
+                  type: number
+                  default: 300
+                  maximum: 600
+      responses:
+        '200':
+          description: Program finished (inspect returncode)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  command: {type: string}
+                  args: {type: array, items: {type: string}}
+                  returncode: {type: integer}
+                  seconds: {type: number}
+                  stdout: {type: string}
+                  stderr: {type: string}
+        '400': {description: Invalid request or non-runnable program, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
+        '403': {description: Execution disabled, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
+        '404': {description: Unknown program, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
+        '429': {description: Rate limited, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
+        '504': {description: Timed out, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
+  /api/v1/datasets:
+    get:
+      summary: Observational data library (same as `emrf data list`)
+      operationId: listDatasets
+      parameters:
+        - name: verify
+          in: query
+          required: false
+          description: Re-hash files against the provenance manifest (read-only)
+          schema: {type: boolean, default: false}
+      responses:
+        '200':
+          description: Manifest-registered datasets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  datasets:
+                    type: array
+                    items: {$ref: '#/components/schemas/Dataset'}
+  /visualizer:
+    get:
+      summary: Interactive HTML/WebGL dashboard
+      operationId: visualizer
+      responses:
+        '200': {description: HTML page, content: {text/html: {schema: {type: string}}}}
+        '404': {description: Visualizer file missing}
   /api/v1/simulate:
     post:
       summary: Run emergent matter simulation
@@ -137,3 +294,27 @@ components:
       properties:
         error:
           type: string
+    Command:
+      type: object
+      properties:
+        name: {type: string}
+        script: {type: string}
+        category: {type: string}
+        summary: {type: string}
+        network: {type: boolean}
+        gui: {type: boolean}
+        exists: {type: boolean}
+    Dataset:
+      type: object
+      properties:
+        id: {type: string}
+        file: {type: string}
+        url: {type: string}
+        citation: {type: string}
+        bytes: {type: integer}
+        sha256: {type: string}
+        retrieved_utc: {type: string}
+        present: {type: boolean}
+        status:
+          type: string
+          enum: [ok, missing, size-mismatch, hash-mismatch]

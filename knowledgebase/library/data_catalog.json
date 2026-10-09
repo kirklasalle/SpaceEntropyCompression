@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-10-09",
+  "catalog": "EMRF observational and reference data",
+  "datasets": [
+    {
+      "id": "sparc-rotation-curves",
+      "title": "SPARC rotation curves and galaxy properties",
+      "status": "existing_holding",
+      "priority": "high",
+      "url": "https://astroweb.case.edu/SPARC/",
+      "citation": "Lelli, McGaugh & Schombert (2016), AJ 152, 157",
+      "doi": "10.3847/0004-6256/152/6/157",
+      "license_terms_url": "https://astroweb.case.edu/SPARC/",
+      "redistribution": "Public scientific archive; cite the source paper; no explicit open-source data licence is asserted here.",
+      "acquisition": "Direct HTTPS download by emergent_matter_model/fetch_real_data.py",
+      "holdings": [
+        {
+          "path": "data/external/sparc/Rotmod_LTG.zip",
+          "bytes": 110737,
+          "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588"
+        },
+        {
+          "path": "data/external/sparc/SPARC_Lelli2016c.mrt",
+          "bytes": 28259,
+          "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-09",
+        "source": "data/external/download_manifest.json"
+      }
+    },
+    {
+      "id": "pantheon-plus-shoes",
+      "title": "Pantheon+ and Pantheon+SH0ES supernova compilation",
+      "status": "existing_holding",
+      "priority": "high",
+      "url": "https://github.com/PantheonPlusSH0ES/DataRelease",
+      "pinned_revision": "c447f0fea703fcd0fff57de5000947b5ca81286b",
+      "citation": "Scolnic et al. (2022), ApJ 938, 113",
+      "doi": "10.3847/1538-4357/ac8b7a",
+      "license_terms_url": "https://github.com/PantheonPlusSH0ES/DataRelease",
+      "redistribution": "Public scientific release; no explicit repository licence was confirmed. Cite the collaboration papers.",
+      "acquisition": "Pinned raw GitHub release files",
+      "holdings": [
+        {
+          "path": "data/external/Pantheon+SH0ES.dat.txt",
+          "bytes": 579283,
+          "sha256": "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8"
+        },
+        {
+          "path": "data/external/Pantheon+SH0ES_STAT+SYS.cov.txt",
+          "bytes": 33284960,
+          "sha256": "abf806d966485e64afdb359c87bffc0ecc00d05eff0a31ced66f247385df0fdc"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-09",
+        "source": "results/real_data_followup/pantheon_baseline.json"
+      }
+    },
+    {
+      "id": "desi-dr1-bao",
+      "title": "DESI DR1 2024 Gaussian BAO consensus products",
+      "status": "existing_holding",
+      "priority": "high",
+      "url": "https://github.com/CobayaSampler/bao_data",
+      "pinned_revision": "bb0c1c9009dc76d1391300e169e8df38fd1096db",
+      "citation": "DESI Collaboration (2024), DESI 2024 VI: cosmological constraints from BAO",
+      "license_terms_url": "https://data.desi.lbl.gov/doc/releases/",
+      "redistribution": "Public DESI scientific product; follow DESI acknowledgement and citation guidance.",
+      "acquisition": "Pinned raw files from the CobayaSampler/bao_data mirror",
+      "holdings": [
+        {
+          "path": "data/external/real_data_v1/desi_2024_gaussian_bao_ALL_GCcomb_mean.txt",
+          "sha256": "dd2873a0b88459a491af3c0c0307ba059f62df9211d5b976760f310565a1be68"
+        },
+        {
+          "path": "data/external/real_data_v1/desi_2024_gaussian_bao_ALL_GCcomb_cov.txt",
+          "sha256": "bbafa9074b51cf1a45e0d10e4f37db8c0e80a5d1d1788857abb7fc49fb21abcc"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-09",
+        "source": "results/real_data_v1/gauntlet.json"
+      }
+    },
+    {
+      "id": "desi-dr2-bao",
+      "title": "DESI DR2 BAO measurements and cosmological constraints",
+      "status": "planned",
+      "priority": "high",
+      "url": "https://arxiv.org/abs/2503.14738",
+      "data_url": "https://zenodo.org/records/16644577",
+      "citation": "DESI Collaboration (2025), Phys. Rev. D 112, 083515",
+      "doi": "10.1103/PhysRevD.112.083515",
+      "license_terms_url": "https://data.desi.lbl.gov/doc/papers/dr2/",
+      "redistribution": "Use official DESI/Zenodo terms and acknowledgements.",
+      "approximate_size": "Tens to hundreds of MB for summary products and chains",
+      "acquisition": "Pin the official Zenodo record after owner approval.",
+      "verified": {
+        "needs_confirmation": ["Zenodo record", "exact files", "download size", "redistribution terms"]
+      }
+    },
+    {
+      "id": "des-sn5yr",
+      "title": "Dark Energy Survey Supernova Program five-year release",
+      "status": "planned",
+      "priority": "high",
+      "url": "https://github.com/des-science/DES-SN5YR",
+      "citation": "Sanchez et al. (2024), ApJ 975, 5; Vincenzi et al. (2024), ApJ 975, 86",
+      "data_doi": "10.5281/zenodo.12720778",
+      "license_terms_url": "https://doi.org/10.5281/zenodo.12720778",
+      "redistribution": "Public GitHub/Zenodo release; cite the release and cosmology papers.",
+      "acquisition": "Pin the v1.3 legacy release or its Zenodo archive.",
+      "verified": {
+        "source_reachable": true,
+        "verified_at": "2026-10-09",
+        "needs_confirmation": ["exact archive size"]
+      }
+    },
+    {
+      "id": "union3-unity",
+      "title": "Union3 and UNITY1.5 supernova compilation",
+      "status": "planned",
+      "priority": "medium",
+      "url": "https://github.com/rubind/union3_release",
+      "citation": "Rubin et al. (2023), arXiv:2311.12098",
+      "license_terms_url": "https://github.com/rubind/union3_release",
+      "redistribution": "Confirm repository terms before mirroring; cite the Union3 paper.",
+      "approximate_size": "Low tens of MB for binned products",
+      "acquisition": "Pin the official release commit and acquire published binned products.",
+      "verified": {
+        "needs_confirmation": ["licence", "public product completeness", "exact size"]
+      }
+    },
+    {
+      "id": "planck-2018-likelihood",
+      "title": "Planck 2018 legacy likelihoods and chains",
+      "status": "planned",
+      "priority": "high",
+      "url": "https://pla.esac.esa.int/",
+      "mirror_url": "https://irsa.ipac.caltech.edu/data/Planck/release_3/",
+      "citation": "Planck Collaboration VI (2020), A&A 641, A6",
+      "doi": "10.1051/0004-6361/201833910",
+      "license_terms_url": "https://wiki.cosmos.esa.int/planck-legacy-archive/index.php/Main_Page",
+      "redistribution": "ESA public release; preserve notices and cite the likelihood and parameter papers.",
+      "approximate_size": "Approximately 1-2 GB for likelihood data; chain sets vary",
+      "acquisition": "Acquire only required likelihood summaries initially.",
+      "verified": {
+        "source_reachable": true,
+        "verified_at": "2026-10-09",
+        "needs_confirmation": ["selected product sizes"]
+      }
+    },
+    {
+      "id": "gwtc-catalogs",
+      "title": "Gravitational-Wave Transient Catalogs",
+      "status": "planned",
+      "priority": "medium",
+      "url": "https://gwosc.org/eventapi/html/",
+      "citation": "Abbott et al., GWTC-1, GWTC-2/2.1 and GWTC-3 catalog papers",
+      "license_terms_url": "https://gwosc.org/odw-overview/",
+      "redistribution": "Follow GWOSC terms and cite the selected catalog release.",
+      "approximate_size": "Tens to hundreds of MB for catalog metadata and selected posterior samples",
+      "acquisition": "Use the GWOSC API; do not acquire full strain archives by default.",
+      "verified": {
+        "source_reachable": true,
+        "verified_at": "2026-10-09"
+      }
+    },
+    {
+      "id": "gaia-elbadry-wide-binaries",
+      "title": "El-Badry, Rix and Heintz Gaia EDR3 wide-binary catalog",
+      "status": "planned",
+      "priority": "medium",
+      "url": "https://arxiv.org/abs/2101.05282",
+      "citation": "El-Badry, Rix & Heintz (2021), MNRAS 506, 2269",
+      "doi": "10.1093/mnras/stab323",
+      "license_terms_url": "https://cdsarc.cds.unistra.fr/viz-bin/cat/J/MNRAS/506/2269",
+      "redistribution": "Use the authoritative VizieR/CDS terms and cite the paper.",
+      "approximate_size": "Approximately 100-300 MB",
+      "acquisition": "Resolve the canonical archive record, then fetch the required Gaia subset.",
+      "verified": {
+        "needs_confirmation": ["canonical Zenodo record", "exact size", "archive terms"]
+      }
+    },
+    {
+      "id": "codata-2022",
+      "title": "CODATA 2022 recommended values of the fundamental constants",
+      "status": "planned",
+      "priority": "high",
+      "url": "https://physics.nist.gov/cuu/Constants/index.html",
+      "citation": "CODATA recommended values of the fundamental physical constants: 2022",
+      "doi": "10.1103/RevModPhys.97.025002",
+      "license_terms_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-and-software",
+      "redistribution": "NIST US-government data policy applies; retain attribution.",
+      "approximate_size": "Less than 1 MB",
+      "acquisition": "Download and pin the NIST all-ASCII constants table.",
+      "verified": {
+        "source_reachable": true,
+        "verified_at": "2026-10-09"
+      }
+    }
+  ]
+}

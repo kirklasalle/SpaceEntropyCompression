@@ -152,7 +152,6 @@ def generate_figure_3_unified_landscape(output_dir: Path):
     # Ratio of effective acceleration to Newtonian g_eff / g_Newton
     # g_eff / g_bar = sqrt(1 + 1 / a_ratio)
     g_ratio_emrf = np.sqrt(1.0 + 1.0 / a_ratio)
-    g_ratio_newton = np.ones_like(a_ratio)
 
     ax.plot(log_a_ratio, g_ratio_emrf, color="#1f77b4", linewidth=2.5, label="EMRF Effective Ratio $g_{\\rm eff} / g_{\\rm bar}$")
     ax.axhline(1.0, color="gray", linestyle="--", linewidth=1.5, label="Standard General Relativity / Newtonian Limit")

@@ -1,5 +1,14 @@
 # EMRF Knowledgebase & Graph Memory System
 
+## Current engineering and library entry points
+
+- [Scientific data/software library](library/README.md), including the
+  [data catalog](library/data_catalog.json) and
+  [software catalog](library/software_catalog.json).
+- [Current build reference](../docs/engineering/CURRENT_BUILD_REFERENCE.md).
+- [Engineering specification](../docs/engineering/ENGINEERING_SPECIFICATION.md).
+- [Formalization implementation plan](../docs/engineering/FORMALIZATION_IMPLEMENTATION_PLAN.md).
+
 ## Current recovered-evidence entry points
 
 - [Candidate A functional comparison](../docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md):

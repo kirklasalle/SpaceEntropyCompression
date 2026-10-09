@@ -139,7 +139,10 @@ def plot_fig6_gravitational_lensing(output_path: Path):
     names = list(evals.keys())
     obs = [evals[n]["theta_obs_arcsec"] for n in names]
     pred = [evals[n]["theta_pred_arcsec"] for n in names]
-    err = [next(l.theta_ein_err_arcsec for l in SLACS_BENCHMARKS if l.name == n) for n in names]
+    err = [
+        next(lens.theta_ein_err_arcsec for lens in SLACS_BENCHMARKS if lens.name == name)
+        for name in names
+    ]
 
     ax2.errorbar(obs, pred, xerr=err, fmt="ro", markersize=8, capsize=4, elinewidth=1.5, label="SLACS Lenses (HST)")
     ideal_line = np.linspace(0.8, 1.4, 100)

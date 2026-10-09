@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Real-observation validation and research draft
 
+### Formalization foundation
+- Added a unified command registry, CLI and versioned REST API/OpenAPI surface
+  while preserving all legacy script entry points.
+- Added the current-build reference, target engineering specification,
+  phased implementation plan, and an assessed optional UKS integration.
+- Added reviewed data/software catalogs with pinned metadata for existing
+  SPARC, Pantheon+ and DESI holdings.
+- Added a real-data golden-result harness, Windows/Linux Python 3.10/3.12 CI,
+  coverage and property-test dependencies, pre-commit hooks, and a local CI
+  equivalent. The source-only non-golden baseline is 272 passing tests at
+  52.5% line and 42.4% branch coverage; software verification is not
+  scientific confirmation.
+
 ### Candidate A and current publication surfaces
 - Recorded Kirk's selection of Candidate A and his suggestion to seek a
   formulation inside GR. Candidate B is unselected, retained for history.

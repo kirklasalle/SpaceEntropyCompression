@@ -1,5 +1,6 @@
 import pytest
 
+from emrf_version import __version__
 from server import app
 
 
@@ -136,7 +137,7 @@ def test_health_endpoint(client):
     data = response.get_json()
     assert data["status"] == "healthy"
     assert data["service"] == "emergent-matter-model"
-    assert data["version"] == "0.6.0"
+    assert data["version"] == __version__
 
 
 def test_rate_limiting_triggered(client):
@@ -146,7 +147,7 @@ def test_rate_limiting_triggered(client):
     now = time.time()
     # Pre-populate IP request timestamps with current time to exceed limit
     _request_records[test_ip] = [now] * (_RATE_LIMIT_MAX_REQUESTS + 1)
-    
+
     # Send request with this IP
     response = client.post(
         "/api/v1/simulate",
@@ -164,4 +165,3 @@ def test_visualizer_endpoint(client):
     assert response.status_code == 200
     assert "text/html" in response.content_type
     assert "EMRF Interactive Multidimensional Perspective" in response.get_data(as_text=True)
-

@@ -159,32 +159,32 @@ def compute_full_cmb_power_spectrum(
     A_2 = peaks["A_2"]
     A_3 = peaks["A_3"]
 
-    for i, l in enumerate(l_arr):
+    for i, ell in enumerate(l_arr):
         # Acoustic oscillation argument
-        phase = (l / l_star) * np.pi - 0.8
+        phase = (ell / l_star) * np.pi - 0.8
         osc = np.cos(phase) ** 2
 
         # Envelope modulation across peaks 1, 2, 3 and Sachs-Wolfe plateau
-        if l < peaks["l_1"]:
+        if ell < peaks["l_1"]:
             # Rise from Sachs-Wolfe plateau (~1000 uK^2) to Peak 1
-            frac = (l - 30.0) / (peaks["l_1"] - 30.0)
+            frac = (ell - 30.0) / (peaks["l_1"] - 30.0)
             env = 1000.0 + (A_1 - 1000.0) * (frac ** 1.8)
             val = env * (0.3 + 0.7 * osc)
-        elif l < peaks["l_2"]:
+        elif ell < peaks["l_2"]:
             # Transition from Peak 1 to Peak 2
-            frac = (l - peaks["l_1"]) / (peaks["l_2"] - peaks["l_1"])
+            frac = (ell - peaks["l_1"]) / (peaks["l_2"] - peaks["l_1"])
             env = A_1 * (1.0 - frac) + A_2 * frac
             trough = 1750.0
             val = trough + (env - trough) * osc
-        elif l < peaks["l_3"]:
+        elif ell < peaks["l_3"]:
             # Transition from Peak 2 to Peak 3
-            frac = (l - peaks["l_2"]) / (peaks["l_3"] - peaks["l_2"])
+            frac = (ell - peaks["l_2"]) / (peaks["l_3"] - peaks["l_2"])
             env = A_2 * (1.0 - frac) + A_3 * frac
             trough = 1900.0
             val = trough + (env - trough) * osc
         else:
             # Silk damping tail beyond Peak 3
-            damping = np.exp(-((l / params.l_D) ** 1.4))
+            damping = np.exp(-((ell / params.l_D) ** 1.4))
             val = (A_3 * (0.2 + 0.8 * osc) + 150.0) * damping
 
         Dl_arr[i] = max(0.0, val)

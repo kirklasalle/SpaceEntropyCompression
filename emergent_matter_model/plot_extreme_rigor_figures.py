@@ -60,7 +60,6 @@ def plot_fig9_gw170817_speed(output_path: Path):
     # Right Panel: Arrival Time Delay over 40 Mpc (130 Million Light Years)
     # Distance: 40 Mpc = 1.23e24 meters
     distances_mpc = np.linspace(1.0, 100.0, 100)
-    d_m = distances_mpc * 3.085677581e22
 
     # EMRF delay = 0s
     ax2.plot(distances_mpc, np.zeros_like(distances_mpc), "b-", lw=2.5, label="EMRF / GR: $\\Delta t = 0$ s (Identical)")
