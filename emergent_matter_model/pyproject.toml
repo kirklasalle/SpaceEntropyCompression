@@ -36,8 +36,12 @@ py-modules = [
     "emrf_version",
 ]
 
-packages = ["emrf", "emrf.interfaces"]
-package-dir = {emrf = "src/emrf", "emrf.interfaces" = "src/emrf/interfaces"}
+packages = ["emrf", "emrf.interfaces", "emrf.physics"]
+
+[tool.setuptools.package-dir]
+emrf = "src/emrf"
+"emrf.interfaces" = "src/emrf/interfaces"
+"emrf.physics" = "src/emrf/physics"
 
 [project.scripts]
 emrf = "emrf.interfaces.cli:main"

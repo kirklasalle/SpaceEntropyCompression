@@ -119,7 +119,10 @@ namespace is fragile.
 **Phase 2 increment status (2026-10-09):** the compatibility-preserving
 `src/emrf` namespace and installed `emrf` console entry point are implemented.
 The existing flat modules remain explicitly packaged, so legacy imports and
-scripts are not removed while the layered migration proceeds.
+scripts are not removed while the layered migration proceeds. The first
+`emrf.physics` bridge exposes `EmergentMatterModel` while retaining `model.py`
+as the canonical implementation until direct-script and installed-package
+execution can share the new module without path-dependent behavior.
 
 **Exit gate:** `pip install .` in a clean venv runs every registry command;
 `emrf` console script works; all legacy paths work; preservation gate.
