@@ -100,15 +100,16 @@ workspace. It re-runs eight fixed real-data pipelines without overwriting the
 reviewed `results/` tree. Integers, strings, hashes and collection shapes are
 exact; computed floating-point values use `rtol=1e-10`. Only declared
 timestamps, environment metadata and derived parent hashes are ignored.
-The current reviewed results were generated and certified on Windows x86-64.
-Linux runs the complete functional suite; a separate reviewed Linux golden
-baseline is required before claiming byte/numerical parity there.
+The current reviewed results were generated and certified on Windows x86-64
+with Python 3.10. Linux and Python 3.12 run the complete functional suite;
+separate reviewed golden baselines are required before claiming numerical
+parity for those environments.
 
 ## CI/CD
 - Root GitHub Actions workflow: `../.github/workflows/ci.yml`
 - Unit/coverage matrix: Windows and Linux on Python 3.10 and 3.12
-- Separate Windows job: verified SPARC/Pantheon+ acquisition and all real-data
-  golden comparisons on the baseline platform
+- Separate Windows/Python 3.10 job: verified SPARC/Pantheon+ acquisition and
+  all real-data golden comparisons on the baseline environment
 - Local equivalent: `ci_local.ps1`; set `EMRF_RUN_GOLDEN=1` to include the
   expensive golden suite
 - Java 25 warning mitigation for Maven is configured via:
