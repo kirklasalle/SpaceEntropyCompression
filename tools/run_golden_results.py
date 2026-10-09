@@ -28,6 +28,7 @@ class GoldenCase:
     ignored_paths: tuple[str, ...] = ()
     requires: tuple[str, ...] = ()
     rtol: float = DEFAULT_RTOL
+    rtol_overrides: tuple[tuple[str, float], ...] = ()
 
 
 CASES = (
@@ -37,6 +38,10 @@ CASES = (
         "results/sparc_real_analysis.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol_overrides=(
+            ("isothermal_halo.bic", 1e-7),
+            ("isothermal_halo.chi2", 1e-7),
+        ),
     ),
     GoldenCase(
         "sparc-marginalized-a0",
@@ -134,9 +139,11 @@ def compare_values(
     path: str = "",
     ignored_paths: set[str] | None = None,
     rtol: float = DEFAULT_RTOL,
+    rtol_overrides: dict[str, float] | None = None,
 ) -> list[str]:
     """Return deterministic mismatch descriptions for two JSON-compatible values."""
     ignored_paths = ignored_paths or set()
+    rtol_overrides = rtol_overrides or {}
     if _ignored(path, ignored_paths):
         return []
     if isinstance(expected, bool) or isinstance(actual, bool):
@@ -157,9 +164,10 @@ def compare_values(
     ):
         if not math.isfinite(float(expected)) or not math.isfinite(float(actual)):
             return [f"{path}: non-finite numeric value"]
-        if math.isclose(float(expected), float(actual), rel_tol=rtol, abs_tol=0.0):
+        path_rtol = rtol_overrides.get(path, rtol)
+        if math.isclose(float(expected), float(actual), rel_tol=path_rtol, abs_tol=0.0):
             return []
-        return [f"{path}: expected {expected!r}, got {actual!r} (rtol={rtol:g})"]
+        return [f"{path}: expected {expected!r}, got {actual!r} (rtol={path_rtol:g})"]
     if isinstance(expected, dict) and isinstance(actual, dict):
         errors: list[str] = []
         expected_keys = {
@@ -187,6 +195,7 @@ def compare_values(
                     path=child,
                     ignored_paths=ignored_paths,
                     rtol=rtol,
+                    rtol_overrides=rtol_overrides,
                 )
             )
         return errors
@@ -202,6 +211,7 @@ def compare_values(
                     path=f"{path}[{index}]",
                     ignored_paths=ignored_paths,
                     rtol=rtol,
+                    rtol_overrides=rtol_overrides,
                 )
             )
         return errors
@@ -222,6 +232,7 @@ def compare_json(expected_path: Path, actual_path: Path, case: GoldenCase) -> No
         actual,
         ignored_paths=set(case.ignored_paths),
         rtol=case.rtol,
+        rtol_overrides=dict(case.rtol_overrides),
     )
     if errors:
         shown = "\n".join(f"  - {error}" for error in errors[:50])

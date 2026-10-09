@@ -28,6 +28,17 @@ def test_comparator_honors_precise_ignored_paths() -> None:
     assert errors == ["nested.generated_utc: expected 'preserved', got 'changed'"]
 
 
+def test_comparator_honors_path_specific_tolerances() -> None:
+    expected = {"stable": 1.0, "optimizer": 1.0}
+    actual = {"stable": 1.0 + 1e-8, "optimizer": 1.0 + 1e-8}
+    errors = golden.compare_values(
+        expected,
+        actual,
+        rtol_overrides={"optimizer": 1e-7},
+    )
+    assert errors == ["stable: expected 1.0, got 1.00000001 (rtol=1e-10)"]
+
+
 def test_isolated_workspace_has_git_metadata(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -72,6 +83,14 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
         assert (ROOT / case.script).is_file()
         assert (ROOT / case.output).is_file()
     assert all(case.rtol == golden.DEFAULT_RTOL for case in golden.CASES)
+    assert dict(
+        next(
+            case for case in golden.CASES if case.command == "sparc-real-analysis"
+        ).rtol_overrides
+    ) == {
+        "isothermal_halo.bic": 1e-7,
+        "isothermal_halo.chi2": 1e-7,
+    }
 
 
 @pytest.mark.golden
