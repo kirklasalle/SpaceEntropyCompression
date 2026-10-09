@@ -65,6 +65,8 @@ top-level modules and script paths. Namespace migration is incremental; do
 not remove a legacy import until its compatibility test is migrated.
 New code may import the core phenomenological model from `emrf.physics` and
 the standard gravity/orbital benchmarks from `emrf.physics.baselines`.
+Data consumers should use `emrf.data.provenance` for synthetic-input labelling
+and byte-level observation verification.
 
 ## Extending the Model
 - Add new spatial curvature functions in `model.py` — each `c_func` takes one

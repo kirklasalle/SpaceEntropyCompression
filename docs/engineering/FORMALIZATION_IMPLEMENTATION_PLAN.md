@@ -125,7 +125,9 @@ as the canonical implementation until direct-script and installed-package
 execution can share the new module without path-dependent behavior. The same
 compatibility pattern now exposes the standard orbital and Schwarzschild
 benchmarks as `emrf.physics.baselines`, with function identity tests preventing
-numerical divergence from `physics_baseline.py`.
+numerical divergence from `physics_baseline.py`. The first data-layer bridge,
+`emrf.data.provenance`, exposes the existing fail-closed synthetic-data and
+observation-integrity checks without changing their legacy consumers.
 
 **Exit gate:** `pip install .` in a clean venv runs every registry command;
 `emrf` console script works; all legacy paths work; preservation gate.

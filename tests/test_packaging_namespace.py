@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import data_provenance as legacy_provenance
 import physics_baseline as legacy_baselines
 import pytest
 from emrf import API_VERSION, __version__
+from emrf.data import provenance as packaged_provenance
 from emrf.interfaces.cli import main
 from emrf.physics import EmergentMatterModel as PackagedModel
 from emrf.physics import baselines as packaged_baselines
@@ -32,3 +34,12 @@ def test_physics_baselines_preserve_legacy_function_identity() -> None:
         is legacy_baselines.kretschmann_invariant
     )
     assert packaged_baselines.G == legacy_baselines.G
+
+
+def test_data_provenance_preserves_legacy_function_identity() -> None:
+    assert (
+        packaged_provenance.verify_observation_file
+        is legacy_provenance.verify_observation_file
+    )
+    assert packaged_provenance.is_synthetic is legacy_provenance.is_synthetic
+    assert packaged_provenance.SYNTHETIC_MARKER == legacy_provenance.SYNTHETIC_MARKER
