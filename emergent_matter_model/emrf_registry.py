@@ -1,0 +1,273 @@
+"""Registry of every runnable EMRF program, shared by the CLI and the REST API.
+
+Each entry wraps an existing script without changing it, so legacy invocations
+(``python emergent_matter_model/fit_sparc.py ...``) keep working unchanged.
+``test_emrf_registry.py`` fails if a runnable script is added but not registered.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import importlib.metadata
+import json
+import os
+import subprocess
+import sys
+import time
+from dataclasses import asdict, dataclass
+from pathlib import Path
+
+from emrf_version import API_VERSION, __version__
+
+PACKAGE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = PACKAGE_DIR.parent
+EXTERNAL_DIR = REPO_ROOT / "data" / "external"
+MANIFEST = EXTERNAL_DIR / "download_manifest.json"
+
+CATEGORIES = (
+    "data", "analysis", "stress-test", "figures", "visualization", "service", "audit", "release",
+)
+
+
+@dataclass(frozen=True)
+class Command:
+    name: str
+    script: str
+    category: str
+    summary: str
+    network: bool = False
+    gui: bool = False
+
+    @property
+    def path(self) -> Path:
+        return REPO_ROOT / self.script
+
+
+_M = "emergent_matter_model/"
+_T = "tools/"
+
+COMMANDS: tuple[Command, ...] = (
+    # data acquisition
+    Command("fetch-real-data", _M + "fetch_real_data.py", "data",
+            "Download/verify official public datasets (SPARC) with SHA-256 provenance",
+            network=True),
+    Command("fetch-sparc", _M + "fetch_sparc.py", "data", "SPARC catalog ingestion and management"),
+    # real-data and fitting analyses
+    Command("sparc-real-analysis", _M + "sparc_real_analysis.py", "analysis",
+            "Real-data test of a0 = cH0/2pi against SPARC"),
+    Command("sparc-marginalized-a0", _M + "sparc_marginalized_a0.py", "analysis",
+            "SPARC a0 test marginalizing distance and inclination"),
+    Command("sparc-tension-diagnostics", _M + "sparc_tension_diagnostics.py", "analysis",
+            "Gas- vs star-dominated a0 disagreement diagnostics"),
+    Command("sparc-bulge-test", _M + "sparc_bulge_test.py", "analysis",
+            "Bulge mass-to-light test of a0 universality"),
+    Command("fit-sparc", _M + "fit_sparc.py", "analysis", "SPARC rotation-curve evaluation engine"),
+    Command("fit-jwst", _M + "fit_jwst.py", "analysis", "JWST high-z kinematics evaluation engine"),
+    Command("fit-astrometry", _M + "fit_astrometry.py", "analysis",
+            "Astrometric orbit fitting and Bayesian model comparison"),
+    Command("fit-pantheon-covariance", _T + "fit_pantheon_real_covariance.py", "analysis",
+            "Full-covariance Pantheon+ flat-LCDM baseline"),
+    Command("sparc-profile-validation", _T + "run_sparc_profile_validation.py", "analysis",
+            "SPARC four-law profile validation"),
+    Command("sparc-influence", _T + "check_sparc_influence.py", "analysis",
+            "SPARC influence (leave-one-out) cross-check"),
+    Command("real-data-gauntlet", _T + "run_real_data_gauntlet.py", "analysis",
+            "Real-data regime gauntlet"),
+    Command("compare-schwarzschild", _M + "compare_schwarzschild.py", "analysis",
+            "Schwarzschild curvature consistency check"),
+    Command("lensing", _M + "lensing_engine.py", "analysis",
+            "Lensing and geodesic deflection engine"),
+    # stress tests
+    Command("stress-blind-challenge", _M + "stress_test_blind_challenge.py", "stress-test",
+            "Synthetic adversarial blind challenge"),
+    Command("stress-cmb-peaks", _M + "stress_test_cmb_peaks.py", "stress-test",
+            "CMB third acoustic peak harness"),
+    Command("stress-cosmology-expansion", _M + "stress_test_cosmology_expansion.py", "stress-test",
+            "Late-time expansion harness"),
+    Command("stress-equivalence-principle", _M + "stress_test_equivalence_principle.py",
+            "stress-test", "Equivalence principle / MICROSCOPE bounds"),
+    Command("stress-galaxy-scatter", _M + "stress_test_galaxy_scatter.py", "stress-test",
+            "RAR scatter and noise injection"),
+    Command("stress-gw-speed", _M + "stress_test_gw_speed.py", "stress-test",
+            "GW170817 gravitational-wave speed bound"),
+    Command("stress-solar-system", _M + "stress_test_solar_system.py", "stress-test",
+            "Solar-system precision / Cassini screening"),
+    Command("stress-stability-ghosts", _M + "stress_test_stability_ghosts.py", "stress-test",
+            "Hamiltonian ghost / Ostrogradsky stability"),
+    Command("stress-wide-binaries", _M + "stress_test_wide_binaries.py", "stress-test",
+            "Gaia DR3 wide binaries / external field effect"),
+    Command("bullet-cluster", _M + "bullet_cluster_stress_test.py", "stress-test",
+            "Static Bullet Cluster illustration (not an observational test)"),
+    # figures
+    Command("figures-cosmology", _M + "plot_cosmology_figures.py", "figures",
+            "Cosmology and CMB figures"),
+    Command("figures-deep-perspectives", _M + "plot_deep_perspectives.py", "figures",
+            "Deep-perspective stress-test figures"),
+    Command("figures-extreme-rigor", _M + "plot_extreme_rigor_figures.py", "figures",
+            "Extreme-rigor figures"),
+    Command("figures-publication", _M + "plot_publication_figures.py", "figures",
+            "Publication figures"),
+    Command("figures-three-horizons", _M + "plot_three_horizons_figures.py", "figures",
+            "Three Research Horizons figures"),
+    # visualization
+    Command("visualize", _M + "visualize.py", "visualization", "2D visualization client",
+            gui=True),
+    Command("viz3d", _M + "viz3d.py", "visualization", "3D Plotly visualization", gui=True),
+    # services
+    Command("server-dev", _M + "server.py", "service", "Flask development API server"),
+    Command("server-wsgi", _M + "wsgi.py", "service", "WSGI entry point"),
+    # audit / integrity
+    Command("check-candidate-a", _T + "check_candidate_a_definitions.py", "audit",
+            "Candidate A definition checks"),
+    Command("check-compression-claims", _T + "check_compression_claims.py", "audit",
+            "Compression-claims audit"),
+    Command("golden-results", _T + "run_golden_results.py", "audit",
+            "Re-run real-data analyses and compare golden JSON results"),
+    Command("show-your-work", _T + "show_your_work_audit.py", "audit", "Show-your-work audit"),
+    Command("verify-antigravity-recovery", _T + "verify_antigravity_recovery.py", "audit",
+            "Verify recovered development-history evidence hashes"),
+    Command("recover-antigravity-evidence", _T + "recover_antigravity_evidence.py", "audit",
+            "Recover development-history evidence (requires local archive)"),
+    Command("integrate-recovered-graph", _T + "integrate_recovered_graph.py", "audit",
+            "Integrate recovered claims into graph memory"),
+    # release / documents
+    Command("build-real-data-report", _T + "build_real_data_report.py", "release",
+            "Build real-data report"),
+    Command("build-sparc-paper", _T + "build_sparc_paper.py", "release", "Build SPARC paper"),
+    Command("build-validation-notebook", _T + "build_validation_notebook.py", "release",
+            "Build validation notebook"),
+    Command("package-real-data-release", _T + "package_real_data_release.py", "release",
+            "Package real-data review bundle"),
+)
+
+_BY_NAME = {c.name: c for c in COMMANDS}
+
+CORE_DEPENDENCIES = ("numpy", "scipy", "matplotlib", "Flask", "flask-cors", "requests", "plotly")
+OPTIONAL_DEPENDENCIES = (
+    "pytest",
+    "coverage",
+    "hypothesis",
+    "pytest-xdist",
+    "ruff",
+    "mypy",
+    "pre-commit",
+    "gunicorn",
+)
+
+
+def get_command(name: str) -> Command:
+    try:
+        return _BY_NAME[name]
+    except KeyError:
+        raise KeyError(f"Unknown command: {name!r}") from None
+
+
+def list_commands(category: str | None = None) -> list[dict]:
+    return [
+        {**asdict(c), "exists": c.path.is_file()}
+        for c in COMMANDS
+        if category is None or c.category == category
+    ]
+
+
+def run_command(
+    name: str, args: list[str] | None = None, timeout: float | None = None, capture: bool = False
+) -> dict:
+    """Run a registered script in a fresh interpreter (isolates sys.exit, globals, plots)."""
+    cmd = get_command(name)
+    args = list(args or [])
+    if not all(isinstance(a, str) for a in args):
+        raise TypeError("args must be a list of strings")
+    if not cmd.path.is_file():
+        raise FileNotFoundError(cmd.path)
+    env = dict(os.environ)
+    env["PYTHONPATH"] = os.pathsep.join(
+        [str(PACKAGE_DIR), str(REPO_ROOT), env.get("PYTHONPATH", "")]
+    ).rstrip(os.pathsep)
+    env.setdefault("MPLBACKEND", "Agg")
+    started = time.time()
+    proc = subprocess.run(  # noqa: S603 - fixed interpreter + registered script, no shell
+        [sys.executable, str(cmd.path), *args],
+        cwd=str(REPO_ROOT),
+        env=env,
+        timeout=timeout,
+        capture_output=capture,
+        text=True,
+    )
+    result = {
+        "command": name,
+        "args": args,
+        "returncode": proc.returncode,
+        "seconds": round(time.time() - started, 3),
+    }
+    if capture:
+        result["stdout"] = proc.stdout
+        result["stderr"] = proc.stderr
+    return result
+
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def dataset_status(verify: bool = False) -> list[dict]:
+    """List manifest-registered observational files; optionally re-hash them (read-only)."""
+    if not MANIFEST.is_file():
+        return []
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    out = []
+    for key, entry in sorted(manifest.items()):
+        path = REPO_ROOT / entry.get("file", "")
+        row = {
+            "id": key,
+            "file": entry.get("file"),
+            "url": entry.get("url"),
+            "citation": entry.get("citation"),
+            "bytes": entry.get("bytes"),
+            "sha256": entry.get("sha256"),
+            "retrieved_utc": entry.get("retrieved_utc"),
+            "present": path.is_file(),
+        }
+        if verify:
+            if not path.is_file():
+                row["status"] = "missing"
+            elif path.stat().st_size != entry.get("bytes"):
+                row["status"] = "size-mismatch"
+            else:
+                row["status"] = "ok" if _sha256(path) == entry.get("sha256") else "hash-mismatch"
+        out.append(row)
+    return out
+
+
+def _dist_version(name: str) -> str | None:
+    try:
+        return importlib.metadata.version(name)
+    except importlib.metadata.PackageNotFoundError:
+        return None
+
+
+def environment_report() -> dict:
+    """Read-only diagnostics of interpreter, dependencies, registry, and data."""
+    core = {d: _dist_version(d) for d in CORE_DEPENDENCIES}
+    optional = {d: _dist_version(d) for d in OPTIONAL_DEPENDENCIES}
+    missing_scripts = [c.name for c in COMMANDS if not c.path.is_file()]
+    py_ok = sys.version_info >= (3, 10)
+    return {
+        "emrf_version": __version__,
+        "api_version": API_VERSION,
+        "python": sys.version.split()[0],
+        "python_ok": py_ok,
+        "executable": sys.executable,
+        "platform": sys.platform,
+        "core_dependencies": core,
+        "optional_dependencies": optional,
+        "missing_core": [d for d, v in core.items() if v is None],
+        "registered_commands": len(COMMANDS),
+        "missing_scripts": missing_scripts,
+        "manifest_present": MANIFEST.is_file(),
+        "healthy": py_ok and not missing_scripts and all(core.values()),
+    }

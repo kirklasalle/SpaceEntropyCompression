@@ -151,7 +151,6 @@ def acceleration_emrf_geometric_screened(
     # At y=100 (1.2e-8 m/s^2): 1 / (1 - exp(-10)) = 1 + exp(-10) = 1 + 4.5e-5.
     # With EMRF higher-order curvature decoupling:
     rar_nu = 1.0 / (1.0 - np.exp(-np.sqrt(y)))
-    suppression = np.exp(- (y / 50.0) ** screening_power)
     # When y >> 50, extra dimensional degrees of freedom freeze into Branch A (GR)
     nu_screened = 1.0 + (rar_nu - 1.0) * (1.0 - np.tanh(y / 100.0))
     return a_newton * nu_screened

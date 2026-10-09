@@ -19,9 +19,18 @@ When simulating, the model evaluates C and M at each point in the spatial grid f
 
 ## Getting Started
 1. Install Python requirements (`requirements.txt`).
-2. Run the Python server (`server.py`).
-3. Use the Python or JavaFX client to visualise results.
-4. (Optional) Use the web client for browser-based visualisation.
+2. Check the installation:
+   `python emergent_matter_model/emrf_cli.py doctor`.
+3. List all supported operations:
+   `python emergent_matter_model/emrf_cli.py list`.
+4. Verify downloaded observations:
+   `python emergent_matter_model/emrf_cli.py data list --verify`.
+5. Start the API:
+   `python emergent_matter_model/emrf_cli.py serve`.
+
+Legacy commands such as `python emergent_matter_model/server.py` remain
+supported. Use `python emergent_matter_model/emrf_cli.py run NAME -- ARGS`
+for registered research, audit and release programs.
 
 ## Features
 - Simulate emergent matter models across spatial dimensions with entropy state sweep
@@ -34,6 +43,13 @@ When simulating, the model evaluates C and M at each point in the spatial grid f
 - OpenAPI spec: `openapi.yaml`
 - Runnable requests: `API_EXAMPLES.md`
 - Postman import: `postman/EmergentMatterAPI.postman_collection.json`
+- Health/version: `GET /api/v1/health`, `GET /api/v1/version`
+- Command discovery: `GET /api/v1/commands`
+- Dataset status: `GET /api/v1/datasets?verify=true`
+
+Remote command execution is disabled by default. It requires the explicit
+`EMRF_API_ALLOW_RUN=1` environment flag and still refuses service and GUI
+commands.
 
 ## Example Workflow
 1. Configure model parameters in the client or API (spatial dimensions, weights, curvature functions).
@@ -42,9 +58,11 @@ When simulating, the model evaluates C and M at each point in the spatial grid f
 4. Export or analyse data as needed.
 
 ## Troubleshooting
-- Ensure all dependencies are installed
-- Check server logs for errors
-- Consult the Developer Guide for advanced usage
+- Run `emrf_cli.py doctor` and resolve every missing core dependency.
+- Run `emrf_cli.py data list --verify`; do not analyze missing or mismatched
+  observational bytes.
+- Check server logs for errors.
+- Consult the Developer Guide for golden-result and development workflows.
 
 ## AI Assistant Commitment
 This user guide is created and maintained with the direct assistance of GitHub Copilot, ensuring clarity, accuracy, and user empowerment.

@@ -64,10 +64,10 @@ def plot_figure_12_cosmology_expansion():
     ax1.errorbar(z_pan, mu_pan, yerr=err_pan, fmt="o", color="#00d2ff", ecolor=(0.0, 0.82, 1.0, 0.5),
                  markersize=4.5, capsize=2, label="Pantheon+ SNe Ia (Binned Sample)", zorder=3)
     ax1.plot(z_fine, mu_emrf, color="#ef233c", lw=2.2, label=f"EMRF Dynamic Void Expansion (w0={best_p.w0:.2f}, wa={best_p.wa:.2f})")
-    ax1.plot(z_fine, mu_lcdm, color="#8b9bb4", ls="--", lw=1.8, label="Flat $\Lambda$CDM Baseline ($w=-1$)")
+    ax1.plot(z_fine, mu_lcdm, color="#8b9bb4", ls="--", lw=1.8, label=r"Flat $\Lambda$CDM Baseline ($w=-1$)")
 
     ax1.set_xscale("log")
-    ax1.set_ylabel("Distance Modulus $\mu(z)$ [mag]", fontsize=11, fontweight="bold")
+    ax1.set_ylabel(r"Distance Modulus $\mu(z)$ [mag]", fontsize=11, fontweight="bold")
     ax1.set_title("Cosmological Expansion: Pantheon+ Supernovae ($N=1,701$) & DESI 2024 BAO", fontsize=12, fontweight="bold")
     ax1.legend(loc="lower right", framealpha=0.9, fontsize=9)
     ax1.grid(True, which="both", alpha=0.15)
@@ -162,7 +162,7 @@ def plot_figure_13_cmb_acoustic_peaks():
                  ha="center", fontsize=8.5, fontweight="bold", color="#06d6a0",
                  arrowprops=dict(arrowstyle="->", color="#06d6a0", lw=1.5))
 
-    ax1.set_ylabel("$D_l^{TT} = l(l+1)C_l / (2\pi)$ [$\mu$K$^2$]", fontsize=11, fontweight="bold")
+    ax1.set_ylabel(r"$D_l^{TT} = l(l+1)C_l / (2\pi)$ [$\mu$K$^2$]", fontsize=11, fontweight="bold")
     ax1.set_title("Early-Universe CMB Acoustic Oscillations: Planck 2018 vs. EMRF Metric Potential", fontsize=12, fontweight="bold")
     ax1.legend(loc="upper right", framealpha=0.9, fontsize=9)
     ax1.grid(True, alpha=0.15)
@@ -175,12 +175,12 @@ def plot_figure_13_cmb_acoustic_peaks():
     sig_pts = [d["diff_sigma"] for d in diff_pts]
 
     ax2.axhline(0, color="#ffffff", lw=1, alpha=0.5)
-    ax2.axhspan(-1, 1, color="#06d6a0", alpha=0.12, label="$\pm 1\sigma$ Concordance Band")
+    ax2.axhspan(-1, 1, color="#06d6a0", alpha=0.12, label=r"$\pm 1\sigma$ Concordance Band")
     ax2.axhspan(-2, 2, color="#06d6a0", alpha=0.06)
-    ax2.scatter(l_pts, sig_pts, color="#00d2ff", s=35, zorder=3, label="Feature Residuals $(D_l^{\\rm model} - D_l^{\\rm obs}) / \sigma$")
+    ax2.scatter(l_pts, sig_pts, color="#00d2ff", s=35, zorder=3, label="Feature Residuals $(D_l^{\\rm model} - D_l^{\\rm obs}) / \\sigma$")
 
     ax2.set_xlabel("Multipole Moment $l$", fontsize=11, fontweight="bold")
-    ax2.set_ylabel("Residual [$\sigma$]", fontsize=11, fontweight="bold")
+    ax2.set_ylabel(r"Residual [$\sigma$]", fontsize=11, fontweight="bold")
     ax2.set_ylim(-3.0, 3.0)
     ax2.legend(loc="upper right", framealpha=0.9, fontsize=8.5)
     ax2.grid(True, alpha=0.15)

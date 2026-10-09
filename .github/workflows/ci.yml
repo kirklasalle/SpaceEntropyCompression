@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
+      - name: Verify dependency consistency
+        run: python -m pip check
+      - name: Check correctness-relevant lint rules
+        run: >-
+          ruff check emergent_matter_model tools
+          --select W605,B023,F841,E741
+          --per-file-ignores
+          "emergent_matter_model/black_hole_horizon_entropy.py:F841,emergent_matter_model/sparc_bulge_test.py:B023"
+      - name: Run tests with coverage
+        run: coverage run -m pytest -m "not golden" -q
+      - name: Report coverage
+        run: coverage report
+      - name: Run doctor
+        run: python emergent_matter_model/emrf_cli.py doctor
+
+  golden:
+    name: Golden ${{ matrix.case }} / Windows / Python 3.10
+    runs-on: windows-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        case:
+          - sparc-real-analysis
+          - sparc-marginalized-a0
+          - sparc-tension-diagnostics
+          - sparc-bulge-test
+          - fit-pantheon-covariance
+          - sparc-profile-validation
+          - sparc-influence
+          - real-data-gauntlet
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
+      - name: Fetch SPARC
+        run: python emergent_matter_model/fetch_real_data.py --sparc
+      - name: Fetch pinned Pantheon+ inputs
+        shell: python
+        run: |
+          from pathlib import Path
+          from urllib.request import urlopen
+
+          release = "c447f0fea703fcd0fff57de5000947b5ca81286b"
+          base = (
+              "https://raw.githubusercontent.com/PantheonPlusSH0ES/"
+              f"DataRelease/{release}/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/"
+          )
+          output = Path("data/external")
+          output.mkdir(parents=True, exist_ok=True)
+          for source, target in (
+              ("Pantheon%2BSH0ES.dat", "Pantheon+SH0ES.dat.txt"),
+              ("Pantheon%2BSH0ES_STAT%2BSYS.cov", "Pantheon+SH0ES_STAT+SYS.cov.txt"),
+          ):
+              (output / target).write_bytes(urlopen(base + source, timeout=300).read())
+      - name: Verify datasets
+        run: python emergent_matter_model/emrf_cli.py data list --verify
+      - name: Run real-data golden suite
+        run: python tools/run_golden_results.py ${{ matrix.case }}

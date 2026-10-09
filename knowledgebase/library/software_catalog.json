@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0.0",
+  "generated": "2026-10-09",
+  "catalog": "EMRF engineering and scientific software",
+  "packages": [
+    {
+      "id": "python",
+      "name": "Python",
+      "status": "adopted",
+      "role": "Core runtime",
+      "url": "https://www.python.org/",
+      "license": "PSF License"
+    },
+    {
+      "id": "numpy",
+      "name": "NumPy",
+      "status": "adopted",
+      "role": "Array and numerical computation",
+      "url": "https://numpy.org/",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "id": "scipy",
+      "name": "SciPy",
+      "status": "adopted",
+      "role": "Optimization, integration and statistics",
+      "url": "https://scipy.org/",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "id": "astropy",
+      "name": "Astropy",
+      "status": "evaluated",
+      "role": "Units, constants, cosmology, coordinates and astronomy formats",
+      "url": "https://www.astropy.org/",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "id": "matplotlib",
+      "name": "Matplotlib",
+      "status": "adopted",
+      "role": "Scientific figures",
+      "url": "https://matplotlib.org/",
+      "license": "PSF-derived BSD-compatible"
+    },
+    {
+      "id": "flask",
+      "name": "Flask",
+      "status": "adopted",
+      "role": "REST API v1",
+      "url": "https://flask.palletsprojects.com/",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "id": "fastapi",
+      "name": "FastAPI",
+      "status": "evaluated",
+      "role": "Typed REST API v2",
+      "url": "https://fastapi.tiangolo.com/",
+      "license": "MIT"
+    },
+    {
+      "id": "pydantic",
+      "name": "Pydantic",
+      "status": "evaluated",
+      "role": "API and catalog validation",
+      "url": "https://docs.pydantic.dev/",
+      "license": "MIT"
+    },
+    {
+      "id": "pytest",
+      "name": "pytest",
+      "status": "adopted",
+      "role": "Test runner",
+      "url": "https://docs.pytest.org/",
+      "license": "MIT"
+    },
+    {
+      "id": "hypothesis",
+      "name": "Hypothesis",
+      "status": "adopted",
+      "role": "Property-based validation",
+      "url": "https://hypothesis.readthedocs.io/",
+      "license": "MPL-2.0"
+    },
+    {
+      "id": "coverage-py",
+      "name": "coverage.py",
+      "status": "adopted",
+      "role": "Coverage measurement",
+      "url": "https://coverage.readthedocs.io/",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "pytest-xdist",
+      "name": "pytest-xdist",
+      "status": "adopted",
+      "role": "Parallel test execution",
+      "url": "https://pytest-xdist.readthedocs.io/",
+      "license": "MIT"
+    },
+    {
+      "id": "ruff",
+      "name": "Ruff",
+      "status": "adopted",
+      "role": "Linting and formatting",
+      "url": "https://docs.astral.sh/ruff/",
+      "license": "MIT"
+    },
+    {
+      "id": "mypy",
+      "name": "mypy",
+      "status": "adopted",
+      "role": "Static type checking",
+      "url": "https://mypy-lang.org/",
+      "license": "MIT"
+    },
+    {
+      "id": "uv",
+      "name": "uv",
+      "status": "evaluated",
+      "role": "Locked dependency and environment management",
+      "url": "https://docs.astral.sh/uv/",
+      "license": "MIT OR Apache-2.0"
+    },
+    {
+      "id": "sqlite",
+      "name": "SQLite",
+      "status": "evaluated",
+      "role": "Embedded catalogs, run registry and queue",
+      "url": "https://www.sqlite.org/",
+      "license": "Public domain"
+    },
+    {
+      "id": "pyarrow-parquet",
+      "name": "Apache Arrow / PyArrow",
+      "status": "evaluated",
+      "role": "Columnar tables in Parquet",
+      "url": "https://arrow.apache.org/docs/python/",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "h5py",
+      "name": "h5py",
+      "status": "evaluated",
+      "role": "HDF5 arrays and chain storage",
+      "url": "https://www.h5py.org/",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "id": "cobaya",
+      "name": "Cobaya",
+      "status": "evaluated",
+      "role": "Cosmological inference framework",
+      "url": "https://cobaya.readthedocs.io/",
+      "license": "LGPL"
+    },
+    {
+      "id": "camb",
+      "name": "CAMB",
+      "status": "evaluated",
+      "role": "Boltzmann and CMB calculations",
+      "url": "https://camb.readthedocs.io/",
+      "license": "GPL; confirm selected release"
+    },
+    {
+      "id": "class",
+      "name": "CLASS",
+      "status": "evaluated",
+      "role": "Independent Boltzmann-code cross-check",
+      "url": "https://github.com/lesgourg/class_public",
+      "license": "Confirm selected release and academic-use terms"
+    },
+    {
+      "id": "dynesty",
+      "name": "dynesty",
+      "status": "evaluated",
+      "role": "Nested sampling and Bayesian evidence",
+      "url": "https://dynesty.readthedocs.io/",
+      "license": "MIT"
+    },
+    {
+      "id": "nautilus",
+      "name": "nautilus-sampler",
+      "status": "evaluated",
+      "role": "Importance nested sampling",
+      "url": "https://nautilus-sampler.readthedocs.io/",
+      "license": "MIT"
+    },
+    {
+      "id": "brainsimiii-uks",
+      "name": "Brain Simulator III / Universal Knowledge Store",
+      "status": "evaluated",
+      "role": "Optional non-authoritative knowledge-reasoning plugin",
+      "url": "https://github.com/FutureAIGuru/BrainSimIII",
+      "license": "MIT",
+      "decision": "Adopt inheritance, clauses and conflict concepts natively; require an ADR and successful pilot before integrating the external host."
+    },
+    {
+      "id": "json-ld",
+      "name": "JSON-LD",
+      "status": "evaluated",
+      "role": "Interoperable linked-data export",
+      "url": "https://www.w3.org/TR/json-ld11/",
+      "license": "W3C document and software notices"
+    },
+    {
+      "id": "prov",
+      "name": "W3C PROV / prov-python",
+      "status": "evaluated",
+      "role": "Standards-based scientific provenance",
+      "url": "https://www.w3.org/TR/prov-overview/",
+      "license": "W3C specification; prov-python is MIT"
+    }
+  ],
+  "verification": {
+    "reviewed_at": "2026-10-09",
+    "policy": "Pin exact versions and re-check licence metadata before adoption or redistribution."
+  }
+}

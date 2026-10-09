@@ -54,12 +54,14 @@ Desktop.ini
 htmlcov/
 .coverage
 .coverage.*
+coverage.xml
 
 # mypy
 .mypy_cache/
 
 # ruff
 .ruff_cache/
+.golden-workspaces/
 
 # Distribution
 *.whl

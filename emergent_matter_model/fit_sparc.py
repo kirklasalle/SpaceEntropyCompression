@@ -55,16 +55,16 @@ class SPARCDataPoint:
 
 def load_sparc_galaxy(csv_path: Path | str) -> Tuple[str, List[SPARCDataPoint]]:
     """Loads a SPARC rotation curve CSV table.
-    
+
     Returns (galaxy_name, list_of_datapoints).
     """
     path = Path(csv_path)
     if not path.is_file():
         raise FileNotFoundError(f"SPARC CSV file not found: {path}")
-        
+
     galaxy_name = path.stem.upper()
     points: List[SPARCDataPoint] = []
-    
+
     with open(path, mode="r", encoding="utf-8") as f:
         reader = csv.DictReader(skip_comment_lines(f))
         for row in reader:
@@ -77,10 +77,10 @@ def load_sparc_galaxy(csv_path: Path | str) -> Tuple[str, List[SPARCDataPoint]]:
                 v_bulge_kms=float(row.get("v_bulge_kms", 0.0))
             )
             points.append(pt)
-            
+
     if not points:
         raise ValueError(f"No valid data points found in {path}")
-        
+
     return galaxy_name, points
 
 
@@ -93,7 +93,7 @@ def compute_baryonic_velocity(
     v_gas_sq = math.copysign(pt.v_gas_kms ** 2, pt.v_gas_kms)
     v_disk_sq = math.copysign(pt.v_disk_kms ** 2, pt.v_disk_kms) * upsilon_disk
     v_bulge_sq = math.copysign(pt.v_bulge_kms ** 2, pt.v_bulge_kms) * upsilon_bulge
-    
+
     net_v2 = v_gas_sq + v_disk_sq + v_bulge_sq
     return math.sqrt(max(net_v2, 0.0))
 
@@ -102,7 +102,7 @@ def compute_rar_velocity(v_bar_kms: float, radius_kpc: float, a0: float = A0_CRI
     """Computes circular velocity according to the empirical Radial Acceleration Relation (McGaugh et al. 2016)."""
     if radius_kpc <= 0.0 or v_bar_kms <= 0.0:
         return 0.0
-        
+
     g_bar = (v_bar_kms ** 2 / radius_kpc) * ACCEL_UNIT
     # RAR formula: g_obs = g_bar / (1 - exp(-sqrt(g_bar / a0)))
     ratio = g_bar / a0
@@ -111,7 +111,7 @@ def compute_rar_velocity(v_bar_kms: float, radius_kpc: float, a0: float = A0_CRI
     else:
         denom = 1.0 - math.exp(-math.sqrt(ratio))
         g_rar = g_bar / max(denom, 1e-12)
-        
+
     v_rar_sq = (g_rar / ACCEL_UNIT) * radius_kpc
     return math.sqrt(max(v_rar_sq, 0.0))
 
@@ -122,14 +122,14 @@ def compute_emrf_entropic_velocity(
     a_entropy: float = A0_CRITICAL
 ) -> float:
     """Computes EMRF circular velocity under cosmic entropy background coupling.
-    
+
     In the ultra-weak acceleration regime (a << a_0), spatial curvature vanishes and
     the cosmic entropy state functional provides an asymptotic acceleration floor:
     g_EMRF = sqrt(g_bar^2 + a_entropy * g_bar)
     """
     if radius_kpc <= 0.0 or v_bar_kms <= 0.0:
         return 0.0
-        
+
     g_bar = (v_bar_kms ** 2 / radius_kpc) * ACCEL_UNIT
     g_emrf = math.sqrt(g_bar ** 2 + a_entropy * g_bar)
     v_emrf_sq = (g_emrf / ACCEL_UNIT) * radius_kpc
@@ -145,41 +145,41 @@ def evaluate_sparc_galaxy(
     """Evaluates Newtonian, RAR, and EMRF models against a SPARC galaxy."""
     galaxy_name, points = load_sparc_galaxy(csv_path)
     n_points = len(points)
-    
+
     r_arr = np.array([p.radius_kpc for p in points])
     v_obs = np.array([p.v_obs_kms for p in points])
     v_err = np.array([p.v_obs_err_kms for p in points])
-    
+
     # 1. Newtonian baryonic velocities
     v_bar = np.array([compute_baryonic_velocity(p, upsilon_disk, upsilon_bulge) for p in points])
-    
+
     # 2. RAR velocities
     v_rar = np.array([compute_rar_velocity(vb, r, a_entropy) for vb, r in zip(v_bar, r_arr)])
-    
+
     # 3. EMRF entropic velocities
     v_emrf = np.array([compute_emrf_entropic_velocity(vb, r, a_entropy) for vb, r in zip(v_bar, r_arr)])
-    
+
     # Residuals & Chi2
     res_newton = (v_obs - v_bar) / v_err
     res_rar = (v_obs - v_rar) / v_err
     res_emrf = (v_obs - v_emrf) / v_err
-    
+
     chi2_newton = float(np.sum(res_newton ** 2))
     chi2_rar = float(np.sum(res_rar ** 2))
     chi2_emrf = float(np.sum(res_emrf ** 2))
-    
+
     # Parameters: Newtonian=0 free (fixed Y_disk, Y_bulge), RAR=1 (a0), EMRF=1 (a_entropy)
     k_newton = 1
     k_rar = 2
     k_emrf = 2
-    
+
     bic_newton = k_newton * math.log(n_points) + chi2_newton
     bic_rar = k_rar * math.log(n_points) + chi2_rar
     bic_emrf = k_emrf * math.log(n_points) + chi2_emrf
-    
+
     delta_bic_emrf_vs_newton = bic_emrf - bic_newton
     delta_bic_emrf_vs_rar = bic_emrf - bic_rar
-    
+
     return {
         "galaxy": galaxy_name,
         "n_points": n_points,
@@ -223,23 +223,18 @@ def optimize_sparc_galaxy(
     upsilon_bulge: float = DEFAULT_UPSILON_BULGE
 ) -> Dict[str, Any]:
     """Optimizes SPARC parameters (e.g. Upsilon_disk and/or a_entropy) to minimize chi^2.
-    
+
     Uses scipy.optimize if available; falls back to bounded grid/Brent search.
     """
     galaxy_name, points = load_sparc_galaxy(csv_path)
     n_points = len(points)
-    
-    r_arr = np.array([p.radius_kpc for p in points])
     v_obs = np.array([p.v_obs_kms for p in points])
     v_err = np.array([p.v_obs_err_kms for p in points])
-    v_gas = np.array([p.v_gas_kms for p in points])
-    v_disk = np.array([p.v_disk_kms for p in points])
-    v_bul = np.array([p.v_bulge_kms for p in points])
-    
+
     def loss_func(params_vec: np.ndarray) -> float:
         u_d = float(params_vec[0]) if fit_upsilon_disk else initial_upsilon
         a_ent = float(params_vec[1]) if fit_a_entropy else initial_a_entropy
-        
+
         v_preds = []
         for p in points:
             v_b = compute_baryonic_velocity(p, u_d, upsilon_bulge)
@@ -248,7 +243,7 @@ def optimize_sparc_galaxy(
         v_pred = np.array(v_preds)
         chi2 = float(np.sum(((v_obs - v_pred) / v_err) ** 2))
         return chi2
-        
+
     try:
         from scipy.optimize import minimize
         x0 = []
@@ -259,7 +254,7 @@ def optimize_sparc_galaxy(
         if fit_a_entropy:
             x0.append(initial_a_entropy)
             bounds.append((0.1e-10, 5.0e-10))
-            
+
         res = minimize(loss_func, x0=np.array(x0), bounds=bounds, method="L-BFGS-B")
         best_u_d = float(res.x[0]) if fit_upsilon_disk else initial_upsilon
         best_a_ent = float(res.x[1 if fit_upsilon_disk else 0]) if fit_a_entropy else initial_a_entropy
@@ -280,10 +275,10 @@ def optimize_sparc_galaxy(
                     best_chi = c
                     best_u_d = float(u)
             opt_chi2 = best_chi
-            
+
     k_params = 1 + (1 if fit_upsilon_disk else 0) + (1 if fit_a_entropy else 0)
     bic_opt = k_params * math.log(n_points) + opt_chi2
-    
+
     return {
         "galaxy": galaxy_name,
         "n_points": n_points,
@@ -306,13 +301,13 @@ def evaluate_multi_sparc(
     """Evaluates multiple SPARC galaxies simultaneously."""
     base = Path(base_dir)
     sparc_dir = base / "data" / "synthetic" / "sparc"
-    
+
     reports: List[Dict[str, Any]] = []
     total_points = 0
     joint_chi2_newton = 0.0
     joint_chi2_rar = 0.0
     joint_chi2_emrf = 0.0
-    
+
     for name in galaxy_names:
         csv_file = sparc_dir / f"{name.lower()}.csv"
         if not csv_file.is_file():
@@ -323,18 +318,18 @@ def evaluate_multi_sparc(
         joint_chi2_newton += rep["models"]["newtonian_baryon"]["chi2"]
         joint_chi2_rar += rep["models"]["rar_empirical"]["chi2"]
         joint_chi2_emrf += rep["models"]["emrf_entropic"]["chi2"]
-        
+
     k_newton = len(reports)
     k_rar = len(reports) + 1
     k_emrf = len(reports) + 1
-    
+
     joint_bic_newton = k_newton * math.log(total_points) + joint_chi2_newton
     joint_bic_rar = k_rar * math.log(total_points) + joint_chi2_rar
     joint_bic_emrf = k_emrf * math.log(total_points) + joint_chi2_emrf
-    
+
     joint_delta_bic_newton = joint_bic_emrf - joint_bic_newton
     joint_delta_bic_rar = joint_bic_emrf - joint_bic_rar
-    
+
     return {
         "dataset": "SPARC (Spitzer Photometry & Accurate Rotation Curves)",
         "galaxies_evaluated": [r["galaxy"] for r in reports],
@@ -389,18 +384,18 @@ def main():
     parser.add_argument("--a0", type=float, default=A0_CRITICAL, help="Critical acceleration scale a_0 in m/s^2.")
     parser.add_argument("--optimize", action="store_true", help="Fit Upsilon_disk using scipy.optimize.")
     parser.add_argument("--output", type=str, default=None, help="Optional JSON path to save model comparison report.")
-    
+
     args = parser.parse_args()
     base_dir = Path(__file__).resolve().parent.parent
     sparc_dir = base_dir / "data" / "synthetic" / "sparc"
-    
+
     if args.galaxy.lower() == "all":
         galaxies = get_all_sparc_galaxy_names(sparc_dir)
         report = evaluate_multi_sparc(galaxies, base_dir, a_entropy=args.a0)
         banner = provenance_banner(*[sparc_dir / f"{g}.csv" for g in galaxies])
         if banner:
             print(banner)
-        
+
         print("\n" + "=" * 78)
         print(" EMRF SPARC GALACTIC ROTATION CURVE JOINT EVALUATION REPORT")
         print("=" * 78)
@@ -415,7 +410,7 @@ def main():
         print(f"Delta-BIC (EMRF vs. RAR):       {report['joint_comparison']['delta_bic_emrf_vs_rar']:+.2f}")
         print(f"Verdict: {report['joint_comparison']['verdict']}")
         print("=" * 78 + "\n")
-        
+
         if args.optimize:
             print("Optimizing stellar mass-to-light ratios (Upsilon_disk) across sample:")
             for g in galaxies:
@@ -423,7 +418,7 @@ def main():
                 opt_res = optimize_sparc_galaxy(csv_p, fit_upsilon_disk=True)
                 print(f"  [{opt_res['galaxy']:7s}] Best Upsilon_disk: {opt_res['best_upsilon_disk']:.3f} | Chi2: {opt_res['optimized_chi2']:6.1f} (Red: {opt_res['reduced_chi2']:.2f}) | {opt_res['optimization_method']}")
             print("-" * 78 + "\n")
-            
+
     else:
         gal_name = args.galaxy.lower().strip()
         csv_file = Path(args.csv) if args.csv else (sparc_dir / f"{gal_name}.csv")
@@ -431,7 +426,7 @@ def main():
         banner = provenance_banner(csv_file)
         if banner:
             print(banner)
-        
+
         print("\n" + "=" * 70)
         print(f" EMRF SPARC ROTATION CURVE EVALUATION: GALAXY {report['galaxy']}")
         print("=" * 70)
@@ -444,14 +439,14 @@ def main():
         print(f"Delta-BIC (EMRF vs. RAR):    {report['model_comparison']['delta_bic_emrf_vs_rar']:+.2f}")
         print(f"Verdict: {report['model_comparison']['interpretation']}")
         print("=" * 70 + "\n")
-        
+
         if args.optimize:
             opt_res = optimize_sparc_galaxy(csv_file, fit_upsilon_disk=True)
             print(f"Parameter Optimization ({opt_res['optimization_method']}):")
             print(f"  Best-fit Upsilon_disk: {opt_res['best_upsilon_disk']:.3f}")
             print(f"  Optimized Chi2:        {opt_res['optimized_chi2']:.1f} (reduced: {opt_res['reduced_chi2']:.2f})")
             print(f"  Optimized BIC:         {opt_res['bic']:.1f}\n")
-        
+
     if args.output:
         out_path = Path(args.output)
         with open(out_path, "w", encoding="utf-8") as f:

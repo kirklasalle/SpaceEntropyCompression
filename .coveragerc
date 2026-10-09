@@ -1,0 +1,14 @@
+[run]
+branch = True
+source =
+    emergent_matter_model
+    tools
+omit =
+    emergent_matter_model/test_*.py
+
+[report]
+show_missing = True
+skip_empty = True
+precision = 1
+exclude_also =
+    if __name__ == .__main__.:

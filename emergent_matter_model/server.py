@@ -10,6 +10,8 @@ at the j-th entropy state S_j.
 """
 
 import logging
+import os
+import subprocess
 import time
 from collections import defaultdict
 from typing import Any
@@ -17,8 +19,15 @@ from typing import Any
 import numpy as np
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from werkzeug.exceptions import HTTPException
 
+import emrf_registry as registry
+from emrf_version import API_VERSION, __version__
 from model import EmergentMatterModel
+
+# Remote execution of registered programs is disabled unless explicitly enabled.
+RUN_ENV_FLAG = "EMRF_API_ALLOW_RUN"
+_MAX_RUN_TIMEOUT_SEC = 600.0
 
 app = Flask(__name__)
 CORS(app)
@@ -97,14 +106,100 @@ def _validate_and_parse_payload(
     return n, [float(w) for w in weights_raw], x_grid, k, alpha, C0
 
 
+def run_simulation(
+    n: int, weights: list[float], x_grid: list[np.ndarray], k: float, alpha: float, C0: float
+) -> np.ndarray:
+    """Shared simulation core used by both the REST API and the CLI."""
+    # Demo curvature: one function per dimension (single-argument).
+    C_funcs = [lambda x, i=i: (x + i) ** 2 for i in range(n)]
+    model = EmergentMatterModel(n, weights, k, alpha, C0)
+    return model.simulate_grid(x_grid, C_funcs)
+
+
+@app.errorhandler(HTTPException)
+def _json_http_error(exc: HTTPException):
+    return jsonify({'error': exc.description, 'status': exc.code}), exc.code
+
+
 @app.route('/api/v1/health', methods=['GET'])
 def health():
     """Health check endpoint for service monitoring and load balancers."""
     return jsonify({
         'status': 'healthy',
         'service': 'emergent-matter-model',
-        'version': '0.6.0'
+        'version': __version__
     }), 200
+
+
+@app.route('/api/v1/version', methods=['GET'])
+def version():
+    return jsonify({'version': __version__, 'api_version': API_VERSION})
+
+
+@app.route('/api/v1/doctor', methods=['GET'])
+def doctor():
+    """Read-only environment and dependency diagnostics (same as `emrf doctor`)."""
+    report = registry.environment_report()
+    report.pop('executable', None)
+    return jsonify(report)
+
+
+@app.route('/api/v1/commands', methods=['GET'])
+def list_commands():
+    category = request.args.get('category')
+    if category is not None and category not in registry.CATEGORIES:
+        return jsonify({'error': f'Unknown category: {category}',
+                        'categories': list(registry.CATEGORIES)}), 400
+    return jsonify({'commands': registry.list_commands(category),
+                    'run_enabled': os.environ.get(RUN_ENV_FLAG) == '1'})
+
+
+@app.route('/api/v1/commands/<name>', methods=['GET'])
+def get_command(name: str):
+    try:
+        registry.get_command(name)
+    except KeyError as exc:
+        return jsonify({'error': exc.args[0]}), 404
+    return jsonify(next(c for c in registry.list_commands() if c['name'] == name))
+
+
+@app.route('/api/v1/commands/<name>/run', methods=['POST'])
+def run_command(name: str):
+    """Run a registered program (same as `emrf run`). Disabled unless EMRF_API_ALLOW_RUN=1."""
+    if os.environ.get(RUN_ENV_FLAG) != '1':
+        return jsonify({'error': f'Command execution is disabled. Set {RUN_ENV_FLAG}=1 '
+                                 'on a trusted host to enable it.'}), 403
+    client_ip = request.remote_addr or '127.0.0.1'
+    if not _check_rate_limit(client_ip):
+        return jsonify({'error': 'Rate limit exceeded'}), 429
+    try:
+        cmd = registry.get_command(name)
+    except KeyError as exc:
+        return jsonify({'error': exc.args[0]}), 404
+    if cmd.gui or cmd.category == 'service':
+        return jsonify({'error': f'{name} is interactive or a service and cannot run via API'}), 400
+    data = request.get_json(silent=True) or {}
+    if not isinstance(data, dict):
+        return jsonify({'error': 'Request body must be a JSON object'}), 400
+    args = data.get('args', [])
+    if not isinstance(args, list) or not all(isinstance(a, str) for a in args):
+        return jsonify({'error': 'args must be a list of strings'}), 400
+    timeout = data.get('timeout', 300)
+    if not _is_real_number(timeout) or not 0 < timeout <= _MAX_RUN_TIMEOUT_SEC:
+        return jsonify({'error': f'timeout must be in (0, {_MAX_RUN_TIMEOUT_SEC}]'}), 400
+    try:
+        result = registry.run_command(name, args, timeout=float(timeout), capture=True)
+    except subprocess.TimeoutExpired:
+        return jsonify({'error': f'{name} exceeded timeout of {timeout}s'}), 504
+    logger.info("API ran %s -> %s", name, result['returncode'])
+    return jsonify(result), 200
+
+
+@app.route('/api/v1/datasets', methods=['GET'])
+def list_datasets():
+    """Observational data library; ?verify=true re-hashes files (read-only)."""
+    verify = request.args.get('verify', 'false').lower() in ('1', 'true', 'yes')
+    return jsonify({'datasets': registry.dataset_status(verify=verify)})
 
 
 @app.route('/api/v1/simulate', methods=['POST'])
@@ -132,12 +227,7 @@ def simulate():
             return jsonify({'error': 'Request body must be valid JSON'}), 400
 
         n, weights, X_grid, k, alpha, C0 = _validate_and_parse_payload(data)
-
-        # Demo curvature: one function per dimension (single-argument).
-        C_funcs = [lambda x, i=i: (x + i) ** 2 for i in range(n)]
-
-        model = EmergentMatterModel(n, weights, k, alpha, C0)
-        M = model.simulate_grid(X_grid, C_funcs)
+        M = run_simulation(n, weights, X_grid, k, alpha, C0)
 
         logger.info("Simulation complete — shape %s", M.shape)
         return jsonify({'M': M.tolist()})

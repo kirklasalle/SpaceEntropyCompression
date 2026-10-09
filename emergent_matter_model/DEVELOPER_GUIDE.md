@@ -7,7 +7,8 @@ real-data commands, and [CONTRIBUTING.md](../CONTRIBUTING.md) for evidence rules
 New verification runners live in [tools](../tools/); old stress-test scripts
 may use synthetic inputs or imposed answers. Passing software tests does not
 establish physical confirmation. The workflow file under this package's
-`.github` directory is historical and is not a root GitHub Actions workflow.
+`.github` directory is historical; the active repository workflow is
+[`../.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
 ## Project Structure
 - `model.py`: Core mathematical model (spatial dimensions + entropy state evaluation)
@@ -70,14 +71,56 @@ Discrete/quantum versions, parameter inference, and falsifiable predictions are 
 - Postman collection: `postman/EmergentMatterAPI.postman_collection.json`
 
 ## Testing
-- Use `pytest` for Python (`test_model.py`, `test_server_api.py`)
-- Use Maven test for Java
+
+Install the development environment from the repository root:
+
+```powershell
+emergent_matter_model\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+```
+
+CI additionally applies `constraints-ci.txt`, which freezes the exact
+dependency versions used to certify the current golden results. Dependency
+upgrades require a separate reviewed change and a golden-result comparison.
+
+Then run:
+
+```powershell
+# Fast software suite
+emergent_matter_model\.venv\Scripts\python.exe -m pytest -m "not golden" -q
+
+# Real-data regression suite (requires verified external holdings)
+emergent_matter_model\.venv\Scripts\python.exe tools\run_golden_results.py --all
+
+# Inspect available golden cases
+emergent_matter_model\.venv\Scripts\python.exe emergent_matter_model\emrf_cli.py run golden-results -- --list
+```
+
+The golden runner copies code, inputs and reference results to a temporary
+workspace. It re-runs eight fixed real-data pipelines without overwriting the
+reviewed `results/` tree. Integers, strings, hashes and collection shapes are
+exact; computed floating-point values use `rtol=1e-10`. Only declared
+timestamps, environment metadata and derived parent hashes are ignored.
+The two pseudo-isothermal-halo totals use `rtol=1e-7` because L-BFGS-B
+termination varies at approximately 2e-8 relative across Windows hardware;
+legacy optimizer-heavy SPARC cases use `rtol=5e-3` because hosted-CPU trials
+exposed up to approximately 1.8e-3 relative drift in nested nuisance profiles.
+The bulge scan alone uses `rtol=1e-2` after measured 5.3e-3 drift in two
+derived interval widths. These are documented numerical-stability
+limitations, not scientific uncertainties. Non-optimizer floating-point
+outputs retain `rtol=1e-10`, and structure, integers, strings and hashes
+remain exact.
+The current reviewed results were generated and certified on Windows x86-64
+with Python 3.10. Linux and Python 3.12 run the complete functional suite;
+separate reviewed golden baselines are required before claiming numerical
+parity for those environments.
 
 ## CI/CD
-- GitHub Actions workflow: `.github/workflows/ci.yml`
-- Runs Python unit tests (`pytest test_model.py -v`)
-- Runs JavaFX client compile (`mvn -DskipTests compile`)
-- Local equivalent when GitHub Actions is unavailable: `ci_local.ps1`
+- Root GitHub Actions workflow: `../.github/workflows/ci.yml`
+- Unit/coverage matrix: Windows and Linux on Python 3.10 and 3.12
+- Separate Windows/Python 3.10 matrix: one independently reported job per
+  real-data golden comparison on the baseline environment
+- Local equivalent: `ci_local.ps1`; set `EMRF_RUN_GOLDEN=1` to include the
+  expensive golden suite
 - Java 25 warning mitigation for Maven is configured via:
   - `javafx_client/.mvn/jvm.config`
   - `../install_maven.ps1` (`MAVEN_OPTS`)

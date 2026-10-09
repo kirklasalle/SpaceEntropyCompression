@@ -136,7 +136,7 @@ def solve_kepler_anomaly(mean_anomaly: float | np.ndarray, eccentricity: float,
     """Solve Kepler's equation M = E - e*sin(E) for Eccentric Anomaly E."""
     is_scalar = np.isscalar(mean_anomaly)
     m = np.atleast_1d(mean_anomaly)
-    
+
     # Initial guess
     e_anom = m + eccentricity * np.sin(m)
     for _ in range(max_iter):
@@ -146,7 +146,7 @@ def solve_kepler_anomaly(mean_anomaly: float | np.ndarray, eccentricity: float,
         e_anom -= delta
         if np.max(np.abs(delta)) < tol:
             break
-            
+
     return float(e_anom[0]) if is_scalar else e_anom
 
 
@@ -167,7 +167,7 @@ def project_orbital_position_to_sky(
     emrf_beta: float = 0.0
 ) -> Dict[str, np.ndarray]:
     """Project 3D orbital dynamics to sky plane (RA, Dec in mas, and radial velocity in km/s).
-    
+
     Parameters
     ----------
     params : SgrAOrbitalParameters
@@ -179,21 +179,18 @@ def project_orbital_position_to_sky(
     emrf_beta : float
         Coupling parameter for EMRF space-entropy compression deviation.
         Beta = 0 corresponds exactly to pure GR 1PN.
-        
+
     Returns
     -------
     dict with keys: 'ra_mas', 'dec_mas', 'vr_kms', 'r_au', 'v_kms'
     """
     epochs = np.atleast_1d(epochs)
-    n_pts = len(epochs)
-    
     a_m = params.semi_major_axis_au * AU_METERS
     mu = G_CONST * (params.mass_bh * MSUN)
-    p_sec = params.period_yr * SEC_PER_YEAR
-    
+
     # 1PN analytical precession advance per orbit: Delta phi = 6*pi*mu / (c^2 * a * (1 - e^2))
     delta_phi_1pn = (6.0 * math.pi * mu) / (C_LIGHT**2 * a_m * (1.0 - params.eccentricity**2))
-    
+
     if model_type == "newtonian":
         omega_rate_rad_per_yr = 0.0
     elif model_type == "gr_1pn":
@@ -203,30 +200,30 @@ def project_orbital_position_to_sky(
         omega_rate_rad_per_yr = (delta_phi_1pn / params.period_yr) * (1.0 + emrf_beta)
     else:
         raise ValueError(f"Unknown model_type: '{model_type}'. Choose 'newtonian', 'gr_1pn', or 'emrf'.")
-        
+
     # Mean anomaly M(t)
     dt_yr = epochs - params.t_peri_epoch
     mean_motion = (2.0 * math.pi) / params.period_yr
     mean_anom = (mean_motion * dt_yr) % (2.0 * math.pi)
-    
+
     # Solve Kepler's equation
     ecc_anom = solve_kepler_anomaly(mean_anom, params.eccentricity)
     nu = compute_true_anomaly(ecc_anom, params.eccentricity)
-    
+
     # Orbital radius r(t)
     r_au = params.semi_major_axis_au * (1.0 - params.eccentricity * np.cos(ecc_anom))
     r_m = r_au * AU_METERS
-    
+
     # Evolving argument of periapsis omega(t) due to precession
     omega_0_rad = math.radians(params.arg_peri_deg)
     omega_t = omega_0_rad + omega_rate_rad_per_yr * dt_yr
-    
+
     inc_rad = math.radians(params.inclination_deg)
     node_rad = math.radians(params.omega_node_deg)
-    
+
     # True argument of latitude u = omega + nu
     u = omega_t + nu
-    
+
     # Thiele-Innes / Euler 3D orientation transformation
     # Orbital plane coordinates: x' = r*cos(u), y' = r*sin(u), z' = 0
     cos_u = np.cos(u)
@@ -235,7 +232,7 @@ def project_orbital_position_to_sky(
     sin_node = math.sin(node_rad)
     cos_inc = math.cos(inc_rad)
     sin_inc = math.sin(inc_rad)
-    
+
     # Sky plane coordinates in AU:
     # x_sky (East, -RA) and y_sky (North, +Dec)
     # Conventional Campbell transformation:
@@ -244,25 +241,23 @@ def project_orbital_position_to_sky(
     # Z_los   = r * sin_u * sin_inc
     x_north_au = r_au * (cos_u * cos_node - sin_u * sin_node * cos_inc)
     y_east_au = r_au * (cos_u * sin_node + sin_u * cos_node * cos_inc)
-    z_los_au = r_au * (sin_u * sin_inc)
-    
     # Convert AU to milliarcseconds on sky at distance R0:
     # theta_mas = (r_au / distance_pc) * 1000.0 mas/AU
     mas_per_au = 1000.0 / params.distance_pc
     dec_mas = x_north_au * mas_per_au
     ra_mas = y_east_au * mas_per_au
-    
+
     # Orbital velocity components
     # h = sqrt(mu * a * (1 - e^2))
     h_orbit = math.sqrt(mu * a_m * (1.0 - params.eccentricity**2))
     v_radial = (mu / h_orbit) * params.eccentricity * np.sin(nu)
     v_transverse = (mu / h_orbit) * (1.0 + params.eccentricity * np.cos(nu))
     v_total_m_s = np.sqrt(v_radial**2 + v_transverse**2)
-    
+
     # Line of sight velocity from orbital geometry:
     # dz_los/dt = (mu / h) * (cos(u) + e * cos(omega_t)) * sin(inc)
     v_z_los_m_s = (mu / h_orbit) * (np.cos(u) + params.eccentricity * np.cos(omega_t)) * sin_inc
-    
+
     # Relativistic corrections to radial velocity:
     # 1. Transverse Doppler effect: Delta v_TD = 0.5 * (v^2 / c)
     # 2. Gravitational redshift: Delta v_GR = mu / (c * r)
@@ -272,9 +267,9 @@ def project_orbital_position_to_sky(
         v_rel_corr = (transverse_doppler + grav_redshift) / 1000.0  # to km/s
     else:
         v_rel_corr = 0.0
-        
+
     v_r_kms = (v_z_los_m_s / 1000.0) + params.v_z0_kms + v_rel_corr
-    
+
     return {
         "epochs": epochs,
         "ra_mas": ra_mas,
@@ -290,10 +285,10 @@ def load_astrometry_csv(csv_path: str | Path) -> Dict[str, np.ndarray]:
     path = Path(csv_path)
     if not path.is_file():
         raise FileNotFoundError(f"Astrometric dataset not found at: {path}")
-        
+
     epochs, ra, ra_err, dec, dec_err, vr, vr_err = [], [], [], [], [], [], []
     instruments = []
-    
+
     with open(path, mode="r", encoding="utf-8") as f:
         reader = csv.reader(f)
         for line_num, row in enumerate(reader, start=1):
@@ -312,7 +307,7 @@ def load_astrometry_csv(csv_path: str | Path) -> Dict[str, np.ndarray]:
                 instruments.append(row[7].strip() if len(row) > 7 else "UNKNOWN")
             except (ValueError, IndexError) as err:
                 raise ValueError(f"Malformed CSV row {line_num} in {path}: {row}") from err
-                
+
     return {
         "epoch": np.array(epochs),
         "ra_mas": np.array(ra),
@@ -333,14 +328,14 @@ def compute_residuals_and_chi2(
     res_ra = (obs["ra_mas"] - pred["ra_mas"]) / obs["ra_err_mas"]
     res_dec = (obs["dec_mas"] - pred["dec_mas"]) / obs["dec_err_mas"]
     res_vr = (obs["vr_kms"] - pred["vr_kms"]) / obs["vr_err_kms"]
-    
+
     chi2_ra = float(np.sum(res_ra**2))
     chi2_dec = float(np.sum(res_dec**2))
     chi2_vr = float(np.sum(res_vr**2))
     total_chi2 = chi2_ra + chi2_dec + chi2_vr
-    
+
     n_data_points = len(obs["epoch"]) * 3  # RA, Dec, and Vr per epoch
-    
+
     residuals = {
         "res_ra": res_ra,
         "res_dec": res_dec,
@@ -374,27 +369,27 @@ def evaluate_astrometry_bifurcation(
     obs = load_astrometry_csv(csv_path)
     epochs = obs["epoch"]
     n_pts = len(epochs) * 3
-    
+
     # 1. Newtonian baseline (6 Keplerian orbital elements)
     pred_newton = project_orbital_position_to_sky(params, epochs, model_type="newtonian")
     chi2_newton, _, _, _ = compute_residuals_and_chi2(obs, pred_newton)
     ln_l_newton, aic_newton, bic_newton = compute_information_criteria(chi2_newton, n_pts, n_free_params=6)
-    
+
     # 2. General Relativity 1PN baseline (6 Keplerian elements + M_bh + R_0 = 8 params)
     pred_gr = project_orbital_position_to_sky(params, epochs, model_type="gr_1pn")
     chi2_gr, _, _, res_gr = compute_residuals_and_chi2(obs, pred_gr)
     ln_l_gr, aic_gr, bic_gr = compute_information_criteria(chi2_gr, n_pts, n_free_params=8)
-    
+
     # 3. EMRF Candidate model (8 GR params + 1 EMRF compression coupling beta = 9 params)
     pred_emrf = project_orbital_position_to_sky(params, epochs, model_type="emrf", emrf_beta=candidate_emrf_beta)
     chi2_emrf, _, _, res_emrf = compute_residuals_and_chi2(obs, pred_emrf)
     ln_l_emrf, aic_emrf, bic_emrf = compute_information_criteria(chi2_emrf, n_pts, n_free_params=9)
-    
+
     # Delta-BIC: BIC_EMRF - BIC_GR
     # Positive delta-BIC means GR is favored (EMRF penalized for extra parameter)
     delta_bic = bic_emrf - bic_gr
     delta_aic = aic_emrf - aic_gr
-    
+
     if delta_bic >= 10.0:
         bifurcation_decision = "Branch A: Geometric Collapse"
         summary = (
@@ -415,7 +410,7 @@ def evaluate_astrometry_bifurcation(
             f"|Delta-BIC| = {abs(delta_bic):.2f} < 10.0. Current observational precision cannot "
             "statistically distinguish between GR and EMRF coupling at this parameter value."
         )
-        
+
     return {
         "target_star": params.name,
         "n_epochs": len(epochs),
@@ -468,46 +463,46 @@ def evaluate_multi_star_bifurcation(
     """
     if star_names is None:
         star_names = ["s2", "s29", "s38", "s55", "s301"]
-        
+
     base_dir = Path(__file__).resolve().parent.parent if data_dir is None else Path(data_dir)
     candidate = base_dir / "data" / "synthetic" / "astrometry"
     data_dir_path = candidate if candidate.is_dir() else base_dir
-    
+
     star_reports = {}
     total_data_points = 0
     joint_chi2_newton = 0.0
     joint_chi2_gr = 0.0
     joint_chi2_emrf = 0.0
-    
+
     for star_id in star_names:
         star_id_lower = star_id.lower().strip()
         if star_id_lower not in ALL_S_STAR_PARAMS:
             raise KeyError(f"Unknown star ID: '{star_id}'. Available: {list(ALL_S_STAR_PARAMS.keys())}")
-            
+
         params = ALL_S_STAR_PARAMS[star_id_lower]
         csv_filename = f"{star_id_lower}_synthetic.csv"
         csv_path = data_dir_path / csv_filename
-        
+
         report = evaluate_astrometry_bifurcation(csv_path, params, candidate_emrf_beta=candidate_emrf_beta)
         star_reports[params.name] = report
-        
+
         total_data_points += report["total_data_points"]
         joint_chi2_newton += report["models"]["newtonian"]["chi2"]
         joint_chi2_gr += report["models"]["gr_1pn"]["chi2"]
         joint_chi2_emrf += report["models"]["emrf"]["chi2"]
-        
+
     n_stars = len(star_names)
     k_newton = 6 * n_stars
     k_gr = 6 * n_stars + 2
     k_emrf = 6 * n_stars + 3
-    
+
     ln_l_newton, aic_newton, bic_newton = compute_information_criteria(joint_chi2_newton, total_data_points, k_newton)
     ln_l_gr, aic_gr, bic_gr = compute_information_criteria(joint_chi2_gr, total_data_points, k_gr)
     ln_l_emrf, aic_emrf, bic_emrf = compute_information_criteria(joint_chi2_emrf, total_data_points, k_emrf)
-    
+
     delta_bic = bic_emrf - bic_gr
     delta_aic = aic_emrf - aic_gr
-    
+
     if delta_bic >= 10.0:
         bifurcation_decision = "Branch A: Geometric Collapse"
         summary = (
@@ -528,7 +523,7 @@ def evaluate_multi_star_bifurcation(
             f"|Joint Delta-BIC| = {abs(delta_bic):.2f} < 10.0 across {n_stars} stars. "
             "Inconclusive statistical separation at candidate beta."
         )
-        
+
     return {
         "cluster": "Sagittarius A* S-Star Cluster",
         "stars_evaluated": list(star_reports.keys()),
@@ -576,10 +571,10 @@ def main():
     parser.add_argument("--csv", type=str, default=None, help="Custom path to single astrometry CSV table.")
     parser.add_argument("--beta", type=float, default=0.005, help="EMRF compression coupling parameter beta.")
     parser.add_argument("--output", type=str, default=None, help="Optional JSON path to save model comparison report.")
-    
+
     args = parser.parse_args()
     base_dir = Path(__file__).resolve().parent.parent
-    
+
     if args.dataset.lower() == "all" or "," in args.dataset:
         star_list = ["s2", "s29", "s38", "s55", "s301"] if args.dataset.lower() == "all" else [s.strip().lower() for s in args.dataset.split(",")]
         report = evaluate_multi_star_bifurcation(star_list, base_dir, candidate_emrf_beta=args.beta)
@@ -605,18 +600,18 @@ def main():
         star_id = args.dataset.lower().strip()
         if star_id not in ALL_S_STAR_PARAMS:
             raise ValueError(f"Unknown star: '{args.dataset}'. Choose from: {list(ALL_S_STAR_PARAMS.keys())} or 'all'.")
-            
+
         params = ALL_S_STAR_PARAMS[star_id]
         if args.csv:
             csv_file = Path(args.csv)
         else:
             csv_file = base_dir / "data" / "synthetic" / "astrometry" / f"{star_id}_synthetic.csv"
-            
+
         report = evaluate_astrometry_bifurcation(csv_file, params, candidate_emrf_beta=args.beta)
         banner = provenance_banner(csv_file)
         if banner:
             print(banner)
-        
+
         print("\n" + "=" * 70)
         print(f" EMRF ASTROMETRIC FIT & BIFURCATION REPORT: STAR {report['target_star']}")
         print("=" * 70)
@@ -628,7 +623,7 @@ def main():
         print(f"Bifurcation Decision:  {report['model_selection']['bifurcation_decision']}")
         print(f"Verdict: {report['model_selection']['interpretation']}")
         print("=" * 70 + "\n")
-        
+
     if args.output:
         out_path = Path(args.output)
         with open(out_path, "w", encoding="utf-8") as f:
@@ -638,4 +633,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
