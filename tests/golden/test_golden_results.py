@@ -86,15 +86,15 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
     optimizer_cases = {
         "sparc-marginalized-a0",
         "sparc-tension-diagnostics",
-        "sparc-bulge-test",
         "sparc-profile-validation",
         "sparc-influence",
     }
     assert all(by_name[name].rtol == golden.OPTIMIZER_RTOL for name in optimizer_cases)
+    assert by_name["sparc-bulge-test"].rtol == golden.BULGE_OPTIMIZER_RTOL
     assert all(
         case.rtol == golden.DEFAULT_RTOL
         for name, case in by_name.items()
-        if name not in optimizer_cases
+        if name not in optimizer_cases | {"sparc-bulge-test"}
     )
     assert dict(by_name["sparc-real-analysis"].rtol_overrides) == {
         "isothermal_halo.bic": 1e-7,

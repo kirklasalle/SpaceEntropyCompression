@@ -104,9 +104,11 @@ The two pseudo-isothermal-halo totals use `rtol=1e-7` because L-BFGS-B
 termination varies at approximately 2e-8 relative across Windows hardware;
 legacy optimizer-heavy SPARC cases use `rtol=5e-3` because hosted-CPU trials
 exposed up to approximately 1.8e-3 relative drift in nested nuisance profiles.
-This is a documented numerical-stability limitation, not a scientific
-uncertainty. Non-optimizer floating-point outputs retain `rtol=1e-10`, and
-structure, integers, strings and hashes remain exact.
+The bulge scan alone uses `rtol=1e-2` after measured 5.3e-3 drift in two
+derived interval widths. These are documented numerical-stability
+limitations, not scientific uncertainties. Non-optimizer floating-point
+outputs retain `rtol=1e-10`, and structure, integers, strings and hashes
+remain exact.
 The current reviewed results were generated and certified on Windows x86-64
 with Python 3.10. Linux and Python 3.12 run the complete functional suite;
 separate reviewed golden baselines are required before claiming numerical
@@ -115,8 +117,8 @@ parity for those environments.
 ## CI/CD
 - Root GitHub Actions workflow: `../.github/workflows/ci.yml`
 - Unit/coverage matrix: Windows and Linux on Python 3.10 and 3.12
-- Separate Windows/Python 3.10 job: verified SPARC/Pantheon+ acquisition and
-  all real-data golden comparisons on the baseline environment
+- Separate Windows/Python 3.10 matrix: one independently reported job per
+  real-data golden comparison on the baseline environment
 - Local equivalent: `ci_local.ps1`; set `EMRF_RUN_GOLDEN=1` to include the
   expensive golden suite
 - Java 25 warning mitigation for Maven is configured via:

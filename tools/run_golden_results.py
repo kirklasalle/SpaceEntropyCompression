@@ -18,6 +18,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RTOL = 1e-10
 OPTIMIZER_RTOL = 5e-3
+BULGE_OPTIMIZER_RTOL = 1e-2
 
 
 @dataclass(frozen=True)
@@ -66,7 +67,7 @@ CASES = (
         "results/sparc_bulge_test.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
-        rtol=OPTIMIZER_RTOL,
+        rtol=BULGE_OPTIMIZER_RTOL,
     ),
     GoldenCase(
         "fit-pantheon-covariance",

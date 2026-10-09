@@ -61,12 +61,13 @@ Implemented locally:
   commands, with exact integer/string comparisons and `rtol=1e-10` for
   non-optimizer floats on the Windows x86-64/Python 3.10 baseline
   environment; legacy nested SPARC optimizer cases use a measured `rtol=5e-3`
-  pending deterministic reformulation, while
+  (the bulge scan uses `rtol=1e-2` after measured 5.3e-3 drift) pending
+  deterministic reformulation, while
   two standalone L-BFGS-B halo totals use a path-specific `rtol=1e-7`;
 * `coverage.py`, Hypothesis and pytest-xdist development dependencies;
 * Windows/Linux CI on Python 3.10 and 3.12, plus a separate Windows/Python
-  3.10 real-data golden job constrained to the measured baseline dependency
-  versions;
+  3.10 real-data golden matrix (one job per pipeline) constrained to the
+  measured baseline dependency versions;
 * pre-commit whitespace, JSON/TOML, large-file and Ruff hooks;
 * correctness lint cleanup outside hash-pinned evidence files; the remaining
   exceptions are declared narrowly for two pinned files;
@@ -79,10 +80,11 @@ changes are committed. Phase 2 must not start before that gate and the
 baseline tag exist.
 
 **Numerical-stability debt:** hosted runs exposed up to approximately 0.18%
-relative drift in legacy nested SPARC nuisance profiles despite fixed Python,
-NumPy and SciPy versions. Phase 5 must replace or stabilize those optimizers,
-add convergence diagnostics, and tighten their golden tolerance. This drift
-must not be interpreted as observational uncertainty.
+relative drift in legacy nested SPARC nuisance profiles and 0.53% in two
+bulge-derived interval widths despite fixed Python, NumPy and SciPy versions.
+Phase 5 must replace or stabilize those optimizers, add convergence
+diagnostics, and tighten their golden tolerance. This drift must not be
+interpreted as observational uncertainty.
 
 ## Phase 2 - Packaging and namespace (2-3 weeks)
 

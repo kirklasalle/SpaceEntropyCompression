@@ -43,9 +43,21 @@ jobs:
         run: python emergent_matter_model/emrf_cli.py doctor
 
   golden:
-    name: Real-data golden results / Windows / Python 3.10
+    name: Golden ${{ matrix.case }} / Windows / Python 3.10
     runs-on: windows-latest
-    timeout-minutes: 90
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        case:
+          - sparc-real-analysis
+          - sparc-marginalized-a0
+          - sparc-tension-diagnostics
+          - sparc-bulge-test
+          - fit-pantheon-covariance
+          - sparc-profile-validation
+          - sparc-influence
+          - real-data-gauntlet
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -80,4 +92,4 @@ jobs:
       - name: Verify datasets
         run: python emergent_matter_model/emrf_cli.py data list --verify
       - name: Run real-data golden suite
-        run: python tools/run_golden_results.py --all
+        run: python tools/run_golden_results.py ${{ matrix.case }}
