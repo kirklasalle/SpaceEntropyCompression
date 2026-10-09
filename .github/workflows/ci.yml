@@ -22,9 +22,11 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: pip
-          cache-dependency-path: requirements-dev.txt
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
       - name: Install dependencies
-        run: python -m pip install -r requirements-dev.txt
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
       - name: Verify dependency consistency
         run: python -m pip check
       - name: Check correctness-relevant lint rules
@@ -50,9 +52,11 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: requirements-dev.txt
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
       - name: Install dependencies
-        run: python -m pip install -r requirements-dev.txt
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
       - name: Fetch SPARC
         run: python emergent_matter_model/fetch_real_data.py --sparc
       - name: Fetch pinned Pantheon+ inputs

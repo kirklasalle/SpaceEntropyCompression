@@ -63,7 +63,7 @@ Implemented locally:
   `sparc-real-analysis` uses a documented `rtol=1e-8`;
 * `coverage.py`, Hypothesis and pytest-xdist development dependencies;
 * Windows/Linux CI on Python 3.10 and 3.12, plus a separate real-data golden
-  job;
+  job, constrained to the measured baseline dependency versions;
 * pre-commit whitespace, JSON/TOML, large-file and Ruff hooks;
 * correctness lint cleanup outside hash-pinned evidence files; the remaining
   exceptions are declared narrowly for two pinned files;

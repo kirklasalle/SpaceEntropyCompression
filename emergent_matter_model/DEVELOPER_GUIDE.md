@@ -78,6 +78,10 @@ Install the development environment from the repository root:
 emergent_matter_model\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 ```
 
+CI additionally applies `constraints-ci.txt`, which freezes the exact
+dependency versions used to certify the current golden results. Dependency
+upgrades require a separate reviewed change and a golden-result comparison.
+
 Then run:
 
 ```powershell
