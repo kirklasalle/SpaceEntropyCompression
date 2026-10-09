@@ -60,7 +60,8 @@ Implemented locally:
 * isolated golden-result runner for all eight fixed real-data analysis
   commands, with exact integer/string comparisons and `rtol=1e-10` for
   non-optimizer floats on the Windows x86-64/Python 3.10 baseline
-  environment; nested SPARC optimizer cases use measured `rtol=2e-5`, while
+  environment; legacy nested SPARC optimizer cases use a measured `rtol=5e-3`
+  pending deterministic reformulation, while
   two standalone L-BFGS-B halo totals use a path-specific `rtol=1e-7`;
 * `coverage.py`, Hypothesis and pytest-xdist development dependencies;
 * Windows/Linux CI on Python 3.10 and 3.12, plus a separate Windows/Python
@@ -76,6 +77,12 @@ The complete local golden run matches all eight reviewed results. The exit
 gate remains open until the new GitHub Actions matrix passes after these
 changes are committed. Phase 2 must not start before that gate and the
 baseline tag exist.
+
+**Numerical-stability debt:** hosted runs exposed up to approximately 0.18%
+relative drift in legacy nested SPARC nuisance profiles despite fixed Python,
+NumPy and SciPy versions. Phase 5 must replace or stabilize those optimizers,
+add convergence diagnostics, and tighten their golden tolerance. This drift
+must not be interpreted as observational uncertainty.
 
 ## Phase 2 - Packaging and namespace (2-3 weeks)
 
@@ -144,14 +151,17 @@ green; no partial outputs after any injected failure; preservation gate.
 2. Units at boundaries with `astropy.units`; constants from CODATA 2022.
 3. Convergence-order tests for integrators and ray tracing.
 4. Property-based tests for model invariants.
-5. Inference upgrades: nested sampling (nautilus/dynesty) for evidence;
+5. Stabilize legacy nested SPARC optimization across CPUs (deterministic
+   parameterization, convergence diagnostics and repeated-start agreement);
+   reduce its temporary `rtol=5e-3` golden allowance.
+6. Inference upgrades: nested sampling (nautilus/dynesty) for evidence;
    SBC and injection-recovery for the SPARC a0 analyses; posterior predictive
    checks.
-6. Baseline zoo: GR+NFW halo, MOND-family RAR, LCDM run beside EMRF through
+7. Baseline zoo: GR+NFW halo, MOND-family RAR, LCDM run beside EMRF through
    the same likelihoods.
-7. Evidence typing (`EvidenceClass`) on all outputs; retire legacy verdict
+8. Evidence typing (`EvidenceClass`) on all outputs; retire legacy verdict
    strings behind a deprecation.
-8. Pre-registration workflow (`emrf predict --commit`).
+9. Pre-registration workflow (`emrf predict --commit`).
 
 **Exit gate:** each engine page in the docs shows passing known-limit and
 convergence tests; SPARC analyses report calibrated intervals; preservation

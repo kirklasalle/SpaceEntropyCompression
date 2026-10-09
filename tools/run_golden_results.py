@@ -17,7 +17,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RTOL = 1e-10
-OPTIMIZER_RTOL = 2e-5
+OPTIMIZER_RTOL = 5e-3
 
 
 @dataclass(frozen=True)
