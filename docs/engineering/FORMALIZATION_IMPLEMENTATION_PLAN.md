@@ -82,10 +82,11 @@ Implemented locally:
 * measured source-only non-golden baseline: 272 tests passed, 52.5% line
   coverage and 42.4% branch coverage (50.7% combined).
 
-The complete local golden run matches all eight reviewed results. The exit
-gate remains open until the new GitHub Actions matrix passes after these
-changes are committed. Phase 2 must not start before that gate and the
-baseline tag exist.
+The complete local golden run matches all eight reviewed results. The Phase 1
+remote exit gate passed all 12 functional and golden jobs on Windows and Linux
+in [GitHub Actions run 37980145635](https://github.com/kirklasalle/SpaceEntropyCompression/actions/runs/37980145635).
+Phase 2 may begin after the final Phase 1 status commit is tagged and submitted
+for review; the original baseline tag remains immutable.
 
 **Numerical-stability debt:** hosted runs exposed up to approximately 0.18%
 relative drift in legacy nested SPARC nuisance profiles and 0.53% in two
