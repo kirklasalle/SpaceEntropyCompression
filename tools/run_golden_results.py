@@ -17,6 +17,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RTOL = 1e-10
+OPTIMIZER_RTOL = 2e-5
 
 
 @dataclass(frozen=True)
@@ -49,6 +50,7 @@ CASES = (
         "results/sparc_marginalized_a0.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol=OPTIMIZER_RTOL,
     ),
     GoldenCase(
         "sparc-tension-diagnostics",
@@ -56,6 +58,7 @@ CASES = (
         "results/sparc_tension_diagnostics.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol=OPTIMIZER_RTOL,
     ),
     GoldenCase(
         "sparc-bulge-test",
@@ -63,6 +66,7 @@ CASES = (
         "results/sparc_bulge_test.json",
         ("--no-figures",),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol=OPTIMIZER_RTOL,
     ),
     GoldenCase(
         "fit-pantheon-covariance",
@@ -89,6 +93,7 @@ CASES = (
             "source_sha256",
         ),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol=OPTIMIZER_RTOL,
     ),
     GoldenCase(
         "sparc-influence",
@@ -96,6 +101,7 @@ CASES = (
         "results/real_data_v1/sparc_influence_crosscheck.json",
         ignored_paths=("parent_sha256", "checker_sha256"),
         requires=("data/external/sparc/Rotmod_LTG.zip",),
+        rtol=OPTIMIZER_RTOL,
     ),
     GoldenCase(
         "real-data-gauntlet",

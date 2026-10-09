@@ -82,12 +82,21 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
     for case in golden.CASES:
         assert (ROOT / case.script).is_file()
         assert (ROOT / case.output).is_file()
-    assert all(case.rtol == golden.DEFAULT_RTOL for case in golden.CASES)
-    assert dict(
-        next(
-            case for case in golden.CASES if case.command == "sparc-real-analysis"
-        ).rtol_overrides
-    ) == {
+    by_name = {case.command: case for case in golden.CASES}
+    optimizer_cases = {
+        "sparc-marginalized-a0",
+        "sparc-tension-diagnostics",
+        "sparc-bulge-test",
+        "sparc-profile-validation",
+        "sparc-influence",
+    }
+    assert all(by_name[name].rtol == golden.OPTIMIZER_RTOL for name in optimizer_cases)
+    assert all(
+        case.rtol == golden.DEFAULT_RTOL
+        for name, case in by_name.items()
+        if name not in optimizer_cases
+    )
+    assert dict(by_name["sparc-real-analysis"].rtol_overrides) == {
         "isothermal_halo.bic": 1e-7,
         "isothermal_halo.chi2": 1e-7,
     }

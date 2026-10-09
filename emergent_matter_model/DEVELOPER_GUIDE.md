@@ -102,7 +102,9 @@ exact; computed floating-point values use `rtol=1e-10`. Only declared
 timestamps, environment metadata and derived parent hashes are ignored.
 The two pseudo-isothermal-halo totals use `rtol=1e-7` because L-BFGS-B
 termination varies at approximately 2e-8 relative across Windows hardware;
-all other values retain the default tolerance.
+optimizer-heavy SPARC cases use `rtol=2e-5` based on measured nested nuisance
+optimization drift across hosted CPUs. Non-optimizer floating-point outputs
+retain `rtol=1e-10`, and structure, integers, strings and hashes remain exact.
 The current reviewed results were generated and certified on Windows x86-64
 with Python 3.10. Linux and Python 3.12 run the complete functional suite;
 separate reviewed golden baselines are required before claiming numerical
