@@ -64,9 +64,9 @@ Implemented locally:
   (the bulge scan uses `rtol=1e-2` after measured 5.3e-3 drift) pending
   deterministic reformulation, while
   two standalone L-BFGS-B halo totals use a path-specific `rtol=1e-7`;
-  Pantheon+ optimizer outputs also use `rtol=1e-7`, with a path-specific
-  `atol=1e-11` only for a quadrature diagnostic whose expected value is at
-  machine-zero scale;
+  Pantheon+ and DESI baseline optimizer outputs also use `rtol=1e-7`, with a
+  path-specific `atol=1e-11` only for a Pantheon+ quadrature diagnostic whose
+  expected value is at machine-zero scale;
 * immutable published data products listed by the reviewed gauntlet are
   acquired into the isolated workspace and rejected unless both byte count
   and SHA-256 match; mutable reference/archive webpages remain citations and

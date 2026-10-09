@@ -165,6 +165,7 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
     assert all(by_name[name].rtol == golden.OPTIMIZER_RTOL for name in optimizer_cases)
     assert by_name["sparc-bulge-test"].rtol == golden.BULGE_OPTIMIZER_RTOL
     assert by_name["fit-pantheon-covariance"].rtol == 1e-7
+    assert by_name["real-data-gauntlet"].rtol == 1e-7
     assert dict(by_name["fit-pantheon-covariance"].atol_overrides) == {
         "integration_check_absolute_delta_chi2": 1e-11
     }
@@ -172,7 +173,8 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
         case.rtol == golden.DEFAULT_RTOL
         for name, case in by_name.items()
         if name
-        not in optimizer_cases | {"sparc-bulge-test", "fit-pantheon-covariance"}
+        not in optimizer_cases
+        | {"sparc-bulge-test", "fit-pantheon-covariance", "real-data-gauntlet"}
     )
     assert dict(by_name["sparc-real-analysis"].rtol_overrides) == {
         "isothermal_halo.bic": 1e-7,

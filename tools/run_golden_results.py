@@ -128,6 +128,7 @@ CASES = (
             "results/real_data_v1/sparc_profile_validation.json",
         ),
         args=("--refresh-profile-only",),
+        rtol=1e-7,
     ),
 )
 
@@ -376,7 +377,9 @@ def _verify_gauntlet_case(case: GoldenCase, workspace: Path) -> None:
     actual_desi = gauntlet.desi_baseline(
         workspace / "data" / "external" / "real_data_v1"
     )
-    errors = compare_values(expected["desi_baseline"], actual_desi)
+    errors = compare_values(
+        expected["desi_baseline"], actual_desi, rtol=case.rtol
+    )
     if errors:
         shown = "\n".join(f"  - {error}" for error in errors)
         raise GoldenMismatch(f"{case.command} DESI baseline changed:\n{shown}")
