@@ -61,6 +61,7 @@ coverage.xml
 
 # ruff
 .ruff_cache/
+.golden-workspaces/
 
 # Distribution
 *.whl

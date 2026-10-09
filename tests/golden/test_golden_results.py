@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import subprocess
 from pathlib import Path
@@ -36,7 +38,55 @@ def test_comparator_honors_path_specific_tolerances() -> None:
         actual,
         rtol_overrides={"optimizer": 1e-7},
     )
-    assert errors == ["stable: expected 1.0, got 1.00000001 (rtol=1e-10)"]
+    assert errors == [
+        "stable: expected 1.0, got 1.00000001 (rtol=1e-10, atol=0)"
+    ]
+
+
+def test_comparator_honors_path_specific_absolute_tolerance() -> None:
+    errors = golden.compare_values(
+        {"roundoff": 1e-12, "signal": 1e-12},
+        {"roundoff": 2e-12, "signal": 2e-12},
+        atol_overrides={"roundoff": 2e-12},
+    )
+    assert errors == [
+        "signal: expected 1e-12, got 2e-12 (rtol=1e-10, atol=0)"
+    ]
+
+
+def test_gauntlet_sources_are_downloaded_and_verified(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source"
+    workspace = tmp_path / "workspace"
+    raw = b"pinned observation data"
+    record = {
+        "url": "https://example.invalid/data",
+        "file": r"data\external\real_data_v1\sample.dat",
+        "bytes": len(raw),
+        "sha256": hashlib.sha256(raw).hexdigest(),
+    }
+    manifest = source / "results" / "real_data_v1" / "gauntlet.json"
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text(json.dumps({"source_records": [record]}), encoding="utf-8")
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return raw
+
+    monkeypatch.setattr(golden, "ROOT", source)
+    monkeypatch.setattr(golden, "urlopen", lambda *_args, **_kwargs: Response())
+
+    golden._hydrate_gauntlet_sources(workspace)
+
+    downloaded = workspace / "data" / "external" / "real_data_v1" / "sample.dat"
+    assert downloaded.read_bytes() == raw
 
 
 def test_isolated_workspace_has_git_metadata(
@@ -91,10 +141,15 @@ def test_every_fixed_real_data_analysis_has_a_golden_case() -> None:
     }
     assert all(by_name[name].rtol == golden.OPTIMIZER_RTOL for name in optimizer_cases)
     assert by_name["sparc-bulge-test"].rtol == golden.BULGE_OPTIMIZER_RTOL
+    assert by_name["fit-pantheon-covariance"].rtol == 1e-7
+    assert dict(by_name["fit-pantheon-covariance"].atol_overrides) == {
+        "integration_check_absolute_delta_chi2": 1e-11
+    }
     assert all(
         case.rtol == golden.DEFAULT_RTOL
         for name, case in by_name.items()
-        if name not in optimizer_cases | {"sparc-bulge-test"}
+        if name
+        not in optimizer_cases | {"sparc-bulge-test", "fit-pantheon-covariance"}
     )
     assert dict(by_name["sparc-real-analysis"].rtol_overrides) == {
         "isothermal_halo.bic": 1e-7,
