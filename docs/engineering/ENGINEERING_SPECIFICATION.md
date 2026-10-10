@@ -309,6 +309,8 @@ HTTP servers, cryptographic hashing.
   pydantic models (OpenAPI cannot drift), long jobs as `POST /jobs` returning
   a job ID with `GET /jobs/{id}` status, logs and artefacts; token
   authentication for mutating endpoints; CORS restricted by configuration.
+  The v2 ASGI entry point is `asgi:app`; v1 remains available through
+  `wsgi:app`.
 * **Python SDK** `emrf.sdk`: the same operations as typed functions; the CLI
   and API are thin layers over it, guaranteeing parity. Public values are
   immutable dataclasses with explicit JSON-compatible serialization; SDK

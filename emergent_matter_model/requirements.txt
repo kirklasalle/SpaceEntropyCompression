@@ -1,16 +1,20 @@
 # Core
 astropy>=6.1,<8
+fastapi>=0.115,<0.129
 Flask>=3.0,<4
 flask-cors>=4.0,<5
 numpy>=1.26,<3
 matplotlib>=3.8,<4
 requests>=2.31,<3
 plotly>=5.18,<6
+pydantic>=2.9,<2.13
 scipy>=1.12,<2
 
 # Dev / Test
 pytest>=8.0,<9
 gunicorn>=21.2,<23
+httpx>=0.27,<0.29
+uvicorn>=0.30,<0.41
 
 # Config
 pyyaml>=6.0,<7

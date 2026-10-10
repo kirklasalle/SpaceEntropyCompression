@@ -346,6 +346,17 @@ the v1 JSON shapes and legacy CLI behavior before further migration. Typed run
 inspection and all three verification certificate families now use the same
 SDK path as well.
 
+**API v2 foundation implemented (2026-10-10):** a separate FastAPI ASGI
+application exposes generated Pydantic/OpenAPI contracts for health, command
+discovery and authenticated durable execution, run inspection, and all three
+verification families. Mutating execution is disabled until
+`EMRF_API_V2_TOKEN` is configured and then requires a constant-time-checked
+bearer token. Flask REST v1 remains a separate, unchanged WSGI application.
+Dependency ceilings are bounded to the FastAPI/Pydantic/HTTPX/Uvicorn
+generations exercised by the cross-platform CI matrix; newer incompatible
+generations require an explicit recertification rather than being accepted
+silently.
+
 1. `emrf.sdk` typed public API; CLI and API reimplemented as thin layers.
 2. REST v2 with FastAPI + pydantic (generated OpenAPI), jobs, artefact
    download, token auth for mutating endpoints; v1 kept and tested.

@@ -13,12 +13,14 @@ authors = [{name = "Kirk LaSalle"}]
 
 dependencies = [
     "astropy>=6.1,<8",
+    "fastapi>=0.115,<0.129",
     "Flask>=3.0,<4",
     "flask-cors>=4.0,<5",
     "numpy>=1.26,<3",
     "matplotlib>=3.8,<4",
     "requests>=2.31,<3",
     "plotly>=5.18,<6",
+    "pydantic>=2.9,<2.13",
     "scipy>=1.12,<2",
 ]
 
@@ -34,6 +36,7 @@ py-modules = [
     "fit_sparc",
     "pantheon_inference",
     "emrf_cli",
+    "emrf_api_v2_access",
     "emrf_data_access",
     "emrf_error_access",
     "emrf_registry",
@@ -72,6 +75,7 @@ py-modules = [
     "plot_publication_figures",
     "plot_three_horizons_figures",
     "wsgi",
+    "asgi",
     "black_hole_horizon_entropy",
     "quantum_vibrational_compression",
 ]
@@ -108,6 +112,7 @@ dev = [
     "pytest>=8.0,<9",
     "ruff>=0.2",
     "mypy>=1.8",
+    "httpx>=0.27,<0.29",
     "types-Flask-Cors>=4.0",
 ]
 verification = [
@@ -115,6 +120,7 @@ verification = [
 ]
 server = [
     "gunicorn>=21.2,<23",
+    "uvicorn>=0.30,<0.41",
 ]
 
 [tool.pytest.ini_options]

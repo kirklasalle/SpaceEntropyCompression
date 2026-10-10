@@ -171,7 +171,18 @@ COMMANDS: tuple[Command, ...] = (
 
 _BY_NAME = {c.name: c for c in COMMANDS}
 
-CORE_DEPENDENCIES = ("numpy", "scipy", "matplotlib", "Flask", "flask-cors", "requests", "plotly")
+CORE_DEPENDENCIES = (
+    "astropy",
+    "fastapi",
+    "Flask",
+    "flask-cors",
+    "matplotlib",
+    "numpy",
+    "plotly",
+    "pydantic",
+    "requests",
+    "scipy",
+)
 OPTIONAL_DEPENDENCIES = (
     "pytest",
     "coverage",
@@ -181,6 +192,8 @@ OPTIONAL_DEPENDENCIES = (
     "mypy",
     "pre-commit",
     "gunicorn",
+    "httpx",
+    "uvicorn",
 )
 
 
