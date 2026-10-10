@@ -8,6 +8,12 @@ Usage examples::
     python emergent_matter_model/emrf_cli.py simulate --n 2 --weights 0.5 0.5 \
         --grid=-1,0,1 --grid=0,0.5,1
     python emergent_matter_model/emrf_cli.py data list [--verify] [--json]
+    python emergent_matter_model/emrf_cli.py data catalog [--verify] [--json]
+    python emergent_matter_model/emrf_cli.py data info DATASET [--verify]
+    python emergent_matter_model/emrf_cli.py data import DATASET [HOLDING]
+    python emergent_matter_model/emrf_cli.py data fetch DATASET [HOLDING]
+    python emergent_matter_model/emrf_cli.py data backup DESTINATION
+    python emergent_matter_model/emrf_cli.py data restore SOURCE
     python emergent_matter_model/emrf_cli.py doctor [--json]
     python emergent_matter_model/emrf_cli.py serve [--host 127.0.0.1] [--port 5000]
     python emergent_matter_model/emrf_cli.py test [-- pytest args]
@@ -111,6 +117,77 @@ def cmd_data(a: argparse.Namespace) -> int:
     return 0
 
 
+def _data_library():
+    from emrf_data_access import data_library
+
+    return data_library()
+
+
+def cmd_data_catalog(a: argparse.Namespace) -> int:
+    rows = _data_library().catalog_status(verify=a.verify)
+    if a.json:
+        _print_json(rows)
+    else:
+        for row in rows:
+            print(
+                f"{row['id']:<30} {row['status']:<10} "
+                f"{row['priority']:<6} {row['title']}"
+            )
+    return 1 if a.verify and any(row["status"] == "corrupt" for row in rows) else 0
+
+
+def cmd_data_info(a: argparse.Namespace) -> int:
+    _print_json(_data_library().info(a.dataset_id, verify=a.verify))
+    return 0
+
+
+def cmd_data_import(a: argparse.Namespace) -> int:
+    result = _data_library().import_dataset(
+        a.dataset_id,
+        logical_name=a.logical_name,
+        source=a.source,
+    )
+    _print_json({"holdings": result})
+    return 0
+
+
+def cmd_data_fetch(a: argparse.Namespace) -> int:
+    result = _data_library().fetch_dataset(
+        a.dataset_id,
+        logical_name=a.logical_name,
+        retries=a.retries,
+        timeout=a.timeout,
+    )
+    _print_json({"holdings": result})
+    return 0
+
+
+def cmd_data_verify(a: argparse.Namespace) -> int:
+    result = _data_library().verify()
+    _print_json(result)
+    return 0 if result["healthy"] else 1
+
+
+def cmd_data_backup(a: argparse.Namespace) -> int:
+    _print_json(_data_library().create_backup(a.destination))
+    return 0
+
+
+def cmd_data_backup_verify(a: argparse.Namespace) -> int:
+    _print_json(_data_library().verify_backup(a.source))
+    return 0
+
+
+def cmd_data_restore(a: argparse.Namespace) -> int:
+    _print_json(_data_library().restore_backup(a.source))
+    return 0
+
+
+def cmd_data_gc(a: argparse.Namespace) -> int:
+    _print_json(_data_library().garbage_collect(execute=a.execute))
+    return 0
+
+
 def cmd_doctor(a: argparse.Namespace) -> int:
     rep = reg.environment_report()
     if a.json:
@@ -178,6 +255,52 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("--json", action="store_true")
     d.set_defaults(func=cmd_data)
 
+    d = dsub.add_parser("catalog", help="list the curated managed-data catalog")
+    d.add_argument("--verify", action="store_true", help="re-hash managed objects")
+    d.add_argument("--json", action="store_true")
+    d.set_defaults(func=cmd_data_catalog)
+
+    d = dsub.add_parser("info", help="show catalog and managed status for one dataset")
+    d.add_argument("dataset_id")
+    d.add_argument("--verify", action="store_true")
+    d.set_defaults(func=cmd_data_info)
+
+    d = dsub.add_parser("import", help="import locally acquired catalog holdings")
+    d.add_argument("dataset_id")
+    d.add_argument("logical_name", nargs="?")
+    d.add_argument("--source", help="source file; requires one selected holding")
+    d.set_defaults(func=cmd_data_import)
+
+    d = dsub.add_parser("fetch", help="safely fetch pinned catalog holdings")
+    d.add_argument("dataset_id")
+    d.add_argument("logical_name", nargs="?")
+    d.add_argument("--retries", type=int, default=3)
+    d.add_argument("--timeout", type=float, default=180.0)
+    d.set_defaults(func=cmd_data_fetch)
+
+    d = dsub.add_parser("verify", help="verify all managed catalog holdings")
+    d.set_defaults(func=cmd_data_verify)
+
+    d = dsub.add_parser("backup", help="create a verified data-library backup")
+    d.add_argument("destination")
+    d.set_defaults(func=cmd_data_backup)
+
+    d = dsub.add_parser("backup-verify", help="verify a data-library backup")
+    d.add_argument("source")
+    d.set_defaults(func=cmd_data_backup_verify)
+
+    d = dsub.add_parser("restore", help="restore a verified backup without overwriting")
+    d.add_argument("source")
+    d.set_defaults(func=cmd_data_restore)
+
+    d = dsub.add_parser("gc", help="report unreferenced objects (dry-run by default)")
+    d.add_argument(
+        "--execute",
+        action="store_true",
+        help="remove reported unreferenced objects",
+    )
+    d.set_defaults(func=cmd_data_gc)
+
     s = sub.add_parser("doctor", help="diagnose environment and dependencies")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_doctor)
@@ -197,6 +320,12 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         return int(args.func(args))
+    except (KeyError, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except OSError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     except KeyboardInterrupt:
         print("interrupted", file=sys.stderr)
         return 130

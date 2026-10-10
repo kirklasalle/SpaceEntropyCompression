@@ -61,6 +61,41 @@ Use the same body and only change URL to:
 
 - `http://127.0.0.1:5000/simulate`
 
+## Data library
+
+Catalog and verification reads do not require mutation privileges:
+
+```powershell
+Invoke-RestMethod -Uri "http://127.0.0.1:5000/api/v1/datasets"
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/datasets/sparc-rotation-curves?verify=true"
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/datasets/verify" `
+  -Method Post
+```
+
+Imports, network fetches, backups, restores and destructive garbage collection
+are disabled by default. Enable them only on a trusted host:
+
+```powershell
+$env:EMRF_API_ALLOW_DATA_WRITE = "1"
+python server.py
+
+$body = @{
+  logical_name = "SPARC_Lelli2016c.mrt"
+  retries = 3
+  timeout = 180
+} | ConvertTo-Json
+
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/datasets/sparc-rotation-curves/fetch" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body $body
+```
+
+The complete request and response contract is in `openapi.yaml`.
+
 ## Postman
 
 Import collection:

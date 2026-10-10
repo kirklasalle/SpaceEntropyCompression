@@ -9,6 +9,7 @@ import pytest
 
 import emrf_cli
 import emrf_registry as reg
+import server
 from server import app
 
 _MAIN_GUARD = re.compile(r"^if __name__ == ['\"]__main__['\"]", re.MULTILINE)
@@ -104,6 +105,21 @@ def test_cli_data_list_runs(capsys):
     assert isinstance(json.loads(capsys.readouterr().out), list)
 
 
+def test_cli_data_catalog_and_info(capsys):
+    assert emrf_cli.main(["data", "catalog", "--json"]) == 0
+    rows = json.loads(capsys.readouterr().out)
+    assert "sparc-rotation-curves" in {row["id"] for row in rows}
+
+    assert emrf_cli.main(["data", "info", "sparc-rotation-curves"]) == 0
+    info = json.loads(capsys.readouterr().out)
+    assert info["catalog"]["id"] == "sparc-rotation-curves"
+
+
+def test_cli_data_unknown_dataset_is_usage_error(capsys):
+    assert emrf_cli.main(["data", "info", "does-not-exist"]) == 2
+    assert "Unknown dataset" in capsys.readouterr().err
+
+
 def test_dataset_verify_detects_tampering(tmp_path, monkeypatch):
     f = tmp_path / "obs.dat"
     f.write_bytes(b"real bytes")
@@ -161,9 +177,36 @@ def test_api_run_validates_and_executes(client, monkeypatch):
 
 
 def test_api_datasets_and_doctor(client):
-    assert isinstance(client.get("/api/v1/datasets").get_json()["datasets"], list)
+    datasets = client.get("/api/v1/datasets").get_json()["datasets"]
+    assert "sparc-rotation-curves" in {row["id"] for row in datasets}
+    detail = client.get("/api/v1/datasets/sparc-rotation-curves").get_json()
+    assert detail["catalog"]["id"] == "sparc-rotation-curves"
     rep = client.get("/api/v1/doctor").get_json()
     assert "executable" not in rep and rep["registered_commands"] == len(reg.COMMANDS)
+
+
+def test_api_data_mutation_requires_explicit_opt_in(client, monkeypatch):
+    monkeypatch.delenv(server.DATA_WRITE_ENV_FLAG, raising=False)
+    assert client.post(
+        "/api/v1/datasets/sparc-rotation-curves/import",
+        json={"logical_name": "Rotmod_LTG.zip"},
+    ).status_code == 403
+    assert client.post(
+        "/api/v1/data/backups",
+        json={"destination": "backup"},
+    ).status_code == 403
+
+
+def test_api_data_gc_dry_run_remains_read_only(client, monkeypatch):
+    class Library:
+        def garbage_collect(self, *, execute=False):
+            return {"executed": execute, "count": 0, "objects": [], "bytes": 0}
+
+    monkeypatch.setattr(server, "_data_library", Library)
+    monkeypatch.delenv(server.DATA_WRITE_ENV_FLAG, raising=False)
+    response = client.post("/api/v1/data/gc", json={"execute": False})
+    assert response.status_code == 200
+    assert response.get_json()["executed"] is False
 
 
 def test_api_unknown_route_returns_json(client):

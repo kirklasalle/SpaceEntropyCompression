@@ -36,8 +36,11 @@ def test_data_catalog_has_unique_ids_and_required_provenance() -> None:
         assert entry["redistribution"]
         assert entry["acquisition"]
         assert entry["verified"]
+        if entry.get("holdings"):
+            assert entry.get("version")
         for holding in entry.get("holdings", []):
             assert len(holding["sha256"]) == 64
+            assert holding["url"].startswith("https://")
 
 
 def test_software_catalog_has_unique_ids_and_licences() -> None:

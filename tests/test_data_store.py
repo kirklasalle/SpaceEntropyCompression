@@ -224,6 +224,19 @@ def test_concurrent_identical_ingestion_deduplicates(tmp_path: Path) -> None:
     assert list(store.temporary.glob("*.part")) == []
 
 
+def test_concurrent_store_instances_initialize_and_deduplicate(tmp_path: Path) -> None:
+    raw = b"independent concurrent clients" * 1000
+
+    def ingest(_: int):
+        return ContentAddressedStore(tmp_path).put_bytes(raw)
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        results = list(executor.map(ingest, range(16)))
+
+    assert len({result.sha256 for result in results}) == 1
+    assert results[0].path.read_bytes() == raw
+
+
 def test_ingest_repairs_corrupt_existing_object(tmp_path: Path) -> None:
     store = ContentAddressedStore(tmp_path)
     raw = b"authentic bytes"

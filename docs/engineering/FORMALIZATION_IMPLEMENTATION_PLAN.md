@@ -167,15 +167,37 @@ verified, deduplicated, backed up and queryable.
    (Gaia subset), CODATA 2022 constants.
 6. Backup: local plus off-site; quarterly restore drill with full verify.
 
-**Foundation status (2026-10-09):** in progress. `emrf.data.store` now provides
+**Foundation status (2026-10-09):** complete and remotely certified.
+`emrf.data.store` provides
 streamed SHA-256 ingestion, atomic promotion after file `fsync`, verified reads,
 deduplication, corrupt-object repair, conservative stale-part cleanup and an
 SQLite WAL holdings registry. Holding keys are normalized and immutable: an
 idempotent replay may resolve the original record, but neither its bytes nor
 its provenance metadata are silently rewritten. Parent-directory `fsync` is
-best effort on platforms such as Windows. Fetching, catalog integration,
-quarantine, backup/restore and public CLI/API commands remain later Phase 3
-work and are not implied by this foundation.
+best effort on platforms such as Windows.
+
+**Catalog/interface/backup status (2026-10-09):** implemented locally.
+`emrf.data.catalog` strictly validates the curated catalog and its packaged
+wheel copy. Existing SPARC, Pantheon+ and DESI DR1 holdings now have pinned
+versions and directly testable HTTPS object URLs. Resumable acquisition
+validates HTTP range responses and final HTTPS URLs, retries transient
+failures, retains safe partial progress, quarantines completed hash failures
+and promotes only catalog-pinned bytes. Shared service logic now powers
+`emrf data catalog|info|import|fetch|verify|backup|backup-verify|restore|gc`
+and matching REST operations. REST mutations require the explicit
+`EMRF_API_ALLOW_DATA_WRITE=1` trusted-host opt-in. Backups contain every
+verified object, immutable provenance, a manifest and a consistent SQLite
+snapshot; restore verifies all bytes before non-destructive import. Garbage
+collection is dry-run unless explicitly executed. Automated restore and
+tamper tests do not replace the still-required off-site quarterly restore
+drill. Priority-tier acquisition remains owner-approved work.
+
+**Local integration status (2026-10-09):** passed. The six pinned files for
+SPARC, Pantheon+ and DESI DR1 were imported into the managed store and fully
+re-hashed through `emrf data verify`. A temporary portable backup was created,
+verified, restored into a separate empty data root and fully verified before
+the drill files were removed. This local drill proves the workflow but does
+not satisfy the independent off-site-copy requirement.
 
 **Exit gate:** every dataset used by any result is in the catalog with
 licence, citation and verified hash; kill-during-fetch and corrupted-byte

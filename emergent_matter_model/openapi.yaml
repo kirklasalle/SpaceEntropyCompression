@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Emergent Matter Simulation API
-  version: 1.1.0
+  version: 1.2.0
   description: |
     REST API for emergent matter simulation. Entropy S(X,t) is a thermodynamic state
     field (the arrow of change per Second Law), not a spatial coordinate. The last
@@ -140,17 +140,17 @@ paths:
         '504': {description: Timed out, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
   /api/v1/datasets:
     get:
-      summary: Observational data library (same as `emrf data list`)
+      summary: Curated observational data catalog (same as `emrf data catalog`)
       operationId: listDatasets
       parameters:
         - name: verify
           in: query
           required: false
-          description: Re-hash files against the provenance manifest (read-only)
+          description: Re-hash managed objects (read-only)
           schema: {type: boolean, default: false}
       responses:
         '200':
-          description: Manifest-registered datasets
+          description: Catalog datasets and managed-store status
           content:
             application/json:
               schema:
@@ -159,6 +159,91 @@ paths:
                   datasets:
                     type: array
                     items: {$ref: '#/components/schemas/Dataset'}
+  /api/v1/datasets/{dataset_id}:
+    get:
+      summary: Describe one catalog dataset
+      operationId: getDataset
+      parameters:
+        - {name: dataset_id, in: path, required: true, schema: {type: string}}
+        - {name: verify, in: query, required: false, schema: {type: boolean, default: false}}
+      responses:
+        '200': {description: Catalog metadata and managed status}
+        '404': {description: Unknown dataset, content: {application/json: {schema: {$ref: '#/components/schemas/ErrorResponse'}}}}
+  /api/v1/datasets/{dataset_id}/import:
+    post:
+      summary: Import local pinned data into the managed store
+      operationId: importDataset
+      parameters:
+        - {name: dataset_id, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                logical_name: {type: string}
+                source: {type: string}
+      responses:
+        '201': {description: Imported immutable holdings}
+        '403': {description: Data mutation disabled}
+        '409': {description: Integrity or provenance conflict}
+  /api/v1/datasets/{dataset_id}/fetch:
+    post:
+      summary: Resumably acquire pinned HTTPS catalog data
+      operationId: fetchDataset
+      parameters:
+        - {name: dataset_id, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                logical_name: {type: string}
+                retries: {type: integer, minimum: 0, default: 3}
+                timeout: {type: number, exclusiveMinimum: 0, default: 180}
+      responses:
+        '201': {description: Acquired immutable holdings}
+        '403': {description: Data mutation disabled}
+        '409': {description: Integrity or provenance conflict}
+        '502': {description: Remote acquisition failed}
+  /api/v1/datasets/verify:
+    post:
+      summary: Verify all managed catalog holdings
+      operationId: verifyDatasets
+      responses:
+        '200': {description: Verification passed}
+        '409': {description: Corruption detected}
+  /api/v1/data/backups:
+    post:
+      summary: Create a verified portable data-library backup
+      operationId: createDataBackup
+      responses:
+        '201': {description: Backup created}
+        '403': {description: Data mutation disabled}
+  /api/v1/data/backups/verify:
+    post:
+      summary: Verify every object in a data-library backup
+      operationId: verifyDataBackup
+      responses:
+        '200': {description: Backup verified}
+  /api/v1/data/restores:
+    post:
+      summary: Restore a verified backup without overwriting conflicts
+      operationId: restoreDataBackup
+      responses:
+        '200': {description: Backup restored}
+        '403': {description: Data mutation disabled}
+        '409': {description: Integrity or provenance conflict}
+  /api/v1/data/gc:
+    post:
+      summary: Find or remove unreferenced content-addressed objects
+      operationId: garbageCollectData
+      responses:
+        '200': {description: Garbage-collection report}
+        '403': {description: Destructive execution disabled}
   /visualizer:
     get:
       summary: Interactive HTML/WebGL dashboard
@@ -308,13 +393,14 @@ components:
       type: object
       properties:
         id: {type: string}
-        file: {type: string}
+        title: {type: string}
+        catalog_status: {type: string}
+        priority: {type: string}
+        version: {type: string, nullable: true}
         url: {type: string}
-        citation: {type: string}
-        bytes: {type: integer}
-        sha256: {type: string}
-        retrieved_utc: {type: string}
-        present: {type: boolean}
+        holdings:
+          type: array
+          items: {type: object, additionalProperties: true}
         status:
           type: string
-          enum: [ok, missing, size-mismatch, hash-mismatch]
+          enum: [planned, present, ok, missing, unregistered, partial, corrupt]

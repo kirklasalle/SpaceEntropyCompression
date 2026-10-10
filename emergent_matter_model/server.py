@@ -27,6 +27,7 @@ from model import EmergentMatterModel
 
 # Remote execution of registered programs is disabled unless explicitly enabled.
 RUN_ENV_FLAG = "EMRF_API_ALLOW_RUN"
+DATA_WRITE_ENV_FLAG = "EMRF_API_ALLOW_DATA_WRITE"
 _MAX_RUN_TIMEOUT_SEC = 600.0
 
 app = Flask(__name__)
@@ -56,6 +57,56 @@ def _check_rate_limit(client_ip: str) -> bool:
 
 def _is_real_number(value: Any) -> bool:
     return isinstance(value, (int, float)) and np.isfinite(value)
+
+
+def _data_library():
+    from emrf_data_access import data_library
+
+    return data_library()
+
+
+def _data_write_denied():
+    if os.environ.get(DATA_WRITE_ENV_FLAG) == "1":
+        return None
+    return jsonify({
+        'error': f'Data mutation is disabled. Set {DATA_WRITE_ENV_FLAG}=1 '
+                 'on a trusted host to enable it.'
+    }), 403
+
+
+def _json_object() -> dict[str, Any]:
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValueError("Request body must be a JSON object")
+    return data
+
+
+def _required_json_text(data: dict[str, Any], field: str) -> str:
+    value = data.get(field)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field} must be non-empty text")
+    return value
+
+
+def _data_error(exc: Exception):
+    from emrf_data_access import data_errors
+
+    errors = data_errors()
+    AcquisitionError = errors.AcquisitionError
+    IntegrityError = errors.IntegrityError
+
+    if isinstance(exc, KeyError):
+        return jsonify({'error': str(exc)}), 404
+    if isinstance(exc, (ValueError, TypeError)):
+        return jsonify({'error': str(exc)}), 400
+    if isinstance(exc, FileNotFoundError):
+        return jsonify({'error': str(exc)}), 404
+    if isinstance(exc, IntegrityError):
+        return jsonify({'error': str(exc)}), 409
+    if isinstance(exc, AcquisitionError):
+        return jsonify({'error': str(exc)}), 502
+    logger.exception("Data-library operation failed")
+    return jsonify({'error': 'Data-library operation failed'}), 500
 
 
 def _validate_and_parse_payload(
@@ -199,7 +250,113 @@ def run_command(name: str):
 def list_datasets():
     """Observational data library; ?verify=true re-hashes files (read-only)."""
     verify = request.args.get('verify', 'false').lower() in ('1', 'true', 'yes')
-    return jsonify({'datasets': registry.dataset_status(verify=verify)})
+    try:
+        return jsonify({'datasets': _data_library().catalog_status(verify=verify)})
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/datasets/<dataset_id>', methods=['GET'])
+def get_dataset(dataset_id: str):
+    verify = request.args.get('verify', 'false').lower() in ('1', 'true', 'yes')
+    try:
+        return jsonify(_data_library().info(dataset_id, verify=verify))
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/datasets/<dataset_id>/import', methods=['POST'])
+def import_dataset(dataset_id: str):
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        result = _data_library().import_dataset(
+            dataset_id,
+            logical_name=data.get('logical_name'),
+            source=data.get('source'),
+        )
+        return jsonify({'holdings': result}), 201
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/datasets/<dataset_id>/fetch', methods=['POST'])
+def fetch_dataset(dataset_id: str):
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        result = _data_library().fetch_dataset(
+            dataset_id,
+            logical_name=data.get('logical_name'),
+            retries=data.get('retries', 3),
+            timeout=data.get('timeout', 180.0),
+        )
+        return jsonify({'holdings': result}), 201
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/datasets/verify', methods=['POST'])
+def verify_datasets():
+    try:
+        result = _data_library().verify()
+        return jsonify(result), 200 if result['healthy'] else 409
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/data/backups', methods=['POST'])
+def create_data_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        destination = _required_json_text(data, 'destination')
+        return jsonify(_data_library().create_backup(destination)), 201
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/data/backups/verify', methods=['POST'])
+def verify_data_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        source = _required_json_text(data, 'source')
+        return jsonify(_data_library().verify_backup(source))
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/data/restores', methods=['POST'])
+def restore_data_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        source = _required_json_text(data, 'source')
+        return jsonify(_data_library().restore_backup(source))
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/data/gc', methods=['POST'])
+def garbage_collect_data():
+    try:
+        data = _json_object()
+        execute = data.get('execute', False)
+        if not isinstance(execute, bool):
+            raise ValueError("execute must be a boolean")
+        if execute:
+            denied = _data_write_denied()
+            if denied:
+                return denied
+        return jsonify(_data_library().garbage_collect(execute=execute))
+    except Exception as exc:
+        return _data_error(exc)
 
 
 @app.route('/api/v1/simulate', methods=['POST'])
@@ -216,7 +373,9 @@ def simulate():
     client_ip = request.remote_addr or '127.0.0.1'
     if not _check_rate_limit(client_ip):
         logger.warning("Rate limit exceeded for IP: %s", client_ip)
-        return jsonify({'error': 'Rate limit exceeded (max 120 req/min). Please throttle requests.'}), 429
+        return jsonify({
+            'error': 'Rate limit exceeded (max 120 req/min). Please throttle requests.'
+        }), 429
 
     try:
         if not request.is_json:
@@ -253,7 +412,11 @@ def serve_visualizer():
     from pathlib import Path
     vis_file = Path(__file__).resolve().parent.parent / "tools" / "interactive_visualizer.html"
     if vis_file.is_file():
-        return vis_file.read_text(encoding="utf-8"), 200, {"Content-Type": "text/html; charset=utf-8"}
+        return (
+            vis_file.read_text(encoding="utf-8"),
+            200,
+            {"Content-Type": "text/html; charset=utf-8"},
+        )
     return jsonify({"error": "Visualizer file not found"}), 404
 
 

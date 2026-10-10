@@ -9,7 +9,7 @@ import sqlite3
 import tempfile
 import threading
 import time
-from collections.abc import Iterator, Mapping
+from collections.abc import Generator, Mapping
 from contextlib import contextmanager, suppress
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -81,6 +81,7 @@ class ContentAddressedStore:
         self.temporary = self.root / "store" / "tmp"
         self.registry = self.root / "library.sqlite"
         self._initialization_lock = threading.Lock()
+        self._promotion_lock = threading.Lock()
         self._initialized = False
 
     def initialize(self) -> None:
@@ -122,16 +123,14 @@ class ContentAddressedStore:
         return removed
 
     @contextmanager
-    def _connect(self) -> Iterator[sqlite3.Connection]:
+    def _connect(self) -> Generator[sqlite3.Connection, None, None]:
         self.root.mkdir(parents=True, exist_ok=True)
         connection = sqlite3.connect(self.registry, timeout=30.0)
         try:
             connection.row_factory = sqlite3.Row
             connection.execute("PRAGMA busy_timeout = 30000")
             connection.execute("PRAGMA foreign_keys = ON")
-            journal_mode = connection.execute("PRAGMA journal_mode").fetchone()[0]
-            if journal_mode.lower() != "wal":
-                connection.execute("PRAGMA journal_mode = WAL")
+            _enable_wal(connection)
             connection.execute("PRAGMA synchronous = FULL")
             yield connection
             connection.commit()
@@ -215,26 +214,27 @@ class ContentAddressedStore:
                 )
             destination = self.object_path(actual_sha256)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            if destination.exists():
-                try:
-                    self._verify_path(destination, actual_sha256, size)
-                except IntegrityError:
-                    with suppress(OSError):
-                        destination.chmod(0o600)
-                    os.replace(temporary_path, destination)
+            with self._promotion_lock:
+                if destination.exists():
+                    try:
+                        self._verify_existing(destination, actual_sha256, size)
+                    except IntegrityError:
+                        with suppress(OSError):
+                            destination.chmod(0o600)
+                        os.replace(temporary_path, destination)
+                        temporary_path = None
+                        _fsync_directory(destination.parent)
+                    else:
+                        temporary_path.unlink()
+                        temporary_path = None
+                else:
+                    try:
+                        os.replace(temporary_path, destination)
+                    except (FileExistsError, PermissionError):
+                        self._verify_existing(destination, actual_sha256, size)
+                        temporary_path.unlink()
                     temporary_path = None
                     _fsync_directory(destination.parent)
-                else:
-                    temporary_path.unlink()
-                    temporary_path = None
-            else:
-                try:
-                    os.replace(temporary_path, destination)
-                except (FileExistsError, PermissionError):
-                    self._verify_path(destination, actual_sha256, size)
-                    temporary_path.unlink()
-                temporary_path = None
-                _fsync_directory(destination.parent)
             created = datetime.now(timezone.utc).isoformat()
             with self._connect() as connection:
                 connection.execute(
@@ -379,6 +379,95 @@ class ContentAddressedStore:
             metadata=json.loads(row["metadata_json"]),
         )
 
+    def list_objects(self, *, verify: bool = False) -> list[StoredObject]:
+        """List registry objects, optionally verifying every byte sequence."""
+        self.initialize()
+        try:
+            with self._connect() as connection:
+                rows = connection.execute(
+                    "SELECT sha256, bytes FROM objects ORDER BY sha256"
+                ).fetchall()
+        except sqlite3.Error as exc:
+            raise StorageError("Could not list stored objects") from exc
+        objects: list[StoredObject] = []
+        for row in rows:
+            stored = self.get(row["sha256"], verify=verify)
+            if stored.bytes != row["bytes"]:
+                raise IntegrityError("Stored object size differs from registry metadata")
+            objects.append(stored)
+        return objects
+
+    def list_holdings(self, *, verify: bool = False) -> list[Holding]:
+        """List logical holdings in stable key order."""
+        self.initialize()
+        try:
+            with self._connect() as connection:
+                rows = connection.execute(
+                    """
+                    SELECT dataset_id, version, logical_name
+                    FROM holdings
+                    ORDER BY dataset_id, version, logical_name
+                    """
+                ).fetchall()
+        except sqlite3.Error as exc:
+            raise StorageError("Could not list dataset holdings") from exc
+        return [
+            self.get_holding(
+                row["dataset_id"],
+                row["version"],
+                row["logical_name"],
+                verify=verify,
+            )
+            for row in rows
+        ]
+
+    def garbage_collect(self, *, execute: bool = False) -> list[StoredObject]:
+        """Find or remove objects that are not referenced by any holding."""
+        self.initialize()
+        try:
+            with self._connect() as connection:
+                if execute:
+                    connection.execute("BEGIN IMMEDIATE")
+                rows = connection.execute(
+                    """
+                    SELECT o.sha256, o.bytes
+                    FROM objects o
+                    LEFT JOIN holdings h ON h.sha256 = o.sha256
+                    WHERE h.sha256 IS NULL
+                    ORDER BY o.sha256
+                    """
+                ).fetchall()
+                objects = [
+                    self.get(row["sha256"], verify=True)
+                    for row in rows
+                ]
+                if execute and rows:
+                    connection.executemany(
+                        "DELETE FROM objects WHERE sha256 = ?",
+                        ((row["sha256"],) for row in rows),
+                    )
+            if execute:
+                for stored in objects:
+                    stored.path.unlink(missing_ok=True)
+            return objects
+        except sqlite3.Error as exc:
+            raise StorageError("Could not garbage-collect stored objects") from exc
+
+    def backup_registry(self, destination: str | Path) -> Path:
+        """Write a transactionally consistent SQLite registry snapshot."""
+        self.initialize()
+        target = Path(destination)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with (
+                sqlite3.connect(self.registry) as source,
+                sqlite3.connect(target) as backup,
+            ):
+                source.backup(backup)
+        except (OSError, sqlite3.Error) as exc:
+            raise StorageError(f"Could not back up registry to {target}") from exc
+        return target
+
     @staticmethod
     def _verify_path(path: Path, expected_sha256: str, expected_bytes: int) -> None:
         if path.is_symlink():
@@ -394,6 +483,22 @@ class ContentAddressedStore:
             raise StorageError(f"Could not verify stored object: {path}") from exc
         if size != expected_bytes or digest.hexdigest() != expected_sha256:
             raise IntegrityError(f"Stored object failed integrity verification: {path}")
+
+    @classmethod
+    def _verify_existing(
+        cls,
+        path: Path,
+        expected_sha256: str,
+        expected_bytes: int,
+    ) -> None:
+        for attempt in range(10):
+            try:
+                cls._verify_path(path, expected_sha256, expected_bytes)
+                return
+            except StorageError as exc:
+                if not isinstance(exc.__cause__, PermissionError) or attempt == 9:
+                    raise
+                time.sleep(0.01 * (attempt + 1))
 
 
 class _BytesReader:
@@ -420,3 +525,16 @@ def _fsync_directory(path: Path) -> None:
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
+
+
+def _enable_wal(connection: sqlite3.Connection) -> None:
+    for attempt in range(100):
+        try:
+            journal_mode = connection.execute("PRAGMA journal_mode").fetchone()[0]
+            if journal_mode.lower() != "wal":
+                connection.execute("PRAGMA journal_mode = WAL")
+            return
+        except sqlite3.OperationalError as exc:
+            if "locked" not in str(exc).lower() or attempt == 99:
+                raise
+            time.sleep(min(0.01 * (attempt + 1), 0.1))
