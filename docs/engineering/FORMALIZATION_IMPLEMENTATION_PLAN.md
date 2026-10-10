@@ -199,6 +199,26 @@ verified, restored into a separate empty data root and fully verified before
 the drill files were removed. This local drill proves the workflow but does
 not satisfy the independent off-site-copy requirement.
 
+**Priority acquisition status (2026-10-09):** bounded summary products are
+now pinned, acquired and managed for CODATA 2022, the DES-SN5YR Hubble diagram
+with statistical and full-systematic covariance, and the official DESI DR2
+base-LCDM BAO-only minimization summary. The managed store contains 13 fully
+verified holdings. The 1.46 GB DES-SN5YR archive and full DESI chains were
+intentionally excluded because the smaller products cover the approved
+summary use cases. The Planck PR3 baseline likelihood remains deferred: its
+verified official download is approximately 705 MB, has no published content
+length at the endpoint, and a stable smaller official `plik_lite` artifact was
+not verified. This is a documented safety decision, not an absent check.
+
+**Operational backup status (2026-10-09):** provider-neutral off-site backup
+configuration is available through `EMRF_OFFSITE_BACKUP_DIR` or an explicit
+independent root; repository credentials are never stored and destinations
+inside the managed data root are rejected. A full 13-object/13-holding restore
+drill passed and its environment, counts and backup-manifest hash are retained
+in `knowledgebase/library/drills/restore-2026-10-09.json`. A physical off-site
+copy still requires the owner or operator to supply a mounted, synchronized or
+provider-backed destination.
+
 **Exit gate:** every dataset used by any result is in the catalog with
 licence, citation and verified hash; kill-during-fetch and corrupted-byte
 tests pass; restore drill succeeds; preservation gate.

@@ -70,6 +70,7 @@ coverage.xml
 data/external/
 data/acquisition/
 data/quarantine/
+data/drills/
 data/store/
 data/library.sqlite
 data/library.sqlite-shm

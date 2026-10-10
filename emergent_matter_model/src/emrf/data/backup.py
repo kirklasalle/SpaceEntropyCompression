@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import platform
 import shutil
 import sqlite3
+import sys
 import tempfile
 from contextlib import closing
 from datetime import datetime, timezone
@@ -13,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from emrf.core.errors import IntegrityError, StorageError
+from emrf_version import __version__
 
 from .store import ContentAddressedStore
 
@@ -131,6 +135,83 @@ class BackupManager:
             "objects": len(manifest["objects"]),
             "holdings": len(manifest["holdings"]),
         }
+
+    def drill(
+        self,
+        receipt: str | Path,
+        *,
+        workspace: str | Path | None = None,
+    ) -> dict[str, Any]:
+        """Create, restore and fully verify a temporary backup with a durable receipt."""
+        receipt_path = Path(receipt).expanduser().resolve()
+        if receipt_path.exists():
+            raise FileExistsError(f"Restore-drill receipt already exists: {receipt_path}")
+        receipt_path.parent.mkdir(parents=True, exist_ok=True)
+        workspace_path = None
+        if workspace is not None:
+            workspace_path = Path(workspace).expanduser().resolve()
+            workspace_path.mkdir(parents=True, exist_ok=True)
+        started = datetime.now(timezone.utc)
+        result: dict[str, Any] = {
+            "schema_version": "1.0.0",
+            "started_utc": started.isoformat(),
+            "status": "running",
+            "emrf_version": __version__,
+            "python_version": platform.python_version(),
+            "platform": platform.platform(),
+            "implementation": sys.implementation.name,
+        }
+        try:
+            with tempfile.TemporaryDirectory(
+                prefix="emrf-restore-drill-",
+                dir=workspace_path,
+            ) as temporary:
+                root = Path(temporary)
+                backup = root / "backup"
+                restored = ContentAddressedStore(root / "restored-data")
+                manifest = self.create(backup)
+                verified = self.verify(backup)
+                manifest_bytes = (backup / _MANIFEST).read_bytes()
+                restore_result = BackupManager(restored).restore(backup)
+                restored_objects = restored.list_objects(verify=True)
+                restored_holdings = restored.list_holdings(verify=True)
+                expected_objects = len(verified["objects"])
+                expected_holdings = len(verified["holdings"])
+                if (
+                    len(restored_objects) != expected_objects
+                    or len(restored_holdings) != expected_holdings
+                ):
+                    raise IntegrityError("Restore drill produced incomplete holdings")
+                result.update(
+                    {
+                        "status": "passed",
+                        "backup_created_utc": manifest["created_utc"],
+                        "backup_manifest_sha256": hashlib.sha256(
+                            manifest_bytes
+                        ).hexdigest(),
+                        "objects_verified": expected_objects,
+                        "holdings_verified": expected_holdings,
+                        "restored_objects": restore_result["objects"],
+                        "restored_holdings": restore_result["holdings"],
+                    }
+                )
+        except Exception as exc:
+            result.update(
+                {
+                    "status": "failed",
+                    "error_type": type(exc).__name__,
+                    "error": str(exc),
+                }
+            )
+            result["completed_utc"] = datetime.now(timezone.utc).isoformat()
+            _write_json_fsynced(receipt_path, result)
+            raise
+        result["completed_utc"] = datetime.now(timezone.utc).isoformat()
+        result["duration_seconds"] = (
+            datetime.fromisoformat(result["completed_utc"]) - started
+        ).total_seconds()
+        _write_json_fsynced(receipt_path, result)
+        return result
 
 
 def _read_manifest(source: str | Path) -> tuple[Path, dict[str, Any]]:

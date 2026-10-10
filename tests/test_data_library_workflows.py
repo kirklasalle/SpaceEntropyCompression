@@ -13,6 +13,7 @@ from emrf.data import (
     BackupManager,
     ContentAddressedStore,
     DataCatalog,
+    DataLibrary,
     ResumableFetcher,
 )
 
@@ -259,6 +260,50 @@ def test_backup_restore_and_tamper_detection(tmp_path: Path) -> None:
     object_path.write_bytes(b"bad!")
     with pytest.raises(IntegrityError, match="failed integrity verification"):
         BackupManager(restored).verify(backup)
+
+
+def test_restore_drill_writes_passed_receipt_and_cleans_workspace(tmp_path: Path) -> None:
+    store = ContentAddressedStore(tmp_path / "source")
+    stored = store.put_bytes(b"drill observation")
+    store.register_holding("dataset", "v1", "raw", stored)
+    receipt = tmp_path / "receipts" / "drill.json"
+    workspace = tmp_path / "workspace"
+
+    result = BackupManager(store).drill(receipt, workspace=workspace)
+
+    recorded = json.loads(receipt.read_text(encoding="utf-8"))
+    assert result == recorded
+    assert recorded["status"] == "passed"
+    assert recorded["objects_verified"] == 1
+    assert recorded["holdings_verified"] == 1
+    assert list(workspace.iterdir()) == []
+
+    with pytest.raises(FileExistsError, match="receipt already exists"):
+        BackupManager(store).drill(receipt, workspace=workspace)
+
+
+def test_offsite_backup_requires_independent_configured_root(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _write_catalog(tmp_path / "catalog.json", b"unused")
+    library = DataLibrary(root=tmp_path / "data", catalog_path=tmp_path / "catalog.json")
+    stored = library.store.put_bytes(b"offsite observation")
+    library.store.register_holding("dataset", "v1", "raw", stored)
+    monkeypatch.delenv("EMRF_OFFSITE_BACKUP_DIR", raising=False)
+
+    with pytest.raises(ValueError, match="EMRF_OFFSITE_BACKUP_DIR"):
+        library.create_offsite_backup()
+    with pytest.raises(ValueError, match="independent of the data root"):
+        library.create_offsite_backup(tmp_path / "data" / "backups")
+
+    destination = tmp_path / "independent"
+    monkeypatch.setenv("EMRF_OFFSITE_BACKUP_DIR", str(destination))
+    result = library.create_offsite_backup()
+
+    assert result["offsite"] is True
+    assert Path(result["destination"]).parent == destination
+    BackupManager(library.store).verify(result["destination"])
 
 
 def test_garbage_collection_is_dry_run_by_default(tmp_path: Path) -> None:

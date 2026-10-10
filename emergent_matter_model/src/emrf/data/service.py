@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -108,6 +110,23 @@ class DataLibrary:
             "created_utc": manifest["created_utc"],
         }
 
+    def create_offsite_backup(
+        self,
+        destination_root: str | Path | None = None,
+    ) -> dict[str, Any]:
+        configured = destination_root or os.environ.get("EMRF_OFFSITE_BACKUP_DIR")
+        if configured is None:
+            raise ValueError(
+                "Set EMRF_OFFSITE_BACKUP_DIR or provide an off-site destination root"
+            )
+        root = Path(configured).expanduser().resolve()
+        data_root = self.store.root.expanduser().resolve()
+        if root == data_root or data_root in root.parents or root in data_root.parents:
+            raise ValueError("Off-site backup destination must be independent of the data root")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        target = root / f"emrf-backup-{timestamp}"
+        return {"offsite": True, **self.create_backup(target)}
+
     def verify_backup(self, source: str | Path) -> dict[str, Any]:
         manifest = self.backups.verify(source)
         return {
@@ -119,6 +138,18 @@ class DataLibrary:
 
     def restore_backup(self, source: str | Path) -> dict[str, int]:
         return self.backups.restore(source)
+
+    def run_restore_drill(
+        self,
+        *,
+        receipt: str | Path | None = None,
+        workspace: str | Path | None = None,
+    ) -> dict[str, Any]:
+        if receipt is None:
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+            receipt = self.store.root / "drills" / f"restore-{timestamp}.json"
+        result = self.backups.drill(receipt, workspace=workspace)
+        return {"receipt": str(Path(receipt).expanduser().resolve()), **result}
 
     def garbage_collect(self, *, execute: bool = False) -> dict[str, Any]:
         objects = self.store.garbage_collect(execute=execute)

@@ -14,6 +14,7 @@ Usage examples::
     python emergent_matter_model/emrf_cli.py data fetch DATASET [HOLDING]
     python emergent_matter_model/emrf_cli.py data backup DESTINATION
     python emergent_matter_model/emrf_cli.py data restore SOURCE
+    python emergent_matter_model/emrf_cli.py data drill [--receipt FILE]
     python emergent_matter_model/emrf_cli.py doctor [--json]
     python emergent_matter_model/emrf_cli.py serve [--host 127.0.0.1] [--port 5000]
     python emergent_matter_model/emrf_cli.py test [-- pytest args]
@@ -173,6 +174,11 @@ def cmd_data_backup(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_data_backup_offsite(a: argparse.Namespace) -> int:
+    _print_json(_data_library().create_offsite_backup(a.destination_root))
+    return 0
+
+
 def cmd_data_backup_verify(a: argparse.Namespace) -> int:
     _print_json(_data_library().verify_backup(a.source))
     return 0
@@ -180,6 +186,16 @@ def cmd_data_backup_verify(a: argparse.Namespace) -> int:
 
 def cmd_data_restore(a: argparse.Namespace) -> int:
     _print_json(_data_library().restore_backup(a.source))
+    return 0
+
+
+def cmd_data_drill(a: argparse.Namespace) -> int:
+    _print_json(
+        _data_library().run_restore_drill(
+            receipt=a.receipt,
+            workspace=a.workspace,
+        )
+    )
     return 0
 
 
@@ -285,6 +301,13 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("destination")
     d.set_defaults(func=cmd_data_backup)
 
+    d = dsub.add_parser("backup-offsite", help="back up to an independent configured root")
+    d.add_argument(
+        "--destination-root",
+        help="overrides EMRF_OFFSITE_BACKUP_DIR without storing credentials",
+    )
+    d.set_defaults(func=cmd_data_backup_offsite)
+
     d = dsub.add_parser("backup-verify", help="verify a data-library backup")
     d.add_argument("source")
     d.set_defaults(func=cmd_data_backup_verify)
@@ -292,6 +315,11 @@ def build_parser() -> argparse.ArgumentParser:
     d = dsub.add_parser("restore", help="restore a verified backup without overwriting")
     d.add_argument("source")
     d.set_defaults(func=cmd_data_restore)
+
+    d = dsub.add_parser("drill", help="run a full temporary backup and restore drill")
+    d.add_argument("--receipt", help="durable JSON receipt; defaults under the data root")
+    d.add_argument("--workspace", help="parent directory for temporary drill data")
+    d.set_defaults(func=cmd_data_drill)
 
     d = dsub.add_parser("gc", help="report unreferenced objects (dry-run by default)")
     d.add_argument(

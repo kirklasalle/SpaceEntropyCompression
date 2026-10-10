@@ -195,6 +195,14 @@ def test_api_data_mutation_requires_explicit_opt_in(client, monkeypatch):
         "/api/v1/data/backups",
         json={"destination": "backup"},
     ).status_code == 403
+    assert client.post(
+        "/api/v1/data/restore-drills",
+        json={},
+    ).status_code == 403
+    assert client.post(
+        "/api/v1/data/backups/offsite",
+        json={},
+    ).status_code == 403
 
 
 def test_api_data_gc_dry_run_remains_read_only(client, monkeypatch):

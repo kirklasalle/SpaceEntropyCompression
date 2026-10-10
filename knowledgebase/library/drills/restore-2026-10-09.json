@@ -1,0 +1,17 @@
+{
+  "backup_created_utc": "2026-10-10T02:19:12.780110+00:00",
+  "backup_manifest_sha256": "6b65109631a34beadfe0cbebcf027ff269fdd2efcaac98444c5a1670a9e13800",
+  "completed_utc": "2026-10-10T02:19:15.882747+00:00",
+  "duration_seconds": 4.686692,
+  "emrf_version": "0.9.1",
+  "holdings_verified": 13,
+  "implementation": "cpython",
+  "objects_verified": 13,
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python_version": "3.10.0",
+  "restored_holdings": 13,
+  "restored_objects": 13,
+  "schema_version": "1.0.0",
+  "started_utc": "2026-10-10T02:19:11.196055+00:00",
+  "status": "passed"
+}

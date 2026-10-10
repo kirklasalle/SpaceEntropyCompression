@@ -70,8 +70,10 @@ emrf data import DATASET [HOLDING] [--source FILE]
 emrf data fetch DATASET [HOLDING] [--retries N] [--timeout SECONDS]
 emrf data verify
 emrf data backup DESTINATION
+emrf data backup-offsite [--destination-root ROOT]
 emrf data backup-verify SOURCE
 emrf data restore SOURCE
+emrf data drill [--receipt FILE] [--workspace DIRECTORY]
 emrf data gc [--execute]
 ```
 
@@ -79,8 +81,14 @@ Garbage collection is a dry run unless `--execute` is supplied. A backup
 destination must not already exist. Backup creation verifies every source
 object and writes a portable manifest plus a consistent SQLite snapshot.
 Restore verifies the full backup before importing objects and refuses
-immutable holding conflicts. Keep at least one off-site backup and perform the
-quarterly restore drill required by the engineering plan.
+immutable holding conflicts. `backup-offsite` uses `EMRF_OFFSITE_BACKUP_DIR`
+or an explicit independent root; it never stores provider credentials and
+rejects destinations inside the managed data root. `data drill` creates a
+temporary backup, restores it into an empty store, fully verifies every object
+and holding, cleans its workspace, and writes an immutable JSON receipt. Keep
+at least one physical off-site copy and perform the quarterly restore drill
+required by the engineering plan. Reviewed receipts are retained under
+`knowledgebase/library/drills/`.
 
 Matching REST endpoints are documented in `emergent_matter_model/openapi.yaml`.
 All data-changing REST operations are disabled unless a trusted server is

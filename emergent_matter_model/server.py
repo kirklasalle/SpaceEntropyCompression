@@ -319,6 +319,24 @@ def create_data_backup():
         return _data_error(exc)
 
 
+@app.route('/api/v1/data/backups/offsite', methods=['POST'])
+def create_offsite_data_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        destination_root = data.get('destination_root')
+        if destination_root is not None and (
+            not isinstance(destination_root, str) or not destination_root.strip()
+        ):
+            raise ValueError("destination_root must be non-empty text")
+        return jsonify(
+            _data_library().create_offsite_backup(destination_root)
+        ), 201
+    except Exception as exc:
+        return _data_error(exc)
+
+
 @app.route('/api/v1/data/backups/verify', methods=['POST'])
 def verify_data_backup():
     if denied := _data_write_denied():
@@ -339,6 +357,27 @@ def restore_data_backup():
         data = _json_object()
         source = _required_json_text(data, 'source')
         return jsonify(_data_library().restore_backup(source))
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/data/restore-drills', methods=['POST'])
+def run_data_restore_drill():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        receipt = data.get('receipt')
+        workspace = data.get('workspace')
+        for field, value in (("receipt", receipt), ("workspace", workspace)):
+            if value is not None and (not isinstance(value, str) or not value.strip()):
+                raise ValueError(f"{field} must be non-empty text")
+        return jsonify(
+            _data_library().run_restore_drill(
+                receipt=receipt,
+                workspace=workspace,
+            )
+        )
     except Exception as exc:
         return _data_error(exc)
 

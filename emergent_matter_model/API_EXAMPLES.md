@@ -94,6 +94,18 @@ Invoke-RestMethod `
   -Body $body
 ```
 
+For an independent backup root, configure a mounted drive or cloud-synchronized
+folder without placing credentials in the repository:
+
+```powershell
+$env:EMRF_OFFSITE_BACKUP_DIR = "E:\\EMRF-Offsite"
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/data/backups/offsite" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body "{}"
+```
+
 The complete request and response contract is in `openapi.yaml`.
 
 ## Postman

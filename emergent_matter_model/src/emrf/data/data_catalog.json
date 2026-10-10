@@ -100,36 +100,78 @@
     },
     {
       "id": "desi-dr2-bao",
-      "title": "DESI DR2 BAO measurements and cosmological constraints",
-      "status": "planned",
+      "title": "DESI DR2 BAO base-LCDM best-fit summary",
+      "status": "existing_holding",
       "priority": "high",
-      "url": "https://arxiv.org/abs/2503.14738",
-      "data_url": "https://zenodo.org/records/16644577",
-      "citation": "DESI Collaboration (2025), Phys. Rev. D 112, 083515",
+      "version": "dr2-bao-cosmo-params-v1.0",
+      "url": "https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/",
+      "citation": "DESI Collaboration (2025), DESI DR2 Results II: Measurement of Baryon Acoustic Oscillations and Cosmological Constraints, arXiv:2503.14738",
       "doi": "10.1103/PhysRevD.112.083515",
-      "license_terms_url": "https://data.desi.lbl.gov/doc/papers/dr2/",
-      "redistribution": "Use official DESI/Zenodo terms and acknowledgements.",
-      "approximate_size": "Tens to hundreds of MB for summary products and chains",
-      "acquisition": "Pin the official Zenodo record after owner approval.",
+      "license_terms_url": "https://data.desi.lbl.gov/doc/releases/",
+      "redistribution": "Public DESI scientific value-added product; preserve DESI acknowledgements and cite the DR2 Results II paper.",
+      "acquisition": "Pinned base-LCDM BAO-only iminuit summary files from the official DESI DR2 cosmology VAC v1.0; full posterior chains are intentionally excluded.",
+      "holdings": [
+        {
+          "path": "data/external/desi_dr2_bao/bestfit.minimum.txt",
+          "url": "https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/iminuit/base/desi-bao-all/bestfit.minimum.txt",
+          "bytes": 902,
+          "sha256": "bf8e35e2380ef35b137a77645dcb351af2ed2a93ca8da16c1fd71cb5dd7a1358"
+        },
+        {
+          "path": "data/external/desi_dr2_bao/bestfit.minimum",
+          "url": "https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/iminuit/base/desi-bao-all/bestfit.minimum",
+          "bytes": 3940,
+          "sha256": "4f6437661facb925673155efad0f27478ce08f0bfc9f58e0bf03bddfc96c9f21"
+        },
+        {
+          "path": "data/external/desi_dr2_bao/bestfit.minimize.updated.yaml",
+          "url": "https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/iminuit/base/desi-bao-all/bestfit.minimize.updated.yaml",
+          "bytes": 3969,
+          "sha256": "c4c23032d1695635aaea6eb47fabd909006ff32df0a27eadbf64b36c89f31ba1"
+        }
+      ],
       "verified": {
-        "needs_confirmation": ["Zenodo record", "exact files", "download size", "redistribution terms"]
+        "local_hashes": true,
+        "verified_at": "2026-10-09",
+        "source": "Official DESI dr2_vac_dr2_bao-cosmo-params_v1.0.sha256sum"
       }
     },
     {
       "id": "des-sn5yr",
-      "title": "Dark Energy Survey Supernova Program five-year release",
-      "status": "planned",
+      "title": "Dark Energy Survey Supernova Program five-year Hubble diagram",
+      "status": "existing_holding",
       "priority": "high",
-      "url": "https://github.com/des-science/DES-SN5YR",
+      "version": "e3493cb3b9505fc1f3f392d887364b50dae21439",
+      "url": "https://github.com/des-science/DES-SN5YR/tree/1.3",
       "citation": "Sanchez et al. (2024), ApJ 975, 5; Vincenzi et al. (2024), ApJ 975, 86",
       "data_doi": "10.5281/zenodo.12720778",
       "license_terms_url": "https://doi.org/10.5281/zenodo.12720778",
-      "redistribution": "Public GitHub/Zenodo release; cite the release and cosmology papers.",
-      "acquisition": "Pin the v1.3 legacy release or its Zenodo archive.",
+      "redistribution": "CC BY 4.0 public scientific release; preserve attribution and cite the data-release and cosmology papers.",
+      "acquisition": "Commit-pinned v1.3 Hubble diagram plus statistical and full systematic covariance matrices; the 1.46 GB archive is intentionally excluded.",
+      "holdings": [
+        {
+          "path": "data/external/des_sn5yr/DES-SN5YR_HD.csv",
+          "url": "https://raw.githubusercontent.com/des-science/DES-SN5YR/e3493cb3b9505fc1f3f392d887364b50dae21439/4_DISTANCES_COVMAT/DES-SN5YR_HD.csv",
+          "bytes": 91860,
+          "sha256": "95ab1e9f5460a056de37d2b4e28df73ce0c7fd471baba9fb37f1667f41b7901c"
+        },
+        {
+          "path": "data/external/des_sn5yr/STATONLY.txt.gz",
+          "url": "https://raw.githubusercontent.com/des-science/DES-SN5YR/e3493cb3b9505fc1f3f392d887364b50dae21439/4_DISTANCES_COVMAT/STATONLY.txt.gz",
+          "bytes": 103966,
+          "sha256": "89f296a26f9bb500ccfebb173420d80deb609243e424534a31d8fe7befa05fda"
+        },
+        {
+          "path": "data/external/des_sn5yr/STAT+SYS.txt.gz",
+          "url": "https://raw.githubusercontent.com/des-science/DES-SN5YR/e3493cb3b9505fc1f3f392d887364b50dae21439/4_DISTANCES_COVMAT/STAT%2BSYS.txt.gz",
+          "bytes": 16284316,
+          "sha256": "20bc94a881893235a94fc5a1b1c995f4b35bfae333996c2a0ce2696cb05381f2"
+        }
+      ],
       "verified": {
-        "source_reachable": true,
+        "local_hashes": true,
         "verified_at": "2026-10-09",
-        "needs_confirmation": ["exact archive size"]
+        "source": "GitHub commit e3493cb3b9505fc1f3f392d887364b50dae21439 and Zenodo record 12720778"
       }
     },
     {
@@ -201,18 +243,27 @@
     {
       "id": "codata-2022",
       "title": "CODATA 2022 recommended values of the fundamental constants",
-      "status": "planned",
+      "status": "existing_holding",
       "priority": "high",
+      "version": "2022-adjustment-2024-05-07",
       "url": "https://physics.nist.gov/cuu/Constants/index.html",
       "citation": "CODATA recommended values of the fundamental physical constants: 2022",
       "doi": "10.1103/RevModPhys.97.025002",
-      "license_terms_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-and-software",
-      "redistribution": "NIST US-government data policy applies; retain attribution.",
-      "approximate_size": "Less than 1 MB",
-      "acquisition": "Download and pin the NIST all-ASCII constants table.",
+      "license_terms_url": "https://www.nist.gov/disclaimer",
+      "redistribution": "NIST US-government work; retain source attribution and the NIST disclaimer.",
+      "acquisition": "Complete official NIST all-ASCII table for the 2022 CODATA adjustment.",
+      "holdings": [
+        {
+          "path": "data/external/codata_2022/allascii.txt",
+          "url": "https://physics.nist.gov/cuu/Constants/Table/allascii.txt",
+          "bytes": 40801,
+          "sha256": "77fb90e66c40db3e6eb16630bc9c88e4c7c8beddbe5e71be406f2f26e3f67e67"
+        }
+      ],
       "verified": {
-        "source_reachable": true,
-        "verified_at": "2026-10-09"
+        "local_hashes": true,
+        "verified_at": "2026-10-09",
+        "source": "Official NIST CODATA 2022 complete ASCII table"
       }
     }
   ]

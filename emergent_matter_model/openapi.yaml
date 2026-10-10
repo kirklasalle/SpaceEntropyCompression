@@ -223,6 +223,14 @@ paths:
       responses:
         '201': {description: Backup created}
         '403': {description: Data mutation disabled}
+  /api/v1/data/backups/offsite:
+    post:
+      summary: Create a verified backup under an independent configured root
+      operationId: createOffsiteDataBackup
+      responses:
+        '201': {description: Off-site backup created and verified}
+        '400': {description: No independent destination configured}
+        '403': {description: Data mutation disabled}
   /api/v1/data/backups/verify:
     post:
       summary: Verify every object in a data-library backup
@@ -237,6 +245,14 @@ paths:
         '200': {description: Backup restored}
         '403': {description: Data mutation disabled}
         '409': {description: Integrity or provenance conflict}
+  /api/v1/data/restore-drills:
+    post:
+      summary: Run a full temporary backup and restore verification drill
+      operationId: runDataRestoreDrill
+      responses:
+        '200': {description: Drill passed and durable receipt written}
+        '403': {description: Data mutation disabled}
+        '409': {description: Drill integrity failure}
   /api/v1/data/gc:
     post:
       summary: Find or remove unreferenced content-addressed objects
