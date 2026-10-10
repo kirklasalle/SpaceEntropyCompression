@@ -95,6 +95,9 @@ dev = [
     "mypy>=1.8",
     "types-Flask-Cors>=4.0",
 ]
+verification = [
+    "camb==1.6.0",
+]
 server = [
     "gunicorn>=21.2,<23",
 ]

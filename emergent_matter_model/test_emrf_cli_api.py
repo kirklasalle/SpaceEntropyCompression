@@ -184,8 +184,8 @@ def test_cli_physics_verification_json(capsys):
     assert emrf_cli.main(["verify", "physics", "--json"]) == 0
     report = json.loads(capsys.readouterr().out)
     assert report["all_passed"]
-    assert report["evidence_class"] == "software"
-    assert len(report["checks"]) == 4
+    assert report["evidence_class"] == "mixed"
+    assert len(report["checks"]) == 10
 
 
 def test_cli_data_list_runs(capsys):
@@ -339,8 +339,8 @@ def test_api_physics_verification(client):
     report = response.get_json()
     assert response.status_code == 200
     assert report["all_passed"]
-    assert report["evidence_class"] == "software"
-    assert len(report["checks"]) == 4
+    assert report["evidence_class"] == "mixed"
+    assert len(report["checks"]) == 10
 
 
 def test_api_data_mutation_requires_explicit_opt_in(client, monkeypatch):

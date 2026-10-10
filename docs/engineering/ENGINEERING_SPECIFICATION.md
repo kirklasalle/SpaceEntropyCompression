@@ -219,8 +219,10 @@ one-to-one onto these classes.
 The executable Phase 5 foundation certificate is exposed identically through
 `emrf verify physics --json` and `GET /api/v1/verification/physics`. Each check
 returns its measured value, independent reference, unit, tolerance, relative
-error and `software` evidence class. The detailed engine inventory and
-remaining verification gaps are tracked in
+error, evidence class and any scientific limitation. A report may therefore
+contain mixed `software` and `illustrative` evidence; passing a calibrated
+template consistency check never upgrades it to an independent prediction.
+The detailed engine inventory and remaining verification gaps are tracked in
 `SCIENTIFIC_VERIFICATION_MATRIX.md`; a missing check is reported as pending,
 never inferred to pass from unrelated regression coverage.
 

@@ -1,5 +1,6 @@
 -r emergent_matter_model/requirements.txt
 coverage[toml]>=7.6,<8
+camb==1.6.0
 hypothesis>=6.115,<6.116
 pytest-xdist>=3.6,<4
 ruff>=0.16,<1

@@ -17,6 +17,8 @@ class PhysicsCheck(TypedDict):
     relative_tolerance: float
     passed: bool
     reference: str
+    evidence_class: str
+    limitation: str | None
 
 
 class PhysicsVerificationReport(TypedDict):

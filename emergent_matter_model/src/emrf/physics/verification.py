@@ -31,6 +31,8 @@ class KnownLimitCheck(TypedDict):
     relative_tolerance: float
     passed: bool
     reference: str
+    evidence_class: str
+    limitation: str | None
 
 
 class KnownLimitReport(TypedDict):
@@ -154,6 +156,9 @@ def known_limit_report() -> KnownLimitReport:
         relative_tolerance: float,
         unit: str,
         reference: str,
+        *,
+        evidence_class: str = "software",
+        limitation: str | None = None,
     ) -> None:
         measured = float(measured)
         expected = float(expected)
@@ -169,6 +174,8 @@ def known_limit_report() -> KnownLimitReport:
                 "relative_tolerance": relative_tolerance,
                 "passed": bool(relative_error <= relative_tolerance),
                 "reference": reference,
+                "evidence_class": evidence_class,
+                "limitation": limitation,
             }
         )
 
@@ -210,8 +217,82 @@ def known_limit_report() -> KnownLimitReport:
         "Mpc",
         "Astropy 6.1 FlatLambdaCDM independent implementation",
     )
+    from cmb_acoustic_engine import EMRFCMBParams, acoustic_angular_scale, compute_acoustic_peaks
+    from lensing_engine import (
+        finite_path_point_mass_deflection,
+        integrate_point_mass_deflection,
+        point_mass_deflection_angle,
+    )
+
+    impact = R_sun.to_value(u.m)
+    mass = M_sun.to_value(u.kg)
+    add_check(
+        "lensing point-mass deflection",
+        point_mass_deflection_angle(mass, impact),
+        ppn_light_deflection(M_sun, R_sun).to_value(u.rad),
+        2e-15,
+        "rad",
+        "Independent unit-aware PPN gamma=1 reference",
+    )
+    limit = 20.0 * impact
+    exact_finite_path = finite_path_point_mass_deflection(mass, impact, limit)
+    ray_errors = [
+        abs(
+            integrate_point_mass_deflection(
+                mass,
+                impact,
+                line_of_sight_limit_m=limit,
+                intervals=intervals,
+            )
+            - exact_finite_path
+        )
+        for intervals in (256, 512, 1024)
+    ]
+    ray_orders = [
+        math.log2(ray_errors[index] / ray_errors[index + 1])
+        for index in range(2)
+    ]
+    add_check(
+        "lensing ray integration convergence order",
+        min(ray_orders),
+        2.0,
+        0.03,
+        "order",
+        "Composite trapezoidal rule second-order finite-path solution",
+    )
+
+    cmb_params = EMRFCMBParams()
+    theta_star, _ = acoustic_angular_scale(cmb_params)
+    cmb_peaks = compute_acoustic_peaks(cmb_params)
+    add_check(
+        "CMB acoustic angular scale against CAMB",
+        100.0 * theta_star,
+        1.0424541939952765,
+        1.5e-3,
+        "100 theta_star",
+        "CAMB 1.6.0, flat Planck-like cosmology, generated 2026-10-10",
+        evidence_class="illustrative",
+        limitation=(
+            "The EMRF acoustic engine is calibrated to Planck-scale values; "
+            "agreement is a template consistency check, not an independent prediction."
+        ),
+    )
+    for index, expected in enumerate((220.0, 536.0, 813.0), start=1):
+        add_check(
+            f"CMB TT peak {index} against CAMB",
+            float(cmb_peaks[f"l_{index}"]),
+            expected,
+            4e-3,
+            "multipole",
+            "CAMB 1.6.0 unlensed scalar TT peak extraction",
+            evidence_class="illustrative",
+            limitation=(
+                "Peak phase shifts are Planck-calibrated in the EMRF template; "
+                "this is not a Boltzmann-equation derivation."
+            ),
+        )
     return {
-        "evidence_class": "software",
+        "evidence_class": "mixed",
         "constants_reference": "NIST CODATA 2022",
         "all_passed": all(bool(check["passed"]) for check in checks),
         "checks": checks,

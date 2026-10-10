@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 
 import astropy.units as u
+import camb
 import numpy as np
 import pytest
 from astropy.constants import M_sun, R_sun
@@ -25,6 +26,7 @@ from physics_baseline import (
     integrate_orbit_1pn,
     solve_kepler,
 )
+from scipy.signal import find_peaks
 
 
 def test_codata_2022_constants_have_explicit_provenance() -> None:
@@ -39,11 +41,14 @@ def test_codata_2022_constants_have_explicit_provenance() -> None:
 
 def test_machine_readable_known_limit_certificate_passes() -> None:
     report = known_limit_report()
-    assert report["evidence_class"] == "software"
+    assert report["evidence_class"] == "mixed"
     assert report["constants_reference"] == "NIST CODATA 2022"
     assert report["all_passed"]
-    assert len(report["checks"]) == 4
+    assert len(report["checks"]) == 10
     assert all(check["passed"] for check in report["checks"])
+    assert {
+        check["evidence_class"] for check in report["checks"]
+    } == {"software", "illustrative"}
 
 
 def test_unit_boundaries_reject_bare_and_incompatible_values() -> None:
@@ -154,3 +159,34 @@ def test_rk4_orbit_refinement_recovers_fourth_order_convergence() -> None:
 def test_non_finite_physics_inputs_fail_closed(call, message: str) -> None:
     with pytest.raises(NumericalError, match=message):
         call()
+
+
+def test_cmb_reference_values_are_reproducible_with_camb() -> None:
+    params = camb.CAMBparams()
+    h = 0.674
+    params.set_cosmology(
+        H0=67.4,
+        ombh2=0.049 * h**2,
+        omch2=0.266 * h**2,
+        mnu=0.06,
+        omk=0.0,
+        tau=0.054,
+    )
+    params.InitPower.set_params(As=2.1e-9, ns=0.965)
+    params.set_for_lmax(1000, lens_potential_accuracy=0)
+    results = camb.get_results(params)
+    spectrum = results.get_cmb_power_spectra(
+        params,
+        CMB_unit="muK",
+        raw_cl=False,
+    )["unlensed_scalar"][:, 0]
+    peak_indices, _ = find_peaks(
+        spectrum[100:1000],
+        distance=150,
+        prominence=200,
+    )
+    peaks = peak_indices[:3] + 100
+    derived = results.get_derived_params()
+
+    assert peaks.tolist() == [220, 536, 813]
+    assert derived["thetastar"] == pytest.approx(1.0424541939952765, rel=1e-8)

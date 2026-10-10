@@ -268,6 +268,15 @@ uses the exact final partial step, fails closed on non-finite state and
 demonstrates fourth-order convergence. The complete current and pending engine
 inventory is maintained in `SCIENTIFIC_VERIFICATION_MATRIX.md`.
 
+**Deterministic engine slice implemented (2026-10-10):** the lensing engine
+now recovers the first-order GR point-mass deflection and exposes an independent
+finite-path ray integral with measured second-order convergence. The CMB
+acoustic template is cross-checked against CAMB 1.6.0 for the angular scale and
+first three unlensed TT peaks. These CMB checks are explicitly `illustrative`:
+the current engine is Planck-calibrated and is not an independent Boltzmann
+solver. `emrf verify physics` reports per-check evidence classes and
+limitations instead of presenting numerical agreement as physical validation.
+
 1. Known-limit test matrix for every engine (Newtonian, Schwarzschild,
    PPN, flat-LCDM vs astropy/CAMB, Bekenstein-Hawking).
 2. Units at boundaries with `astropy.units`; constants from CODATA 2022.

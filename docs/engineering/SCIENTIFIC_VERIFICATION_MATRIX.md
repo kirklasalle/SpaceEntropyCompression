@@ -26,9 +26,14 @@ GET /api/v1/verification/physics
 | Curvature | `physics_baseline.kretschmann_invariant` | Exact Schwarzschild invariant | Exact inverse-sixth-power radial scaling | Passing |
 | Cosmology | `cosmology_expansion` | Astropy 6.1 `FlatLambdaCDM` | Luminosity distances at five redshifts from 0.01 through 2.0 | Passing |
 | Black-hole thermodynamics | `black_hole_horizon_entropy` | Bekenstein-Hawking area law | Absolute solar-mass value, legacy-engine agreement and mass-squared scaling | Passing |
+| Gravitational lensing | `lensing_engine` | Unit-aware PPN point-mass reference | Exact `4GM/(c^2b)` limit and finite-path ray integration with measured order 2.0 | Passing |
+| CMB acoustic template | `cmb_acoustic_engine` | CAMB 1.6.0 | Angular scale and first three unlensed TT peak positions for a pinned Planck-like cosmology | Passing, illustrative |
 
-All checks above are classified as `software` evidence. The sources and
-tolerances are returned with each CLI/API result.
+Foundational equations and numerical convergence checks are classified as
+`software` evidence. CMB template comparisons are classified as `illustrative`
+because the current EMRF peak phase shifts and amplitudes are calibrated to
+Planck-scale values rather than derived by an independent Boltzmann solver.
+The sources, limitations and tolerances are returned with each CLI/API result.
 
 ## Engine-level status and remaining work
 
@@ -36,9 +41,9 @@ tolerances are returned with each CLI/API result.
 |---|---|---|---|
 | Core `EmergentMatterModel` | Unit and property tests for shape, monotonicity and scaling | Partially verified | Define physically meaningful dimensional boundaries and conservation laws |
 | Schwarzschild comparison | Golden output plus exact curvature scaling | Verified foundation | Add independent symbolic/high-precision cross-checks |
-| Lensing engine | Regression and stress tests | Pending known-limit certification | Point-mass bending and ray-step convergence against the PPN reference |
+| Lensing engine | Point-mass limit, second-order finite-path ray convergence, regression and SLACS template checks | Verified foundation | Extend the certified integrator from the point-mass limit to distributed lens profiles |
 | Cosmological expansion | Golden results and Astropy flat-LCDM comparison | Verified foundation | Add radiation and non-flat limits; optional CAMB/CLASS cross-code matrix |
-| CMB acoustic engine | Regression/stress behavior | Pending | Cross-code peak locations against CAMB or CLASS |
+| CMB acoustic engine | CAMB 1.6.0 angular-scale and first-three-peak cross-check | Illustrative cross-code consistency | Replace calibrated phase/amplitude formulas with a derived perturbation solver before claiming predictive verification |
 | Black-hole entropy | Area-law equality and benchmark suite | Verified foundation | Propagate constant uncertainty and document numerical dynamic range |
 | Astrometry engine | Synthetic recovery tests | Partially verified | Calibrated injection-recovery coverage and repeated-start agreement |
 | SPARC analyses | Eight-pipeline golden harness, profile and influence checks | Partially verified | SBC, calibrated intervals, deterministic repeated starts and reduced golden tolerance |

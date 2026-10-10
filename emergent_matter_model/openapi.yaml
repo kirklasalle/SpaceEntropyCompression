@@ -543,14 +543,14 @@ components:
       type: object
       required: [evidence_class, constants_reference, all_passed, checks]
       properties:
-        evidence_class: {type: string, enum: [software]}
+        evidence_class: {type: string, enum: [software, mixed]}
         constants_reference: {type: string}
         all_passed: {type: boolean}
         checks:
           type: array
           items:
             type: object
-            required: [name, measured, expected, unit, relative_error, relative_tolerance, passed, reference]
+            required: [name, measured, expected, unit, relative_error, relative_tolerance, passed, reference, evidence_class]
             properties:
               name: {type: string}
               measured: {type: number}
@@ -560,6 +560,10 @@ components:
               relative_tolerance: {type: number}
               passed: {type: boolean}
               reference: {type: string}
+              evidence_class:
+                type: string
+                enum: [software, illustrative]
+              limitation: {type: string, nullable: true}
     Run:
       type: object
       properties:

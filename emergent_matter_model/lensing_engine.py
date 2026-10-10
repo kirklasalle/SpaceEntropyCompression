@@ -12,8 +12,18 @@ spatial compression potential:
 from __future__ import annotations
 
 import dataclasses
-from typing import Dict, List, Tuple
+import math
+
 import numpy as np
+
+try:
+    from emrf_error_access import emrf_errors
+except ModuleNotFoundError as exc:
+    if exc.name != "emrf_error_access":
+        raise
+    from emergent_matter_model.emrf_error_access import emrf_errors
+
+NumericalError = emrf_errors().NumericalError
 
 # Physical & Cosmological Constants (SI Units)
 G: float = 6.67430e-11              # m^3 kg^-1 s^-2
@@ -22,6 +32,86 @@ M_SUN: float = 1.98847e30           # kg
 KPC_TO_M: float = 3.085677581e19    # meters per kpc
 ARCSEC_TO_RAD: float = np.pi / (180.0 * 3600.0)
 A0_NOMINAL: float = 1.20e-10        # m s^-2
+
+
+def _finite_positive(value: float, name: str) -> float:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(value)
+        or value <= 0
+    ):
+        raise NumericalError(f"{name} must be finite and positive")
+    return float(value)
+
+
+def _trapezoid(values: np.ndarray, coordinates: np.ndarray) -> float:
+    integrate = getattr(np, "trapezoid", np.trapz)
+    return float(integrate(values, coordinates))
+
+
+def point_mass_deflection_angle(mass_kg: float, impact_parameter_m: float) -> float:
+    """Return the first-order GR point-mass deflection ``4GM/(c^2 b)`` in radians."""
+    mass = _finite_positive(mass_kg, "mass_kg")
+    impact = _finite_positive(impact_parameter_m, "impact_parameter_m")
+    result = 4.0 * G * mass / (C_LIGHT**2 * impact)
+    if not math.isfinite(result):
+        raise NumericalError("point-mass deflection produced a non-finite result")
+    return result
+
+
+def integrate_point_mass_deflection(
+    mass_kg: float,
+    impact_parameter_m: float,
+    *,
+    line_of_sight_limit_m: float,
+    intervals: int,
+) -> float:
+    """Integrate weak-field transverse bending over a finite line of sight.
+
+    Composite trapezoidal integration is deliberately exposed so refinement
+    order can be measured independently of the closed-form result.
+    """
+    mass = _finite_positive(mass_kg, "mass_kg")
+    impact = _finite_positive(impact_parameter_m, "impact_parameter_m")
+    limit = _finite_positive(line_of_sight_limit_m, "line_of_sight_limit_m")
+    if isinstance(intervals, bool) or not isinstance(intervals, int) or intervals < 2:
+        raise ValueError("intervals must be an integer greater than one")
+    try:
+        with np.errstate(over="raise", invalid="raise", divide="raise"):
+            z = np.linspace(-limit, limit, intervals + 1)
+            transverse_gradient = G * mass * impact / (impact**2 + z**2) ** 1.5
+            integral = _trapezoid(transverse_gradient, z)
+            result = float((2.0 / C_LIGHT**2) * integral)
+    except (FloatingPointError, OverflowError) as exc:
+        raise NumericalError("ray integration produced an invalid value") from exc
+    if not math.isfinite(result):
+        raise NumericalError("ray integration produced a non-finite result")
+    return result
+
+
+def finite_path_point_mass_deflection(
+    mass_kg: float,
+    impact_parameter_m: float,
+    line_of_sight_limit_m: float,
+) -> float:
+    """Return the exact weak-field deflection accumulated from ``-L`` to ``L``."""
+    mass = _finite_positive(mass_kg, "mass_kg")
+    impact = _finite_positive(impact_parameter_m, "impact_parameter_m")
+    limit = _finite_positive(line_of_sight_limit_m, "line_of_sight_limit_m")
+    try:
+        result = (
+            4.0
+            * G
+            * mass
+            * limit
+            / (C_LIGHT**2 * impact * math.hypot(impact, limit))
+        )
+    except OverflowError as exc:
+        raise NumericalError("finite-path deflection overflowed") from exc
+    if not math.isfinite(result):
+        raise NumericalError("finite-path deflection produced a non-finite result")
+    return result
 
 
 @dataclasses.dataclass(frozen=True)
@@ -36,7 +126,7 @@ class StrongLensBenchmark:
 
 
 # Curated SLACS Strong Lens Benchmark Sample (Bolton et al. 2008, Auger et al. 2009)
-SLACS_BENCHMARKS: List[StrongLensBenchmark] = [
+SLACS_BENCHMARKS: list[StrongLensBenchmark] = [
     StrongLensBenchmark("SDSS J0029-0055", 0.227, 0.971, 229.0, 0.96, 0.05),
     StrongLensBenchmark("SDSS J0216-0813", 0.332, 0.523, 333.0, 1.15, 0.06),
     StrongLensBenchmark("SDSS J0737+3212", 0.322, 0.581, 310.0, 0.96, 0.05),
@@ -54,8 +144,8 @@ def angular_diameter_distance_flat_lcdm(z: float, h0: float = 70.0, omega_m: flo
     # Numerical integration of 1 / E(z')
     zs = np.linspace(0.0, z, 200)
     ez = np.sqrt(omega_m * (1.0 + zs) ** 3 + (1.0 - omega_m))
-    trap_fn = np.trapezoid if hasattr(np, "trapezoid") else np.trapz
-    dc = c_over_h * trap_fn(1.0 / ez, zs)
+    integral = _trapezoid(1.0 / ez, zs)
+    dc = c_over_h * integral
     da = dc / (1.0 + z)
     return float(da)
 
@@ -91,7 +181,8 @@ def calculate_deflection_angle_profile(
 
     In EMRF, the spatial metric compression induces an effective potential
     whose asymptotic rotation velocity is V_circ = (G M a0)^(1/4).
-    For a softened isothermal sphere, alpha(b) = (2 * pi * V_circ^2 / c^2) * [b / sqrt(b^2 + r_c^2)].
+    For a softened isothermal sphere, alpha(b) approaches
+    ``2 pi V_circ^2 / c^2`` with core softening ``b / sqrt(b^2 + r_c^2)``.
     """
     v_ms = v_circ_kms * 1000.0
     alpha_asymptotic_rad = 2.0 * np.pi * (v_ms / C_LIGHT) ** 2
@@ -103,10 +194,11 @@ def calculate_deflection_angle_profile(
 def trace_null_geodesics_2d(
     b_grid_kpc: np.ndarray,
     theta_ein_kpc: float,
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """Perform 2D ray tracing across lens plane and return deflected source plane positions."""
     # Source position beta = theta - alpha(theta)
-    # where alpha(theta) = theta_ein^2 / theta (for point mass) or theta_ein * (theta / |theta|) (for SIS)
+    # This legacy mapping implements the SIS branch:
+    # alpha(theta) = theta_ein * theta / |theta|.
     x, y = b_grid_kpc
     r = np.sqrt(x ** 2 + y ** 2) + 1e-12
     # Deflection direction is radial inward
@@ -117,7 +209,7 @@ def trace_null_geodesics_2d(
     return source_x, source_y
 
 
-def evaluate_slacs_sample() -> Dict[str, dict]:
+def evaluate_slacs_sample() -> dict[str, dict]:
     """Evaluate EMRF relativistic lensing predictions against all SLACS benchmark lenses."""
     results = {}
     for lens in SLACS_BENCHMARKS:
@@ -158,6 +250,13 @@ if __name__ == "__main__":
     print("EMRF RELATIVISTIC GRAVITATIONAL LENSING & SLACS BENCHMARK REPORT")
     print("=" * 80)
     for name, data in summary["evaluations"].items():
-        print(f"Lens: {name:<16} | Obs: {data['theta_obs_arcsec']:.2f}\" | Pred: {data['theta_pred_arcsec']:.2f}\" | Resid: {data['residual_arcsec']:.2f}\" | Chi2: {data['chi2']:.2f}")
-    print(f"Total SLACS Chi2: {summary['total_chi2']:.2f} | Reduced Chi2: {summary['reduced_chi2']:.2f}")
+        print(
+            f"Lens: {name:<16} | Obs: {data['theta_obs_arcsec']:.2f}\" | "
+            f"Pred: {data['theta_pred_arcsec']:.2f}\" | "
+            f"Resid: {data['residual_arcsec']:.2f}\" | Chi2: {data['chi2']:.2f}"
+        )
+    print(
+        f"Total SLACS Chi2: {summary['total_chi2']:.2f} | "
+        f"Reduced Chi2: {summary['reduced_chi2']:.2f}"
+    )
     print("=" * 80)

@@ -308,9 +308,12 @@ def cmd_verify_physics(a: argparse.Namespace) -> int:
         for check in report["checks"]:
             marker = "PASS" if check["passed"] else "FAIL"
             print(
-                f"{marker:<4} {check['name']}: {check['measured']:.12g} "
+                f"{marker:<4} [{check['evidence_class']}] {check['name']}: "
+                f"{check['measured']:.12g} "
                 f"{check['unit']} (relative error {check['relative_error']:.3g})"
             )
+            if check["limitation"]:
+                print(f"     limitation: {check['limitation']}")
         print("status:", "VERIFIED" if report["all_passed"] else "FAILED")
     return 0 if report["all_passed"] else 1
 
