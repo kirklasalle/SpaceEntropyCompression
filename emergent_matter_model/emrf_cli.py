@@ -340,6 +340,36 @@ def cmd_verify_inference(a: argparse.Namespace) -> int:
     return 0 if report["all_passed"] else 1
 
 
+def cmd_verify_engines(a: argparse.Namespace) -> int:
+    from emrf_validation_access import engine_validation_report
+
+    report = engine_validation_report()
+    if a.json:
+        _print_json(report)
+    else:
+        for check in report["checks"]:
+            marker = "PASS" if check["passed"] else "FAIL"
+            print(
+                f"{marker:<4} [{check['evidence_class']}] {check['name']}: "
+                f"{check['measured']:.6g}"
+            )
+            if check["limitation"]:
+                print(f"     limitation: {check['limitation']}")
+        print("status:", "VERIFIED" if report["all_passed"] else "FAILED")
+    return 0 if report["all_passed"] else 1
+
+
+def cmd_predict(a: argparse.Namespace) -> int:
+    from emrf_prediction_access import commit_prediction_file, verify_prediction_file
+
+    if a.commit:
+        result = commit_prediction_file(a.commit, label=a.label)
+    else:
+        result = verify_prediction_file(a.commitment_id, a.verify)
+    _print_json(result)
+    return 0 if result.get("matches", True) else 1
+
+
 def cmd_serve(a: argparse.Namespace) -> int:
     from server import app
 
@@ -506,6 +536,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     v.add_argument("--json", action="store_true")
     v.set_defaults(func=cmd_verify_inference)
+    v = vsub.add_parser("engines", help="run remaining cross-engine verification")
+    v.add_argument("--json", action="store_true")
+    v.set_defaults(func=cmd_verify_engines)
+
+    s = sub.add_parser("predict", help="commit or verify a preregistered prediction")
+    action = s.add_mutually_exclusive_group(required=True)
+    action.add_argument("--commit", metavar="FILE", help="commit the SHA-256 of prediction bytes")
+    action.add_argument("--verify", metavar="FILE", help="verify revealed prediction bytes")
+    s.add_argument("--label", help="human-readable prediction label")
+    s.add_argument("--commitment-id", help="commitment id used with --verify")
+    s.set_defaults(func=cmd_predict)
 
     s = sub.add_parser("serve", help="start the REST API (development server)")
     s.add_argument("--host", default="127.0.0.1")
@@ -521,6 +562,11 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "predict":
+            if args.commit and not args.label:
+                raise ValueError("--label is required with --commit")
+            if args.verify and not args.commitment_id:
+                raise ValueError("--commitment-id is required with --verify")
         return int(args.func(args))
     except (KeyError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)

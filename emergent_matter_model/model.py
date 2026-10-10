@@ -7,10 +7,10 @@ Neither entropy (S) nor time (t) is a spatial coordinate axis.
 
 Time t parameterizes the progression of dynamical change.
 
-Entropy S(X,t) is a thermodynamic state field that characterizes the 
+Entropy S(X,t) is a thermodynamic state field that characterizes the
 organization and compression of energy-momentum within spatial degrees of freedom.
-Entropy is the arrow: physical change is oriented in the direction of 
-increasing entropy (Second Law). Entropy couples into the effective compression 
+Entropy is the arrow: physical change is oriented in the direction of
+increasing entropy (Second Law). Entropy couples into the effective compression
 functional as a state variable:
 
   C(X,S,t) = F(E, S, geometry, t)
@@ -27,7 +27,7 @@ of freedom d_0, d_1, …).
   C(X, S) = Σ_i w_i · C_i(x_i) + w_S · C_S(S)    effective compression
   M(X, S) = k · ( C(X, S) / C₀ )^α                emergent matter density
 
-Each spatial C_i is a function of coordinate (x_i); C_S is the entropy 
+Each spatial C_i is a function of coordinate (x_i); C_S is the entropy
 coupling evaluated at state S(X,t).
 
 Supports brute-force grid simulation over all n dimensions and an
@@ -202,7 +202,7 @@ class EmergentMatterModel:
     ) -> np.ndarray:
         """Vectorised simulation for 3 spatial + entropy state evaluation.
 
-        Produces M[x, y, z, S] by evaluating over 3D space for each 
+        Produces M[x, y, z, S] by evaluating over 3D space for each
         entropy state in the sweep. Falls back to ``simulate_grid`` when
         ``n_total != 4``.
 
@@ -319,6 +319,12 @@ class EmergentMatterModel:
         return {
             "classification": classification,
             "verdict": verdict,
+            "verdict_deprecated": True,
+            "evidence_class": "software",
+            "limitation": (
+                "Information-criterion classification is a software result until "
+                "applied to independently validated observational likelihoods."
+            ),
             "delta_bic": delta_bic,
             "bic_gr": float(bic_gr),
             "bic_candidate": float(bic_cm),
@@ -332,4 +338,3 @@ class EmergentMatterModel:
             f"weights={self.weights.tolist()}, k={self.k}, "
             f"alpha={self.alpha}, C0={self.C0})"
         )
-

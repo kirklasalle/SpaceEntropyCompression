@@ -78,3 +78,10 @@ def test_recorded_real_data_result_is_traceable_and_not_emrf():
         (PATH.parents[1] / "emergent_matter_model" / "pantheon_inference.py").read_bytes()
     ).hexdigest()
     assert result["integration_check_absolute_delta_chi2"] < 1e-6
+    diagnostics = result["posterior_predictive_diagnostics"]
+    assert diagnostics["whitened_residual_rms"] == pytest.approx(0.9393290554)
+    assert 0 <= diagnostics["chi2_survival_probability"] <= 1
+    evidence = result["declared_prior_evidence"]
+    assert evidence["prior_dependent"] is True
+    assert evidence["integration_absolute_error"] < 1e-10
+    assert "no EMRF Bayes factor" in evidence["limitation"]

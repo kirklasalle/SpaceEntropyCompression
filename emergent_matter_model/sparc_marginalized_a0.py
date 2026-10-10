@@ -98,6 +98,25 @@ class MarginalizedGalaxy:
         x0 = self.x_last.get(key, np.array([math.log10(ups0), 1.0, self.gal.inclination_deg]))
         res = optimize.minimize(lambda x: self.chi2(x, nu, a0) + self.prior(x, ups0), x0,
                                 method="L-BFGS-B", bounds=self.bounds)
+        if not res.success or not np.isfinite(res.fun) or not np.isfinite(res.x).all():
+            retry_start = res.x if np.isfinite(res.x).all() else x0
+            retry = optimize.minimize(
+                lambda x: self.chi2(x, nu, a0) + self.prior(x, ups0),
+                retry_start,
+                method="Powell",
+                bounds=self.bounds,
+                options={"xtol": 1e-10, "ftol": 1e-10, "maxiter": 2000},
+            )
+            if (
+                not retry.success
+                or not np.isfinite(retry.fun)
+                or not np.isfinite(retry.x).all()
+            ):
+                raise RuntimeError(
+                    "SPARC nuisance optimizer did not converge: "
+                    f"L-BFGS-B={res.message}; Powell={retry.message}"
+                )
+            res = retry
         self.x_last[key] = res.x
         return float(res.fun), self.chi2(res.x, nu, a0), res.x
 

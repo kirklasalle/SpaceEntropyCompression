@@ -66,7 +66,7 @@ def hubble_expansion_factor(
     omega_lambda: float = OMEGA_LAMBDA_DEFAULT
 ) -> float:
     """Computes the dimensionless expansion factor E(z) = H(z) / H_0.
-    
+
     Assumes flat FLRW universe: E(z) = sqrt(Omega_m * (1+z)^3 + Omega_Lambda).
     """
     if z < 0.0:
@@ -81,7 +81,7 @@ def critical_acceleration_z(
     omega_lambda: float = OMEGA_LAMBDA_DEFAULT
 ) -> float:
     """Computes the evolving cosmic horizon acceleration scale a_0(z) in m/s^2.
-    
+
     In EMRF, a_0(z) = c * H(z) / (2 * pi) = a_0(0) * E(z).
     """
     return a0_zero * hubble_expansion_factor(z, omega_m, omega_lambda)
@@ -191,6 +191,11 @@ def evaluate_high_z_kinematics(
 
     return {
         "dataset": "JWST & ALMA High-Redshift Galaxy Kinematics",
+        "evidence_class": "synthetic",
+        "limitations": [
+            "Bundled catalogue is synthetic and is not observational JWST/ALMA evidence.",
+            "Model comparison validates code paths, not an evolving acceleration law.",
+        ],
         "n_galaxies": n_galaxies,
         "redshift_range": [min(g.redshift_z for g in catalog), max(g.redshift_z for g in catalog)],
         "models": {
@@ -208,9 +213,88 @@ def evaluate_high_z_kinematics(
         "model_comparison": {
             "delta_bic": float(delta_bic),
             "delta_chi2": float(chi2_evolving - chi2_static),
-            "verdict": verdict
+            "verdict": verdict,
+            "verdict_deprecated": True,
+            "interpretation": (
+                f"{verdict} This result is classified synthetic and must not be "
+                "reported as an observational detection."
+            ),
         },
         "galaxy_reports": galaxy_reports
+    }
+
+
+def fit_high_z_acceleration_scale(
+    catalog: list[HighZGalaxyRecord],
+    *,
+    evolving: bool = True,
+    initial_a0: float = A0_ZERO_SI,
+) -> dict[str, Any]:
+    """Fit ``a0(0)`` while propagating velocity and baryonic-mass uncertainties."""
+    if not catalog:
+        raise ValueError("Catalog contains no galaxy records.")
+    if not math.isfinite(initial_a0) or initial_a0 <= 0:
+        raise ValueError("initial_a0 must be finite and positive")
+
+    def residuals(log_scale_vector: np.ndarray) -> np.ndarray:
+        a0_zero = initial_a0 * math.exp(float(log_scale_vector[0]))
+        values = []
+        for galaxy in catalog:
+            if (
+                not math.isfinite(galaxy.v_rot_kms)
+                or not math.isfinite(galaxy.v_rot_err_kms)
+                or galaxy.v_rot_err_kms <= 0
+                or not math.isfinite(galaxy.log_m_bar_err)
+                or galaxy.log_m_bar_err < 0
+            ):
+                raise ValueError("JWST fit inputs and uncertainties must be finite")
+            acceleration = (
+                critical_acceleration_z(galaxy.redshift_z, a0_zero)
+                if evolving
+                else a0_zero
+            )
+            prediction = predict_flat_velocity_kms(
+                10.0 ** galaxy.log_m_bar_solar,
+                acceleration,
+            )
+            mass_velocity_error = (
+                prediction * math.log(10.0) * galaxy.log_m_bar_err / 4.0
+            )
+            total_error = math.hypot(galaxy.v_rot_err_kms, mass_velocity_error)
+            values.append((galaxy.v_rot_kms - prediction) / total_error)
+        return np.asarray(values)
+
+    from scipy.optimize import least_squares
+
+    result = least_squares(
+        residuals,
+        np.array([0.0]),
+        bounds=(np.array([-4.0]), np.array([4.0])),
+        xtol=1e-12,
+        ftol=1e-12,
+        gtol=1e-12,
+    )
+    if not result.success or not np.isfinite(result.fun).all():
+        raise RuntimeError(f"JWST optimizer did not converge: {result.message}")
+    information = float(result.jac[:, 0] @ result.jac[:, 0])
+    if not math.isfinite(information) or information <= 0:
+        raise RuntimeError("JWST acceleration scale is not locally identifiable")
+    best_a0 = initial_a0 * math.exp(float(result.x[0]))
+    log_standard_error = math.sqrt(1.0 / information)
+    chi2 = float(result.fun @ result.fun)
+    return {
+        "model": "evolving_a0_z" if evolving else "static_a0",
+        "best_a0_zero": best_a0,
+        "a0_standard_error": best_a0 * log_standard_error,
+        "log_a0_standard_error": log_standard_error,
+        "chi2": chi2,
+        "degrees_of_freedom": len(catalog) - 1,
+        "reduced_chi2": chi2 / max(len(catalog) - 1, 1),
+        "optimizer_success": True,
+        "optimizer_message": result.message,
+        "active_bound": bool(result.active_mask[0]),
+        "mass_uncertainty_propagated": True,
+        "evidence_class": "synthetic",
     }
 
 

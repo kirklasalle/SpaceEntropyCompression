@@ -18,7 +18,7 @@ def test_inference_certificate_passes_declared_synthetic_checks(report):
     assert report["evidence_class"] == "synthetic"
     assert report["realizations"] == 64
     assert report["random_seed"] == 20261010
-    assert len(report["checks"]) == 11
+    assert len(report["checks"]) == 14
     assert all(check["evidence_class"] == "synthetic" for check in report["checks"])
     assert all(check["passed"] for check in report["checks"])
     assert report["truths"]["sparc_a_entropy_m_per_s2"] == pytest.approx(
@@ -46,4 +46,4 @@ def test_inference_certificate_states_observational_limitations(report):
     limitations = " ".join(report["limitations"]).lower()
     assert "synthetic" in limitations
     assert "does not constitute observational evidence" in limitations
-    assert "real sparc nuisance-parameter sbc" in limitations
+    assert "larger real-survey systematics" in limitations

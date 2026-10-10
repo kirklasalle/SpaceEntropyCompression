@@ -28,6 +28,7 @@ from model import EmergentMatterModel
 # Remote execution of registered programs is disabled unless explicitly enabled.
 RUN_ENV_FLAG = "EMRF_API_ALLOW_RUN"
 DATA_WRITE_ENV_FLAG = "EMRF_API_ALLOW_DATA_WRITE"
+PREDICTION_WRITE_ENV_FLAG = "EMRF_API_ALLOW_PREDICTION_WRITE"
 _MAX_RUN_TIMEOUT_SEC = 600.0
 
 app = Flask(__name__)
@@ -244,6 +245,15 @@ def verify_physics():
     return jsonify(report), 200 if report["all_passed"] else 500
 
 
+@app.route('/api/v1/verification/engines', methods=['GET'])
+def verify_engines():
+    """Run remaining deterministic and synthetic engine checks."""
+    from emrf_validation_access import engine_validation_report
+
+    report = engine_validation_report()
+    return jsonify(report), 200 if report["all_passed"] else 500
+
+
 @app.route('/api/v1/verification/inference', methods=['GET'])
 def verify_inference():
     """Run deterministic synthetic inference calibration checks."""
@@ -251,6 +261,55 @@ def verify_inference():
 
     report = inference_validation_report()
     return jsonify(report), 200 if report["all_passed"] else 500
+
+
+@app.route('/api/v1/predictions/commit', methods=['POST'])
+def commit_prediction():
+    """Commit a prediction digest without retaining prediction content."""
+    if os.environ.get(PREDICTION_WRITE_ENV_FLAG) != "1":
+        return jsonify({
+            'error': f'Prediction writes are disabled. Set {PREDICTION_WRITE_ENV_FLAG}=1 '
+                     'on a trusted host to enable them.'
+        }), 403
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or "prediction" not in data or "label" not in data:
+        return jsonify({'error': 'JSON body requires label and prediction'}), 400
+    try:
+        from emrf_prediction_access import commit_json_prediction
+
+        return jsonify(commit_json_prediction(data["prediction"], label=data["label"])), 201
+    except (TypeError, ValueError, OSError) as exc:
+        return jsonify({'error': str(exc)}), 400
+
+
+@app.route('/api/v1/predictions/<commitment_id>', methods=['GET'])
+def prediction_commitment(commitment_id: str):
+    """Return public metadata for a prediction commitment."""
+    try:
+        from emrf_prediction_access import get_commitment
+
+        return jsonify(get_commitment(commitment_id))
+    except KeyError as exc:
+        return jsonify({'error': exc.args[0]}), 404
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+
+
+@app.route('/api/v1/predictions/<commitment_id>/verify', methods=['POST'])
+def verify_prediction(commitment_id: str):
+    """Verify a revealed JSON prediction against an immutable commitment."""
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or "prediction" not in data:
+        return jsonify({'error': 'JSON body requires prediction'}), 400
+    try:
+        from emrf_prediction_access import verify_json_prediction
+
+        report = verify_json_prediction(commitment_id, data["prediction"])
+        return jsonify(report), 200 if report["matches"] else 409
+    except KeyError as exc:
+        return jsonify({'error': exc.args[0]}), 404
+    except (TypeError, ValueError) as exc:
+        return jsonify({'error': str(exc)}), 400
 
 
 @app.route('/api/v1/commands', methods=['GET'])

@@ -18,7 +18,7 @@ class ValidationCheck(TypedDict):
     passed: bool
     reference: str
     evidence_class: str
-    limitation: str
+    limitation: str | None
 
 
 class InferenceValidationReport(TypedDict):
@@ -28,6 +28,13 @@ class InferenceValidationReport(TypedDict):
     random_seed: int
     checks: list[ValidationCheck]
     truths: dict[str, float]
+    limitations: list[str]
+
+
+class EngineValidationReport(TypedDict):
+    evidence_class: str
+    all_passed: bool
+    checks: list[ValidationCheck]
     limitations: list[str]
 
 
@@ -50,4 +57,11 @@ def inference_validation_report() -> InferenceValidationReport:
     return cast(
         InferenceValidationReport,
         _load_validation().inference_validation_report(),
+    )
+
+
+def engine_validation_report() -> EngineValidationReport:
+    return cast(
+        EngineValidationReport,
+        _load_validation().engine_validation_report(),
     )

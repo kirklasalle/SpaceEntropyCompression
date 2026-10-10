@@ -1,7 +1,7 @@
 # EMRF Scientific Verification Matrix
 
 **Status date:** 2026-10-10
-**Scope:** Phase 5 verification foundation
+**Scope:** Completed Phase 5 verification and validation baseline
 **Interpretation:** A passing software check demonstrates recovery of a known
 limit. It does not confirm EMRF as a physical theory.
 
@@ -28,6 +28,11 @@ GET /api/v1/verification/physics
 | Black-hole thermodynamics | `black_hole_horizon_entropy` | Bekenstein-Hawking area law | Absolute solar-mass value, legacy-engine agreement and mass-squared scaling | Passing |
 | Gravitational lensing | `lensing_engine` | Unit-aware PPN point-mass reference | Exact `4GM/(c^2b)` limit and finite-path ray integration with measured order 2.0 | Passing |
 | CMB acoustic template | `cmb_acoustic_engine` | CAMB 1.6.0 | Angular scale and first three unlensed TT peak positions for a pinned Planck-like cosmology | Passing, illustrative |
+| Distributed lens | `lensing_engine` | Analytical softened-isothermal projected mass | Independent radial mass integral and measured second-order convergence | Passing |
+| Astrometry inference | `fit_astrometry` | Known synthetic coupling | Bias, interval coverage and residual scale across 32 realizations | Passing, synthetic |
+| High-redshift inference | `fit_jwst` | Known synthetic acceleration scale | Bias, interval coverage and propagated mass/velocity residual scale across 64 realizations | Passing, synthetic |
+| Quantum benchmark | `quantum_vibrational_compression` | Compton identity and published benchmark constants | `omega_C lambda_bar = c` and electron/proton/Higgs wavelength checks | Passing, mixed software/illustrative |
+| Core phenomenology | `EmergentMatterModel` | Normalized weighted functional | Common weight-scale invariance | Passing, software |
 
 Foundational equations and numerical convergence checks are classified as
 `software` evidence. CMB template comparisons are classified as `illustrative`
@@ -39,18 +44,18 @@ The sources, limitations and tolerances are returned with each CLI/API result.
 
 | Engine or analysis family | Existing evidence | Phase 5 status | Required next verification |
 |---|---|---|---|
-| Core `EmergentMatterModel` | Unit and property tests for shape, monotonicity and scaling | Partially verified | Define physically meaningful dimensional boundaries and conservation laws |
+| Core `EmergentMatterModel` | Unit/property tests plus certified weight-scale invariance | Verified phenomenological boundary | Any future physical conservation claim requires a derived dynamical theory |
 | Schwarzschild comparison | Golden output plus exact curvature scaling | Verified foundation | Add independent symbolic/high-precision cross-checks |
-| Lensing engine | Point-mass limit, second-order finite-path ray convergence, regression and SLACS template checks | Verified foundation | Extend the certified integrator from the point-mass limit to distributed lens profiles |
+| Lensing engine | Point-mass and distributed-profile limits with second-order convergence | Verified | Extend to additional observational mass models as new likelihoods are admitted |
 | Cosmological expansion | Golden results and Astropy flat-LCDM comparison | Verified foundation | Add radiation and non-flat limits; optional CAMB/CLASS cross-code matrix |
 | CMB acoustic engine | CAMB 1.6.0 angular-scale and first-three-peak cross-check | Illustrative cross-code consistency | Replace calibrated phase/amplitude formulas with a derived perturbation solver before claiming predictive verification |
 | Black-hole entropy | Area-law equality and benchmark suite | Verified foundation | Propagate constant uncertainty and document numerical dynamic range |
-| Astrometry engine | Synthetic recovery tests | Partially verified | Calibrated injection-recovery coverage and repeated-start agreement |
-| SPARC analyses | Eight-pipeline golden harness; 64-realization two-parameter recovery, local interval coverage and repeated-start certificate | Calibrated synthetic foundation | Extend SBC to the real-data distance/inclination nuisance hierarchy and reduce golden tolerance |
-| Pantheon+ covariance fit | Full-covariance golden pipeline; 64-realization omega_m recovery, profile coverage and residual-scale certificate | Calibrated synthetic foundation | Add real-survey posterior predictive checks, selection systematics and evidence calculation |
-| JWST engine | Regression and domain checks | Pending | Synthetic signal recovery and nuisance-parameter calibration |
-| Quantum vibrational compression | Demonstration calculations | Pending | Units, independent oscillator limits and evidence classification |
-| Stress-test scripts and figure generators | Golden/regression outputs where applicable | Software-only | Keep separate from observational confirmation; remove legacy verdict semantics |
+| Astrometry engine | 32-realization calibrated coupling recovery, interval coverage and residual scale | Calibrated synthetic | Joint orbital-element posterior is a future observational analysis |
+| SPARC analyses | Golden harness; two-parameter and nuisance-hierarchy recovery, coverage, residual and repeated-start certificates | Calibrated synthetic | Larger non-Gaussian survey-systematics studies remain dataset-specific research |
+| Pantheon+ covariance fit | Full-covariance golden pipeline; calibrated recovery; real whitened residuals; proper-prior evidence quadrature | Verified baseline | EMRF cosmology requires a separately derived likelihood before a Bayes factor exists |
+| JWST engine | 64-realization acceleration recovery with propagated mass uncertainty | Calibrated synthetic | Replace the synthetic catalogue before any observational claim |
+| Quantum vibrational compression | Compton identity, particle benchmarks and strict mass boundaries | Verified limits, model illustrative | A derived nonlinear field equation is required for predictive physical status |
+| Stress-test scripts and figure generators | Golden/regression outputs where applicable; active outputs carry evidence limitations | Software-only | Historical verdict keys remain deprecated compatibility fields |
 
 ## Preservation and failure policy
 
@@ -64,3 +69,5 @@ The sources, limitations and tolerances are returned with each CLI/API result.
    scientific review; tests are never weakened merely to accept drift.
 5. Injection-recovery checks are classified `synthetic`. Their passing status
    validates recovery and uncertainty behavior only for the declared designs.
+6. Phase 5 completion means the verification baseline is operational; it does
+   not promote illustrative templates or synthetic catalogues to observations.

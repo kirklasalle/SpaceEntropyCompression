@@ -360,6 +360,82 @@ def compute_information_criteria(
     return ln_l, aic, bic
 
 
+def fit_emrf_beta(
+    obs: dict[str, np.ndarray],
+    params: SgrAOrbitalParameters,
+    *,
+    initial_beta: float = 0.0,
+    bounds: tuple[float, float] = (-0.5, 0.5),
+) -> dict[str, Any]:
+    """Fit the dimensionless EMRF precession coupling with local uncertainty."""
+    required = {
+        "epoch",
+        "ra_mas",
+        "ra_err_mas",
+        "dec_mas",
+        "dec_err_mas",
+        "vr_kms",
+        "vr_err_kms",
+    }
+    if not required <= set(obs):
+        raise ValueError("Missing required astrometry arrays")
+    arrays = {name: np.asarray(obs[name], dtype=float) for name in required}
+    lengths = {len(value) for value in arrays.values()}
+    if lengths == {0} or len(lengths) != 1:
+        raise ValueError("Astrometry arrays must have one shared non-zero length")
+    if any(not np.isfinite(value).all() for value in arrays.values()):
+        raise ValueError("Astrometry fit inputs must be finite")
+    if any(np.any(arrays[name] <= 0) for name in ("ra_err_mas", "dec_err_mas", "vr_err_kms")):
+        raise ValueError("Astrometry uncertainties must be positive")
+    lower, upper = bounds
+    if not math.isfinite(lower) or not math.isfinite(upper) or lower >= upper:
+        raise ValueError("beta bounds must be finite and increasing")
+
+    def residuals(beta_vector: np.ndarray) -> np.ndarray:
+        prediction = project_orbital_position_to_sky(
+            params,
+            arrays["epoch"],
+            model_type="emrf",
+            emrf_beta=float(beta_vector[0]),
+        )
+        return np.concatenate(
+            (
+                (arrays["ra_mas"] - prediction["ra_mas"]) / arrays["ra_err_mas"],
+                (arrays["dec_mas"] - prediction["dec_mas"]) / arrays["dec_err_mas"],
+                (arrays["vr_kms"] - prediction["vr_kms"]) / arrays["vr_err_kms"],
+            )
+        )
+
+    from scipy.optimize import least_squares
+
+    result = least_squares(
+        residuals,
+        np.array([initial_beta], dtype=float),
+        bounds=(np.array([lower]), np.array([upper])),
+        xtol=1e-12,
+        ftol=1e-12,
+        gtol=1e-12,
+    )
+    if not result.success or not np.isfinite(result.fun).all():
+        raise RuntimeError(f"Astrometry optimizer did not converge: {result.message}")
+    information = float(result.jac[:, 0] @ result.jac[:, 0])
+    if not math.isfinite(information) or information <= 0:
+        raise RuntimeError("Astrometry coupling is not locally identifiable")
+    chi2 = float(result.fun @ result.fun)
+    return {
+        "best_beta": float(result.x[0]),
+        "beta_standard_error": math.sqrt(1.0 / information),
+        "chi2": chi2,
+        "degrees_of_freedom": len(result.fun) - 1,
+        "reduced_chi2": chi2 / max(len(result.fun) - 1, 1),
+        "optimizer_success": True,
+        "optimizer_message": result.message,
+        "optimizer_evaluations": result.nfev,
+        "active_bound": bool(result.active_mask[0]),
+        "evidence_class": "synthetic",
+    }
+
+
 def evaluate_astrometry_bifurcation(
     csv_path: str | Path,
     params: SgrAOrbitalParameters,
@@ -413,6 +489,11 @@ def evaluate_astrometry_bifurcation(
 
     return {
         "target_star": params.name,
+        "evidence_class": "synthetic",
+        "limitations": [
+            "Bundled astrometry is synthetic.",
+            "Fixed orbital elements do not constitute a full observational posterior.",
+        ],
         "n_epochs": len(epochs),
         "total_data_points": n_pts,
         "models": {
@@ -443,7 +524,8 @@ def evaluate_astrometry_bifurcation(
             "delta_bic": delta_bic,
             "delta_aic": delta_aic,
             "bifurcation_decision": bifurcation_decision,
-            "interpretation": summary
+            "interpretation": summary,
+            "verdict_deprecated": True,
         }
     }
 

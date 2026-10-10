@@ -191,6 +191,36 @@ def calculate_deflection_angle_profile(
     return profile / ARCSEC_TO_RAD
 
 
+def integrate_softened_isothermal_deflection(
+    impact_parameter_kpc: float,
+    *,
+    v_circ_kms: float = 200.0,
+    r_core_kpc: float = 1.0,
+    intervals: int = 1024,
+) -> float:
+    """Numerically integrate the projected mass of the softened isothermal profile."""
+    impact = _finite_positive(impact_parameter_kpc, "impact_parameter_kpc")
+    velocity = _finite_positive(v_circ_kms, "v_circ_kms") * 1000.0
+    core = _finite_positive(r_core_kpc, "r_core_kpc")
+    if isinstance(intervals, bool) or not isinstance(intervals, int) or intervals < 2:
+        raise ValueError("intervals must be an integer greater than one")
+    radius = np.linspace(0.0, impact, intervals + 1)
+    alpha_infinity = 2.0 * np.pi * (velocity / C_LIGHT) ** 2
+    mass_scale = alpha_infinity * C_LIGHT**2 / (4.0 * G)
+    projected_mass_gradient = (
+        mass_scale
+        * radius
+        * (radius**2 + 2.0 * core**2)
+        / (radius**2 + core**2) ** 1.5
+    )
+    projected_mass = _trapezoid(projected_mass_gradient, radius)
+    deflection_rad = 4.0 * G * projected_mass / (C_LIGHT**2 * impact)
+    result = deflection_rad / ARCSEC_TO_RAD
+    if not math.isfinite(result):
+        raise NumericalError("distributed lens integration produced a non-finite result")
+    return float(result)
+
+
 def trace_null_geodesics_2d(
     b_grid_kpc: np.ndarray,
     theta_ein_kpc: float,

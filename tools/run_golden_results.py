@@ -19,7 +19,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RTOL = 1e-10
-OPTIMIZER_RTOL = 5e-3
+OPTIMIZER_RTOL = 1e-3
 BULGE_OPTIMIZER_RTOL = 1e-2
 REFERENCE_SOURCE_KIND = "reference_or_archive_page_not_measurement_table"
 

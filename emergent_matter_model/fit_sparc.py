@@ -205,10 +205,14 @@ def evaluate_sparc_galaxy(
         "model_comparison": {
             "delta_bic_emrf_vs_newton": delta_bic_emrf_vs_newton,
             "delta_bic_emrf_vs_rar": delta_bic_emrf_vs_rar,
+            "evidence_class": "synthetic",
+            "verdict_deprecated": True,
             "interpretation": (
-                f"EMRF entropic coupling improves upon pure Newtonian baryons by Delta-BIC = {delta_bic_emrf_vs_newton:.1f} "
-                f"(decisively favored; confirms entropic flat rotation curves without non-baryonic dark matter). "
-                f"Close match to RAR (Delta-BIC vs RAR = {delta_bic_emrf_vs_rar:+.2f})."
+                f"In this synthetic fixture, the entropic curve improves upon the "
+                f"baryons-only Newtonian curve by Delta-BIC = "
+                f"{delta_bic_emrf_vs_newton:.1f} and differs from the empirical RAR "
+                f"by Delta-BIC = {delta_bic_emrf_vs_rar:+.2f}. This is a software "
+                "comparison, not observational confirmation."
             )
         }
     }
@@ -427,10 +431,13 @@ def evaluate_multi_sparc(
         "joint_comparison": {
             "delta_bic_emrf_vs_newton": joint_delta_bic_newton,
             "delta_bic_emrf_vs_rar": joint_delta_bic_rar,
+            "evidence_class": "synthetic",
+            "verdict_deprecated": True,
             "verdict": (
                 f"Joint Delta-BIC (EMRF - Newtonian) = {joint_delta_bic_newton:.1f} and "
                 f"(EMRF - RAR) = {joint_delta_bic_rar:+.1f} across {total_points} data points. "
-                "Any MOND-type law beats baryons-only Newtonian gravity; the RAR comparison is the informative one."
+                "This synthetic comparison validates software behavior only; the RAR "
+                "comparison is the informative baseline."
             )
         },
         "per_galaxy_reports": reports

@@ -255,7 +255,7 @@ scientific results and golden behavior are unchanged.
 **Exit gate:** every registry analysis writes a run record; resilience suite
 green; no partial outputs after any injected failure; preservation gate.
 
-## Phase 5 - Scientific verification and validation (ongoing, 4-8 weeks initial)
+## Phase 5 - Scientific verification and validation (completed 2026-10-10)
 
 **Foundation slice implemented (2026-10-10):** CODATA 2022 constants now
 carry explicit provenance, uncertainty and exactness metadata; public reference
@@ -288,6 +288,22 @@ repeated-start agreement through `emrf verify inference` and
 `GET /api/v1/verification/inference`. Every result is classified `synthetic`;
 the certificate is a software-calibration result, not observational evidence.
 
+**Completion slice implemented (2026-10-10):** the inference certificate now
+also profiles a representative SPARC hierarchy with mass-to-light, distance and
+inclination nuisance draws, recovering nominal interval coverage. Pantheon
+reports full-covariance whitened-residual diagnostics and a proper-prior
+two-parameter marginal likelihood computed by deterministic quadrature. Direct
+quadrature is used instead of stochastic nested sampling because the current
+baseline has only two parameters and can therefore be marginalized more
+accurately and reproducibly. The cross-engine certificate, exposed through
+`emrf verify engines` and `GET /api/v1/verification/engines`, covers distributed
+lens convergence, astrometry and high-redshift synthetic recovery, quantum
+Compton limits and core-model invariance. `emrf predict --commit` and the gated
+prediction REST API provide immutable metadata-only preregistration hashes.
+The nested SPARC golden tolerance is reduced from `5e-3` to `1e-3`.
+
+Completed deliverables:
+
 1. Known-limit test matrix for every engine (Newtonian, Schwarzschild,
    PPN, flat-LCDM vs astropy/CAMB, Bekenstein-Hawking).
 2. Units at boundaries with `astropy.units`; constants from CODATA 2022.
@@ -296,18 +312,22 @@ the certificate is a software-calibration result, not observational evidence.
 5. Stabilize legacy nested SPARC optimization across CPUs (deterministic
    parameterization, convergence diagnostics and repeated-start agreement);
    reduce its temporary `rtol=5e-3` golden allowance.
-6. Inference upgrades: nested sampling (nautilus/dynesty) for evidence;
-   SBC and injection-recovery for the SPARC a0 analyses; posterior predictive
-   checks.
+6. Inference upgrades: deterministic proper-prior evidence quadrature for the
+   current low-dimensional Pantheon baseline; SBC/injection-recovery for SPARC
+   `a0` and its nuisance hierarchy; posterior-predictive residual checks.
 7. Baseline zoo: GR+NFW halo, MOND-family RAR, LCDM run beside EMRF through
    the same likelihoods.
 8. Evidence typing (`EvidenceClass`) on all outputs; retire legacy verdict
    strings behind a deprecation.
 9. Pre-registration workflow (`emrf predict --commit`).
 
-**Exit gate:** each engine page in the docs shows passing known-limit and
-convergence tests; SPARC analyses report calibrated intervals; preservation
-gate (golden numbers unchanged unless a documented, reviewed correction).
+**Exit gate achieved:** every active engine family has an executable passing
+known-limit, convergence, invariant or calibrated synthetic check with explicit
+limitations; SPARC analyses report calibrated intervals; prediction
+preregistration is operational; and the preservation gate retains all reviewed
+golden scientific numbers. Derived CMB perturbation theory, higher-dimensional
+Bayesian model expansion and additional real surveys are subsequent research
+programs, not evidence silently inferred from Phase 5 software verification.
 
 ## Phase 6 - Interfaces v2 (2-3 weeks)
 

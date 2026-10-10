@@ -57,7 +57,7 @@ def main() -> None:
     table = np.genfromtxt(manual / "Pantheon+SH0ES.dat.txt", names=True, dtype=None,
                           encoding="utf-8")
     covariance, asymmetry = read_covariance(manual / "Pantheon+SH0ES_STAT+SYS.cov.txt", len(table))
-    result = fit_baseline(table, covariance)
+    result = fit_baseline(table, covariance, extended_diagnostics=True)
     result.update(
         generated_utc=datetime.now(timezone.utc).isoformat(),
         python=platform.python_version(), numpy=np.__version__, source_manifest=manifest,

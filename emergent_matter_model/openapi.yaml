@@ -60,6 +60,11 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/PhysicsVerificationReport'}
+        '500':
+          description: One or more scientific verification checks failed
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PhysicsVerificationReport'}
   /api/v1/verification/inference:
     get:
       summary: Run synthetic inference recovery and interval calibration
@@ -75,11 +80,80 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/InferenceValidationReport'}
-        '500':
-          description: One or more scientific verification checks failed
+  /api/v1/verification/engines:
+    get:
+      summary: Run cross-engine deterministic and synthetic verification
+      operationId: verifyEngines
+      responses:
+        '200':
+          description: All engine checks passed
           content:
             application/json:
-              schema: {$ref: '#/components/schemas/PhysicsVerificationReport'}
+              schema: {$ref: '#/components/schemas/EngineValidationReport'}
+        '500':
+          description: One or more engine checks failed
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EngineValidationReport'}
+  /api/v1/predictions/commit:
+    post:
+      summary: Commit a prediction digest without retaining prediction content
+      description: Disabled unless EMRF_API_ALLOW_PREDICTION_WRITE=1.
+      operationId: commitPrediction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [label, prediction]
+              properties:
+                label: {type: string, minLength: 1, maxLength: 100}
+                prediction: {}
+      responses:
+        '201':
+          description: Immutable commitment metadata
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PredictionCommitment'}
+        '400': {description: Invalid prediction or label}
+        '403': {description: Prediction writes disabled}
+  /api/v1/predictions/{commitment_id}:
+    get:
+      summary: Retrieve prediction commitment metadata
+      operationId: getPredictionCommitment
+      parameters:
+        - {name: commitment_id, in: path, required: true, schema: {type: string}}
+      responses:
+        '200':
+          description: Commitment metadata
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PredictionCommitment'}
+        '400': {description: Invalid commitment id}
+        '404': {description: Unknown commitment}
+  /api/v1/predictions/{commitment_id}/verify:
+    post:
+      summary: Verify revealed JSON against a prediction commitment
+      operationId: verifyPrediction
+      parameters:
+        - {name: commitment_id, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [prediction]
+              properties:
+                prediction: {}
+      responses:
+        '200':
+          description: Revealed prediction matches
+        '409':
+          description: Revealed prediction does not match
+        '400': {description: Invalid request}
+        '404': {description: Unknown commitment}
   /api/v1/commands:
     get:
       summary: List every registered program (same as `emrf list`)
@@ -609,6 +683,42 @@ components:
               reference: {type: string}
               evidence_class: {type: string, enum: [synthetic]}
               limitation: {type: string}
+    EngineValidationReport:
+      type: object
+      required: [evidence_class, all_passed, checks, limitations]
+      properties:
+        evidence_class: {type: string, enum: [mixed]}
+        all_passed: {type: boolean}
+        limitations: {type: array, items: {type: string}}
+        checks:
+          type: array
+          items:
+            type: object
+            required: [name, metric, measured, expected, lower_bound, upper_bound, passed, reference, evidence_class]
+            properties:
+              name: {type: string}
+              metric: {type: string}
+              measured: {type: number}
+              expected: {type: number}
+              lower_bound: {type: number}
+              upper_bound: {type: number}
+              passed: {type: boolean}
+              reference: {type: string}
+              evidence_class: {type: string, enum: [software, synthetic, illustrative]}
+              limitation: {type: string, nullable: true}
+    PredictionCommitment:
+      type: object
+      required: [commitment_id, label, created_utc, sha256, bytes, media_type, evidence_class, content_stored]
+      properties:
+        commitment_id: {type: string}
+        label: {type: string}
+        created_utc: {type: string, format: date-time}
+        sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+        bytes: {type: integer, minimum: 1}
+        source_name: {type: string, nullable: true}
+        media_type: {type: string}
+        evidence_class: {type: string, enum: [preregistered-prediction]}
+        content_stored: {type: boolean, enum: [false]}
     Run:
       type: object
       properties:

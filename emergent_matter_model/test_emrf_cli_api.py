@@ -193,7 +193,38 @@ def test_cli_inference_verification_json(capsys):
     report = json.loads(capsys.readouterr().out)
     assert report["all_passed"]
     assert report["evidence_class"] == "synthetic"
+    assert len(report["checks"]) == 14
+
+
+def test_cli_engine_verification_json(capsys):
+    assert emrf_cli.main(["verify", "engines", "--json"]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["all_passed"]
+    assert report["evidence_class"] == "mixed"
     assert len(report["checks"]) == 11
+
+
+def test_cli_prediction_commit_and_verify(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("EMRF_HOME", str(tmp_path / "home"))
+    prediction = tmp_path / "prediction.json"
+    prediction.write_text('{"omega_m": 0.31}', encoding="utf-8")
+    assert emrf_cli.main([
+        "predict",
+        "--commit",
+        str(prediction),
+        "--label",
+        "Blind cosmology prediction",
+    ]) == 0
+    commitment = json.loads(capsys.readouterr().out)
+    assert commitment["content_stored"] is False
+    assert emrf_cli.main([
+        "predict",
+        "--verify",
+        str(prediction),
+        "--commitment-id",
+        commitment["commitment_id"],
+    ]) == 0
+    assert json.loads(capsys.readouterr().out)["matches"]
 
 
 def test_cli_data_list_runs(capsys):
@@ -357,7 +388,39 @@ def test_api_inference_verification(client):
     report = response.get_json()
     assert report["all_passed"]
     assert report["evidence_class"] == "synthetic"
+    assert len(report["checks"]) == 14
+
+
+def test_api_engine_verification(client):
+    response = client.get("/api/v1/verification/engines")
+    assert response.status_code == 200
+    report = response.get_json()
+    assert report["all_passed"]
     assert len(report["checks"]) == 11
+
+
+def test_api_prediction_preregistration(client, monkeypatch, tmp_path):
+    monkeypatch.setenv("EMRF_HOME", str(tmp_path / "home"))
+    monkeypatch.delenv(server.PREDICTION_WRITE_ENV_FLAG, raising=False)
+    payload = {"label": "Blind prediction", "prediction": {"value": 42}}
+    assert client.post("/api/v1/predictions/commit", json=payload).status_code == 403
+    monkeypatch.setenv(server.PREDICTION_WRITE_ENV_FLAG, "1")
+    committed = client.post("/api/v1/predictions/commit", json=payload)
+    assert committed.status_code == 201
+    record = committed.get_json()
+    commitment_id = record["commitment_id"]
+    assert client.get(f"/api/v1/predictions/{commitment_id}").get_json() == record
+    verified = client.post(
+        f"/api/v1/predictions/{commitment_id}/verify",
+        json={"prediction": {"value": 42}},
+    )
+    assert verified.status_code == 200
+    assert verified.get_json()["matches"]
+    mismatch = client.post(
+        f"/api/v1/predictions/{commitment_id}/verify",
+        json={"prediction": {"value": 43}},
+    )
+    assert mismatch.status_code == 409
 
 
 def test_api_data_mutation_requires_explicit_opt_in(client, monkeypatch):

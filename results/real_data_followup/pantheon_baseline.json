@@ -1622,7 +1622,32 @@
     "published covariance held fixed; no raw photometry refit",
     "no joint SN/BAO inference or all-regime theory validation"
   ],
-  "generated_utc": "2026-10-10T17:20:26.519297+00:00",
+  "posterior_predictive_diagnostics": {
+    "whitened_residual_mean": 0.015171430784663906,
+    "whitened_residual_rms": 0.9393290554318791,
+    "whitened_residual_max_abs": 4.088466897204341,
+    "whitened_residual_lag1_correlation": 0.07195283897119643,
+    "chi2_survival_probability": 0.9996742581596616,
+    "degrees_of_freedom": 1588,
+    "interpretation": "Full-covariance residual diagnostic; not an EMRF posterior prediction"
+  },
+  "declared_prior_evidence": {
+    "log_evidence": 834.038072254936,
+    "method": "deterministic quadrature with analytical offset marginalization",
+    "omega_m_uniform_prior": [
+      0.05,
+      0.6
+    ],
+    "magnitude_offset_uniform_prior": [
+      -50.0,
+      50.0
+    ],
+    "integration_absolute_error": 9.331226769810498e-18,
+    "prior_dependent": true,
+    "evidence_class": "observational-baseline",
+    "limitation": "Flat-LCDM baseline evidence only; no EMRF Bayes factor is implied"
+  },
+  "generated_utc": "2026-10-10T19:10:49.376868+00:00",
   "python": "3.10.0",
   "numpy": "2.2.6",
   "source_manifest": {
@@ -1653,6 +1678,6 @@
   },
   "covariance_asymmetry_max": 3.0000000000038676e-08,
   "covariance_symmetry_rule": "(C+C.T)/2 only if max asymmetry <= 5e-08",
-  "source_sha256": "bcec6efa20f49d094d2f05838cbaacf8c856580b9fea69fef555282ec49d9f94",
-  "inference_source_sha256": "d46b84eff98833f94d3724924e9aba29ce856652705e614e0a915785f1b76962"
+  "source_sha256": "8ac67a3dd57c5bf23dac1ac0a18efc5d769175010de9b5318c6f2a819ad8c499",
+  "inference_source_sha256": "a95b4f773c5581c7d75aea6d1cd823335e91e96bc10a6c41657068005d2966f8"
 }

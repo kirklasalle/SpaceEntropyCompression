@@ -70,16 +70,31 @@ class QuantumVibrationalEngine:
 
     def __init__(self, alpha_scaling: float = 1.0) -> None:
         """Initialize engine with compression/organization scaling exponent alpha."""
+        if not math.isfinite(alpha_scaling):
+            raise ValueError("alpha_scaling must be finite")
         self.alpha_scaling = alpha_scaling
         self.c_squared = self.C**2
 
+    @staticmethod
+    def _positive_mass(mass_kg: float) -> float:
+        if (
+            isinstance(mass_kg, bool)
+            or not isinstance(mass_kg, (int, float))
+            or not math.isfinite(mass_kg)
+            or mass_kg <= 0
+        ):
+            raise ValueError("mass_kg must be finite and positive")
+        return float(mass_kg)
+
     def compton_frequency(self, mass_kg: float) -> float:
         """Compute the natural Compton angular frequency omega_C = m c^2 / hbar."""
-        return (mass_kg * self.c_squared) / self.HBAR
+        mass = self._positive_mass(mass_kg)
+        return (mass * self.c_squared) / self.HBAR
 
     def compton_wavelength(self, mass_kg: float) -> float:
         """Compute reduced Compton wavelength lambda_bar = hbar / (m c)."""
-        return self.HBAR / (mass_kg * self.C)
+        mass = self._positive_mass(mass_kg)
+        return self.HBAR / (mass * self.C)
 
     def solve_radial_soliton_profile(
         self,
@@ -88,6 +103,11 @@ class QuantumVibrationalEngine:
         r_max_factors: float = 10.0
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Compute the localized radial standing-wave amplitude psi(r) and GEO density C(r)."""
+        mass_kg = self._positive_mass(mass_kg)
+        if isinstance(num_points, bool) or not isinstance(num_points, int) or num_points < 3:
+            raise ValueError("num_points must be an integer of at least 3")
+        if not math.isfinite(r_max_factors) or r_max_factors <= 0:
+            raise ValueError("r_max_factors must be finite and positive")
         lambda_bar = self.compton_wavelength(mass_kg)
         r_max = r_max_factors * lambda_bar
         r = np.linspace(1e-18 * lambda_bar, r_max, num_points)

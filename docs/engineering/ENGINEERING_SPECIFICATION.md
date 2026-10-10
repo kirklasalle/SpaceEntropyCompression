@@ -236,6 +236,19 @@ full-covariance Pantheon profile used by the analysis software. All checks are
 typed `synthetic`, and the report explicitly states that passing does not
 constitute observational evidence for EMRF.
 
+The Phase 5 cross-engine completion certificate is exposed through `emrf
+verify engines --json` and `GET /api/v1/verification/engines`. It adds
+distributed-lens convergence, calibrated astrometry and high-redshift recovery,
+Compton-limit checks and core functional invariance. Evidence classes remain
+per-check because software limits, synthetic recovery and illustrative quantum
+benchmarks have different scientific meanings.
+
+Prediction preregistration uses `emrf predict --commit FILE --label LABEL`.
+Only SHA-256, byte count, timestamp, media type and a safe source basename are
+stored under the per-user application root; prediction content is not copied.
+`emrf predict --verify` reveals and checks bytes later. The REST equivalent is
+disabled unless `EMRF_API_ALLOW_PREDICTION_WRITE=1`.
+
 ### 6.3 Scientific validation (statistics)
 
 * **Injection-recovery**: inject a known signal into real-noise realizations
