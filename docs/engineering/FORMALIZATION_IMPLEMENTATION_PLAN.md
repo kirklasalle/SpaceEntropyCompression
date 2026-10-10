@@ -300,7 +300,12 @@ accurately and reproducibly. The cross-engine certificate, exposed through
 lens convergence, astrometry and high-redshift synthetic recovery, quantum
 Compton limits and core-model invariance. `emrf predict --commit` and the gated
 prediction REST API provide immutable metadata-only preregistration hashes.
-The nested SPARC golden tolerance is reduced from `5e-3` to `1e-3`.
+The general nested SPARC golden tolerance is reduced from `5e-3` to `4e-3`.
+Two explicitly named first-grid-point nuisance objectives retain `5e-3` after
+hosted SciPy builds measured 0.43% drift; derived parameter summaries use the
+tighter tolerance. Pantheon's platform-dependent quadrature error estimate is
+reported but excluded from golden comparison, while the evidence value remains
+gated.
 
 Completed deliverables:
 
@@ -309,9 +314,9 @@ Completed deliverables:
 2. Units at boundaries with `astropy.units`; constants from CODATA 2022.
 3. Convergence-order tests for integrators and ray tracing.
 4. Property-based tests for model invariants.
-5. Stabilize legacy nested SPARC optimization across CPUs (deterministic
-   parameterization, convergence diagnostics and repeated-start agreement);
-   reduce its temporary `rtol=5e-3` golden allowance.
+5. Stabilized legacy nested SPARC optimization with bounded Powell recovery,
+   convergence failure handling, repeated-start agreement and a tighter
+   `rtol=4e-3` general golden allowance.
 6. Inference upgrades: deterministic proper-prior evidence quadrature for the
    current low-dimensional Pantheon baseline; SBC/injection-recovery for SPARC
    `a0` and its nuisance hierarchy; posterior-predictive residual checks.
