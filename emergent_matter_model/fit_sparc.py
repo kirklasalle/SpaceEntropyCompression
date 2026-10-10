@@ -19,9 +19,9 @@ import argparse
 import csv
 import json
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
@@ -224,57 +224,118 @@ def optimize_sparc_galaxy(
 ) -> Dict[str, Any]:
     """Optimizes SPARC parameters (e.g. Upsilon_disk and/or a_entropy) to minimize chi^2.
 
-    Uses scipy.optimize if available; falls back to bounded grid/Brent search.
+    The entropy acceleration is optimized in units of ``A0_CRITICAL`` so that
+    both fitted dimensions have order-unity scales.
     """
     galaxy_name, points = load_sparc_galaxy(csv_path)
+    return fit_sparc_points(
+        points,
+        galaxy_name=galaxy_name,
+        fit_upsilon_disk=fit_upsilon_disk,
+        fit_a_entropy=fit_a_entropy,
+        initial_upsilon=initial_upsilon,
+        initial_a_entropy=initial_a_entropy,
+        upsilon_bulge=upsilon_bulge,
+    )
+
+
+def fit_sparc_points(
+    points: List[SPARCDataPoint],
+    *,
+    galaxy_name: str = "IN_MEMORY",
+    fit_upsilon_disk: bool = True,
+    fit_a_entropy: bool = False,
+    initial_upsilon: float = DEFAULT_UPSILON_DISK,
+    initial_a_entropy: float = A0_CRITICAL,
+    upsilon_bulge: float = DEFAULT_UPSILON_BULGE,
+) -> Dict[str, Any]:
+    """Fit SPARC points with scaled parameters and local covariance diagnostics."""
+    if not points:
+        raise ValueError("At least one SPARC data point is required")
+    if not fit_upsilon_disk and not fit_a_entropy:
+        raise ValueError("At least one parameter must be fitted")
+    values = np.array(
+        [
+            (
+                point.radius_kpc,
+                point.v_obs_kms,
+                point.v_obs_err_kms,
+                point.v_gas_kms,
+                point.v_disk_kms,
+                point.v_bulge_kms,
+            )
+            for point in points
+        ],
+        dtype=float,
+    )
+    if not np.isfinite(values).all():
+        raise ValueError("SPARC fit inputs must be finite")
+    if np.any(values[:, 0] <= 0) or np.any(values[:, 2] <= 0):
+        raise ValueError("SPARC radii and velocity uncertainties must be positive")
+
     n_points = len(points)
     v_obs = np.array([p.v_obs_kms for p in points])
     v_err = np.array([p.v_obs_err_kms for p in points])
 
-    def loss_func(params_vec: np.ndarray) -> float:
-        u_d = float(params_vec[0]) if fit_upsilon_disk else initial_upsilon
-        a_ent = float(params_vec[1]) if fit_a_entropy else initial_a_entropy
+    def unpack(params_vec: np.ndarray) -> tuple[float, float]:
+        index = 0
+        u_d = initial_upsilon
+        a_ent = initial_a_entropy
+        if fit_upsilon_disk:
+            u_d = float(params_vec[index])
+            index += 1
+        if fit_a_entropy:
+            a_ent = float(params_vec[index]) * A0_CRITICAL
+        return u_d, a_ent
 
-        v_preds = []
+    def residuals(params_vec: np.ndarray) -> np.ndarray:
+        u_d, a_ent = unpack(params_vec)
+        v_predictions = []
         for p in points:
             v_b = compute_baryonic_velocity(p, u_d, upsilon_bulge)
             v_p = compute_emrf_entropic_velocity(v_b, p.radius_kpc, a_ent)
-            v_preds.append(v_p)
-        v_pred = np.array(v_preds)
-        chi2 = float(np.sum(((v_obs - v_pred) / v_err) ** 2))
-        return chi2
+            v_predictions.append(v_p)
+        return (v_obs - np.asarray(v_predictions)) / v_err
 
-    try:
-        from scipy.optimize import minimize
-        x0 = []
-        bounds = []
-        if fit_upsilon_disk:
-            x0.append(initial_upsilon)
-            bounds.append((0.05, 2.0))
-        if fit_a_entropy:
-            x0.append(initial_a_entropy)
-            bounds.append((0.1e-10, 5.0e-10))
+    from scipy.optimize import least_squares
 
-        res = minimize(loss_func, x0=np.array(x0), bounds=bounds, method="L-BFGS-B")
-        best_u_d = float(res.x[0]) if fit_upsilon_disk else initial_upsilon
-        best_a_ent = float(res.x[1 if fit_upsilon_disk else 0]) if fit_a_entropy else initial_a_entropy
-        opt_chi2 = float(res.fun)
-        opt_method = "scipy.optimize (L-BFGS-B)"
-    except ImportError:
-        # Fallback to pure numpy grid search
-        best_u_d = initial_upsilon
-        best_a_ent = initial_a_entropy
-        opt_chi2 = loss_func(np.array([initial_upsilon]))
-        opt_method = "numpy grid search fallback"
-        if fit_upsilon_disk:
-            grid = np.linspace(0.05, 1.5, 60)
-            best_chi = float("inf")
-            for u in grid:
-                c = loss_func(np.array([u]))
-                if c < best_chi:
-                    best_chi = c
-                    best_u_d = float(u)
-            opt_chi2 = best_chi
+    x0 = []
+    lower = []
+    upper = []
+    parameter_names = []
+    if fit_upsilon_disk:
+        x0.append(initial_upsilon)
+        lower.append(0.05)
+        upper.append(2.0)
+        parameter_names.append("upsilon_disk")
+    if fit_a_entropy:
+        x0.append(initial_a_entropy / A0_CRITICAL)
+        lower.append(0.1e-10 / A0_CRITICAL)
+        upper.append(5.0e-10 / A0_CRITICAL)
+        parameter_names.append("a_entropy_over_a0_critical")
+
+    result = least_squares(
+        residuals,
+        x0=np.asarray(x0),
+        bounds=(np.asarray(lower), np.asarray(upper)),
+        method="trf",
+        xtol=1e-12,
+        ftol=1e-12,
+        gtol=1e-12,
+    )
+    if not result.success or not np.isfinite(result.fun).all():
+        raise RuntimeError(f"SPARC optimizer did not converge: {result.message}")
+    information = result.jac.T @ result.jac
+    condition_number = float(np.linalg.cond(information))
+    if not math.isfinite(condition_number) or condition_number > 1e12:
+        raise RuntimeError("SPARC parameter covariance is singular or ill-conditioned")
+    covariance = np.linalg.inv(information)
+    standard_errors = np.sqrt(np.diag(covariance))
+    best_u_d, best_a_ent = unpack(result.x)
+    errors = dict(zip(parameter_names, map(float, standard_errors)))
+    if "a_entropy_over_a0_critical" in errors:
+        errors["a_entropy"] = errors["a_entropy_over_a0_critical"] * A0_CRITICAL
+    opt_chi2 = float(result.fun @ result.fun)
 
     k_params = 1 + (1 if fit_upsilon_disk else 0) + (1 if fit_a_entropy else 0)
     bic_opt = k_params * math.log(n_points) + opt_chi2
@@ -282,9 +343,20 @@ def optimize_sparc_galaxy(
     return {
         "galaxy": galaxy_name,
         "n_points": n_points,
-        "optimization_method": opt_method,
+        "optimization_method": "scipy.optimize.least_squares (scaled trust-region reflective)",
+        "optimizer_success": True,
+        "optimizer_message": result.message,
+        "optimizer_evaluations": result.nfev,
+        "parameterization": {
+            "upsilon_disk": "dimensionless",
+            "a_entropy": f"optimized as a_entropy / {A0_CRITICAL:.12g}",
+        },
         "best_upsilon_disk": best_u_d,
         "best_a_entropy": best_a_ent,
+        "parameter_standard_errors": errors,
+        "parameter_covariance": covariance.tolist(),
+        "information_condition_number": condition_number,
+        "active_bounds": [parameter_names[index] for index, value in enumerate(result.active_mask) if value],
         "optimized_chi2": opt_chi2,
         "reduced_chi2": opt_chi2 / max(n_points - k_params, 1),
         "bic": bic_opt

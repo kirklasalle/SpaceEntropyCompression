@@ -244,6 +244,15 @@ def verify_physics():
     return jsonify(report), 200 if report["all_passed"] else 500
 
 
+@app.route('/api/v1/verification/inference', methods=['GET'])
+def verify_inference():
+    """Run deterministic synthetic inference calibration checks."""
+    from emrf_validation_access import inference_validation_report
+
+    report = inference_validation_report()
+    return jsonify(report), 200 if report["all_passed"] else 500
+
+
 @app.route('/api/v1/commands', methods=['GET'])
 def list_commands():
     category = request.args.get('category')

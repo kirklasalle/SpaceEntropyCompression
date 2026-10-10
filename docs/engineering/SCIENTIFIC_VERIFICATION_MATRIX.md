@@ -46,8 +46,8 @@ The sources, limitations and tolerances are returned with each CLI/API result.
 | CMB acoustic engine | CAMB 1.6.0 angular-scale and first-three-peak cross-check | Illustrative cross-code consistency | Replace calibrated phase/amplitude formulas with a derived perturbation solver before claiming predictive verification |
 | Black-hole entropy | Area-law equality and benchmark suite | Verified foundation | Propagate constant uncertainty and document numerical dynamic range |
 | Astrometry engine | Synthetic recovery tests | Partially verified | Calibrated injection-recovery coverage and repeated-start agreement |
-| SPARC analyses | Eight-pipeline golden harness, profile and influence checks | Partially verified | SBC, calibrated intervals, deterministic repeated starts and reduced golden tolerance |
-| Pantheon+ covariance fit | Full-covariance golden pipeline | Partially verified | Injection-recovery, coverage, posterior predictive checks and evidence calculation |
+| SPARC analyses | Eight-pipeline golden harness; 64-realization two-parameter recovery, local interval coverage and repeated-start certificate | Calibrated synthetic foundation | Extend SBC to the real-data distance/inclination nuisance hierarchy and reduce golden tolerance |
+| Pantheon+ covariance fit | Full-covariance golden pipeline; 64-realization omega_m recovery, profile coverage and residual-scale certificate | Calibrated synthetic foundation | Add real-survey posterior predictive checks, selection systematics and evidence calculation |
 | JWST engine | Regression and domain checks | Pending | Synthetic signal recovery and nuisance-parameter calibration |
 | Quantum vibrational compression | Demonstration calculations | Pending | Units, independent oscillator limits and evidence classification |
 | Stress-test scripts and figure generators | Golden/regression outputs where applicable | Software-only | Keep separate from observational confirmation; remove legacy verdict semantics |
@@ -62,3 +62,5 @@ The sources, limitations and tolerances are returned with each CLI/API result.
    CLI/API certificate.
 4. A proposed correction to a golden scientific number requires a documented
    scientific review; tests are never weakened merely to accept drift.
+5. Injection-recovery checks are classified `synthetic`. Their passing status
+   validates recovery and uncertainty behavior only for the declared designs.

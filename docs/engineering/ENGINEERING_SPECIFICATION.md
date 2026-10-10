@@ -226,6 +226,16 @@ The detailed engine inventory and remaining verification gaps are tracked in
 `SCIENTIFIC_VERIFICATION_MATRIX.md`; a missing check is reported as pending,
 never inferred to pass from unrelated regression coverage.
 
+The executable inference certificate is exposed through `emrf verify
+inference --json` and `GET /api/v1/verification/inference`. It uses 64
+deterministic realizations to measure standardized ensemble bias, nominal
+68.27% interval coverage, posterior-predictive residual scale, boundary
+avoidance and repeated-start agreement for representative SPARC and
+Pantheon-like designs. The certificate calls the same scaled SPARC fitter and
+full-covariance Pantheon profile used by the analysis software. All checks are
+typed `synthetic`, and the report explicitly states that passing does not
+constitute observational evidence for EMRF.
+
 ### 6.3 Scientific validation (statistics)
 
 * **Injection-recovery**: inject a known signal into real-noise realizations

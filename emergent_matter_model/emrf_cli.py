@@ -318,6 +318,28 @@ def cmd_verify_physics(a: argparse.Namespace) -> int:
     return 0 if report["all_passed"] else 1
 
 
+def cmd_verify_inference(a: argparse.Namespace) -> int:
+    from emrf_validation_access import inference_validation_report
+
+    report = inference_validation_report()
+    if a.json:
+        _print_json(report)
+    else:
+        for check in report["checks"]:
+            marker = "PASS" if check["passed"] else "FAIL"
+            print(
+                f"{marker:<4} [{check['evidence_class']}] {check['name']}: "
+                f"{check['measured']:.6g} "
+                f"(accepted {check['lower_bound']:.6g} to "
+                f"{check['upper_bound']:.6g})"
+            )
+            print(f"     limitation: {check['limitation']}")
+        for limitation in report["limitations"]:
+            print(f"limitation: {limitation}")
+        print("status:", "CALIBRATED" if report["all_passed"] else "FAILED")
+    return 0 if report["all_passed"] else 1
+
+
 def cmd_serve(a: argparse.Namespace) -> int:
     from server import app
 
@@ -478,6 +500,12 @@ def build_parser() -> argparse.ArgumentParser:
     v = vsub.add_parser("physics", help="run foundational known-limit checks")
     v.add_argument("--json", action="store_true")
     v.set_defaults(func=cmd_verify_physics)
+    v = vsub.add_parser(
+        "inference",
+        help="run deterministic injection-recovery and interval-calibration checks",
+    )
+    v.add_argument("--json", action="store_true")
+    v.set_defaults(func=cmd_verify_inference)
 
     s = sub.add_parser("serve", help="start the REST API (development server)")
     s.add_argument("--host", default="127.0.0.1")

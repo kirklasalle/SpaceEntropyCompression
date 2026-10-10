@@ -1,6 +1,9 @@
 """Unit and integration tests for SPARC galaxy rotation curve evaluation engine."""
 
+from dataclasses import replace
 from pathlib import Path
+
+import numpy as np
 import pytest
 
 try:
@@ -12,6 +15,7 @@ try:
         compute_rar_velocity,
         evaluate_multi_sparc,
         evaluate_sparc_galaxy,
+        fit_sparc_points,
         load_sparc_galaxy,
         optimize_sparc_galaxy,
         get_all_sparc_galaxy_names,
@@ -26,6 +30,7 @@ except ImportError:
         compute_rar_velocity,
         evaluate_multi_sparc,
         evaluate_sparc_galaxy,
+        fit_sparc_points,
         load_sparc_galaxy,
         optimize_sparc_galaxy,
         get_all_sparc_galaxy_names,
@@ -139,6 +144,40 @@ class TestModelComparison:
 
 
 class TestParameterOptimization:
+    def test_joint_injection_recovery_uses_scaled_entropy_parameter(
+        self, sparc_data_dir: Path
+    ):
+        _, points = load_sparc_galaxy(sparc_data_dir / "ngc6503.csv")
+        truth_upsilon = 0.65
+        truth_a_entropy = 1.5e-10
+        injected = []
+        for point in points:
+            v_bar = compute_baryonic_velocity(point, truth_upsilon)
+            velocity = compute_emrf_entropic_velocity(
+                v_bar,
+                point.radius_kpc,
+                truth_a_entropy,
+            )
+            injected.append(replace(point, v_obs_kms=velocity))
+
+        result = fit_sparc_points(
+            injected,
+            fit_upsilon_disk=True,
+            fit_a_entropy=True,
+        )
+
+        assert result["optimizer_success"]
+        assert result["active_bounds"] == []
+        assert result["best_upsilon_disk"] == pytest.approx(truth_upsilon, rel=1e-7)
+        assert result["best_a_entropy"] == pytest.approx(truth_a_entropy, rel=1e-7)
+        assert result["optimized_chi2"] < 1e-18
+        assert result["information_condition_number"] < 1e6
+
+    def test_fit_rejects_nonfinite_points(self):
+        point = SPARCDataPoint(1.0, np.nan, 3.0, 10.0, 20.0)
+        with pytest.raises(ValueError, match="finite"):
+            fit_sparc_points([point])
+
     def test_optimize_sparc_galaxy_ngc6503(self, sparc_data_dir: Path):
         csv_path = sparc_data_dir / "ngc6503.csv"
         opt = optimize_sparc_galaxy(csv_path, fit_upsilon_disk=True)

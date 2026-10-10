@@ -74,4 +74,7 @@ def test_recorded_real_data_result_is_traceable_and_not_emrf():
     assert result["distinct_CID"] == 1473
     assert result["chi2"] == pytest.approx(1402.9191283, abs=1e-5)
     assert result["source_sha256"] == hashlib.sha256(PATH.read_bytes()).hexdigest()
+    assert result["inference_source_sha256"] == hashlib.sha256(
+        (PATH.parents[1] / "emergent_matter_model" / "pantheon_inference.py").read_bytes()
+    ).hexdigest()
     assert result["integration_check_absolute_delta_chi2"] < 1e-6

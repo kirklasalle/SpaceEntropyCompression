@@ -60,6 +60,21 @@ paths:
           content:
             application/json:
               schema: {$ref: '#/components/schemas/PhysicsVerificationReport'}
+  /api/v1/verification/inference:
+    get:
+      summary: Run synthetic inference recovery and interval calibration
+      operationId: verifyInference
+      responses:
+        '200':
+          description: All injection-recovery and calibration checks passed
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/InferenceValidationReport'}
+        '500':
+          description: One or more inference validation checks failed
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/InferenceValidationReport'}
         '500':
           description: One or more scientific verification checks failed
           content:
@@ -564,6 +579,36 @@ components:
                 type: string
                 enum: [software, illustrative]
               limitation: {type: string, nullable: true}
+    InferenceValidationReport:
+      type: object
+      required: [evidence_class, all_passed, realizations, random_seed, checks, truths, limitations]
+      properties:
+        evidence_class: {type: string, enum: [synthetic]}
+        all_passed: {type: boolean}
+        realizations: {type: integer, minimum: 16}
+        random_seed: {type: integer, minimum: 0}
+        truths:
+          type: object
+          additionalProperties: {type: number}
+        limitations:
+          type: array
+          items: {type: string}
+        checks:
+          type: array
+          items:
+            type: object
+            required: [name, metric, measured, expected, lower_bound, upper_bound, passed, reference, evidence_class, limitation]
+            properties:
+              name: {type: string}
+              metric: {type: string}
+              measured: {type: number}
+              expected: {type: number}
+              lower_bound: {type: number}
+              upper_bound: {type: number}
+              passed: {type: boolean}
+              reference: {type: string}
+              evidence_class: {type: string, enum: [synthetic]}
+              limitation: {type: string}
     Run:
       type: object
       properties:

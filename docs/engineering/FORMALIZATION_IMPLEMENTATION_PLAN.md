@@ -277,6 +277,17 @@ the current engine is Planck-calibrated and is not an independent Boltzmann
 solver. `emrf verify physics` reports per-check evidence classes and
 limitations instead of presenting numerical agreement as physical validation.
 
+**Inference calibration slice implemented (2026-10-10):** the SPARC fitter
+now optimizes the entropy acceleration in dimensionless `a/a0` units, checks
+optimizer convergence, reports active bounds, and derives local covariance
+diagnostics from the residual Jacobian. A deterministic 64-realization
+certificate exercises this production fitter and the production Pantheon
+full-covariance profile with known injections. It measures ensemble bias,
+68.27% interval coverage, residual scale, boundary avoidance, and SPARC
+repeated-start agreement through `emrf verify inference` and
+`GET /api/v1/verification/inference`. Every result is classified `synthetic`;
+the certificate is a software-calibration result, not observational evidence.
+
 1. Known-limit test matrix for every engine (Newtonian, Schwarzschild,
    PPN, flat-LCDM vs astropy/CAMB, Bekenstein-Hawking).
 2. Units at boundaries with `astropy.units`; constants from CODATA 2022.

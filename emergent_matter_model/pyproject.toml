@@ -32,6 +32,7 @@ py-modules = [
     "physics_baseline",
     "fit_astrometry",
     "fit_sparc",
+    "pantheon_inference",
     "emrf_cli",
     "emrf_data_access",
     "emrf_error_access",
@@ -41,6 +42,7 @@ py-modules = [
     "data_provenance",
     "emrf_paths",
     "emrf_physics_access",
+    "emrf_validation_access",
     "fetch_real_data",
     "fetch_sparc",
     "fit_jwst",
@@ -72,7 +74,15 @@ py-modules = [
     "quantum_vibrational_compression",
 ]
 
-packages = ["emrf", "emrf.core", "emrf.data", "emrf.interfaces", "emrf.physics", "emrf.runs"]
+packages = [
+    "emrf",
+    "emrf.core",
+    "emrf.data",
+    "emrf.interfaces",
+    "emrf.physics",
+    "emrf.runs",
+    "emrf.validation",
+]
 
 [tool.setuptools.package-dir]
 emrf = "src/emrf"
@@ -81,6 +91,7 @@ emrf = "src/emrf"
 "emrf.interfaces" = "src/emrf/interfaces"
 "emrf.physics" = "src/emrf/physics"
 "emrf.runs" = "src/emrf/runs"
+"emrf.validation" = "src/emrf/validation"
 
 [tool.setuptools.package-data]
 "emrf.data" = ["data_catalog.json"]

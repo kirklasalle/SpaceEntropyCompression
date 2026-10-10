@@ -1622,7 +1622,7 @@
     "published covariance held fixed; no raw photometry refit",
     "no joint SN/BAO inference or all-regime theory validation"
   ],
-  "generated_utc": "2026-10-08T17:39:35.288596+00:00",
+  "generated_utc": "2026-10-10T17:20:26.519297+00:00",
   "python": "3.10.0",
   "numpy": "2.2.6",
   "source_manifest": {
@@ -1653,5 +1653,6 @@
   },
   "covariance_asymmetry_max": 3.0000000000038676e-08,
   "covariance_symmetry_rule": "(C+C.T)/2 only if max asymmetry <= 5e-08",
-  "source_sha256": "c6e7309bd8af0f6176c69f67a62cf36797da08e4eecf17d6b19b9f8ef51ee967"
+  "source_sha256": "bcec6efa20f49d094d2f05838cbaacf8c856580b9fea69fef555282ec49d9f94",
+  "inference_source_sha256": "d46b84eff98833f94d3724924e9aba29ce856652705e614e0a915785f1b76962"
 }

@@ -188,6 +188,14 @@ def test_cli_physics_verification_json(capsys):
     assert len(report["checks"]) == 10
 
 
+def test_cli_inference_verification_json(capsys):
+    assert emrf_cli.main(["verify", "inference", "--json"]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["all_passed"]
+    assert report["evidence_class"] == "synthetic"
+    assert len(report["checks"]) == 11
+
+
 def test_cli_data_list_runs(capsys):
     assert emrf_cli.main(["data", "list", "--json"]) == 0
     assert isinstance(json.loads(capsys.readouterr().out), list)
@@ -341,6 +349,15 @@ def test_api_physics_verification(client):
     assert report["all_passed"]
     assert report["evidence_class"] == "mixed"
     assert len(report["checks"]) == 10
+
+
+def test_api_inference_verification(client):
+    response = client.get("/api/v1/verification/inference")
+    assert response.status_code == 200
+    report = response.get_json()
+    assert report["all_passed"]
+    assert report["evidence_class"] == "synthetic"
+    assert len(report["checks"]) == 11
 
 
 def test_api_data_mutation_requires_explicit_opt_in(client, monkeypatch):
