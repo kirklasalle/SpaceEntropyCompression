@@ -65,6 +65,46 @@ def _data_library():
     return data_library()
 
 
+def _run_store():
+    from emrf_run_access import run_store
+
+    return run_store()
+
+
+def _public_record(record):
+    from emrf_run_access import public_record
+
+    return public_record(record)
+
+
+def _run_write_denied():
+    if os.environ.get(RUN_ENV_FLAG) == "1":
+        return None
+    return jsonify({
+        'error': f'Command execution is disabled. Set {RUN_ENV_FLAG}=1 '
+                 'on a trusted host to enable it.'
+    }), 403
+
+
+def _run_error(exc: Exception):
+    from emrf_run_access import run_errors
+
+    errors = run_errors()
+    IntegrityError = errors.IntegrityError
+    StorageError = errors.StorageError
+    if isinstance(exc, KeyError):
+        return jsonify({'error': str(exc)}), 404
+    if isinstance(exc, (ValueError, TypeError)):
+        return jsonify({'error': str(exc)}), 400
+    if isinstance(exc, IntegrityError):
+        return jsonify({'error': str(exc)}), 409
+    if isinstance(exc, StorageError):
+        logger.exception("Run-store operation failed")
+        return jsonify({'error': 'Run-store operation failed'}), 500
+    logger.exception("Run operation failed")
+    return jsonify({'error': 'Run operation failed'}), 500
+
+
 def _data_write_denied():
     if os.environ.get(DATA_WRITE_ENV_FLAG) == "1":
         return None
@@ -244,6 +284,115 @@ def run_command(name: str):
         return jsonify({'error': f'{name} exceeded timeout of {timeout}s'}), 504
     logger.info("API ran %s -> %s", name, result['returncode'])
     return jsonify(result), 200
+
+
+@app.route('/api/v1/runs', methods=['GET'])
+def list_runs():
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        return jsonify({
+            'runs': [_public_record(record) for record in _run_store().list(limit=limit)]
+        })
+    except Exception as exc:
+        return _run_error(exc)
+
+
+@app.route('/api/v1/runs/<run_id>', methods=['GET'])
+def get_run(run_id: str):
+    try:
+        return jsonify(_public_record(_run_store().get(run_id)))
+    except Exception as exc:
+        return _run_error(exc)
+
+
+@app.route('/api/v1/runs/<run_id>/resume', methods=['POST'])
+def resume_run(run_id: str):
+    if denied := _run_write_denied():
+        return denied
+    try:
+        data = request.get_json(silent=True) or {}
+        if not isinstance(data, dict):
+            raise ValueError("Request body must be a JSON object")
+        timeout = data.get('timeout')
+        if timeout is not None and (
+            not _is_real_number(timeout) or not 0 < timeout <= _MAX_RUN_TIMEOUT_SEC
+        ):
+            raise ValueError(f"timeout must be in (0, {_MAX_RUN_TIMEOUT_SEC}]")
+        record = _run_store().get(run_id)
+        command = registry.get_command(record.command)
+        if command.gui or command.category == 'service':
+            raise ValueError(
+                f"{record.command} is interactive or a service and cannot run via API"
+            )
+        result = registry.resume_run(
+            run_id,
+            timeout=None if timeout is None else float(timeout),
+            capture=True,
+        )
+        return jsonify(result)
+    except subprocess.TimeoutExpired as exc:
+        return jsonify({
+            'error': 'Resumed command exceeded its timeout',
+            'run_id': getattr(exc, 'run_id', run_id),
+        }), 504
+    except Exception as exc:
+        return _run_error(exc)
+
+
+@app.route('/api/v1/jobs', methods=['POST'])
+def submit_job():
+    if denied := _run_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        name = _required_json_text(data, 'command')
+        command = registry.get_command(name)
+        if command.gui or command.category == 'service':
+            raise ValueError(f"{name} is interactive or a service and cannot run as a job")
+        args = data.get('args', [])
+        if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
+            raise ValueError("args must be a list of strings")
+        record = _run_store().enqueue(
+            name,
+            args,
+            timeout_seconds=data.get('timeout'),
+            evidence_class=data.get('evidence_class', 'software'),
+            max_attempts=data.get('max_attempts', 1),
+        )
+        return jsonify(_public_record(record)), 202
+    except Exception as exc:
+        return _run_error(exc)
+
+
+@app.route('/api/v1/jobs', methods=['GET'])
+def list_jobs():
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        return jsonify({
+            'jobs': [
+                _public_record(record) for record in _run_store().list_jobs(limit=limit)
+            ]
+        })
+    except Exception as exc:
+        return _run_error(exc)
+
+
+@app.route('/api/v1/jobs/<job_id>', methods=['GET'])
+def get_job(job_id: str):
+    try:
+        return jsonify(_public_record(_run_store().get_job(job_id)))
+    except Exception as exc:
+        return _run_error(exc)
+
+
+@app.route('/api/v1/jobs/<job_id>/cancel', methods=['POST'])
+def cancel_job(job_id: str):
+    if denied := _run_write_denied():
+        return denied
+    try:
+        return jsonify(_public_record(_run_store().cancel_job(job_id)))
+    except Exception as exc:
+        return _run_error(exc)
 
 
 @app.route('/api/v1/datasets', methods=['GET'])

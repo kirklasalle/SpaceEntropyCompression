@@ -27,6 +27,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import socket
 import subprocess
 import sys
 
@@ -122,6 +124,82 @@ def _data_library():
     from emrf_data_access import data_library
 
     return data_library()
+
+
+def _run_store():
+    from emrf_run_access import run_store
+
+    return run_store()
+
+
+def _public_record(record):
+    from emrf_run_access import public_record
+
+    return public_record(record)
+
+
+def cmd_runs(a: argparse.Namespace) -> int:
+    store = _run_store()
+    if a.runs_command == "list":
+        records = store.list(limit=a.limit)
+        if a.json:
+            _print_json([_public_record(record) for record in records])
+        else:
+            for record in records:
+                print(
+                    f"{record.run_id} {record.status:<11} "
+                    f"{record.command} attempt={record.attempt}"
+                )
+        return 0
+    if a.runs_command == "info":
+        _print_json(_public_record(store.get(a.run_id)))
+        return 0
+    result = reg.resume_run(a.run_id, timeout=a.timeout)
+    _print_json(result)
+    return int(result["returncode"])
+
+
+def cmd_jobs(a: argparse.Namespace) -> int:
+    store = _run_store()
+    if a.jobs_command == "submit":
+        command = reg.get_command(a.name)
+        if command.gui or command.category == "service":
+            raise ValueError(
+                f"{a.name} is interactive or a service and cannot run as a job"
+            )
+        record = store.enqueue(
+            a.name,
+            _strip_separator(a.args),
+            timeout_seconds=a.timeout,
+            evidence_class=a.evidence_class,
+            max_attempts=a.max_attempts,
+        )
+        _print_json(_public_record(record))
+        return 0
+    if a.jobs_command == "list":
+        records = store.list_jobs(limit=a.limit)
+        if a.json:
+            _print_json([_public_record(record) for record in records])
+        else:
+            for record in records:
+                print(
+                    f"{record.job_id} {record.status:<9} {record.command} "
+                    f"attempts={record.attempts}/{record.max_attempts}"
+                )
+        return 0
+    if a.jobs_command == "info":
+        _print_json(_public_record(store.get_job(a.job_id)))
+        return 0
+    if a.jobs_command == "cancel":
+        _print_json(_public_record(store.cancel_job(a.job_id)))
+        return 0
+    worker_id = a.worker_id or f"{socket.gethostname()}:{os.getpid()}"
+    record = reg.run_next_job(worker_id, lease_seconds=a.lease_seconds)
+    if record is None:
+        print("No queued jobs.")
+        return 0
+    _print_json(_public_record(record))
+    return 0 if record.status in {"succeeded", "queued"} else 1
 
 
 def cmd_data_catalog(a: argparse.Namespace) -> int:
@@ -328,6 +406,48 @@ def build_parser() -> argparse.ArgumentParser:
         help="remove reported unreferenced objects",
     )
     d.set_defaults(func=cmd_data_gc)
+
+    s = sub.add_parser("runs", help="inspect and resume durable scientific runs")
+    rsub = s.add_subparsers(dest="runs_command", required=True)
+    r = rsub.add_parser("list", help="list recent runs")
+    r.add_argument("--limit", type=int, default=50)
+    r.add_argument("--json", action="store_true")
+    r.set_defaults(func=cmd_runs)
+    r = rsub.add_parser("info", help="show one run")
+    r.add_argument("run_id")
+    r.set_defaults(func=cmd_runs)
+    r = rsub.add_parser("resume", help="resume a failed, timed-out or interrupted run")
+    r.add_argument("run_id")
+    r.add_argument("--timeout", type=float)
+    r.set_defaults(func=cmd_runs)
+
+    s = sub.add_parser("jobs", help="manage the durable execution queue")
+    jsub = s.add_subparsers(dest="jobs_command", required=True)
+    j = jsub.add_parser("submit", help="submit a registered command")
+    j.add_argument("name")
+    j.add_argument("--timeout", type=float)
+    j.add_argument("--max-attempts", type=int, default=1)
+    j.add_argument(
+        "--evidence-class",
+        choices=("observational", "published", "synthetic", "illustrative", "software"),
+        default="software",
+    )
+    j.add_argument("args", nargs=argparse.REMAINDER)
+    j.set_defaults(func=cmd_jobs)
+    j = jsub.add_parser("list", help="list queued and completed jobs")
+    j.add_argument("--limit", type=int, default=50)
+    j.add_argument("--json", action="store_true")
+    j.set_defaults(func=cmd_jobs)
+    j = jsub.add_parser("info", help="show one job")
+    j.add_argument("job_id")
+    j.set_defaults(func=cmd_jobs)
+    j = jsub.add_parser("cancel", help="cancel a queued job")
+    j.add_argument("job_id")
+    j.set_defaults(func=cmd_jobs)
+    j = jsub.add_parser("run-next", help="claim and execute one queued job")
+    j.add_argument("--worker-id")
+    j.add_argument("--lease-seconds", type=float, default=3600)
+    j.set_defaults(func=cmd_jobs)
 
     s = sub.add_parser("doctor", help="diagnose environment and dependencies")
     s.add_argument("--json", action="store_true")

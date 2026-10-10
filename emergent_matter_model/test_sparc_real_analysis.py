@@ -1,10 +1,13 @@
 """Offline unit tests for sparc_real_analysis.py (no network, no real data needed)."""
 
 import math
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
+import sparc_real_analysis as analysis
+from emrf.runs import RunStore
 from sparc_real_analysis import (
     LAWS,
     Galaxy,
@@ -101,3 +104,62 @@ def test_newton_acceleration_units():
 def test_law_registry():
     assert set(LAWS) == {"emrf_sqrt", "rar_exponential", "simple", "standard"}
     assert math.isfinite(float(LAWS["emrf_sqrt"][1](np.array([1.0]))[0]))
+
+
+def test_run_resumes_from_last_completed_law(tmp_path, monkeypatch):
+    store = RunStore(tmp_path / "runs")
+    record = store.create("sparc-real-analysis", ["--quick", "--no-figures"])
+    monkeypatch.setenv("EMRF_RUN_ID", record.run_id)
+    monkeypatch.setenv("EMRF_RUN_DIR", str(record.path))
+    monkeypatch.setattr(analysis, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(analysis, "RESULTS_DIR", tmp_path / "results")
+    monkeypatch.setattr(analysis, "load_sparc", lambda: [SimpleNamespace(n=1)])
+    monkeypatch.setattr(analysis, "fit_galaxy", lambda *args: (1.0, 0.0, 0.5))
+    monkeypatch.setattr(
+        analysis,
+        "solar_system_check",
+        lambda *args: {"passes_generous_bound": True},
+    )
+
+    def first_law(values):
+        return values
+
+    def second_law(values):
+        return values
+
+    monkeypatch.setattr(
+        analysis,
+        "LAWS",
+        {"first": ("First law", first_law), "second": ("Second law", second_law)},
+    )
+    calls = {first_law: 0, second_law: 0}
+    interrupt_second = True
+
+    def profile(galaxies, law, grid, mode):
+        nonlocal interrupt_second
+        if law is second_law and mode == "prior" and interrupt_second:
+            interrupt_second = False
+            raise RuntimeError("injected interruption")
+        calls[law] += 1
+        return {
+            "a0_best": 1.0e-10,
+            "chi2_best": 1.0,
+            "chi2_reduced": 1.0,
+            "n_params": 1,
+            "sigma_scaled": 1.0e-12,
+            "a0_grid": grid,
+            "objective_grid": np.ones_like(grid),
+        }
+
+    monkeypatch.setattr(analysis, "profile_a0", profile)
+    with pytest.raises(RuntimeError, match="injected interruption"):
+        analysis.run(quick=True, make_figures=False)
+    first_calls = calls[first_law]
+
+    result = analysis.run(quick=True, make_figures=False)
+
+    assert first_calls == 3
+    assert calls[first_law] == first_calls
+    assert calls[second_law] == 3
+    assert set(result["laws"]) == {"first", "second"}
+    assert not list((tmp_path / "results").glob("*.part"))

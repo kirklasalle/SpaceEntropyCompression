@@ -154,6 +154,28 @@ The lowest class among inputs propagates to the output.
 | Concurrent runs | File locks on store writes; SQLite WAL; run directories namespaced by run ID |
 | Dependency drift | Locked environment; `emrf doctor` reports mismatch against the lock |
 
+### 5.1 Durable run and queue implementation
+
+`emrf.runs.RunStore` stores each run in a namespaced directory under the
+managed application root. `run.json` is the durable source of truth;
+`config.toml` is immutable; checkpoints and captured logs use temporary files,
+`fsync` and atomic replacement. The SQLite WAL registry is a rebuildable index
+and reconciles from run JSON on initialization. Run directories are staged
+under non-public temporary names and atomically promoted only after both
+metadata files are complete.
+
+Queued commands use transactional claims and bounded worker leases. An expired
+lease is requeued only while attempts remain; expiry after the final allowed
+attempt is a terminal failure. REST submission, cancellation and resumption
+are off by default with command execution and require
+`EMRF_API_ALLOW_RUN=1`. Interactive and service commands cannot be queued or
+resumed remotely.
+
+Checkpoint-aware pipelines read `EMRF_RUN_ID`, `EMRF_RUN_DIR`,
+`EMRF_RUN_ATTEMPT` and `EMRF_CHECKPOINT_DIR`. Checkpoints are optimization
+state, not evidence by themselves; only an atomically published terminal
+result from a successful run may be treated as a result artifact.
+
 Error taxonomy (`emrf.core.errors`): `ProvenanceError`, `IntegrityError`,
 `UnitError`, `NumericalError`, `ConvergenceError`, `StorageError`,
 `NetworkError`, `ConfigError`. CLI exit codes and API status codes map

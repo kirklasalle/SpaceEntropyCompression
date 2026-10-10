@@ -32,6 +32,8 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -59,6 +61,62 @@ LITERATURE_A0 = (1.20e-10, 0.02e-10, 0.24e-10)   # McGaugh+2016: value, random, 
 
 RESULTS_DIR = REPO_ROOT / "results"
 FIGURE_DIR = REPO_ROOT / "paper" / "figures"
+_CHECKPOINT_NAME = "analysis-progress"
+
+
+def _active_run_checkpoint():
+    run_id = os.environ.get("EMRF_RUN_ID")
+    run_dir = os.environ.get("EMRF_RUN_DIR")
+    if not run_id or not run_dir:
+        return None
+    from emrf_run_access import run_store
+
+    return run_store(Path(run_dir).parent), run_id
+
+
+def _save_analysis_checkpoint(results: dict, quick: bool) -> None:
+    context = _active_run_checkpoint()
+    if context is not None:
+        store, run_id = context
+        store.save_checkpoint(
+            run_id,
+            _CHECKPOINT_NAME,
+            {"quick": quick, "results": results},
+        )
+
+
+def _load_analysis_checkpoint(quick: bool) -> dict | None:
+    context = _active_run_checkpoint()
+    if context is None:
+        return None
+    store, run_id = context
+    if not store.checkpoint_exists(run_id, _CHECKPOINT_NAME):
+        return None
+    checkpoint = store.load_checkpoint(run_id, _CHECKPOINT_NAME)
+    if checkpoint.get("quick") is not quick or not isinstance(checkpoint.get("results"), dict):
+        raise ValueError("SPARC analysis checkpoint does not match this run configuration")
+    return checkpoint["results"]
+
+
+def _write_results_atomic(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        descriptor, name = tempfile.mkstemp(
+            prefix=f".{path.name}-",
+            suffix=".part",
+            dir=path.parent,
+        )
+        temporary = Path(name)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as output:
+            output.write(json.dumps(value, indent=2))
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, path)
+        temporary = None
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def a0_horizon(h0_kms_mpc: float) -> float:
@@ -300,7 +358,7 @@ def run(quick: bool = False, make_figures: bool = True) -> dict:
     grid = np.linspace(0.6e-10, 2.0e-10, 15 if quick else 57)
     print(f"Real SPARC sample after cuts (Q <= 2, i >= 30 deg): {len(gals)} galaxies, {n_pts} points")
 
-    results: dict = {
+    results: dict = _load_analysis_checkpoint(quick) or {
         "dataset": "SPARC (Lelli, McGaugh & Schombert 2016, AJ 152, 157)",
         "cuts": "Q <= 2 and inclination >= 30 deg; points with R > 0 and V > 0; errV floored at 1 km/s",
         "n_galaxies": len(gals), "n_points": n_pts,
@@ -313,51 +371,62 @@ def run(quick: bool = False, make_figures: bool = True) -> dict:
         "laws": {},
     }
 
-    chi_newton = 0.0
-    for gal in gals:
-        c2, _, _ = fit_galaxy(gal, nu_newton, 1.0, "prior")
-        chi_newton += c2
-    results["newton"] = {"chi2": chi_newton, "n_params": len(gals), "bic": bic(chi_newton, len(gals), n_pts)}
+    if "newton" not in results:
+        chi_newton = 0.0
+        for gal in gals:
+            c2, _, _ = fit_galaxy(gal, nu_newton, 1.0, "prior")
+            chi_newton += c2
+        results["newton"] = {
+            "chi2": chi_newton,
+            "n_params": len(gals),
+            "bic": bic(chi_newton, len(gals), n_pts),
+        }
+        _save_analysis_checkpoint(results, quick)
+    chi_newton = results["newton"]["chi2"]
 
     for key, (label, nu) in LAWS.items():
-        prof = profile_a0(gals, nu, grid, "prior")
-        variants = {"prior": prof["a0_best"],
-                    "fixed": profile_a0(gals, nu, grid, "fixed")["a0_best"],
-                    "free": profile_a0(gals, nu, grid, "free")["a0_best"]}
-        lo, hi = min(variants.values()), max(variants.values())
-        prof["label"] = label
-        prof["bic"] = bic(prof["chi2_best"], prof["n_params"], n_pts)
-        prof["a0_by_upsilon_treatment"] = variants
-        prof["a0_systematic_range"] = [lo, hi]
-        prof["solar_system"] = solar_system_check(nu, prof["a0_best"])
-        prof["horizon_within_systematic_range"] = {
-            lbl: bool(lo <= a_pred <= hi) for lbl, a_pred in results["horizon_prediction"].items()}
-        prof["horizon_fractional_offset"] = {
-            lbl: (a_pred - prof["a0_best"]) / prof["a0_best"] for lbl, a_pred in results["horizon_prediction"].items()}
-        del prof["a0_grid"]
-        prof["objective_grid"] = [float(x) for x in prof["objective_grid"]]
-        results["laws"][key] = prof
+        if key not in results["laws"]:
+            prof = profile_a0(gals, nu, grid, "prior")
+            variants = {"prior": prof["a0_best"],
+                        "fixed": profile_a0(gals, nu, grid, "fixed")["a0_best"],
+                        "free": profile_a0(gals, nu, grid, "free")["a0_best"]}
+            lo, hi = min(variants.values()), max(variants.values())
+            prof["label"] = label
+            prof["bic"] = bic(prof["chi2_best"], prof["n_params"], n_pts)
+            prof["a0_by_upsilon_treatment"] = variants
+            prof["a0_systematic_range"] = [lo, hi]
+            prof["solar_system"] = solar_system_check(nu, prof["a0_best"])
+            prof["horizon_within_systematic_range"] = {
+                lbl: bool(lo <= a_pred <= hi) for lbl, a_pred in results["horizon_prediction"].items()}
+            prof["horizon_fractional_offset"] = {
+                lbl: (a_pred - prof["a0_best"]) / prof["a0_best"] for lbl, a_pred in results["horizon_prediction"].items()}
+            del prof["a0_grid"]
+            prof["objective_grid"] = [float(x) for x in prof["objective_grid"]]
+            results["laws"][key] = prof
+            _save_analysis_checkpoint(results, quick)
+        prof = results["laws"][key]
+        lo, hi = prof["a0_systematic_range"]
         print(f"  {label:38s} a0 = {prof['a0_best']:.3e} (stat +/- {prof['sigma_scaled']:.0e}; "
               f"Upsilon-systematic range {lo:.2e}-{hi:.2e})  chi2 = {prof['chi2_best']:9.1f}  "
               f"BIC = {prof['bic']:9.1f}  solar system: "
               f"{'PASS' if prof['solar_system']['passes_generous_bound'] else 'FAIL'}")
     results["a0_grid"] = grid.tolist()
 
-    if not quick:
+    if not quick and "isothermal_halo" not in results:
         chi_halo = k_halo = 0
         for gal in gals:
             c2, k = fit_isothermal_halo(gal)
             chi_halo += c2
             k_halo += k
         results["isothermal_halo"] = {"chi2": chi_halo, "n_params": k_halo, "bic": bic(chi_halo, k_halo, n_pts)}
+        _save_analysis_checkpoint(results, quick)
         print(f"  {'Baryons + isothermal DM halo':38s} chi2 = {chi_halo:9.1f}  BIC = {results['isothermal_halo']['bic']:9.1f}")
     print(f"  {'Newtonian baryons only':38s} chi2 = {chi_newton:9.1f}  BIC = {results['newton']['bic']:9.1f}")
     for lbl, a in results["horizon_prediction"].items():
         print(f"  Horizon prediction c*H0/(2 pi), {lbl}: {a:.3e} m/s^2")
 
-    RESULTS_DIR.mkdir(exist_ok=True)
     out_json = RESULTS_DIR / ("sparc_real_analysis_quick.json" if quick else "sparc_real_analysis.json")
-    out_json.write_text(json.dumps(results, indent=2), encoding="utf-8")
+    _write_results_atomic(out_json, results)
     print(f"Results written to {out_json.relative_to(REPO_ROOT)}")
     if make_figures:
         make_plots(gals, results)

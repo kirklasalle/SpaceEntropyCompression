@@ -205,9 +205,20 @@ def list_commands(category: str | None = None) -> list[dict]:
 
 
 def run_command(
-    name: str, args: list[str] | None = None, timeout: float | None = None, capture: bool = False
+    name: str,
+    args: list[str] | None = None,
+    timeout: float | None = None,
+    capture: bool = False,
+    *,
+    evidence_class: str = "software",
+    inputs: dict[str, str] | None = None,
+    seeds: dict[str, int] | None = None,
+    resume_run_id: str | None = None,
+    prepared_run_id: str | None = None,
 ) -> dict:
     """Run a registered script in a fresh interpreter (isolates sys.exit, globals, plots)."""
+    from emrf_run_access import run_store
+
     cmd = get_command(name)
     args = list(args or [])
     if not all(isinstance(a, str) for a in args):
@@ -224,26 +235,165 @@ def run_command(
     ).rstrip(os.pathsep)
     env.setdefault("MPLBACKEND", "Agg")
     REPO_ROOT.mkdir(parents=True, exist_ok=True)
+    store = run_store()
+    if resume_run_id is not None and prepared_run_id is not None:
+        raise ValueError("A run cannot be both prepared and resumed")
+    if resume_run_id is None and prepared_run_id is None:
+        record = store.create(
+            name,
+            args,
+            evidence_class=evidence_class,
+            inputs=inputs,
+            seeds=seeds,
+        )
+        record = store.begin(record.run_id)
+    elif resume_run_id is not None:
+        record = store.get(resume_run_id)
+        if record.command != name or record.args != tuple(args):
+            raise ValueError("Resume command and arguments must match the original run")
+        record = store.begin(resume_run_id, resume=True)
+    else:
+        record = store.get(str(prepared_run_id))
+        if record.command != name or record.args != tuple(args):
+            raise ValueError("Prepared command and arguments must match the run")
+        record = store.begin(record.run_id)
+    env["EMRF_RUN_ID"] = record.run_id
+    env["EMRF_RUN_DIR"] = str(record.path)
+    env["EMRF_RUN_ATTEMPT"] = str(record.attempt)
+    env["EMRF_CHECKPOINT_DIR"] = str(record.path / "checkpoints")
     started = time.time()
     target = [str(cmd.path)] if cmd.path.is_file() else ["-m", str(cmd.module)]
-    proc = subprocess.run(  # noqa: S603 - fixed interpreter + registered target, no shell
-        [sys.executable, *target, *args],
-        cwd=str(REPO_ROOT),
-        env=env,
-        timeout=timeout,
-        capture_output=capture,
-        text=True,
+    try:
+        proc = subprocess.run(  # noqa: S603 - fixed interpreter + registered target, no shell
+            [sys.executable, *target, *args],
+            cwd=str(REPO_ROOT),
+            env=env,
+            timeout=timeout,
+            capture_output=capture,
+            text=True,
+        )
+    except subprocess.TimeoutExpired as exc:
+        store.finish(
+            record.run_id,
+            status="timed_out",
+            returncode=None,
+            duration_seconds=time.time() - started,
+        )
+        exc.run_id = record.run_id
+        raise
+    except BaseException:
+        store.finish(
+            record.run_id,
+            status="interrupted",
+            returncode=None,
+            duration_seconds=time.time() - started,
+        )
+        raise
+    if capture:
+        try:
+            store.write_log(record.run_id, "stdout", record.attempt, proc.stdout)
+            store.write_log(record.run_id, "stderr", record.attempt, proc.stderr)
+        except Exception:
+            store.finish(
+                record.run_id,
+                status="failed",
+                returncode=proc.returncode,
+                duration_seconds=time.time() - started,
+            )
+            raise
+    final = store.finish(
+        record.run_id,
+        status="succeeded" if proc.returncode == 0 else "failed",
+        returncode=proc.returncode,
+        duration_seconds=time.time() - started,
     )
     result = {
         "command": name,
         "args": args,
         "returncode": proc.returncode,
-        "seconds": round(time.time() - started, 3),
+        "seconds": round(final.duration_seconds or 0.0, 3),
+        "run_id": final.run_id,
     }
     if capture:
         result["stdout"] = proc.stdout
         result["stderr"] = proc.stderr
     return result
+
+
+def resume_run(
+    run_id: str,
+    *,
+    timeout: float | None = None,
+    capture: bool = False,
+) -> dict:
+    """Resume a failed, interrupted or timed-out registered command."""
+    from emrf_run_access import run_store
+
+    record = run_store().get(run_id)
+    return run_command(
+        record.command,
+        list(record.args),
+        timeout=timeout,
+        capture=capture,
+        evidence_class=record.evidence_class,
+        inputs=record.inputs,
+        seeds=record.seeds,
+        resume_run_id=run_id,
+    )
+
+
+def run_next_job(worker_id: str, *, lease_seconds: float = 3600) -> object | None:
+    """Claim and execute one queued job, returning its durable final state."""
+    from emrf_run_access import run_store
+
+    store = run_store()
+    job = store.claim(worker_id, lease_seconds=lease_seconds)
+    if job is None:
+        return None
+    try:
+        command = get_command(job.command)
+        if command.gui or command.category == "service":
+            raise ValueError(
+                f"{job.command} is interactive or a service and cannot run as a job"
+            )
+        run = store.create(
+            job.command,
+            list(job.args),
+            evidence_class=job.evidence_class,
+        )
+        store.attach_run(job.job_id, run.run_id)
+        result = run_command(
+            job.command,
+            list(job.args),
+            timeout=job.timeout_seconds,
+            capture=True,
+            evidence_class=job.evidence_class,
+            prepared_run_id=run.run_id,
+        )
+    except subprocess.TimeoutExpired:
+        return store.complete_job(
+            job.job_id,
+            returncode=None,
+            error=f"Command exceeded timeout of {job.timeout_seconds}s",
+        )
+    except Exception as exc:
+        return store.complete_job(
+            job.job_id,
+            returncode=None,
+            error=f"{type(exc).__name__}: {exc}",
+        )
+    except BaseException as exc:
+        store.complete_job(
+            job.job_id,
+            returncode=None,
+            error=f"{type(exc).__name__}: {exc}",
+        )
+        raise
+    return store.complete_job(
+        job.job_id,
+        returncode=int(result["returncode"]),
+        error=None if result["returncode"] == 0 else "Command returned a nonzero exit code",
+    )
 
 
 def _sha256(path: Path) -> str:

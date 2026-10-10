@@ -75,3 +75,4 @@ data/store/
 data/library.sqlite
 data/library.sqlite-shm
 data/library.sqlite-wal
+/runs/

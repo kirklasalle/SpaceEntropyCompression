@@ -225,6 +225,25 @@ tests pass; restore drill succeeds; preservation gate.
 
 ## Phase 4 - Run records and resilience (2-3 weeks)
 
+**Foundation implemented (2026-10-09):** every unified-registry execution now
+creates a durable, time-sortable run record beneath the managed application
+root. Atomic `run.json`, immutable `config.toml`, environment and source-control
+provenance, input hashes, seeds, attempt state, captured logs and terminal
+status are indexed in SQLite WAL. Durable JSON is the source of truth and
+reconciles the disposable SQLite index after interruption. `emrf runs
+list|info|resume` and matching `/api/v1/runs` endpoints expose inspection and
+controlled resumption.
+
+The durable job queue is available through `emrf jobs
+submit|list|info|cancel|run-next` and matching `/api/v1/jobs` endpoints.
+Transactional claims, leases, retry limits, cancellation and expired-worker
+recovery are covered by concurrent and fault-injection tests. Queue and resume
+mutations remain disabled in the REST service unless `EMRF_API_ALLOW_RUN=1`.
+The SPARC real-data analysis is the first checkpoint-aware long pipeline: it
+atomically records each completed acceleration law, resumes from the last
+completed boundary and atomically publishes its final JSON result. Fresh-run
+scientific results and golden behavior are unchanged.
+
 1. `emrf.runs`: run ID, config TOML, environment lock hash, git commit and
    dirty flag, input hashes, seeds, platform, timings, evidence class.
 2. Checkpoint/resume for long pipelines; job queue (SQLite) used by CLI and

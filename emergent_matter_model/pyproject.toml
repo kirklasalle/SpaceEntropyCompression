@@ -34,6 +34,7 @@ py-modules = [
     "emrf_cli",
     "emrf_data_access",
     "emrf_registry",
+    "emrf_run_access",
     "emrf_version",
     "data_provenance",
     "emrf_paths",
@@ -68,7 +69,7 @@ py-modules = [
     "quantum_vibrational_compression",
 ]
 
-packages = ["emrf", "emrf.core", "emrf.data", "emrf.interfaces", "emrf.physics"]
+packages = ["emrf", "emrf.core", "emrf.data", "emrf.interfaces", "emrf.physics", "emrf.runs"]
 
 [tool.setuptools.package-dir]
 emrf = "src/emrf"
@@ -76,6 +77,7 @@ emrf = "src/emrf"
 "emrf.data" = "src/emrf/data"
 "emrf.interfaces" = "src/emrf/interfaces"
 "emrf.physics" = "src/emrf/physics"
+"emrf.runs" = "src/emrf/runs"
 
 [tool.setuptools.package-data]
 "emrf.data" = ["data_catalog.json"]

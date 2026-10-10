@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 
 import pytest
 
 import emrf_cli
 import emrf_registry as reg
 import server
+from emrf.runs import RunStore
 from server import app
 
 _MAIN_GUARD = re.compile(r"^if __name__ == ['\"]__main__['\"]", re.MULTILINE)
@@ -49,6 +51,84 @@ def test_unknown_command_raises():
 def test_run_rejects_non_string_args():
     with pytest.raises(TypeError):
         reg.run_command("compare-schwarzschild", [1])  # type: ignore[list-item]
+
+
+def test_registry_execution_writes_run_record(
+    tmp_path, monkeypatch: pytest.MonkeyPatch
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+
+    result = reg.run_command("compare-schwarzschild", ["--help"], capture=True)
+    record = store.get(result["run_id"])
+
+    assert result["returncode"] == 0
+    assert record.status == "succeeded"
+    assert record.command == "compare-schwarzschild"
+    assert record.args == ("--help",)
+    assert (record.path / "stdout-1.txt").read_text(encoding="utf-8")
+
+
+def test_registry_failed_run_can_be_resumed(
+    tmp_path, monkeypatch: pytest.MonkeyPatch
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    first = reg.run_command(
+        "compare-schwarzschild",
+        ["--not-a-real-option"],
+        capture=True,
+    )
+
+    resumed = reg.resume_run(first["run_id"], capture=True)
+    record = store.get(first["run_id"])
+
+    assert first["returncode"] != 0
+    assert resumed["returncode"] != 0
+    assert record.status == "failed"
+    assert record.attempt == 2
+    assert (record.path / "stderr-1.txt").is_file()
+    assert (record.path / "stderr-2.txt").is_file()
+
+
+def test_registry_timeout_records_terminal_state(
+    tmp_path, monkeypatch: pytest.MonkeyPatch
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+
+    with pytest.raises(subprocess.TimeoutExpired) as exc:
+        reg.run_command(
+            "compare-schwarzschild",
+            ["--help"],
+            timeout=1e-9,
+            capture=True,
+        )
+
+    run_id = exc.value.run_id
+    assert store.get(run_id).status == "timed_out"
+    assert not list((tmp_path / run_id).glob("*.part"))
+
+
+def test_registry_interrupt_records_terminal_state(
+    tmp_path, monkeypatch: pytest.MonkeyPatch
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    record = store.create("compare-schwarzschild", ["--help"])
+
+    def interrupt(*args, **kwargs):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(reg.subprocess, "run", interrupt)
+    with pytest.raises(KeyboardInterrupt):
+        reg.run_command(
+            "compare-schwarzschild",
+            ["--help"],
+            prepared_run_id=record.run_id,
+        )
+
+    assert store.get(record.run_id).status == "interrupted"
 
 
 def test_cli_version(capsys):
@@ -120,6 +200,29 @@ def test_cli_data_unknown_dataset_is_usage_error(capsys):
     assert "Unknown dataset" in capsys.readouterr().err
 
 
+def test_cli_run_and_job_management(tmp_path, monkeypatch, capsys):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    run = store.create("compare-schwarzschild", ["--not-a-real-option"])
+    store.begin(run.run_id)
+    store.finish(run.run_id, status="failed", returncode=2, duration_seconds=0.1)
+
+    assert emrf_cli.main(["runs", "info", run.run_id]) == 0
+    assert json.loads(capsys.readouterr().out)["status"] == "failed"
+    assert emrf_cli.main(["runs", "list", "--json"]) == 0
+    assert json.loads(capsys.readouterr().out)[0]["run_id"] == run.run_id
+
+    assert emrf_cli.main([
+        "jobs", "submit", "compare-schwarzschild", "--", "--help"
+    ]) == 0
+    job = json.loads(capsys.readouterr().out)
+    assert job["status"] == "queued"
+    assert emrf_cli.main(["jobs", "run-next", "--worker-id", "test-worker"]) == 0
+    completed = json.loads(capsys.readouterr().out)
+    assert completed["status"] == "succeeded"
+    assert completed["run_id"]
+
+
 def test_dataset_verify_detects_tampering(tmp_path, monkeypatch):
     f = tmp_path / "obs.dat"
     f.write_bytes(b"real bytes")
@@ -174,6 +277,44 @@ def test_api_run_validates_and_executes(client, monkeypatch):
     body = resp.get_json()
     assert resp.status_code == 200 and body["returncode"] == 0
     assert "Schwarzschild" in body["stdout"]
+
+
+def test_api_run_records_and_jobs(client, tmp_path, monkeypatch):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    monkeypatch.setenv("EMRF_API_ALLOW_RUN", "1")
+
+    submitted = client.post("/api/v1/jobs", json={
+        "command": "compare-schwarzschild",
+        "args": ["--help"],
+        "max_attempts": 2,
+    })
+    assert submitted.status_code == 202
+    job_id = submitted.get_json()["job_id"]
+    assert client.get(f"/api/v1/jobs/{job_id}").get_json()["status"] == "queued"
+    assert len(client.get("/api/v1/jobs").get_json()["jobs"]) == 1
+    cancelled = client.post(f"/api/v1/jobs/{job_id}/cancel")
+    assert cancelled.status_code == 200
+    assert cancelled.get_json()["status"] == "cancelled"
+
+    result = client.post(
+        "/api/v1/commands/compare-schwarzschild/run",
+        json={"args": ["--not-a-real-option"]},
+    ).get_json()
+    run_id = result["run_id"]
+    assert client.get(f"/api/v1/runs/{run_id}").get_json()["status"] == "failed"
+    assert client.get("/api/v1/runs").get_json()["runs"][0]["run_id"] == run_id
+    resumed = client.post(f"/api/v1/runs/{run_id}/resume", json={"timeout": 120})
+    assert resumed.status_code == 200
+    assert resumed.get_json()["returncode"] != 0
+    assert store.get(run_id).attempt == 2
+
+
+def test_api_job_mutation_disabled_by_default(client, monkeypatch):
+    monkeypatch.delenv("EMRF_API_ALLOW_RUN", raising=False)
+    assert client.post("/api/v1/jobs", json={
+        "command": "compare-schwarzschild",
+    }).status_code == 403
 
 
 def test_api_datasets_and_doctor(client):
