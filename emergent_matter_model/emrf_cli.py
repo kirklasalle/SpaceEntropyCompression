@@ -33,7 +33,10 @@ import subprocess
 import sys
 
 import emrf_registry as reg
+from emrf_sdk_access import EMRFClient, RunRequest
 from emrf_version import __version__
+
+sdk = EMRFClient()
 
 
 def _print_json(obj: object) -> None:
@@ -45,7 +48,7 @@ def _strip_separator(rest: list[str]) -> list[str]:
 
 
 def cmd_list(a: argparse.Namespace) -> int:
-    rows = reg.list_commands(a.category)
+    rows = [command.to_dict() for command in sdk.list_commands(a.category).commands]
     if a.json:
         _print_json(rows)
         return 0
@@ -65,14 +68,20 @@ def cmd_list(a: argparse.Namespace) -> int:
 
 def cmd_run(a: argparse.Namespace) -> int:
     try:
-        result = reg.run_command(a.name, _strip_separator(a.args), timeout=a.timeout)
+        result = sdk.run(
+            RunRequest(
+                command=a.name,
+                args=tuple(_strip_separator(a.args)),
+                timeout=a.timeout,
+            )
+        )
     except KeyError as exc:
         print(f"error: {exc.args[0]}. Use 'list' to see commands.", file=sys.stderr)
         return 2
     except subprocess.TimeoutExpired:
         print(f"error: {a.name} exceeded timeout of {a.timeout}s", file=sys.stderr)
         return 1
-    return int(result["returncode"])
+    return result.returncode
 
 
 def _parse_grid(text: str) -> list[float]:

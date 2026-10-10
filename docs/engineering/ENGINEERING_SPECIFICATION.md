@@ -310,7 +310,9 @@ HTTP servers, cryptographic hashing.
   a job ID with `GET /jobs/{id}` status, logs and artefacts; token
   authentication for mutating endpoints; CORS restricted by configuration.
 * **Python SDK** `emrf.sdk`: the same operations as typed functions; the CLI
-  and API are thin layers over it, guaranteeing parity.
+  and API are thin layers over it, guaranteeing parity. Public values are
+  immutable dataclasses with explicit JSON-compatible serialization; SDK
+  failures use a stable exception hierarchy with structured error responses.
 * **Configuration**: one validated TOML file per run, recorded in the run record.
 
 ## 9. Observability

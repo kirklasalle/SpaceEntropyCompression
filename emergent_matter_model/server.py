@@ -22,6 +22,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 
 import emrf_registry as registry
+from emrf_sdk_access import EMRFClient, RunRequest
 from emrf_version import API_VERSION, __version__
 from model import EmergentMatterModel
 
@@ -33,6 +34,7 @@ _MAX_RUN_TIMEOUT_SEC = 600.0
 
 app = Flask(__name__)
 CORS(app)
+sdk = EMRFClient()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -315,20 +317,22 @@ def verify_prediction(commitment_id: str):
 @app.route('/api/v1/commands', methods=['GET'])
 def list_commands():
     category = request.args.get('category')
-    if category is not None and category not in registry.CATEGORIES:
-        return jsonify({'error': f'Unknown category: {category}',
+    try:
+        commands = sdk.list_commands(category)
+    except ValueError as exc:
+        return jsonify({'error': str(exc),
                         'categories': list(registry.CATEGORIES)}), 400
-    return jsonify({'commands': registry.list_commands(category),
+    return jsonify({'commands': commands.to_dict()["commands"],
                     'run_enabled': os.environ.get(RUN_ENV_FLAG) == '1'})
 
 
 @app.route('/api/v1/commands/<name>', methods=['GET'])
 def get_command(name: str):
     try:
-        registry.get_command(name)
+        command = sdk.get_command(name)
     except KeyError as exc:
         return jsonify({'error': exc.args[0]}), 404
-    return jsonify(next(c for c in registry.list_commands() if c['name'] == name))
+    return jsonify(command.to_dict())
 
 
 @app.route('/api/v1/commands/<name>/run', methods=['POST'])
@@ -341,7 +345,7 @@ def run_command(name: str):
     if not _check_rate_limit(client_ip):
         return jsonify({'error': 'Rate limit exceeded'}), 429
     try:
-        cmd = registry.get_command(name)
+        cmd = sdk.get_command(name)
     except KeyError as exc:
         return jsonify({'error': exc.args[0]}), 404
     if cmd.gui or cmd.category == 'service':
@@ -356,11 +360,18 @@ def run_command(name: str):
     if not _is_real_number(timeout) or not 0 < timeout <= _MAX_RUN_TIMEOUT_SEC:
         return jsonify({'error': f'timeout must be in (0, {_MAX_RUN_TIMEOUT_SEC}]'}), 400
     try:
-        result = registry.run_command(name, args, timeout=float(timeout), capture=True)
+        result = sdk.run(
+            RunRequest(
+                command=name,
+                args=tuple(args),
+                timeout=float(timeout),
+            ),
+            capture=True,
+        )
     except subprocess.TimeoutExpired:
         return jsonify({'error': f'{name} exceeded timeout of {timeout}s'}), 504
-    logger.info("API ran %s -> %s", name, result['returncode'])
-    return jsonify(result), 200
+    logger.info("API ran %s -> %s", name, result.returncode)
+    return jsonify(result.to_dict()), 200
 
 
 @app.route('/api/v1/runs', methods=['GET'])

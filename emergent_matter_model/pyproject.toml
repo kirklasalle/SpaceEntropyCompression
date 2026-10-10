@@ -38,6 +38,7 @@ py-modules = [
     "emrf_error_access",
     "emrf_registry",
     "emrf_run_access",
+    "emrf_sdk_access",
     "emrf_version",
     "data_provenance",
     "emrf_paths",
@@ -82,6 +83,7 @@ packages = [
     "emrf.interfaces",
     "emrf.physics",
     "emrf.runs",
+    "emrf.sdk",
     "emrf.validation",
 ]
 
@@ -92,6 +94,7 @@ emrf = "src/emrf"
 "emrf.interfaces" = "src/emrf/interfaces"
 "emrf.physics" = "src/emrf/physics"
 "emrf.runs" = "src/emrf/runs"
+"emrf.sdk" = "src/emrf/sdk"
 "emrf.validation" = "src/emrf/validation"
 
 [tool.setuptools.package-data]

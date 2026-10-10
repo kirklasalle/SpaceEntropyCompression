@@ -336,6 +336,14 @@ programs, not evidence silently inferred from Phase 5 software verification.
 
 ## Phase 6 - Interfaces v2 (2-3 weeks)
 
+**Typed SDK foundation implemented (2026-10-10):** `emrf.sdk` now defines
+immutable public request, response, error, run, dataset, verification and
+prediction contracts. Command discovery and registered command execution are
+the first shared application operations: direct Python, the compatibility CLI
+and REST v1 call the same typed SDK client, while command execution continues
+to produce the existing durable run records. Cross-interface parity tests lock
+the v1 JSON shapes and legacy CLI behavior before further migration.
+
 1. `emrf.sdk` typed public API; CLI and API reimplemented as thin layers.
 2. REST v2 with FastAPI + pydantic (generated OpenAPI), jobs, artefact
    download, token auth for mutating endpoints; v1 kept and tested.
