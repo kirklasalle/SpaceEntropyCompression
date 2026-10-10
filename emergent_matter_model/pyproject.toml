@@ -67,10 +67,11 @@ py-modules = [
     "quantum_vibrational_compression",
 ]
 
-packages = ["emrf", "emrf.data", "emrf.interfaces", "emrf.physics"]
+packages = ["emrf", "emrf.core", "emrf.data", "emrf.interfaces", "emrf.physics"]
 
 [tool.setuptools.package-dir]
 emrf = "src/emrf"
+"emrf.core" = "src/emrf/core"
 "emrf.data" = "src/emrf/data"
 "emrf.interfaces" = "src/emrf/interfaces"
 "emrf.physics" = "src/emrf/physics"

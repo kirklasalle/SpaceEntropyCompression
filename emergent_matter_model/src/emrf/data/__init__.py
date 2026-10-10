@@ -8,9 +8,13 @@ from .provenance import (
     skip_comment_lines,
     verify_observation_file,
 )
+from .store import ContentAddressedStore, Holding, StoredObject
 
 __all__ = [
+    "ContentAddressedStore",
+    "Holding",
     "SYNTHETIC_MARKER",
+    "StoredObject",
     "app_root",
     "data_root",
     "is_synthetic",

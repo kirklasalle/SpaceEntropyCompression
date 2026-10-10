@@ -167,6 +167,16 @@ verified, deduplicated, backed up and queryable.
    (Gaia subset), CODATA 2022 constants.
 6. Backup: local plus off-site; quarterly restore drill with full verify.
 
+**Foundation status (2026-10-09):** in progress. `emrf.data.store` now provides
+streamed SHA-256 ingestion, atomic promotion after file `fsync`, verified reads,
+deduplication, corrupt-object repair, conservative stale-part cleanup and an
+SQLite WAL holdings registry. Holding keys are normalized and immutable: an
+idempotent replay may resolve the original record, but neither its bytes nor
+its provenance metadata are silently rewritten. Parent-directory `fsync` is
+best effort on platforms such as Windows. Fetching, catalog integration,
+quarantine, backup/restore and public CLI/API commands remain later Phase 3
+work and are not implied by this foundation.
+
 **Exit gate:** every dataset used by any result is in the catalog with
 licence, citation and verified hash; kill-during-fetch and corrupted-byte
 tests pass; restore drill succeeds; preservation gate.

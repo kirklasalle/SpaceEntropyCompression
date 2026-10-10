@@ -38,6 +38,23 @@ Statuses are:
 5. Never overwrite raw observations. Derived products point back to their
    immutable inputs.
 
+## Managed local storage
+
+The Phase 3 `emrf.data.store.ContentAddressedStore` foundation stores bytes at
+`store/sha256/<prefix>/<digest>` beneath the configured data root and records
+logical holdings in `library.sqlite`. Ingestion streams through an fsynced
+partial file, validates optional expected size and SHA-256 values, and then
+atomically promotes the object. Reads verify content by default and reject
+symbolic-link objects. Duplicate bytes share one object.
+
+Holding identifiers are trimmed before registration and are immutable once
+bound. Repeating an identical registration returns the original provenance;
+it does not silently update citation, licence, source or metadata. Register a
+new dataset version when provenance changes. Atomic promotion is guaranteed by
+the local filesystem; parent-directory fsync is best effort on platforms such
+as Windows. This foundation does not yet provide resumable network fetching,
+backup/restore or garbage collection.
+
 ## Authoritative source families
 
 The catalog links to SPARC, Pantheon+, DESI, DES-SN5YR, Union3, the Planck
