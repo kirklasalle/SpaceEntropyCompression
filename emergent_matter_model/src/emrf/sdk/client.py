@@ -7,7 +7,15 @@ from typing import Any
 import emrf_registry
 
 from .errors import InvalidRequestError, ResourceNotFoundError
-from .models import CommandInfo, CommandListResponse, RunRequest, RunResult
+from .models import (
+    CommandInfo,
+    CommandListResponse,
+    RunInfo,
+    RunListResponse,
+    RunRequest,
+    RunResult,
+    VerificationReport,
+)
 
 
 class EMRFClient:
@@ -52,6 +60,42 @@ class EMRFClient:
             seeds=dict(request.seeds),
         )
         return RunResult.from_mapping(result)
+
+    def list_runs(self, *, limit: int = 50) -> RunListResponse:
+        from emrf_run_access import public_record, run_store
+
+        records = tuple(
+            RunInfo.from_mapping(public_record(record))
+            for record in run_store().list(limit=limit)
+        )
+        return RunListResponse(records)
+
+    def get_run(self, run_id: str) -> RunInfo:
+        from emrf_run_access import public_record, run_store
+
+        try:
+            record = run_store().get(run_id)
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "run", "run_id": run_id},
+            ) from None
+        return RunInfo.from_mapping(public_record(record))
+
+    def verify_physics(self) -> VerificationReport:
+        from emrf_physics_access import known_limit_report
+
+        return VerificationReport.from_mapping(known_limit_report())
+
+    def verify_inference(self) -> VerificationReport:
+        from emrf_validation_access import inference_validation_report
+
+        return VerificationReport.from_mapping(inference_validation_report())
+
+    def verify_engines(self) -> VerificationReport:
+        from emrf_validation_access import engine_validation_report
+
+        return VerificationReport.from_mapping(engine_validation_report())
 
 
 __all__ = ["EMRFClient"]

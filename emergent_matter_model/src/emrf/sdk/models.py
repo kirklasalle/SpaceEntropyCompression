@@ -139,10 +139,55 @@ class RunInfo:
     inputs: Mapping[str, str]
     seeds: Mapping[str, int]
 
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> RunInfo:
+        return cls(
+            run_id=str(value["run_id"]),
+            command=str(value["command"]),
+            args=tuple(str(argument) for argument in value["args"]),
+            evidence_class=str(value["evidence_class"]),
+            status=str(value["status"]),
+            attempt=int(value["attempt"]),
+            created_utc=str(value["created_utc"]),
+            started_utc=(
+                None if value["started_utc"] is None else str(value["started_utc"])
+            ),
+            completed_utc=(
+                None
+                if value["completed_utc"] is None
+                else str(value["completed_utc"])
+            ),
+            returncode=(
+                None if value["returncode"] is None else int(value["returncode"])
+            ),
+            duration_seconds=(
+                None
+                if value["duration_seconds"] is None
+                else float(value["duration_seconds"])
+            ),
+            environment_sha256=str(value["environment_sha256"]),
+            git_commit=(
+                None if value["git_commit"] is None else str(value["git_commit"])
+            ),
+            git_dirty=(
+                None if value["git_dirty"] is None else bool(value["git_dirty"])
+            ),
+            inputs=dict(value["inputs"]),
+            seeds={str(key): int(seed) for key, seed in value["seeds"].items()},
+        )
+
     def to_dict(self) -> dict[str, Any]:
         value = asdict(self)
         value["args"] = list(self.args)
         return value
+
+
+@dataclass(frozen=True)
+class RunListResponse:
+    runs: tuple[RunInfo, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"runs": [run.to_dict() for run in self.runs]}
 
 
 @dataclass(frozen=True)
@@ -166,10 +211,26 @@ class VerificationReport:
     checks: tuple[Mapping[str, Any], ...]
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> VerificationReport:
+        return cls(
+            evidence_class=str(value["evidence_class"]),
+            all_passed=bool(value["all_passed"]),
+            checks=tuple(dict(check) for check in value["checks"]),
+            metadata={
+                key: item
+                for key, item in value.items()
+                if key not in {"evidence_class", "all_passed", "checks"}
+            },
+        )
+
     def to_dict(self) -> dict[str, Any]:
-        value = asdict(self)
-        value["checks"] = [dict(check) for check in self.checks]
-        return value
+        return {
+            "evidence_class": self.evidence_class,
+            "all_passed": self.all_passed,
+            **dict(self.metadata),
+            "checks": [dict(check) for check in self.checks],
+        }
 
 
 @dataclass(frozen=True)
@@ -195,6 +256,7 @@ __all__ = [
     "ErrorResponse",
     "PredictionCommitment",
     "RunInfo",
+    "RunListResponse",
     "RunRequest",
     "RunResult",
     "VerificationReport",

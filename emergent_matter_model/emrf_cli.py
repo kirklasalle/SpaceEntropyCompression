@@ -148,11 +148,10 @@ def _public_record(record):
 
 
 def cmd_runs(a: argparse.Namespace) -> int:
-    store = _run_store()
     if a.runs_command == "list":
-        records = store.list(limit=a.limit)
+        records = sdk.list_runs(limit=a.limit).runs
         if a.json:
-            _print_json([_public_record(record) for record in records])
+            _print_json([record.to_dict() for record in records])
         else:
             for record in records:
                 print(
@@ -161,7 +160,7 @@ def cmd_runs(a: argparse.Namespace) -> int:
                 )
         return 0
     if a.runs_command == "info":
-        _print_json(_public_record(store.get(a.run_id)))
+        _print_json(sdk.get_run(a.run_id).to_dict())
         return 0
     result = reg.resume_run(a.run_id, timeout=a.timeout)
     _print_json(result)
@@ -308,9 +307,8 @@ def cmd_doctor(a: argparse.Namespace) -> int:
 
 
 def cmd_verify_physics(a: argparse.Namespace) -> int:
-    from emrf_physics_access import known_limit_report
-
-    report = known_limit_report()
+    result = sdk.verify_physics()
+    report = result.to_dict()
     if a.json:
         _print_json(report)
     else:
@@ -328,9 +326,8 @@ def cmd_verify_physics(a: argparse.Namespace) -> int:
 
 
 def cmd_verify_inference(a: argparse.Namespace) -> int:
-    from emrf_validation_access import inference_validation_report
-
-    report = inference_validation_report()
+    result = sdk.verify_inference()
+    report = result.to_dict()
     if a.json:
         _print_json(report)
     else:
@@ -350,9 +347,8 @@ def cmd_verify_inference(a: argparse.Namespace) -> int:
 
 
 def cmd_verify_engines(a: argparse.Namespace) -> int:
-    from emrf_validation_access import engine_validation_report
-
-    report = engine_validation_report()
+    result = sdk.verify_engines()
+    report = result.to_dict()
     if a.json:
         _print_json(report)
     else:

@@ -342,7 +342,9 @@ prediction contracts. Command discovery and registered command execution are
 the first shared application operations: direct Python, the compatibility CLI
 and REST v1 call the same typed SDK client, while command execution continues
 to produce the existing durable run records. Cross-interface parity tests lock
-the v1 JSON shapes and legacy CLI behavior before further migration.
+the v1 JSON shapes and legacy CLI behavior before further migration. Typed run
+inspection and all three verification certificate families now use the same
+SDK path as well.
 
 1. `emrf.sdk` typed public API; CLI and API reimplemented as thin layers.
 2. REST v2 with FastAPI + pydantic (generated OpenAPI), jobs, artefact

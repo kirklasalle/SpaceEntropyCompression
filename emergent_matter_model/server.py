@@ -241,27 +241,21 @@ def doctor():
 @app.route('/api/v1/verification/physics', methods=['GET'])
 def verify_physics():
     """Run read-only foundational physics known-limit checks."""
-    from emrf_physics_access import known_limit_report
-
-    report = known_limit_report()
+    report = sdk.verify_physics().to_dict()
     return jsonify(report), 200 if report["all_passed"] else 500
 
 
 @app.route('/api/v1/verification/engines', methods=['GET'])
 def verify_engines():
     """Run remaining deterministic and synthetic engine checks."""
-    from emrf_validation_access import engine_validation_report
-
-    report = engine_validation_report()
+    report = sdk.verify_engines().to_dict()
     return jsonify(report), 200 if report["all_passed"] else 500
 
 
 @app.route('/api/v1/verification/inference', methods=['GET'])
 def verify_inference():
     """Run deterministic synthetic inference calibration checks."""
-    from emrf_validation_access import inference_validation_report
-
-    report = inference_validation_report()
+    report = sdk.verify_inference().to_dict()
     return jsonify(report), 200 if report["all_passed"] else 500
 
 
@@ -378,9 +372,7 @@ def run_command(name: str):
 def list_runs():
     try:
         limit = request.args.get('limit', 50, type=int)
-        return jsonify({
-            'runs': [_public_record(record) for record in _run_store().list(limit=limit)]
-        })
+        return jsonify(sdk.list_runs(limit=limit).to_dict())
     except Exception as exc:
         return _run_error(exc)
 
@@ -388,7 +380,7 @@ def list_runs():
 @app.route('/api/v1/runs/<run_id>', methods=['GET'])
 def get_run(run_id: str):
     try:
-        return jsonify(_public_record(_run_store().get(run_id)))
+        return jsonify(sdk.get_run(run_id).to_dict())
     except Exception as exc:
         return _run_error(exc)
 

@@ -135,3 +135,51 @@ def test_durable_analysis_has_sdk_cli_rest_parity(
     assert all(record.command == request.command for record in records)
     assert all(record.args == request.args for record in records)
     assert all(record.status == "succeeded" for record in records)
+
+
+def test_run_inspection_has_sdk_cli_rest_parity(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys,
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    created = store.create("compare-schwarzschild", ["--help"])
+    store.begin(created.run_id)
+    store.finish(created.run_id, status="succeeded", returncode=0, duration_seconds=0.5)
+
+    direct_detail = EMRFClient().get_run(created.run_id).to_dict()
+    direct_list = EMRFClient().list_runs(limit=10).to_dict()["runs"]
+
+    assert emrf_cli.main(["runs", "info", created.run_id]) == 0
+    cli_detail = json.loads(capsys.readouterr().out)
+    assert emrf_cli.main(["runs", "list", "--limit", "10", "--json"]) == 0
+    cli_list = json.loads(capsys.readouterr().out)
+
+    server.app.config["TESTING"] = True
+    client = server.app.test_client()
+    rest_detail = client.get(f"/api/v1/runs/{created.run_id}").get_json()
+    rest_list = client.get("/api/v1/runs?limit=10").get_json()["runs"]
+
+    assert cli_detail == direct_detail == rest_detail
+    assert cli_list == direct_list == rest_list
+    assert "path" not in direct_detail
+
+    with pytest.raises(ResourceNotFoundError) as exc:
+        EMRFClient().get_run("20261010T000000000000Z-00000000")
+    assert exc.value.as_response().details["resource"] == "run"
+
+
+def test_physics_verification_has_sdk_cli_rest_parity(capsys):
+    direct = EMRFClient().verify_physics().to_dict()
+
+    assert emrf_cli.main(["verify", "physics", "--json"]) == 0
+    cli = json.loads(capsys.readouterr().out)
+
+    server.app.config["TESTING"] = True
+    response = server.app.test_client().get("/api/v1/verification/physics")
+    rest = response.get_json()
+
+    assert response.status_code == 200
+    assert cli == direct == rest
+    assert direct["all_passed"]
