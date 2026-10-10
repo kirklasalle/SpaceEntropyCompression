@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.metadata
+import importlib.util
 import json
 import os
 import subprocess
@@ -17,11 +18,22 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from emrf_version import API_VERSION, __version__
+try:
+    from emrf_paths import app_root, data_root, project_root, resolve_data_path
+    from emrf_version import API_VERSION, __version__
+except ModuleNotFoundError:  # package-qualified legacy import
+    from emergent_matter_model.emrf_paths import (
+        app_root,
+        data_root,
+        project_root,
+        resolve_data_path,
+    )
+    from emergent_matter_model.emrf_version import API_VERSION, __version__
 
 PACKAGE_DIR = Path(__file__).resolve().parent
-REPO_ROOT = PACKAGE_DIR.parent
-EXTERNAL_DIR = REPO_ROOT / "data" / "external"
+REPO_ROOT = app_root()
+PROJECT_ROOT = project_root()
+EXTERNAL_DIR = data_root() / "external"
 MANIFEST = EXTERNAL_DIR / "download_manifest.json"
 
 CATEGORIES = (
@@ -41,6 +53,23 @@ class Command:
     @property
     def path(self) -> Path:
         return REPO_ROOT / self.script
+
+    @property
+    def module(self) -> str | None:
+        path = Path(self.script)
+        if path.parts and path.parts[0] == "emergent_matter_model":
+            return path.stem
+        return None
+
+    @property
+    def source_only(self) -> bool:
+        return self.module is None
+
+    @property
+    def available(self) -> bool:
+        if self.path.is_file():
+            return True
+        return self.module is not None and importlib.util.find_spec(self.module) is not None
 
 
 _M = "emergent_matter_model/"
@@ -164,7 +193,12 @@ def get_command(name: str) -> Command:
 
 def list_commands(category: str | None = None) -> list[dict]:
     return [
-        {**asdict(c), "exists": c.path.is_file()}
+        {
+            **asdict(c),
+            "module": c.module,
+            "source_only": c.source_only,
+            "exists": c.available,
+        }
         for c in COMMANDS
         if category is None or c.category == category
     ]
@@ -178,16 +212,22 @@ def run_command(
     args = list(args or [])
     if not all(isinstance(a, str) for a in args):
         raise TypeError("args must be a list of strings")
-    if not cmd.path.is_file():
-        raise FileNotFoundError(cmd.path)
+    if not cmd.available:
+        if cmd.source_only:
+            raise FileNotFoundError(
+                f"{cmd.name} requires an EMRF source checkout containing {cmd.script}"
+            )
+        raise FileNotFoundError(f"Command target is unavailable: {cmd.script}")
     env = dict(os.environ)
     env["PYTHONPATH"] = os.pathsep.join(
         [str(PACKAGE_DIR), str(REPO_ROOT), env.get("PYTHONPATH", "")]
     ).rstrip(os.pathsep)
     env.setdefault("MPLBACKEND", "Agg")
+    REPO_ROOT.mkdir(parents=True, exist_ok=True)
     started = time.time()
-    proc = subprocess.run(  # noqa: S603 - fixed interpreter + registered script, no shell
-        [sys.executable, str(cmd.path), *args],
+    target = [str(cmd.path)] if cmd.path.is_file() else ["-m", str(cmd.module)]
+    proc = subprocess.run(  # noqa: S603 - fixed interpreter + registered target, no shell
+        [sys.executable, *target, *args],
         cwd=str(REPO_ROOT),
         env=env,
         timeout=timeout,
@@ -214,6 +254,15 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def _manifest_path(value: str) -> Path:
+    path = Path(value)
+    if path.is_absolute():
+        return path
+    if path.parts and path.parts[0].lower() == "data":
+        return resolve_data_path(path)
+    return REPO_ROOT / path
+
+
 def dataset_status(verify: bool = False) -> list[dict]:
     """List manifest-registered observational files; optionally re-hash them (read-only)."""
     if not MANIFEST.is_file():
@@ -221,7 +270,7 @@ def dataset_status(verify: bool = False) -> list[dict]:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     out = []
     for key, entry in sorted(manifest.items()):
-        path = REPO_ROOT / entry.get("file", "")
+        path = _manifest_path(entry.get("file", ""))
         row = {
             "id": key,
             "file": entry.get("file"),
@@ -254,7 +303,8 @@ def environment_report() -> dict:
     """Read-only diagnostics of interpreter, dependencies, registry, and data."""
     core = {d: _dist_version(d) for d in CORE_DEPENDENCIES}
     optional = {d: _dist_version(d) for d in OPTIONAL_DEPENDENCIES}
-    missing_scripts = [c.name for c in COMMANDS if not c.path.is_file()]
+    missing_scripts = [c.name for c in COMMANDS if not c.available and not c.source_only]
+    source_only_unavailable = [c.name for c in COMMANDS if not c.available and c.source_only]
     py_ok = sys.version_info >= (3, 10)
     return {
         "emrf_version": __version__,
@@ -268,6 +318,9 @@ def environment_report() -> dict:
         "missing_core": [d for d, v in core.items() if v is None],
         "registered_commands": len(COMMANDS),
         "missing_scripts": missing_scripts,
+        "source_only_unavailable": source_only_unavailable,
+        "app_root": str(REPO_ROOT),
+        "data_root": str(data_root()),
         "manifest_present": MANIFEST.is_file(),
         "healthy": py_ok and not missing_scripts and all(core.values()),
     }

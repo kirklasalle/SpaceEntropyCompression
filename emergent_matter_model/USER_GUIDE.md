@@ -36,6 +36,12 @@ for registered research, audit and release programs.
 After installation, the equivalent supported command is `emrf doctor` or
 `emrf list`; both use the same registry and preserve the legacy behavior.
 
+Installed builds store downloaded observations under the platform user-data
+directory rather than inside `site-packages`. Set `EMRF_HOME` to relocate all
+writable EMRF state, or `EMRF_DATA_DIR` to relocate observations only. Commands
+marked `source_only` by `emrf list --json` require a repository checkout because
+they operate on reviewed documents, results, or release artifacts.
+
 ## Features
 - Simulate emergent matter models across spatial dimensions with entropy state sweep
 - Entropy as a thermodynamic state field—the arrow of change

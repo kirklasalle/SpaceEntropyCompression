@@ -130,9 +130,21 @@ numerical divergence from `physics_baseline.py`. The first data-layer bridge,
 observation-integrity checks without changing their legacy consumers. The
 installed REST surface is available as `emrf.interfaces.api`, re-exporting the
 same Flask application and simulation function used by `server.py`.
+Installed storage now resolves through `EMRF_HOME`/`EMRF_DATA_DIR` with
+platform-user defaults, while checkouts retain their existing repository data
+paths. Registry entries use packaged module targets when no checkout exists and
+identify repository audit/release operations as `source_only`; the shared
+catalog is exposed as `emrf.interfaces.registry`.
 
-**Exit gate:** `pip install .` in a clean venv runs every registry command;
-`emrf` console script works; all legacy paths work; preservation gate.
+**Phase 2 local exit status (2026-10-09):** passed. A clean wheel resolves all
+30 installable command modules, explicitly reports 15 checkout-required
+operations, uses user-writable installed storage, and preserves legacy imports.
+The complete non-golden suite and all eight reviewed golden pipelines pass.
+Remote CI certification is required before Phase 3 changes are merged.
+
+**Exit gate:** `pip install .` in a clean venv runs every installable registry
+command and reports checkout-required commands explicitly; `emrf` console
+script works; all legacy paths work; preservation gate.
 
 ## Phase 3 - Observational data library (3-4 weeks)
 

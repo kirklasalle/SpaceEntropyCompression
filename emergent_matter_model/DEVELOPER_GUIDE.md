@@ -69,6 +69,10 @@ Data consumers should use `emrf.data.provenance` for synthetic-input labelling
 and byte-level observation verification.
 WSGI hosts and Python clients may import the existing Flask application from
 `emrf.interfaces.api`; `server.py` and `wsgi.py` remain supported.
+The shared command catalog is importable as `emrf.interfaces.registry`.
+Registry entries execute source scripts in a checkout and packaged modules in
+an installed wheel. Repository audit/release tools are explicitly `source_only`
+instead of appearing as missing or attempting to write into `site-packages`.
 
 ## Extending the Model
 - Add new spatial curvature functions in `model.py` — each `c_func` takes one

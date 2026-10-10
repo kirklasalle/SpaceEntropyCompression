@@ -12,10 +12,15 @@ import hashlib
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 
+try:
+    from emrf_paths import app_root, data_root
+except ModuleNotFoundError:  # package-qualified legacy import
+    from emergent_matter_model.emrf_paths import app_root, data_root
+
 SYNTHETIC_MARKER = "SYNTHETIC DATA"
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-SYNTHETIC_DIR = REPO_ROOT / "data" / "synthetic"
+REPO_ROOT = app_root()
+SYNTHETIC_DIR = data_root() / "synthetic"
 
 
 def is_synthetic(path: str | Path) -> bool:

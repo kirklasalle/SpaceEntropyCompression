@@ -19,8 +19,14 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-EXTERNAL_DIR = REPO_ROOT / "data" / "external"
+try:
+    from emrf_paths import app_root, data_root
+except ModuleNotFoundError:  # package-qualified legacy import
+    from emergent_matter_model.emrf_paths import app_root, data_root
+
+REPO_ROOT = app_root()
+DATA_ROOT = data_root()
+EXTERNAL_DIR = DATA_ROOT / "external"
 MANIFEST = EXTERNAL_DIR / "download_manifest.json"
 
 SPARC_BASE = "https://astroweb.case.edu/SPARC"
@@ -40,8 +46,12 @@ def sha256_of(path: Path) -> str:
 
 
 def _record(name: str, url: str, path: Path, citation: str) -> dict:
+    try:
+        manifest_path = path.relative_to(REPO_ROOT)
+    except ValueError:
+        manifest_path = path.resolve()
     entry = {
-        "file": str(path.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "file": str(manifest_path).replace("\\", "/"),
         "url": url,
         "citation": citation,
         "bytes": path.stat().st_size,
