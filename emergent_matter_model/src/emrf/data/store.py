@@ -10,7 +10,7 @@ import tempfile
 import threading
 import time
 from collections.abc import Generator, Mapping
-from contextlib import contextmanager, suppress
+from contextlib import closing, contextmanager, suppress
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -460,8 +460,8 @@ class ContentAddressedStore:
         target.parent.mkdir(parents=True, exist_ok=True)
         try:
             with (
-                sqlite3.connect(self.registry) as source,
-                sqlite3.connect(target) as backup,
+                closing(sqlite3.connect(self.registry)) as source,
+                closing(sqlite3.connect(target)) as backup,
             ):
                 source.backup(backup)
         except (OSError, sqlite3.Error) as exc:

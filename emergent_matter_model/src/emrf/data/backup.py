@@ -7,6 +7,7 @@ import os
 import shutil
 import sqlite3
 import tempfile
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -213,7 +214,7 @@ def _verify_registry_snapshot(root: Path, manifest: dict[str, Any]) -> None:
         raise IntegrityError("Backup registry snapshot is missing or symbolic")
     try:
         uri = f"{registry.as_uri()}?mode=ro"
-        with sqlite3.connect(uri, uri=True) as connection:
+        with closing(sqlite3.connect(uri, uri=True)) as connection:
             if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise IntegrityError("Backup registry failed SQLite integrity check")
             objects = set(connection.execute("SELECT sha256, bytes FROM objects"))
