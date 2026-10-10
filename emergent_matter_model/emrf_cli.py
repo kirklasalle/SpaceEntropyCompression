@@ -298,6 +298,23 @@ def cmd_doctor(a: argparse.Namespace) -> int:
     return 0 if rep["healthy"] else 1
 
 
+def cmd_verify_physics(a: argparse.Namespace) -> int:
+    from emrf_physics_access import known_limit_report
+
+    report = known_limit_report()
+    if a.json:
+        _print_json(report)
+    else:
+        for check in report["checks"]:
+            marker = "PASS" if check["passed"] else "FAIL"
+            print(
+                f"{marker:<4} {check['name']}: {check['measured']:.12g} "
+                f"{check['unit']} (relative error {check['relative_error']:.3g})"
+            )
+        print("status:", "VERIFIED" if report["all_passed"] else "FAILED")
+    return 0 if report["all_passed"] else 1
+
+
 def cmd_serve(a: argparse.Namespace) -> int:
     from server import app
 
@@ -452,6 +469,12 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("doctor", help="diagnose environment and dependencies")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_doctor)
+
+    s = sub.add_parser("verify", help="run scientific verification certificates")
+    vsub = s.add_subparsers(dest="verify_command", required=True)
+    v = vsub.add_parser("physics", help="run foundational known-limit checks")
+    v.add_argument("--json", action="store_true")
+    v.set_defaults(func=cmd_verify_physics)
 
     s = sub.add_parser("serve", help="start the REST API (development server)")
     s.add_argument("--host", default="127.0.0.1")

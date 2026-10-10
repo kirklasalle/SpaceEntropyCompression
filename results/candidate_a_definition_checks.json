@@ -118,6 +118,6 @@
   ],
   "source_sha256": {
     "tools\\check_candidate_a_definitions.py": "b734832782f108ec550fa72bd8cc9b2e93cb4008a658bae8c53520a7ab128707",
-    "emergent_matter_model\\physics_baseline.py": "eaf4bb6e966dab274daaa7fd99ced3e4aea5f054436ddf4b1833e198d43a00e0"
+    "emergent_matter_model\\physics_baseline.py": "af1c33049676a257b5ae965dbb3d3b117a725d2d6f112723bcd1f60ed2094549"
   }
 }

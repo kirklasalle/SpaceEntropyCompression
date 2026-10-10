@@ -257,6 +257,17 @@ green; no partial outputs after any injected failure; preservation gate.
 
 ## Phase 5 - Scientific verification and validation (ongoing, 4-8 weeks initial)
 
+**Foundation slice implemented (2026-10-10):** CODATA 2022 constants now
+carry explicit provenance, uncertainty and exactness metadata; public reference
+calculations enforce Astropy units and reject missing, incompatible or
+non-finite quantities. The first known-limit certificate covers the solar
+Schwarzschild radius, PPN solar-limb light bending, Bekenstein-Hawking entropy
+and flat-LCDM distance against Astropy. It is available through `emrf verify
+physics` and `GET /api/v1/verification/physics`. The 1PN orbit integrator now
+uses the exact final partial step, fails closed on non-finite state and
+demonstrates fourth-order convergence. The complete current and pending engine
+inventory is maintained in `SCIENTIFIC_VERIFICATION_MATRIX.md`.
+
 1. Known-limit test matrix for every engine (Newtonian, Schwarzschild,
    PPN, flat-LCDM vs astropy/CAMB, Bekenstein-Hawking).
 2. Units at boundaries with `astropy.units`; constants from CODATA 2022.

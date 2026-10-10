@@ -50,6 +50,21 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+  /api/v1/verification/physics:
+    get:
+      summary: Run foundational physics known-limit verification
+      operationId: verifyPhysics
+      responses:
+        '200':
+          description: All known-limit checks passed
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PhysicsVerificationReport'}
+        '500':
+          description: One or more scientific verification checks failed
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PhysicsVerificationReport'}
   /api/v1/commands:
     get:
       summary: List every registered program (same as `emrf list`)
@@ -524,6 +539,27 @@ components:
         status:
           type: string
           enum: [planned, present, ok, missing, unregistered, partial, corrupt]
+    PhysicsVerificationReport:
+      type: object
+      required: [evidence_class, constants_reference, all_passed, checks]
+      properties:
+        evidence_class: {type: string, enum: [software]}
+        constants_reference: {type: string}
+        all_passed: {type: boolean}
+        checks:
+          type: array
+          items:
+            type: object
+            required: [name, measured, expected, unit, relative_error, relative_tolerance, passed, reference]
+            properties:
+              name: {type: string}
+              measured: {type: number}
+              expected: {type: number}
+              unit: {type: string}
+              relative_error: {type: number}
+              relative_tolerance: {type: number}
+              passed: {type: boolean}
+              reference: {type: string}
     Run:
       type: object
       properties:

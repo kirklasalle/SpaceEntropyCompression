@@ -12,6 +12,7 @@ license = {text = "MIT"}
 authors = [{name = "Kirk LaSalle"}]
 
 dependencies = [
+    "astropy>=6.1,<8",
     "Flask>=3.0,<4",
     "flask-cors>=4.0,<5",
     "numpy>=1.26,<3",
@@ -33,11 +34,13 @@ py-modules = [
     "fit_sparc",
     "emrf_cli",
     "emrf_data_access",
+    "emrf_error_access",
     "emrf_registry",
     "emrf_run_access",
     "emrf_version",
     "data_provenance",
     "emrf_paths",
+    "emrf_physics_access",
     "fetch_real_data",
     "fetch_sparc",
     "fit_jwst",

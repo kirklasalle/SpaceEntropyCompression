@@ -235,6 +235,15 @@ def doctor():
     return jsonify(report)
 
 
+@app.route('/api/v1/verification/physics', methods=['GET'])
+def verify_physics():
+    """Run read-only foundational physics known-limit checks."""
+    from emrf_physics_access import known_limit_report
+
+    report = known_limit_report()
+    return jsonify(report), 200 if report["all_passed"] else 500
+
+
 @app.route('/api/v1/commands', methods=['GET'])
 def list_commands():
     category = request.args.get('category')

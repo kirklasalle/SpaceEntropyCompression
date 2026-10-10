@@ -216,6 +216,14 @@ one-to-one onto these classes.
 * **Floating-point hygiene**: compensated summation where needed, log-space
   likelihoods, Cholesky solves rather than inverses, condition numbers logged.
 
+The executable Phase 5 foundation certificate is exposed identically through
+`emrf verify physics --json` and `GET /api/v1/verification/physics`. Each check
+returns its measured value, independent reference, unit, tolerance, relative
+error and `software` evidence class. The detailed engine inventory and
+remaining verification gaps are tracked in
+`SCIENTIFIC_VERIFICATION_MATRIX.md`; a missing check is reported as pending,
+never inferred to pass from unrelated regression coverage.
+
 ### 6.3 Scientific validation (statistics)
 
 * **Injection-recovery**: inject a known signal into real-noise realizations

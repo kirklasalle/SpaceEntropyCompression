@@ -180,6 +180,14 @@ def test_cli_doctor_json(capsys):
     assert rep["missing_scripts"] == []
 
 
+def test_cli_physics_verification_json(capsys):
+    assert emrf_cli.main(["verify", "physics", "--json"]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["all_passed"]
+    assert report["evidence_class"] == "software"
+    assert len(report["checks"]) == 4
+
+
 def test_cli_data_list_runs(capsys):
     assert emrf_cli.main(["data", "list", "--json"]) == 0
     assert isinstance(json.loads(capsys.readouterr().out), list)
@@ -324,6 +332,15 @@ def test_api_datasets_and_doctor(client):
     assert detail["catalog"]["id"] == "sparc-rotation-curves"
     rep = client.get("/api/v1/doctor").get_json()
     assert "executable" not in rep and rep["registered_commands"] == len(reg.COMMANDS)
+
+
+def test_api_physics_verification(client):
+    response = client.get("/api/v1/verification/physics")
+    report = response.get_json()
+    assert response.status_code == 200
+    assert report["all_passed"]
+    assert report["evidence_class"] == "software"
+    assert len(report["checks"]) == 4
 
 
 def test_api_data_mutation_requires_explicit_opt_in(client, monkeypatch):
