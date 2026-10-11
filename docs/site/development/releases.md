@@ -58,3 +58,25 @@ Neither DOI is evidence that the EMRF physics hypotheses are physically true.
 - Preserve withdrawn releases with prominent correction notices.
 - Never publish when audit, package, provenance, metadata, or scientific
   golden checks are incomplete.
+
+## Action and runner lifecycle
+
+Workflow dependencies are executable supply-chain inputs. EMRF therefore:
+
+- pins every external action to a full commit SHA and records its release
+  version in a comment;
+- requires action lines that use supported Node.js runtimes;
+- pins hosted runner images instead of following migrating `latest` aliases;
+- runs branch validation once through `pull_request`, with `push` validation
+  reserved for protected `main`;
+- cancels superseded CI and security runs while never cancelling release
+  publication; and
+- uses Dependabot plus workflow-governance regression tests to keep these
+  guarantees current.
+
+When an action or runner line reaches deprecation, update the immutable pins,
+run Actionlint and the workflow-governance tests, and open a pull request. If
+job display names change, wait for the replacement checks to pass on that pull
+request, atomically replace the old required contexts with the successful new
+names, and only then merge. The exact merged `main` commit must subsequently
+pass CI, documentation, security and Scorecard publication.
