@@ -8,6 +8,21 @@ permissions:
   contents: read
 
 jobs:
+  javafx:
+    name: JavaFX client / Java 17
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+          cache-dependency-path: emergent_matter_model/javafx_client/pom.xml
+      - name: Test JavaFX client contract
+        working-directory: emergent_matter_model/javafx_client
+        run: ./mvnw --batch-mode --no-transfer-progress test
+
   test:
     name: ${{ matrix.os }} / Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}

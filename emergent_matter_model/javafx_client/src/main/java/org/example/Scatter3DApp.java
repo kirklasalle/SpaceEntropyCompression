@@ -22,15 +22,14 @@ import java.util.List;
 /**
  * 3-D scatter-plot viewer for Emergent Matter Model data.
  *
- * Currently uses hard-coded sample points.  A future version will fetch
- * simulation results from the Python REST API (entropy as the last
- * dimensional coordinate).
+ * Fetches simulation results from the Python REST API, with entropy supplied
+ * as the last state-grid entry, and falls back to sample points if unavailable.
  */
 public class Scatter3DApp extends Application {
 
-    private static final String API_URL = "http://127.0.0.1:5000/api/v1/simulate";
+    private static final String DEFAULT_API_URL = "http://127.0.0.1:5000/api/v1/simulate";
 
-    private static final class SimulationPoint {
+    static final class SimulationPoint {
         final double x;
         final double y;
         final double z;
@@ -57,7 +56,7 @@ public class Scatter3DApp extends Application {
         return values;
     }
 
-    private static JSONObject buildSimulationPayload() {
+    static JSONObject buildSimulationPayload() {
         double[] x = linspace(-2.0, 2.0, 11);
         double[] y = linspace(-2.0, 2.0, 11);
         double[] z = linspace(-2.0, 2.0, 11);
@@ -94,25 +93,15 @@ public class Scatter3DApp extends Application {
         return payload;
     }
 
-    private static List<SimulationPoint> fetchSimulationPoints() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(3))
-            .build();
-
-        JSONObject payload = buildSimulationPayload();
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(API_URL))
-            .timeout(Duration.ofSeconds(20))
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
-            .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() != 200) {
-            throw new IOException("API error status " + response.statusCode() + ": " + response.body());
+    static String apiUrl() {
+        String configured = System.getProperty("emrf.api.url");
+        if (configured == null || configured.isBlank()) {
+            configured = System.getenv("EMRF_API_URL");
         }
+        return configured == null || configured.isBlank() ? DEFAULT_API_URL : configured;
+    }
 
-        JSONObject json = new JSONObject(response.body());
+    static List<SimulationPoint> parseSimulationPoints(JSONObject json) {
         JSONArray m = json.getJSONArray("M");
 
         int nx = m.length();
@@ -135,17 +124,16 @@ public class Scatter3DApp extends Application {
                         minMatter = Math.min(minMatter, matter);
                         maxMatter = Math.max(maxMatter, matter);
                     }
-                    double xCoord = ((double) ix / (nx - 1) - 0.5) * 320.0;
-                    double yCoord = ((double) iy / (ny - 1) - 0.5) * 320.0;
-                    double zCoord = ((double) iz / (nz - 1) - 0.5) * 320.0;
+                    double xCoord = ((double) ix / Math.max(nx - 1, 1) - 0.5) * 320.0;
+                    double yCoord = ((double) iy / Math.max(ny - 1, 1) - 0.5) * 320.0;
+                    double zCoord = ((double) iz / Math.max(nz - 1, 1) - 0.5) * 320.0;
                     points.add(new SimulationPoint(xCoord, yCoord, zCoord, matter));
                 }
             }
         }
 
         if (!Double.isFinite(minMatter) || !Double.isFinite(maxMatter)) {
-            minMatter = 0.0;
-            maxMatter = 1.0;
+            throw new IllegalArgumentException("Simulation response contains no finite matter values");
         }
 
         double range = Math.max(maxMatter - minMatter, 1e-9);
@@ -160,7 +148,38 @@ public class Scatter3DApp extends Application {
             }
         }
 
-        return filtered.isEmpty() ? points : filtered;
+        if (!filtered.isEmpty()) {
+            return filtered;
+        }
+        List<SimulationPoint> finitePoints = new ArrayList<>();
+        for (SimulationPoint point : points) {
+            if (Double.isFinite(point.matter)) {
+                finitePoints.add(point);
+            }
+        }
+        return finitePoints;
+    }
+
+    static List<SimulationPoint> fetchSimulationPoints() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(3))
+            .build();
+
+        JSONObject payload = buildSimulationPayload();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(apiUrl()))
+            .timeout(Duration.ofSeconds(20))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            throw new IOException("API error status " + response.statusCode() + ": " + response.body());
+        }
+
+        JSONObject json = new JSONObject(response.body());
+        return parseSimulationPoints(json);
     }
 
     private static List<SimulationPoint> fallbackPoints() {

@@ -45,14 +45,7 @@ try {
     & $python compare_schwarzschild.py --headless
     Assert-LastExitCode "Headless physics check"
 
-Write-Host "[3/4] Ensure Maven available" -ForegroundColor Cyan
-$installMaven = Join-Path $PSScriptRoot "..\docs\install_maven.ps1"
-if (Test-Path $installMaven) {
-    & $installMaven
-    Assert-LastExitCode "Maven setup"
-}
-
-Write-Host "[4/4] JavaFX compile" -ForegroundColor Cyan
+Write-Host "[3/4] Configure Java" -ForegroundColor Cyan
 if (-not $env:JAVA_HOME -or -not (Test-Path $env:JAVA_HOME)) {
     if (Test-Path 'G:\Program Files\Java\jdk-25.0.2') {
         $env:JAVA_HOME = 'G:\Program Files\Java\jdk-25.0.2'
@@ -66,10 +59,11 @@ if ($env:JAVA_HOME -and (Test-Path $env:JAVA_HOME)) {
 
 $javafxDir = Join-Path $PSScriptRoot "javafx_client"
 if (Test-Path $javafxDir) {
+    Write-Host "[4/4] JavaFX contract tests" -ForegroundColor Cyan
     Push-Location $javafxDir
     try {
-        mvn -DskipTests compile
-        Assert-LastExitCode "JavaFX compile"
+        & ".\mvnw.cmd" --batch-mode --no-transfer-progress test
+        Assert-LastExitCode "JavaFX contract tests"
     } finally {
         Pop-Location
     }

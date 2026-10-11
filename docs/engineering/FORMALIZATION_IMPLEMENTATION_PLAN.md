@@ -377,7 +377,38 @@ fuzzing authenticated mutations.
    remains intentionally excluded from ordinary CI.
 4. JavaFX client: Maven wrapper with declared dependencies; remove vendored
    SDK/Maven from git (history kept); decide keep vs retire in favour of the
-   web dashboard.
+   web dashboard. **Done:** JavaFX remains a supported compatibility client,
+   while the web dashboard is the recommended cross-platform UI. Java request
+   construction and response mapping are tested on Java 17 in root CI.
+
+**Client compatibility slice implemented (2026-10-11):** the Python 2D client
+now has functional, mutually exclusive `--online` and `--offline` modes,
+contract tests for REST v1 payloads, and tested local fallback. The JavaFX
+client accepts a configurable API URL, has JUnit contract tests for payload and
+response mapping, and builds through a pinned Maven Wrapper. The previously
+committed 91 MiB Maven/JavaFX binary toolchains were removed from the current
+tree because the wrapper and `pom.xml` now manage those dependencies.
+
+**Parity inventory:** command discovery/execution, durable runs, durable jobs,
+and scientific verification have typed SDK, CLI, REST v1, and REST v2 paths.
+Data-library/backup, prediction, simulation, and environment-doctor operations
+remain on mature CLI/REST v1 paths but do not yet all have typed SDK and REST
+v2 adapters. Therefore the Phase 6 exit gate remains open; the next slice is
+typed SDK and REST v2 migration of those remaining operation families.
+
+| Operation family | CLI | Typed SDK | REST v1 | REST v2 | Exit status |
+|---|---:|---:|---:|---:|---|
+| Command discovery/execution | Yes | Yes | Yes | Yes | Certified |
+| Durable run list/detail | Yes | Yes | Yes | Yes | Certified |
+| Durable job submit/list/detail/cancel/worker | Yes | Yes | Yes, except worker HTTP | Yes | Certified adapters |
+| Physics/inference/engine verification | Yes | Yes | Yes | Yes | Certified |
+| Run artifact list/download | Filesystem | No | No | Yes | SDK/CLI gap |
+| Environment doctor | Yes | No | Yes | Health only | SDK/v2 gap |
+| Dataset catalog/acquisition/integrity | Yes | Contract only | Yes | No | SDK/v2 gap |
+| Backup/restore/offsite drills | Yes | No | Yes | No | SDK/v2 gap |
+| Prediction commitment/verification | Yes | Contract only | Yes | No | SDK/v2 gap |
+| Simulation model | Legacy script | No | Yes | No | SDK/v2 gap |
+| Python/JavaFX/web visualization | Yes | Not applicable | REST v1 client | Not applicable | Certified |
 
 **Exit gate:** CLI/API/SDK parity tests cover every operation; v1 clients
 (including JavaFX and `visualize.py`) still work.

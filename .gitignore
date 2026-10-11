@@ -27,6 +27,8 @@ ENV/
 
 # Java / Maven
 target/
+resources/javafx-sdk-*/
+tools/apache-maven/
 *.class
 *.jar
 *.war

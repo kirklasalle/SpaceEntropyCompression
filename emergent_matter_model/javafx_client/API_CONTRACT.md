@@ -5,7 +5,8 @@ This document maps the JavaFX client request/response contract for the Python si
 ## Endpoint
 
 - Method: `POST`
-- URL: `http://127.0.0.1:5000/api/v1/simulate`
+- Default URL: `http://127.0.0.1:5000/api/v1/simulate`
+- Override: `EMRF_API_URL` or Java system property `emrf.api.url`
 - Content-Type: `application/json`
 
 ## Request payload
@@ -46,6 +47,8 @@ Client mapping in `Scatter3DApp`:
 Fallback behavior in Java client:
 
 - If request fails or response is invalid, the app renders built-in sample points.
+- Contract tests verify request dimensions, endpoint configuration, and response
+  mapping with `mvnw test`.
 
 ## Spec reference
 

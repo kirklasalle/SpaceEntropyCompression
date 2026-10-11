@@ -43,11 +43,14 @@ documented in [STATUS.md](../../STATUS.md) and the [model card](../../MODEL_CARD
 | `docs/` | 93 files, 59 MB | Audits, protocols, papers, archive, media |
 | `paper/` | 39 files | LaTeX sources, figures, compiled PDF |
 | `notebooks/` | 1 notebook | `emrf_two_regime_validation.ipynb` |
-| `resources/javafx-sdk-24.0.2/` | 102 tracked files | Vendored JavaFX SDK |
-| `tools/apache-maven/` | 40 tracked files | Vendored Maven 3.9.6 |
+| `emergent_matter_model/javafx_client/` | Maven project | JavaFX compatibility client with Maven wrapper and contract tests |
 
-Language mix: 87 Python files (~13.6k lines), 4 Java files, 4 PowerShell
-scripts, 80 Markdown files (~12.5k lines), 4 LaTeX sources.
+Language mix: Python scientific/application code, a Maven-managed JavaFX
+compatibility client, PowerShell automation, Markdown documentation, and LaTeX
+paper sources.
+
+Maven and JavaFX binaries are no longer vendored. The Maven Wrapper pins the
+build tool and `pom.xml` declares JavaFX, JSON, and JUnit dependencies.
 
 ## 3. Software components
 

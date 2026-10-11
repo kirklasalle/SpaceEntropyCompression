@@ -9,12 +9,10 @@ the spatial compression functional C(X,t) into emergent matter density M(X,t).
 import argparse
 import sys
 from pathlib import Path
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-import requests
 
-from model import EmergentMatterModel
+import matplotlib.pyplot as plt
+import numpy as np
+import requests
 
 
 def run_simulation(
@@ -24,16 +22,16 @@ def run_simulation(
     entropy_val: float = 0.4,
     offline: bool = True,
     save_fig: str | None = None,
-):
+) -> None:
     """Simulate 2D spatial slice of M^D with extra spatial coordinate d_0 and entropy S."""
     x1 = np.linspace(-2.5, 2.5, resolution)
     x2 = np.linspace(-2.5, 2.5, resolution)
 
     if not offline:
         payload = {
-            "n": 3,
-            "weights": [0.45, 0.45, 0.10],
-            "X_grid": [x1.tolist(), x2.tolist(), [d0_value]],
+            "n": 4,
+            "weights": [0.40, 0.40, 0.10, 0.10],
+            "X_grid": [x1.tolist(), x2.tolist(), [d0_value], [entropy_val]],
             "k": 1.0,
             "alpha": 1.0,
             "C0": 1.0,
@@ -42,9 +40,12 @@ def run_simulation(
             r = requests.post(f"{server}/api/v1/simulate", json=payload, timeout=10)
             r.raise_for_status()
             M_data = np.array(r.json()["M"])
-            M_slice = M_data[:, :, 0]
-        except Exception as exc:
-            print(f"Server unavailable ({exc}), falling back to direct offline calculation.", file=sys.stderr)
+            M_slice = M_data[:, :, 0, 0]
+        except (requests.RequestException, KeyError, TypeError, ValueError) as exc:
+            print(
+                f"Online simulation failed ({exc}); using the local calculation.",
+                file=sys.stderr,
+            )
             offline = True
 
     if offline:
@@ -58,7 +59,12 @@ def run_simulation(
 
     fig, ax = plt.subplots(figsize=(7, 6))
     im = ax.imshow(M_slice, extent=[-2.5, 2.5, -2.5, 2.5], origin="lower", cmap="inferno")
-    ax.set_title(f"Emergent Matter M(X) on Spatial Slice (d_0={d0_value:.2f}, S={entropy_val:.2f})", fontsize=11, fontweight="bold")
+    ax.set_title(
+        f"Emergent Matter M(X) on Spatial Slice "
+        f"(d_0={d0_value:.2f}, S={entropy_val:.2f})",
+        fontsize=11,
+        fontweight="bold",
+    )
     ax.set_xlabel("Spatial Dimension $x_1$", fontsize=10)
     ax.set_ylabel("Spatial Dimension $x_2$", fontsize=10)
     fig.colorbar(im, ax=ax, label="Emergent Matter Density $M(X)$")
@@ -73,16 +79,34 @@ def run_simulation(
     plt.close(fig)
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="2D Visualisation of Emergent Matter Spatial Slice")
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="2D Visualisation of Emergent Matter Spatial Slice"
+    )
     parser.add_argument("--server", default="http://127.0.0.1:5000", help="Simulation server URL")
     parser.add_argument("--resolution", type=int, default=60, help="Grid points per spatial axis")
     parser.add_argument("--d0", type=float, default=0.5, help="Extra spatial dimension d0 value")
     parser.add_argument("--entropy", type=float, default=0.4, help="Thermodynamic entropy level S")
-    parser.add_argument("--offline", action="store_true", default=True, help="Compute locally without server")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--offline",
+        action="store_true",
+        dest="offline",
+        help="Compute locally without a server (default)",
+    )
+    mode.add_argument(
+        "--online",
+        action="store_false",
+        dest="offline",
+        help="Use the REST v1 simulation endpoint, with local fallback on failure",
+    )
+    parser.set_defaults(offline=True)
     parser.add_argument("--save-fig", type=str, default=None, help="Save figure to path")
-    args = parser.parse_args()
+    return parser
 
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
     run_simulation(
         server=args.server,
         resolution=args.resolution,
@@ -91,3 +115,8 @@ if __name__ == "__main__":
         offline=args.offline,
         save_fig=args.save_fig,
     )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

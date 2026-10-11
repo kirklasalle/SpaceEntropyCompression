@@ -42,12 +42,12 @@ if (-not $SkipServer) {
 Write-Host "`n=== 2D Visualisation ==="
 python visualize.py
 
-# 6. (Optional) Run JavaFX client if Maven is available
-$pomPath = Join-Path $PSScriptRoot "javafx_client\pom.xml"
-if ((Test-Path $pomPath) -and (Get-Command mvn -ErrorAction SilentlyContinue)) {
+# 6. (Optional) Run JavaFX client through its pinned Maven wrapper
+$mavenWrapper = Join-Path $PSScriptRoot "javafx_client\mvnw.cmd"
+if (Test-Path $mavenWrapper) {
     Write-Host "`n=== JavaFX Client ==="
     Push-Location javafx_client
-    mvn clean javafx:run
+    & ".\mvnw.cmd" --no-transfer-progress clean javafx:run
     Pop-Location
 }
 

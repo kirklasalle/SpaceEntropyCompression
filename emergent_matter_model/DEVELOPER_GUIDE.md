@@ -48,8 +48,8 @@ Discrete/quantum versions, parameter inference, and falsifiable predictions are 
 
 ## Setup
 1. Install Python and Java dependencies
-2. Configure JavaFX SDK path in `pom.xml`
-3. Run Python server and JavaFX client
+2. Install JDK 17+; the Maven wrapper restores JavaFX and Java dependencies
+3. Run the Python server and either visualization client
 
 For the supported Python package and console entry point, install from the
 package directory:
@@ -144,9 +144,8 @@ parity for those environments.
   real-data golden comparison on the baseline environment
 - Local equivalent: `ci_local.ps1`; set `EMRF_RUN_GOLDEN=1` to include the
   expensive golden suite
-- Java 25 warning mitigation for Maven is configured via:
-  - `javafx_client/.mvn/jvm.config`
-  - `../install_maven.ps1` (`MAVEN_OPTS`)
+- JavaFX contract tests run on Java 17 through `javafx_client/mvnw`; Java 25
+  local warning mitigation is configured in `javafx_client/.mvn/jvm.config`
 
 ## Contribution
 - Follow code style and documentation guidelines
