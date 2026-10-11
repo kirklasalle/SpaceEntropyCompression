@@ -628,12 +628,18 @@ contexts; only the four runner-derived names changed, and administrator
 enforcement, linear history, conversation resolution, and force-push/deletion
 blocking remain enabled.
 
+**Second lifecycle slice implemented locally (2026-10-11):** a monthly and
+manually dispatchable, read-only release-health rehearsal resolves an existing
+stable annotated tag, rebuilds its distributions without publication, verifies
+complete release checksums and exact tag/commit/workflow attestations, exercises
+the published wheel's doctor, SDK, REST v2 OpenAPI and packaged knowledge in an
+isolated environment, checks the version-specific DOI, and retains a 90-day
+machine-readable receipt. Workflow-governance tests enforce its schedule,
+read-only permissions, non-cancellation, and non-publishing contract.
+
 Planned sustained-operations increments:
 
-1. Monthly release-health rehearsal that rebuilds the latest tag, verifies
-   checksums and attestations, exercises isolated-wheel doctor/SDK/API/knowledge
-   behavior, and confirms the archival DOI remains resolvable.
-2. Tested backup/restore and data-catalog disaster-recovery drills with
+1. Tested backup/restore and data-catalog disaster-recovery drills with
    retained receipts and recovery-time evidence.
 3. Supported-version and deprecation policy for Python, Java, REST, SDK,
    schemas, datasets and scientific certificates.
@@ -664,8 +670,8 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Add the monthly release-health rehearsal without republishing or moving the
-   immutable 1.0.0 tag.
+1. Run and remotely certify the monthly release-health rehearsal against the
+   immutable 1.0.0 tag without republishing or moving it.
 2. Establish and measure recovery-time and recovery-point objectives for
    observational data, runs, predictions and scientific knowledge.
 3. Define the supported-version/deprecation contract before any 1.1 interface

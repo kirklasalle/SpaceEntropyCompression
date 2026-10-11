@@ -39,6 +39,27 @@ gh attestation verify emergent_matter_model-1.0.0-py3-none-any.whl \
 
 Also compare the file against `SHA256SUMS` from the same release.
 
+## Monthly release-health rehearsal
+
+The read-only `Release health` workflow runs on the first day of each month and
+can also be dispatched for a specific stable tag. It resolves an existing
+annotated release tag without moving it, checks out its immutable commit, and:
+
+- validates synchronized release metadata and rebuilds the wheel and source
+  distribution without publishing them;
+- downloads the published bundle and requires complete SHA-256 coverage;
+- verifies every published asset against GitHub's signed release-workflow
+  provenance, exact source tag, and commit;
+- installs the published wheel in an isolated environment and exercises the
+  CLI doctor, typed SDK, REST v2 OpenAPI contract, and packaged knowledge graph;
+- confirms the version-specific Zenodo DOI remains resolvable; and
+- retains a machine-readable health receipt for 90 days.
+
+The workflow has read-only repository and attestation permissions. It contains
+no tag movement, repository push, release creation, package upload, or archival
+publication step. A failed rehearsal is a maintenance incident; correct the
+cause through protected `main` without altering the published tag or its assets.
+
 ## Zenodo boundary
 
 Zenodo confirmed the version-specific EMRF 1.0.0 archive as
