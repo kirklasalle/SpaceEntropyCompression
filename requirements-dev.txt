@@ -1,7 +1,7 @@
 -r emergent_matter_model/requirements.txt
 coverage[toml]>=7.6,<8
 camb==1.6.0
-hypothesis>=6.169,<7
+hypothesis>=6.168.5,<6.169
 schemathesis>=4.30,<5
 pytest-xdist>=3.6,<4
 httpx2>=2.13,<3

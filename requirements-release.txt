@@ -1,4 +1,5 @@
 build==1.6.1
 cyclonedx-bom==7.5.0
 pip-audit==2.10.1
+PyYAML==6.0.3
 twine==7.0.0
