@@ -5,7 +5,30 @@ All notable changes to the EMRF / Space-Entropy Compression project are document
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - Real-observation validation and research draft
+## [Unreleased]
+
+No changes yet.
+
+## [1.0.0] - 2026-10-11: Formalized scientific software platform
+
+### Release highlights
+- Established the typed `EMRFClient` application layer with certified parity
+  across direct Python, CLI, Flask REST v1 compatibility, and FastAPI REST v2.
+- Added content-addressed observational-data storage, integrity verification,
+  backup/restore, durable runs/jobs, cancellation, retries, leases, and
+  crash-recovery behavior.
+- Added evidence-qualified physics verification, calibrated SPARC/Pantheon
+  injection-recovery, and explicit boundaries between software, synthetic,
+  published, and observational evidence.
+- Added a schema-validated scientific knowledge graph linking claims, sources,
+  datasets, terminal runs, results, and immutable artifact hashes.
+- Added the supported documentation site, generated CLI/API references,
+  privacy-safe support reports, issue forms, contributor environment, ADRs,
+  and user/developer support policies.
+- Added release metadata validation, dependency auditing, CycloneDX SBOM
+  generation, signed build provenance, OpenSSF Scorecard, and protected-main
+  governance. Passing these gates certifies software engineering; it does not
+  establish the truth of every EMRF physics hypothesis.
 
 ### Formalization foundation
 - Added a unified command registry, CLI and versioned REST API/OpenAPI surface

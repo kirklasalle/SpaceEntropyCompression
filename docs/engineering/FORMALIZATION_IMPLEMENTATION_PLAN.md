@@ -526,6 +526,44 @@ the live documentation was published by run `38155737473`.**
 
 ## Phase 9 - Release engineering and governance (1-2 weeks)
 
+**Phase 9 implementation complete locally (2026-10-11):** the canonical package
+version is `1.0.0` and Setuptools, runtime, CFF, CodeMeta, Zenodo-deposit
+metadata, generated API reference and changelog metadata are synchronized by a
+tested release validator. Release tooling now builds wheel and source
+distributions, validates package metadata, produces a reproducible CycloneDX
+1.6 SBOM, enforces a clean installed-environment `pip-audit`, generates
+checksums, and creates GitHub Sigstore-backed attestations. All GitHub Actions
+are immutable-SHA pinned. Dependabot, pull-request dependency review, OpenSSF
+Scorecard/SARIF publication and scheduled supply-chain certification are
+configured.
+
+The tag workflow accepts only a semantic tag matching the canonical version,
+requires the tagged commit to be in `main` history, reruns the non-golden suite
+and all eight scientific golden jobs, and verifies downloaded SPARC and
+Pantheon+ inputs against catalog-pinned byte counts and SHA-256 hashes before
+publication. The existing Flask REST v1 and FastAPI REST v2 JSON error handlers
+also retain transport-required headers under the upgraded, vulnerability-free
+dependency set. The historical DOI `10.5281/zenodo.23197308` remains explicitly
+historical and does not identify 1.0.0; a new DOI remains pending an actual
+Zenodo deposit and will not be invented.
+
+**Local Phase 9 certification (2026-10-11):** all 438 non-golden tests pass
+with one platform-conditional skip and one golden deselection. Metadata and
+tag validation, cross-version generated-reference checks on Python 3.10 and
+3.12, strict MkDocs, correctness lint, focused Ruff and mypy, current
+Actionlint, dependency consistency, a zero-vulnerability audit, and a
+141-component validated CycloneDX SBOM pass. The final `1.0.0` wheel and sdist
+pass Twine validation. An isolated wheel installation reports version 1.0.0,
+passes doctor, exposes 47 typed SDK commands and 37 REST v2 OpenAPI paths, and
+validates its portable packaged knowledge graph. Independent review found and
+closed release-source, catalog-integrity and versioned-metadata-URL gaps.
+
+**Remote Phase 9 certification is pending:** push the implementation, require
+the resulting green CI, documentation, security/package and Scorecard checks
+on protected `main`, then record their run identifiers. The immutable
+`v1.0.0` tag, public GitHub release, attestations and any new Zenodo deposit
+must be created only from that certified commit.
+
 1. Automated release: tests, golden results, SBOM (CycloneDX), pip-audit,
    CITATION/codemeta sync, changelog, signed artefacts, Zenodo DOI.
 2. Branch protection and required checks; OpenSSF Scorecard.

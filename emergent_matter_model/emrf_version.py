@@ -1,4 +1,11 @@
-"""Single source of truth for the EMRF software version and public API version."""
+"""Compatibility bridge for the canonical packaged EMRF version."""
 
-__version__ = "0.9.1"
-API_VERSION = "v1"
+try:
+    from emrf._version import API_VERSION, __version__
+except ModuleNotFoundError:
+    try:
+        from src.emrf._version import API_VERSION, __version__
+    except ModuleNotFoundError:
+        from emergent_matter_model.src.emrf._version import API_VERSION, __version__
+
+__all__ = ["API_VERSION", "__version__"]

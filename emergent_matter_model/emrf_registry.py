@@ -167,6 +167,8 @@ COMMANDS: tuple[Command, ...] = (
             "Build validation notebook"),
     Command("generate-docs-reference", _T + "generate_docs_reference.py", "release",
             "Generate or verify CLI and REST v2 reference documentation"),
+    Command("validate-release-metadata", _T + "validate_release_metadata.py", "release",
+            "Validate synchronized version, citation, archive, and changelog metadata"),
     Command("package-real-data-release", _T + "package_real_data_release.py", "release",
             "Package real-data review bundle"),
 )

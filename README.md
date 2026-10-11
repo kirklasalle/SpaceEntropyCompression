@@ -5,7 +5,10 @@
 [![Status: Research, not a validated theory](https://img.shields.io/badge/status-research%20not%20validated-orange)](MODEL_CARD.md)
 [![Direction: Candidate A within GR](https://img.shields.io/badge/direction-Candidate%20A%20within%20GR-blue)](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 [![Continuous integration](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml)
+[![Security](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/kirklasalle/SpaceEntropyCompression/badge)](https://scorecard.dev/viewer/?uri=github.com/kirklasalle/SpaceEntropyCompression)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](emergent_matter_model/pyproject.toml)
+[![Release](https://img.shields.io/github/v/release/kirklasalle/SpaceEntropyCompression?display_name=tag)](https://github.com/kirklasalle/SpaceEntropyCompression/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
 [![Historical Zenodo record](https://img.shields.io/badge/Zenodo-historical%20record-grey)](https://doi.org/10.5281/zenodo.23197308)
 
@@ -220,10 +223,10 @@ constitutes physical evidence.
 
 ## Citation, versions and historical releases
 
-Use [CITATION.cff](CITATION.cff) for repository citation metadata and include the
-**commit you actually used**. This README describes `main`, not a newly tagged
-or peer-reviewed release. Existing version strings and release bundles may refer
-to earlier software snapshots.
+Use [CITATION.cff](CITATION.cff) for version 1.0.0 citation metadata and include
+the **commit you actually used**. A software release certifies the documented
+engineering and verification gates; it is not peer review or proof of every
+physics hypothesis. Earlier release bundles refer to historical snapshots.
 
 ```bibtex
 @software{lasalle_emrf,

@@ -2,7 +2,7 @@
 
 Generated from the FastAPI OpenAPI document. Do not edit manually.
 
-API version: `0.9.1`
+API version: `1.0.0`
 
 Interactive documentation is served at `/api/v2/docs` and the machine
 contract at `/api/v2/openapi.json`.

@@ -50,6 +50,7 @@ hide new failures behind pre-existing diagnostics.
 & .\emergent_matter_model\.venv\Scripts\python.exe emergent_matter_model\emrf_cli.py kb validate
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\generate_docs_reference.py --check
 & .\emergent_matter_model\.venv\Scripts\mkdocs.exe build --strict
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\validate_release_metadata.py
 ```
 
 Keep observational data separate from fixtures; record sources, hashes, units,
@@ -81,7 +82,23 @@ tutorial in the documentation site.
 
 ---
 
-## 5. Contact & Discussion
+## 5. Release Governance
+
+Only a protected, fully green `main` commit may be tagged. Release metadata,
+the changelog, package version, CFF, CodeMeta, and Zenodo deposit metadata must
+pass `tools/validate_release_metadata.py`. A `vMAJOR.MINOR.PATCH` tag starts the
+release workflow, which reruns the non-golden suite and all eight scientific
+golden cases before publishing checksummed distributions, a CycloneDX SBOM,
+the dependency-audit report, and signed GitHub build-provenance attestations.
+
+Do not create or move a release tag to bypass a failed gate. Do not attach the
+historical Zenodo DOI to a new release. Record a new DOI only after the archive
+service confirms the deposit. See the
+[release engineering guide](https://kirklasalle.github.io/SpaceEntropyCompression/development/releases/).
+
+---
+
+## 6. Contact & Discussion
 
 - **Lead Investigator:** Kirk LaSalle
 - **Repository Issues:** [GitHub Issues](https://github.com/kirklasalle/SpaceEntropyCompression/issues)

@@ -243,6 +243,7 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
             exc.status_code,
             "http_error",
             str(exc.detail),
+            headers=dict(exc.headers or {}),
         )
 
     @application.exception_handler(Exception)

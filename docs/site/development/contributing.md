@@ -15,3 +15,13 @@ mkdocs build --strict
 
 Changes to reviewed numerical results require the golden harness. Dependency
 changes require manifest, constraint, and installed-wheel review.
+
+Release changes also require:
+
+```text
+python tools/validate_release_metadata.py
+python -m pip_audit --local --skip-editable
+```
+
+See [release engineering](releases.md) for protected-branch, SBOM, provenance,
+tag, and archive requirements.

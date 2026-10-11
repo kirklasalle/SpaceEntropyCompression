@@ -1,11 +1,14 @@
 cff-version: 1.2.0
-message: "Cite this research software with the exact Git commit used. Current main is not a newly tagged release or the historical Zenodo snapshot; empirical claims require the current evidence reports."
+message: "Cite version 1.0.0 for the certified software release, including the exact Git commit used. This engineering release is not evidence that every EMRF physics hypothesis is correct."
 authors:
   - family-names: "LaSalle"
     given-names: "Kirk"
 title: "Emergent Matter Research Framework (EMRF): Geometric Interpretations and Reproducible Astronomical Baselines"
+version: "1.0.0"
+date-released: 2026-10-11
 url: "https://github.com/kirklasalle/SpaceEntropyCompression"
 repository-code: "https://github.com/kirklasalle/SpaceEntropyCompression"
+repository-artifact: "https://github.com/kirklasalle/SpaceEntropyCompression/releases/tag/v1.0.0"
 license: MIT
 keywords:
   - "theoretical physics"

@@ -229,7 +229,12 @@ def run_simulation(
 
 @app.errorhandler(HTTPException)
 def _json_http_error(exc: HTTPException):
-    return jsonify({'error': exc.description, 'status': exc.code}), exc.code
+    response = jsonify({'error': exc.description, 'status': exc.code})
+    response.status_code = exc.code or 500
+    for name, value in exc.get_response().headers:
+        if name.lower() not in {"content-length", "content-type"}:
+            response.headers[name] = value
+    return response
 
 
 @app.route('/api/v1/health', methods=['GET'])

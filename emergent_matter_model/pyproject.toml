@@ -4,18 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "emergent-matter-model"
-version = "0.9.1"
+dynamic = ["version"]
 description = "Simulation platform for emergent matter from compressed space-entropy"
 readme = "README_3D.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{name = "Kirk LaSalle"}]
 
 dependencies = [
     "astropy>=6.1,<8",
-    "fastapi>=0.115,<0.129",
+    "fastapi>=0.143,<0.144",
     "Flask>=3.0,<4",
-    "flask-cors>=4.0,<5",
+    "flask-cors>=6.0,<7",
     "jsonschema>=4.23,<5",
     "numpy>=1.26,<3",
     "matplotlib>=3.8,<4",
@@ -24,6 +25,9 @@ dependencies = [
     "pydantic>=2.9,<2.13",
     "scipy>=1.12,<2",
 ]
+
+[tool.setuptools.dynamic]
+version = {attr = "emrf._version.__version__"}
 
 [tool.setuptools]
 py-modules = [
@@ -113,12 +117,13 @@ emrf = "emrf.interfaces.cli:main"
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0,<9",
+    "pytest>=9.0.3,<10",
     "ruff>=0.2",
     "mypy>=1.8",
     "mkdocs>=1.6,<2",
     "httpx>=0.27,<0.29",
-    "schemathesis>=3.39,<4",
+    "httpx2>=2.13,<3",
+    "schemathesis>=4.30,<5",
     "types-Flask-Cors>=4.0",
 ]
 verification = [

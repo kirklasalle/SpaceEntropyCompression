@@ -2,9 +2,14 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "Emergent Matter Research Framework (EMRF) / Space-Entropy Compression",
-  "description": "Research software for geometric interpretations within general relativity, authenticated SPARC comparisons, covariance-aware Pantheon+/DESI baselines, and evidence/provenance audits. Candidate A is selected as a direction; the precise functional remains under review. No new matter/entropy theorem or all-regime empirical confirmation is established. Historical synthetic claims are withdrawn. Cite the exact main-branch commit; this metadata does not identify a new tagged or Zenodo release.",
+  "description": "Version 1.0.0 of research software for geometric interpretations within general relativity, authenticated SPARC comparisons, covariance-aware Pantheon+/DESI baselines, durable observational data, typed interfaces, and evidence/provenance audits. Candidate A remains a research direction, not an established fundamental theory. Historical synthetic claims are withdrawn.",
   "license": "https://spdx.org/licenses/MIT",
   "codeRepository": "https://github.com/kirklasalle/SpaceEntropyCompression",
+  "issueTracker": "https://github.com/kirklasalle/SpaceEntropyCompression/issues",
+  "softwareHelp": "https://kirklasalle.github.io/SpaceEntropyCompression/",
+  "releaseNotes": "https://github.com/kirklasalle/SpaceEntropyCompression/blob/v1.0.0/CHANGELOG.md",
+  "softwareVersion": "1.0.0",
+  "datePublished": "2026-10-11",
   "programmingLanguage": [
     "Python",
     "JavaScript",
@@ -25,7 +30,7 @@
       "roleName": "Advanced Agentic Coding Partner"
     }
   ],
-  "dateModified": "2026-10-08",
+  "dateModified": "2026-10-11",
   "keywords": [
     "theoretical physics",
     "general relativity",
@@ -41,12 +46,9 @@
     "gw170817",
     "gaia dr3"
   ],
-  "runtimePlatform": "Python 3.10+",
+  "runtimePlatform": "Python 3.10 or 3.12; Java 17 for the JavaFX client",
   "softwareRequirements": [
-    "numpy",
-    "scipy",
-    "pytest",
-    "matplotlib",
-    "flask"
-  ]
+    "See emergent_matter_model/pyproject.toml and constraints-ci.txt"
+  ],
+  "developmentStatus": "active"
 }

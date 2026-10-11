@@ -33,6 +33,7 @@ nav:
   - Development:
       - Contributing: development/contributing.md
       - Extension tutorial: development/extensions.md
+      - Release engineering: development/releases.md
       - ADRs: development/adrs.md
   - Support: support.md
 markdown_extensions:
