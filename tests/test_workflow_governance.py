@@ -172,6 +172,24 @@ def test_release_health_is_read_only_and_non_publishing() -> None:
         "attestations": "read",
         "contents": "read",
     }
+
+    job = workflow["jobs"]["rehearse"]
+    assert "env" not in job
+    steps = {step.get("name"): step for step in job["steps"] if "name" in step}
+    token_steps = {
+        "Resolve immutable stable release",
+        "Download published release bundle",
+        "Verify release provenance",
+    }
+    for name, step in steps.items():
+        if name in token_steps:
+            assert step["env"]["GH_TOKEN"] == "${{ github.token }}"
+        else:
+            assert "GH_TOKEN" not in step.get("env", {})
+    resolver = steps["Resolve immutable stable release"]
+    assert resolver["env"]["REQUESTED_TAG"] == "${{ inputs.tag }}"
+    assert "${{ inputs.tag }}" not in resolver["run"]
+
     for prohibited in (
         "actions/attest",
         "gh api --method",

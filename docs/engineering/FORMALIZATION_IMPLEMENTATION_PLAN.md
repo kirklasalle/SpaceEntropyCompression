@@ -641,11 +641,11 @@ Planned sustained-operations increments:
 
 1. Tested backup/restore and data-catalog disaster-recovery drills with
    retained receipts and recovery-time evidence.
-3. Supported-version and deprecation policy for Python, Java, REST, SDK,
+2. Supported-version and deprecation policy for Python, Java, REST, SDK,
    schemas, datasets and scientific certificates.
-4. Performance and resource baselines for large covariance, catalog and
+3. Performance and resource baselines for large covariance, catalog and
    knowledge workloads, with regression thresholds that do not alter physics.
-5. Maintenance releases only through the protected release contract; new
+4. Maintenance releases only through the protected release contract; new
    physics claims require preregistration and the existing evidence lifecycle.
 
 **First-slice exit gate:** the replacement checks must pass on the migration
