@@ -1,0 +1,48 @@
+name: Scientific validation question
+description: Report a mathematical, statistical, physics, or evidence concern
+title: "[Science]: "
+labels: ["science"]
+body:
+  - type: textarea
+    id: claim
+    attributes:
+      label: Claim or result
+      description: Quote the exact claim, equation, result field, or knowledge node.
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: Evidence class
+      options:
+        - observational
+        - published
+        - synthetic
+        - illustrative
+        - software
+        - uncertain
+    validations:
+      required: true
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Technical concern
+      description: Include units, assumptions, validity regime, likelihood, covariance, or counterexample.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources and reproduction
+      description: Provide DOI/arXiv/ADS identifiers and exact reproducible commands where applicable.
+    validations:
+      required: true
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Evidence boundaries
+      options:
+        - label: I am not treating passing software tests as physical confirmation.
+          required: true
+        - label: I identified synthetic or illustrative inputs.
+          required: true

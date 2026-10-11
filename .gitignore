@@ -58,6 +58,7 @@ htmlcov/
 .coverage
 .coverage.*
 coverage.xml
+/site/
 
 # mypy
 .mypy_cache/

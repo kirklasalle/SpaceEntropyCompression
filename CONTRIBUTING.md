@@ -16,7 +16,8 @@ All contributions must respect the foundational principles of the framework:
 
 ## 2. Development Setup
 
-The project uses Python 3.10+ and a standard virtual environment.
+The certified Python versions are 3.10 and 3.12. Use a standard virtual
+environment or open the repository in the included VS Code dev container.
 
 ```powershell
 # Clone the repository
@@ -26,8 +27,11 @@ Set-Location SpaceEntropyCompression
 # Activate virtual environment
 python -m venv emergent_matter_model\.venv
 
-# Install package in editable mode with development dependencies
-& .\emergent_matter_model\.venv\Scripts\python.exe -m pip install -e ".\emergent_matter_model[dev]"
+# Install the complete certified development environment
+& .\emergent_matter_model\.venv\Scripts\python.exe -m pip install `
+  -r requirements-dev.txt -c constraints-ci.txt
+& .\emergent_matter_model\.venv\Scripts\python.exe -m pip install `
+  -e .\emergent_matter_model -c constraints-ci.txt
 ```
 
 ---
@@ -39,9 +43,13 @@ The legacy repository is not claimed to be globally lint/type-clean; do not
 hide new failures behind pre-existing diagnostics.
 
 ```powershell
-& .\emergent_matter_model\.venv\Scripts\python.exe -m pytest emergent_matter_model -q
+& .\emergent_matter_model\.venv\Scripts\python.exe -m pytest -m "not golden" -q
 # Apply Ruff to the changed files; example:
 & .\emergent_matter_model\.venv\Scripts\python.exe -m ruff check tools\check_candidate_a_definitions.py
+# Validate knowledge and generated documentation:
+& .\emergent_matter_model\.venv\Scripts\python.exe emergent_matter_model\emrf_cli.py kb validate
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\generate_docs_reference.py --check
+& .\emergent_matter_model\.venv\Scripts\mkdocs.exe build --strict
 ```
 
 Keep observational data separate from fixtures; record sources, hashes, units,
@@ -57,17 +65,19 @@ Preserve historical source copies and qualify graph entries by evidence type.
    ```bash
    git checkout -b feature/your-feature-name
    ```
-2. **Commit Standards:** Write clear, concise commit messages following standard conventions:
-   - `feat:` New features or theoretical formulations
-   - `fix:` Bug fixes or corrections to physical parameters
-   - `test:` New or updated automated tests
-   - `docs:` Documentation, knowledgebase, or research paper edits
+2. **Commit Standards:** Write an imperative subject no longer than 72
+   characters. Explain scientific, compatibility, and data-safety reasons in
+   the body when the change is non-trivial.
 3. **Knowledgebase Teaching Directive:**
    Whenever modifying existing algorithms, adding datasets, or introducing new equations:
    - Update `knowledgebase/GRAPH_MEMORY.json` with new nodes and edges.
    - Update corresponding reference handbooks in `knowledgebase/`.
-   - Update `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/).
+   - Validate with `emrf kb validate`.
 4. **Open a Pull Request:** Submit your PR against the `main` branch with a description of the physical motivation, mathematical formulation, and test results.
+
+Cross-cutting architecture changes require an ADR under `docs/adr/`.
+External runtime plugins are not supported; follow the in-tree extension
+tutorial in the documentation site.
 
 ---
 
@@ -75,3 +85,5 @@ Preserve historical source copies and qualify graph entries by evidence type.
 
 - **Lead Investigator:** Kirk LaSalle
 - **Repository Issues:** [GitHub Issues](https://github.com/kirklasalle/SpaceEntropyCompression/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/kirklasalle/SpaceEntropyCompression/discussions)
+- **Security:** Follow [SECURITY.md](SECURITY.md), never a public exploit issue.

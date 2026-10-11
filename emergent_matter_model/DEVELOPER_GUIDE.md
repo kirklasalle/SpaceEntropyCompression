@@ -1,5 +1,9 @@
 # Developer Guide
 
+> This legacy guide preserves historical architecture notes. The maintained
+> development setup, typed SDK reference, extension workflow, ADR index, and
+> support policy are in [`docs/site`](../docs/site/index.md).
+
 ## Current research and validation entry points
 
 See the [root README](../README.md) for environment setup and supported

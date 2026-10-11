@@ -1,0 +1,31 @@
+name: Feature request
+description: Propose a bounded software, data, or research capability
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Research or user need
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence, provenance, and compatibility impact
+      description: Identify data licences, scientific claims, v1 compatibility, and failure recovery.
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: This request does not silently change reviewed scientific results.
+          required: true

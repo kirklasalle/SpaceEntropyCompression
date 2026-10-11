@@ -22,4 +22,5 @@ schemathesis==3.39.16
 pytest-xdist==3.8.0
 ruff==0.16.9
 mypy==2.3.1
+mkdocs==1.6.1
 pre-commit==4.6.2

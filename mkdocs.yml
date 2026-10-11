@@ -1,0 +1,45 @@
+site_name: EMRF Documentation
+site_description: Supported user, developer, API, and scientific documentation for EMRF
+site_url: https://kirklasalle.github.io/SpaceEntropyCompression/
+repo_url: https://github.com/kirklasalle/SpaceEntropyCompression
+repo_name: kirklasalle/SpaceEntropyCompression
+docs_dir: docs/site
+site_dir: site
+strict: true
+validation:
+  links:
+    absolute_links: relative_to_docs
+    anchors: warn
+theme:
+  name: mkdocs
+  navigation_depth: 3
+nav:
+  - Home: index.md
+  - Tutorials:
+      - First SPARC result: tutorials/first-sparc-result.md
+      - Knowledge graph: tutorials/knowledge-graph.md
+  - How-to:
+      - Install and configure: how-to/install.md
+      - Operate APIs safely: how-to/api.md
+      - Diagnose and report: how-to/support.md
+  - Reference:
+      - CLI: reference/cli.md
+      - REST v2: reference/api-v2.md
+      - Python SDK: reference/sdk.md
+  - Explanations:
+      - Evidence classes: explanation/evidence.md
+      - Physics scope: explanation/physics.md
+      - Architecture: explanation/architecture.md
+  - Development:
+      - Contributing: development/contributing.md
+      - Extension tutorial: development/extensions.md
+      - ADRs: development/adrs.md
+  - Support: support.md
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - fenced_code
+  - tables
+  - toc:
+      permalink: true

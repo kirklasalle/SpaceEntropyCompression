@@ -366,7 +366,13 @@ def cmd_data_gc(a: argparse.Namespace) -> int:
 
 def cmd_doctor(a: argparse.Namespace) -> int:
     rep = sdk.environment_report(include_executable=True).to_dict()
+    support_report = None
+    if a.report is not None:
+        destination = a.report or None
+        support_report = sdk.create_support_report(destination)
     if a.json:
+        if support_report is not None:
+            rep["support_report"] = support_report.to_dict()
         _print_json(rep)
     else:
         print(f"EMRF {rep['emrf_version']} (API {rep['api_version']}) on Python {rep['python']}")
@@ -377,6 +383,9 @@ def cmd_doctor(a: argparse.Namespace) -> int:
         print(f"registered commands: {rep['registered_commands']}; "
               f"missing scripts: {rep['missing_scripts'] or 'none'}")
         print("status:", "HEALTHY" if rep["healthy"] else "ATTENTION NEEDED")
+        if support_report is not None:
+            print(f"support report: {support_report.path}")
+            print(f"support report SHA-256: {support_report.sha256}")
     return 0 if rep["healthy"] else 1
 
 
@@ -663,6 +672,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("doctor", help="diagnose environment and dependencies")
     s.add_argument("--json", action="store_true")
+    s.add_argument(
+        "--report",
+        nargs="?",
+        const="",
+        metavar="FILE",
+        help="write a privacy-safe support report (default: EMRF support directory)",
+    )
     s.set_defaults(func=cmd_doctor)
 
     s = sub.add_parser("verify", help="run scientific verification certificates")

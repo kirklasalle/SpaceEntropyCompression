@@ -399,6 +399,28 @@ class EnvironmentReport:
 
 
 @dataclass(frozen=True)
+class SupportReport:
+    path: str
+    sha256: str
+    bytes: int
+    healthy: bool
+    schema: str
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> SupportReport:
+        return cls(
+            path=str(value["path"]),
+            sha256=str(value["sha256"]),
+            bytes=int(value["bytes"]),
+            healthy=bool(value["healthy"]),
+            schema=str(value["schema"]),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class SimulationRequest:
     n: int
     weights: tuple[float, ...]
@@ -554,6 +576,7 @@ __all__ = [
     "RunResult",
     "SimulationRequest",
     "SimulationResult",
+    "SupportReport",
     "JobInfo",
     "JobListResponse",
     "KnowledgeNode",

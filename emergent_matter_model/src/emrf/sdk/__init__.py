@@ -33,6 +33,7 @@ from .models import (
     RunResult,
     SimulationRequest,
     SimulationResult,
+    SupportReport,
     VerificationReport,
 )
 
@@ -67,5 +68,6 @@ __all__ = [
     "SDKError",
     "SimulationRequest",
     "SimulationResult",
+    "SupportReport",
     "VerificationReport",
 ]

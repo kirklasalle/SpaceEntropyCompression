@@ -8,6 +8,25 @@ permissions:
   contents: read
 
 jobs:
+  documentation:
+    name: Documentation / Python 3.12
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
+      - name: Install documentation dependencies
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
+      - name: Check generated reference
+        run: python tools/generate_docs_reference.py --check
+      - name: Build strict documentation
+        run: mkdocs build --strict
+
   javafx:
     name: JavaFX client / Java 17
     runs-on: ubuntu-latest

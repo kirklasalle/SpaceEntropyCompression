@@ -4,13 +4,13 @@
 
 [![Status: Research, not a validated theory](https://img.shields.io/badge/status-research%20not%20validated-orange)](MODEL_CARD.md)
 [![Direction: Candidate A within GR](https://img.shields.io/badge/direction-Candidate%20A%20within%20GR-blue)](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
-[![Software tests: 244 passed locally](https://img.shields.io/badge/software%20tests-244%20passed%20locally-brightgreen)](STATUS.md)
+[![Continuous integration](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](emergent_matter_model/pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
 [![Historical Zenodo record](https://img.shields.io/badge/Zenodo-historical%20record-grey)](https://doi.org/10.5281/zenodo.23197308)
 
-**Author and principal investigator: Kirk LaSalle.** Current documentation: October 8, 2026.
-The test badge reports a local software run, not hosted CI or physical confirmation.
+**Author and principal investigator: Kirk LaSalle.** Current documentation: October 11, 2026.
+The CI badge reports software checks, not physical confirmation.
 The linked Zenodo record is historical; it does not archive or validate the current working revision.
 
 ## Read this first
@@ -69,6 +69,8 @@ The collision illustration does not evolve gravitational wells or generate entro
 | [Archive recovery audit](docs/ANTIGRAVITY_RECOVERY_AUDIT.md) | Recovered meanings, historical artifacts, provenance and coverage limits |
 | [Reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md) | Commands, software assumptions and publication boundaries |
 | [Model card](MODEL_CARD.md) / [status](STATUS.md) / [roadmap](ROADMAP.md) | Intended use, current results and remaining decisions |
+| [Supported documentation site](https://kirklasalle.github.io/SpaceEntropyCompression/) ([source](docs/site/index.md)) | Tutorials, how-to guides, generated reference, explanations and support |
+| [Support](SUPPORT.md) / [security](SECURITY.md) / [contributing](CONTRIBUTING.md) | User and developer help, private vulnerability reporting and contribution workflow |
 
 ## What has actually been computed
 
@@ -128,10 +130,11 @@ python -m venv emergent_matter_model\.venv
 & .\emergent_matter_model\.venv\Scripts\python.exe -m pytest emergent_matter_model -q
 ```
 
-**Software validation:** 244 tests passed locally on October 8, 2026.
-Some tests exercise synthetic fixtures or check document structure; this count
-does not measure empirical support. Optional observed-data artifact checks may
-skip when their inputs have not been downloaded.
+**Software validation:** the cross-platform CI matrix runs supported software,
+interface, knowledge, scientific-regression, and documentation checks. Some
+tests exercise synthetic fixtures or document structure; passing tests do not
+measure empirical support. Optional observed-data artifact checks may skip when
+their inputs have not been downloaded.
 
 ### Real-data workflows
 

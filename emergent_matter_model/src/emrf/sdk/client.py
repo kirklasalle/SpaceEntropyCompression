@@ -37,6 +37,7 @@ from .models import (
     RunResult,
     SimulationRequest,
     SimulationResult,
+    SupportReport,
     VerificationReport,
 )
 
@@ -208,6 +209,20 @@ class EMRFClient:
         if not include_executable:
             report.pop("executable", None)
         return EnvironmentReport(report)
+
+    def create_support_report(
+        self,
+        destination: str | None = None,
+    ) -> SupportReport:
+        from emrf.support import create_support_report
+
+        try:
+            result = create_support_report(destination)
+        except (FileExistsError, TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return SupportReport.from_mapping(result)
 
     def list_datasets(self, *, verify: bool = False) -> DatasetListResponse:
         library = self._data_library()

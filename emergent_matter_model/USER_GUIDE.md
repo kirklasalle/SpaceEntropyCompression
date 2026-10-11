@@ -1,5 +1,9 @@
 # User Guide
 
+> This legacy guide preserves historical detail. The maintained tutorials,
+> how-to guides, generated CLI/API reference, and support instructions are in
+> [`docs/site`](../docs/site/index.md).
+
 ## Overview
 This platform simulates and visualises emergent matter as a function of effective curvature across spatial dimensions and a thermodynamic entropy state parameter. 
 

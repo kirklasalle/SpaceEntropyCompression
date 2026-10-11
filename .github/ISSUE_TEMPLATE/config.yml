@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Research and usage discussion
+    url: https://github.com/kirklasalle/SpaceEntropyCompression/discussions
+    about: Ask open-ended questions and discuss research directions.
+  - name: Security vulnerability
+    url: https://github.com/kirklasalle/SpaceEntropyCompression/security/advisories/new
+    about: Privately report a security vulnerability. Do not open a public issue.

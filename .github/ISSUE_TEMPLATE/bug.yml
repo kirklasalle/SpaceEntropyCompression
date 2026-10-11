@@ -1,0 +1,59 @@
+name: Software bug
+description: Report reproducible incorrect behavior, a crash, or data-safety concern
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not attach credentials, bearer tokens, restricted observations, or private data.
+        Run `emrf doctor --report`, review the report, and attach it when safe.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Include exact commands, inputs, and the first complete error.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: EMRF version or commit
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Container
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: integrity
+    attributes:
+      label: Data integrity impact
+      description: State whether data, run records, backups, or knowledge records changed.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checks
+      options:
+        - label: I removed secrets and restricted data.
+          required: true
+        - label: I searched existing issues.
+          required: true

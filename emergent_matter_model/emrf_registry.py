@@ -165,6 +165,8 @@ COMMANDS: tuple[Command, ...] = (
     Command("build-sparc-paper", _T + "build_sparc_paper.py", "release", "Build SPARC paper"),
     Command("build-validation-notebook", _T + "build_validation_notebook.py", "release",
             "Build validation notebook"),
+    Command("generate-docs-reference", _T + "generate_docs_reference.py", "release",
+            "Generate or verify CLI and REST v2 reference documentation"),
     Command("package-real-data-release", _T + "package_real_data_release.py", "release",
             "Package real-data review bundle"),
 )

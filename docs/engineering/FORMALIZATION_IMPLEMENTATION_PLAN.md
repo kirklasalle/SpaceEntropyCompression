@@ -473,10 +473,45 @@ scientific golden suites are green.
 
 ## Phase 8 - Documentation and support (2 weeks, then ongoing)
 
+**Phase 8 implementation complete (2026-10-11):** the supported MkDocs site
+now follows Diataxis and includes first-SPARC and knowledge tutorials,
+installation/API/support how-tos, generated CLI and REST v2 reference,
+SDK reference, evidence and physics explanations, architecture guidance,
+extension boundaries and ADRs. CI rejects stale generated reference and
+strict-build warnings; a dedicated GitHub Pages workflow publishes the site.
+Structured software, scientific, feature and documentation issue forms route
+work alongside enabled Discussions and private security reporting. The
+reproducible Python 3.12/Java 17 dev container and expanded contribution,
+support and security policies define the supported user and developer path.
+
+`emrf doctor --report [FILE]` and the typed SDK now create a versioned,
+privacy-sanitized diagnostic report without environment variables,
+credentials, executable paths, run arguments or dataset URLs. Reports use
+exclusive no-overwrite publication, durable synchronization, a hard-link-free
+filesystem fallback and per-user application storage by default. Validation
+error counts and structural locations are retained without copying raw
+user-supplied values into the report.
+
+**Local Phase 8 certification (2026-10-11):** all 433 non-golden tests pass
+with one platform-conditional skip; dependency consistency, CI lint rules,
+focused Ruff and mypy, deterministic generated-reference checks, strict
+MkDocs build, JSON/YAML configuration validation and independent review pass.
+A clean `0.9.1` wheel installed outside the checkout exposes the SDK support
+contract and creates CLI/SDK reports with verified SHA-256 digests and
+portable knowledge seeding. Review regressions cover invalid-graph privacy,
+JSON-only CLI output, exclusive publication, existing destinations,
+hard-link-free filesystems and default per-user placement. Cross-platform
+remote CI certification remains the final gate.
+
 1. Documentation site (Diataxis): tutorials (first SPARC result in 15
    minutes), how-tos, generated reference, physics explanations.
 2. Issue templates, discussion forum, `emrf doctor --report`.
 3. Dev container, CONTRIBUTING update, plugin tutorial, ADRs.
+
+**Exit gate:** supported documentation is generated reproducibly and published;
+diagnostic reports are privacy-safe, durable and installed-wheel compatible;
+and user/developer contribution, support and architecture paths are explicit.
+**Passed locally 2026-10-11; remote CI certification pending.**
 
 ## Phase 9 - Release engineering and governance (1-2 weeks)
 
