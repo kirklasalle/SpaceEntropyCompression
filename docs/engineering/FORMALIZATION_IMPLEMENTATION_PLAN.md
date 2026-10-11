@@ -630,11 +630,13 @@ blocking remain enabled.
 
 **Second lifecycle slice implemented locally (2026-10-11):** a monthly and
 manually dispatchable, read-only release-health rehearsal resolves an existing
-stable annotated tag, rebuilds its distributions without publication, verifies
-complete release checksums and exact tag/commit/workflow attestations, exercises
-the published wheel's doctor, SDK, REST v2 OpenAPI and packaged knowledge in an
-isolated environment, checks the version-specific DOI, and retains a 90-day
-machine-readable receipt. Workflow-governance tests enforce its schedule,
+stable annotated tag, requires its source commit, release URL and confirmed
+post-publication DOI to match a protected archive registry, rebuilds its
+distributions without publication, verifies complete release checksums and
+exact tag/commit/workflow attestations, exercises the published wheel's doctor,
+SDK, REST v2 OpenAPI and packaged knowledge in an isolated environment, checks
+the version-specific DOI, and retains a 90-day machine-readable receipt.
+Workflow-governance tests enforce its schedule,
 read-only permissions, non-cancellation, and non-publishing contract.
 
 Planned sustained-operations increments:

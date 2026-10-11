@@ -43,13 +43,22 @@ jobs:
           test "$(jq -r .tagName <<<"$release_json")" = "$requested"
           test "$(jq -r .isDraft <<<"$release_json")" = "false"
           test "$(jq -r .isPrerelease <<<"$release_json")" = "false"
+          registry=release/archives.json
+          release_doi="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["releases"][sys.argv[2]]["doi"])' "$registry" "$requested")"
+          expected_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["releases"][sys.argv[2]]["source_sha"])' "$registry" "$requested")"
+          expected_url="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["releases"][sys.argv[2]]["release_url"])' "$registry" "$requested")"
+          [[ "$release_doi" =~ ^10\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$ ]]
+          [[ "$expected_sha" =~ ^[0-9a-f]{40}$ ]]
+          test "$(jq -r .url <<<"$release_json")" = "$expected_url"
           test "$(git cat-file -t "$requested")" = "tag"
           release_sha="$(git rev-list -n 1 "$requested")"
+          test "$release_sha" = "$expected_sha"
           git checkout --detach "$release_sha"
           {
             echo "RELEASE_TAG=$requested"
             echo "RELEASE_SHA=$release_sha"
-            echo "RELEASE_URL=$(jq -r .url <<<"$release_json")"
+            echo "RELEASE_URL=$expected_url"
+            echo "RELEASE_DOI=$release_doi"
           } >> "$GITHUB_ENV"
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -63,9 +72,6 @@ jobs:
         run: |
           set -euo pipefail
           python tools/validate_release_metadata.py --tag "$RELEASE_TAG"
-          release_doi="$(python -c 'import yaml; print(yaml.safe_load(open("CITATION.cff", encoding="utf-8"))["doi"])')"
-          [[ "$release_doi" =~ ^10\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$ ]]
-          echo "RELEASE_DOI=$release_doi" >> "$GITHUB_ENV"
           python -m build --outdir rehearsal-build emergent_matter_model
           python -m twine check rehearsal-build/*
       - name: Download published release bundle
