@@ -12,6 +12,14 @@ from tools import validate_release_metadata as release_metadata
 
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "tools" / "validate_release_metadata.py"
+RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "release.yml"
+
+
+def test_release_workflow_requires_current_protected_main_commit() -> None:
+    workflow = RELEASE_WORKFLOW.read_text(encoding="utf-8")
+
+    assert 'test "$GITHUB_SHA" = "$(git rev-parse origin/main)"' in workflow
+    assert "git merge-base --is-ancestor" not in workflow
 
 
 def test_release_metadata_matches_v1_tag(tmp_path: Path) -> None:

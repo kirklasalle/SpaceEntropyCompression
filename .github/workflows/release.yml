@@ -20,10 +20,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      - name: Require tagged commit on main
+      - name: Require current protected main commit
         run: |
           git fetch origin main --no-tags
-          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+          test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
 
   validate:
     name: Release validation and supply chain
