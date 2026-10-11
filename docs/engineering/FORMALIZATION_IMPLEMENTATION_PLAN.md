@@ -600,6 +600,44 @@ version-specific archival DOI.
 2. Branch protection and required checks; OpenSSF Scorecard.
 3. Release EMRF 1.0.0 when Phases 1-7 gates are met.
 
+## Phase 10 - Sustained operations and lifecycle maintenance (ongoing)
+
+World-class research software must remain reproducible after its first formal
+release. Phase 10 governs supported-runtime migrations, dependency renewal,
+archival health, recovery rehearsals, and evidence-preserving maintenance.
+
+**First lifecycle slice implemented locally (2026-10-11):** all GitHub Actions
+have been moved to current Node.js 24-compatible release lines with immutable
+commit pins. CodeQL SARIF publication is on v4. Hosted runners are explicitly
+pinned to Ubuntu 24.04 and Windows Server 2022 rather than migrating `latest`
+aliases. Feature branches now run the expensive 15-job matrix only through
+`pull_request`; protected `main` retains push certification. CI and security
+workflows cancel superseded runs, while release publication remains
+non-cancellable. Regression tests enforce immutable action pins, minimum
+supported action lines, explicit runner images, non-duplicated branch
+validation, and concurrency policy.
+
+Planned sustained-operations increments:
+
+1. Monthly release-health rehearsal that rebuilds the latest tag, verifies
+   checksums and attestations, exercises isolated-wheel doctor/SDK/API/knowledge
+   behavior, and confirms the archival DOI remains resolvable.
+2. Tested backup/restore and data-catalog disaster-recovery drills with
+   retained receipts and recovery-time evidence.
+3. Supported-version and deprecation policy for Python, Java, REST, SDK,
+   schemas, datasets and scientific certificates.
+4. Performance and resource baselines for large covariance, catalog and
+   knowledge workloads, with regression thresholds that do not alter physics.
+5. Maintenance releases only through the protected release contract; new
+   physics claims require preregistration and the existing evidence lifecycle.
+
+**First-slice exit gate:** the replacement checks must pass on the migration
+pull request before the four runner-derived required contexts are atomically
+changed from the old aliases to the pinned-runner names. The protected pull
+request must then merge normally, and the exact merged `main` commit must pass
+CI, documentation, security and Scorecard publication without Node.js 20,
+CodeQL v3 or runner-migration warnings.
+
 ---
 
 ## Risk register
@@ -615,10 +653,14 @@ version-specific archival DOI.
 
 ## Immediate next steps
 
-1. Review the three engineering documents and the library catalog.
-2. Approve or adjust the architect's recommendations (spec section 13).
-3. Commit Phase 0 and tag the baseline.
-4. Approve the Phase 3 priority datasets for download (licence and disk size
-   are listed in the catalog).
-5. Commit the Phase 0/1 foundation and run the GitHub Actions matrix.
-6. Close the Phase 1 exit gate, then start Phase 2.
+1. Run the replacement runner checks on the Phase 10 pull request, replace the
+   four obsolete required contexts with those successful names, then complete
+   protected-PR and exact-main certification.
+2. Add the monthly release-health rehearsal without republishing or moving the
+   immutable 1.0.0 tag.
+3. Establish and measure recovery-time and recovery-point objectives for
+   observational data, runs, predictions and scientific knowledge.
+4. Define the supported-version/deprecation contract before any 1.1 interface
+   or schema change.
+5. Continue scientific work only through preregistered predictions,
+   independently traceable observations and evidence-qualified claims.
