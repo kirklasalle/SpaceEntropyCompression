@@ -8,6 +8,7 @@
   "issueTracker": "https://github.com/kirklasalle/SpaceEntropyCompression/issues",
   "softwareHelp": "https://kirklasalle.github.io/SpaceEntropyCompression/",
   "releaseNotes": "https://github.com/kirklasalle/SpaceEntropyCompression/blob/v1.0.0/CHANGELOG.md",
+  "identifier": "https://doi.org/10.5281/zenodo.23304395",
   "softwareVersion": "1.0.0",
   "datePublished": "2026-10-11",
   "programmingLanguage": [

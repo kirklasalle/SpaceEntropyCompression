@@ -69,6 +69,7 @@ def test_release_metadata_rejects_stale_versioned_urls(
                 "https://github.com/kirklasalle/SpaceEntropyCompression/"
                 "releases/tag/v0.9.1"
             )
+            value["doi"] = "10.5281/zenodo.23197308"
         return value
 
     def stale_json(path: Path) -> dict[str, object]:
@@ -78,6 +79,7 @@ def test_release_metadata_rejects_stale_versioned_urls(
                 "https://github.com/kirklasalle/SpaceEntropyCompression/"
                 "blob/v0.9.1/CHANGELOG.md"
             )
+            value["identifier"] = "https://doi.org/10.5281/zenodo.23197308"
         return value
 
     monkeypatch.setattr(release_metadata, "_load_yaml", stale_yaml)
@@ -87,3 +89,5 @@ def test_release_metadata_rejects_stale_versioned_urls(
 
     assert any("CITATION.cff repository-artifact" in error for error in errors)
     assert any("codemeta.json releaseNotes" in error for error in errors)
+    assert any("CITATION.cff doi" in error for error in errors)
+    assert any("codemeta.json identifier" in error for error in errors)

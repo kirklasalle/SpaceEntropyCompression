@@ -1,6 +1,6 @@
 {
   "title": "Emergent Matter Research Framework (EMRF): Geometric Interpretations and Reproducible Astronomical Baselines",
-  "description": "Version 1.0.0 of research software and auditable development records, not a validated fundamental theory. Candidate A investigates a geometric/energy re-description within GR; no precise universal functional is established. Real-data work includes SPARC penalized profiles and covariance-aware Pantheon+/DESI baselines. Earlier releases mislabeled synthetic data and included circular tests; their headline empirical and self-certification claims are withdrawn. This metadata prepares a new archive. It does not reuse the historical Zenodo DOI or claim a new DOI before Zenodo confirms one.",
+  "description": "Version 1.0.0 of research software and auditable development records, not a validated fundamental theory. Candidate A investigates a geometric/energy re-description within GR; no precise universal functional is established. Real-data work includes SPARC penalized profiles and covariance-aware Pantheon+/DESI baselines. Earlier releases mislabeled synthetic data and included circular tests; their headline empirical and self-certification claims are withdrawn. Zenodo assigned the version-specific DOI 10.5281/zenodo.23304395; the historical version DOI 10.5281/zenodo.23197308 does not identify this release.",
   "version": "1.0.0",
   "publication_date": "2026-10-11",
   "creators": [

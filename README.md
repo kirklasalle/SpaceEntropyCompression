@@ -10,11 +10,11 @@
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](emergent_matter_model/pyproject.toml)
 [![Release](https://img.shields.io/github/v/release/kirklasalle/SpaceEntropyCompression?display_name=tag)](https://github.com/kirklasalle/SpaceEntropyCompression/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
-[![Historical Zenodo record](https://img.shields.io/badge/Zenodo-historical%20record-grey)](https://doi.org/10.5281/zenodo.23197308)
+[![EMRF 1.0.0 DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23304395.svg)](https://doi.org/10.5281/zenodo.23304395)
 
 **Author and principal investigator: Kirk LaSalle.** Current documentation: October 11, 2026.
-The CI badge reports software checks, not physical confirmation.
-The linked Zenodo record is historical; it does not archive or validate the current working revision.
+The CI badge and version-specific archive certify software and release provenance,
+not physical confirmation of the EMRF hypotheses.
 
 ## Read this first
 
@@ -229,17 +229,20 @@ engineering and verification gates; it is not peer review or proof of every
 physics hypothesis. Earlier release bundles refer to historical snapshots.
 
 ```bibtex
-@software{lasalle_emrf,
+@software{lasalle_emrf_1_0_0,
   author = {LaSalle, Kirk},
   title = {Emergent Matter Research Framework (EMRF)},
-  url = {https://github.com/kirklasalle/SpaceEntropyCompression},
-  note = {Research software; cite the exact revision used}
+  version = {1.0.0},
+  doi = {10.5281/zenodo.23304395},
+  url = {https://github.com/kirklasalle/SpaceEntropyCompression/tree/v1.0.0},
+  note = {Research software; release certification is not physical confirmation}
 }
 ```
 
-The [historical Zenodo record](https://doi.org/10.5281/zenodo.23197308) and old
-GitHub releases predate important corrections. Their DOI/tag is not evidence
-that this current revision was archived. Historical release notes receive
+The [1.0.0 Zenodo archive](https://doi.org/10.5281/zenodo.23304395) is the
+version-specific citable record. The historical DOI
+`10.5281/zenodo.23197308` and old GitHub releases predate important
+corrections and do not identify 1.0.0. Historical release notes receive
 correction notices where access permits; original tags/assets are preserved.
 
 ## Selected references
