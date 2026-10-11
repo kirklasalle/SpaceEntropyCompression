@@ -17,6 +17,7 @@ VERSION_FILE = ROOT / "emergent_matter_model" / "src" / "emrf" / "_version.py"
 PYPROJECT = ROOT / "emergent_matter_model" / "pyproject.toml"
 SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 REPOSITORY_URL = "https://github.com/kirklasalle/SpaceEntropyCompression"
+RELEASE_DOI = "10.5281/zenodo.23304395"
 
 
 def _canonical_version() -> str:
@@ -106,6 +107,19 @@ def validate_release_metadata(*, tag: str | None = None) -> tuple[str, list[str]
     for name, (value, expected_url) in versioned_urls.items():
         if value != expected_url:
             errors.append(f"{name} is {value!r}, expected {expected_url!r}")
+
+    release_identifiers = {
+        "CITATION.cff doi": citation.get("doi"),
+        "codemeta.json identifier": codemeta.get("identifier"),
+    }
+    expected_identifiers = {
+        "CITATION.cff doi": RELEASE_DOI,
+        "codemeta.json identifier": f"https://doi.org/{RELEASE_DOI}",
+    }
+    for name, value in release_identifiers.items():
+        expected_identifier = expected_identifiers[name]
+        if value != expected_identifier:
+            errors.append(f"{name} is {value!r}, expected {expected_identifier!r}")
 
     release_dates = {
         "CITATION.cff date-released": citation.get("date-released"),

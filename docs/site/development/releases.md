@@ -41,11 +41,14 @@ Also compare the file against `SHA256SUMS` from the same release.
 
 ## Zenodo boundary
 
+Zenodo confirmed the version-specific EMRF 1.0.0 archive as
+[`10.5281/zenodo.23304395`](https://doi.org/10.5281/zenodo.23304395). Cite that
+DOI for version 1.0.0 together with the exact Git commit when reproducibility
+requires it.
+
 The DOI `10.5281/zenodo.23197308` belongs to a historical snapshot whose
 scientific claims were later corrected. It must not identify version 1.0.0.
-The repository carries accurate deposit metadata, but a new DOI may be added
-only after Zenodo confirms a new archived release. Until then, cite the GitHub
-release URL and exact commit.
+Neither DOI is evidence that the EMRF physics hypotheses are physically true.
 
 ## Failure and recovery
 

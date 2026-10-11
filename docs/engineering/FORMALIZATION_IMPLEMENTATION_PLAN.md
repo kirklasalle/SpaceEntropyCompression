@@ -538,14 +538,14 @@ Scorecard/SARIF publication and scheduled supply-chain certification are
 configured.
 
 The tag workflow accepts only a semantic tag matching the canonical version,
-requires the tagged commit to be in `main` history, reruns the non-golden suite
-and all eight scientific golden jobs, and verifies downloaded SPARC and
-Pantheon+ inputs against catalog-pinned byte counts and SHA-256 hashes before
-publication. The existing Flask REST v1 and FastAPI REST v2 JSON error handlers
-also retain transport-required headers under the upgraded, vulnerability-free
-dependency set. The historical DOI `10.5281/zenodo.23197308` remains explicitly
-historical and does not identify 1.0.0; a new DOI remains pending an actual
-Zenodo deposit and will not be invented.
+requires the tagged commit to equal the current protected `main` head, reruns
+the non-golden suite and all eight scientific golden jobs, and verifies
+downloaded SPARC and Pantheon+ inputs against catalog-pinned byte counts and
+SHA-256 hashes before publication. The existing Flask REST v1 and FastAPI REST
+v2 JSON error handlers also retain transport-required headers under the
+upgraded, vulnerability-free dependency set. The historical DOI
+`10.5281/zenodo.23197308` remains explicitly historical and does not identify
+1.0.0.
 
 **Local Phase 9 certification (2026-10-11):** all 438 non-golden tests pass
 with one platform-conditional skip and one golden deselection. Metadata and
@@ -574,11 +574,26 @@ requests without an impossible solo-maintainer approval count, resolves
 conversations, enforces linear history and administrator compliance, and blocks
 force pushes and deletion. Main-only Pages deployment and Scorecard/SARIF
 publication remain independently required by the release record rather than
-being configured as impossible pull-request checks. The immutable `v1.0.0`
-tag, public GitHub release, attestations and any new Zenodo deposit must be
-created only from the resulting protected certification commit. Release
-publication remains pending until this record is merged through those
-protected gates.
+being configured as impossible pull-request checks.
+
+**Phase 9 release certification complete (2026-10-11):** protected `main`
+commit `cdad211fa8a65ed61535f31a4681d82604b1c473` passed CI run
+`38168041873`, documentation run `38168041844`, security/package run
+`38168041934` and Scorecard run `38168041884`. The immutable annotated
+`v1.0.0` tag points to that exact commit. Release run `38169063029` passed
+source verification, non-golden validation, all eight catalog-verified golden
+jobs, package/audit/SBOM generation, attestation and publication. The public
+release contains eight assets; all seven entries in `SHA256SUMS`, all eight
+GitHub attestations, both distributions, the zero-vulnerability 144-dependency
+audit and the 144-component CycloneDX 1.6 SBOM were independently verified.
+Zenodo archived 1.0.0 with the new version DOI
+`10.5281/zenodo.23304395`; the historical version DOI remains distinct.
+These gates certify engineering and reproducibility, not the physical truth of
+EMRF hypotheses.
+
+**Exit gate passed 2026-10-11.** EMRF 1.0.0 is released with protected-main
+governance, reproducible supply-chain evidence, verified provenance and a
+version-specific archival DOI.
 
 1. Automated release: tests, golden results, SBOM (CycloneDX), pip-audit,
    CITATION/codemeta sync, changelog, signed artefacts, Zenodo DOI.
