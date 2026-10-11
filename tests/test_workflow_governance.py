@@ -137,6 +137,7 @@ def test_validation_and_publication_concurrency_is_safe() -> None:
     expected = {
         "ci.yml": "true",
         "docs.yml": "false",
+        "release-health.yml": "false",
         "release.yml": "false",
         "security.yml": "true",
     }
@@ -148,3 +149,39 @@ def test_validation_and_publication_concurrency_is_safe() -> None:
     assert workflows["release.yml"][1]["concurrency"]["group"] == (
         "release-${{ github.ref }}"
     )
+
+
+def test_release_health_is_read_only_and_non_publishing() -> None:
+    text, workflow = _workflows()["release-health.yml"]
+
+    assert workflow["on"] == {
+        "schedule": [{"cron": "17 5 1 * *"}],
+        "workflow_dispatch": {
+            "inputs": {
+                "tag": {
+                    "description": (
+                        "Published stable release tag; blank selects the latest release"
+                    ),
+                    "required": "false",
+                    "type": "string",
+                }
+            }
+        },
+    }
+    assert workflow["permissions"] == {
+        "attestations": "read",
+        "contents": "read",
+    }
+    for prohibited in (
+        "actions/attest",
+        "gh api --method",
+        "gh release create",
+        "gh release delete",
+        "gh release edit",
+        "gh release upload",
+        "git push",
+        "git tag",
+        "secrets.",
+        "twine upload",
+    ):
+        assert prohibited not in text
