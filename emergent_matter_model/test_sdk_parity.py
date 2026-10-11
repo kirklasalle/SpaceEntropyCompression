@@ -17,6 +17,7 @@ from emrf.sdk import (
     ResourceNotFoundError,
     RunInfo,
     RunRequest,
+    SimulationRequest,
     VerificationReport,
 )
 
@@ -183,3 +184,77 @@ def test_physics_verification_has_sdk_cli_rest_parity(capsys):
     assert response.status_code == 200
     assert cli == direct == rest
     assert direct["all_passed"]
+
+
+def test_doctor_has_sdk_cli_rest_parity(capsys):
+    direct = EMRFClient().environment_report().to_dict()
+
+    assert emrf_cli.main(["doctor", "--json"]) in {0, 1}
+    cli = json.loads(capsys.readouterr().out)
+    cli.pop("executable", None)
+
+    server.app.config["TESTING"] = True
+    response = server.app.test_client().get("/api/v1/doctor")
+
+    assert response.status_code == 200
+    assert cli == direct == response.get_json()
+
+
+def test_simulation_has_sdk_cli_rest_parity(capsys):
+    request = SimulationRequest(
+        n=2,
+        weights=(0.5, 0.5),
+        grid=((0.0, 1.0), (0.0, 0.5)),
+    )
+    direct = EMRFClient().simulate(request).to_dict()
+
+    assert emrf_cli.main([
+        "simulate",
+        "--n",
+        "2",
+        "--weights",
+        "0.5",
+        "0.5",
+        "--grid=0,1",
+        "--grid=0,0.5",
+    ]) == 0
+    cli = json.loads(capsys.readouterr().out)
+
+    server.app.config["TESTING"] = True
+    response = server.app.test_client().post(
+        "/api/v1/simulate",
+        json=request.to_dict(),
+    )
+
+    assert response.status_code == 200
+    assert cli == direct
+    assert response.get_json()["M"] == direct["M"]
+
+
+def test_artifacts_have_sdk_and_cli_parity(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys,
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    record = store.create("compare-schwarzschild", ["--help"])
+    artifact_path = record.path / "result.txt"
+    artifact_path.write_text("certified result", encoding="utf-8")
+
+    direct = EMRFClient().list_artifacts(record.run_id).to_dict()
+    assert emrf_cli.main(["runs", "artifacts", record.run_id]) == 0
+    cli = json.loads(capsys.readouterr().out)
+    destination = tmp_path / "downloaded.txt"
+    assert emrf_cli.main([
+        "runs",
+        "artifact",
+        record.run_id,
+        "result.txt",
+        "--output",
+        str(destination),
+    ]) == 0
+
+    assert cli == direct
+    assert destination.read_text(encoding="utf-8") == "certified result"
+    assert all("file_path" not in artifact for artifact in direct["artifacts"])

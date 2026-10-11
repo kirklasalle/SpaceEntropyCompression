@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import logging
-import mimetypes
 import os
 import secrets
 import subprocess
-from pathlib import Path, PurePosixPath
-from typing import Annotated, Any
+from pathlib import Path
+from typing import Annotated, Any, cast
 
 from fastapi import Depends, FastAPI, Query, Request
 from fastapi.exceptions import RequestValidationError
@@ -20,24 +19,42 @@ from emrf import __version__
 from emrf.sdk import (
     EMRFClient,
     InvalidRequestError,
+    OperationUnavailableError,
     ResourceNotFoundError,
 )
 from emrf.sdk import RunRequest as SDKRunRequest
+from emrf.sdk import SimulationRequest as SDKSimulationRequest
 
 from .api_v2_models import (
     ArtifactInfo,
     ArtifactListResponse,
+    BackupRequest,
     CommandInfo,
     CommandListResponse,
+    DatasetFetchRequest,
+    DatasetListResponse,
+    DatasetWriteRequest,
+    EnvironmentReport,
     ErrorResponse,
+    GarbageCollectRequest,
     HealthResponse,
     JobInfo,
     JobListResponse,
     JobSubmitRequest,
+    OffsiteBackupRequest,
+    OperationResponse,
+    PathRequest,
+    PredictionCommitment,
+    PredictionCommitRequest,
+    PredictionVerification,
+    PredictionVerifyRequest,
+    RestoreDrillRequest,
     RunInfo,
     RunListResponse,
     RunRequest,
     RunResult,
+    SimulationRequest,
+    SimulationResult,
     VerificationReport,
     WorkerRequest,
 )
@@ -88,6 +105,10 @@ def _error_response(
     )
 
 
+def _error_responses(*status_codes: int) -> dict[int, dict[str, object]]:
+    return {status_code: {"model": ErrorResponse} for status_code in status_codes}
+
+
 def _require_execution_token(
     credentials: Annotated[
         HTTPAuthorizationCredentials | None,
@@ -115,7 +136,7 @@ def _require_execution_token(
 
 
 def _sdk(request: Request) -> EMRFClient:
-    return request.app.state.sdk
+    return cast(EMRFClient, request.app.state.sdk)
 
 
 def _verification(report: Any) -> VerificationReport:
@@ -125,58 +146,6 @@ def _verification(report: Any) -> VerificationReport:
         checks=[dict(check) for check in report.checks],
         metadata=dict(report.metadata),
     )
-
-
-def _artifact_path(run_id: str, relative_path: str) -> tuple[Path, str]:
-    from emrf_run_access import run_store
-
-    try:
-        record = run_store().get(run_id)
-    except KeyError as exc:
-        raise APIError(404, "run_not_found", "Run was not found.") from exc
-    normalized = relative_path.replace("\\", "/")
-    path = PurePosixPath(normalized)
-    if (
-        not normalized
-        or path.is_absolute()
-        or any(part in {"", ".", ".."} for part in path.parts)
-    ):
-        raise APIError(400, "invalid_artifact_path", "Artifact path is invalid.")
-    raw_candidate = record.path / Path(*path.parts)
-    if raw_candidate.is_symlink():
-        raise APIError(404, "artifact_not_found", "Artifact was not found.")
-    candidate = raw_candidate.resolve()
-    root = record.path.resolve()
-    if root not in candidate.parents or not candidate.is_file():
-        raise APIError(404, "artifact_not_found", "Artifact was not found.")
-    return candidate, "/".join(path.parts)
-
-
-def _artifact_rows(run_id: str) -> list[dict[str, Any]]:
-    from emrf_run_access import run_store
-
-    try:
-        record = run_store().get(run_id)
-    except KeyError as exc:
-        raise APIError(404, "run_not_found", "Run was not found.") from exc
-    root = record.path.resolve()
-    rows: list[dict[str, Any]] = []
-    for path in sorted(record.path.rglob("*")):
-        if not path.is_file() or path.is_symlink():
-            continue
-        resolved = path.resolve()
-        if root not in resolved.parents:
-            continue
-        relative = path.relative_to(record.path).as_posix()
-        rows.append(
-            {
-                "path": relative,
-                "bytes": path.stat().st_size,
-                "media_type": mimetypes.guess_type(path.name)[0]
-                or "application/octet-stream",
-            }
-        )
-    return rows
 
 
 def create_app(client: EMRFClient | None = None) -> FastAPI:
@@ -216,6 +185,19 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         response = exc.as_response()
         return _error_response(
             400,
+            response.code,
+            response.message,
+            details=dict(response.details),
+        )
+
+    @application.exception_handler(OperationUnavailableError)
+    def unavailable_handler(
+        _: Request,
+        exc: OperationUnavailableError,
+    ) -> JSONResponse:
+        response = exc.as_response()
+        return _error_response(
+            503,
             response.code,
             response.message,
             details=dict(response.details),
@@ -278,6 +260,14 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
             version=__version__,
             api_version=API_V2_VERSION,
         )
+
+    @application.get(
+        "/api/v2/doctor",
+        response_model=EnvironmentReport,
+        tags=["service"],
+    )
+    def doctor(request: Request) -> EnvironmentReport:
+        return EnvironmentReport(**_sdk(request).environment_report().to_dict())
 
     @application.get(
         "/api/v2/commands",
@@ -452,9 +442,10 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         tags=["artifacts"],
         dependencies=[Depends(_require_execution_token)],
     )
-    def list_artifacts(run_id: str) -> ArtifactListResponse:
+    def list_artifacts(run_id: str, request: Request) -> ArtifactListResponse:
+        result = _sdk(request).list_artifacts(run_id)
         return ArtifactListResponse(
-            artifacts=[ArtifactInfo(**row) for row in _artifact_rows(run_id)]
+            artifacts=[ArtifactInfo(**artifact.to_dict()) for artifact in result.artifacts]
         )
 
     @application.get(
@@ -468,14 +459,273 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         tags=["artifacts"],
         dependencies=[Depends(_require_execution_token)],
     )
-    def download_artifact(run_id: str, relative_path: str) -> FileResponse:
-        path, normalized = _artifact_path(run_id, relative_path)
-        media_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+    def download_artifact(
+        run_id: str,
+        relative_path: str,
+        request: Request,
+    ) -> FileResponse:
+        artifact = _sdk(request).get_artifact(run_id, relative_path)
         return FileResponse(
-            path,
-            media_type=media_type,
-            filename=Path(normalized).name,
+            artifact.file_path,
+            media_type=artifact.info.media_type,
+            filename=Path(artifact.info.path).name,
         )
+
+    @application.get(
+        "/api/v2/datasets",
+        response_model=DatasetListResponse,
+        responses=_error_responses(400, 422, 503),
+        tags=["data"],
+    )
+    def list_datasets(
+        request: Request,
+        verify: Annotated[bool, Query()] = False,
+    ) -> DatasetListResponse:
+        result = _sdk(request).list_datasets(verify=verify)
+        return DatasetListResponse(
+            datasets=[dataset.to_dict() for dataset in result.datasets]
+        )
+
+    @application.get(
+        "/api/v2/datasets/{dataset_id}",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 404, 422, 503),
+        tags=["data"],
+    )
+    def get_dataset(
+        dataset_id: str,
+        request: Request,
+        verify: Annotated[bool, Query()] = False,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).get_dataset(dataset_id, verify=verify).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/datasets/{dataset_id}/import",
+        response_model=OperationResponse,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def import_dataset(
+        dataset_id: str,
+        payload: DatasetWriteRequest,
+        request: Request,
+    ) -> OperationResponse:
+        result = _sdk(request).import_dataset(
+            dataset_id,
+            logical_name=payload.logical_name,
+            source=payload.source,
+        )
+        return OperationResponse(root=result.to_dict())
+
+    @application.post(
+        "/api/v2/datasets/{dataset_id}/fetch",
+        response_model=OperationResponse,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def fetch_dataset(
+        dataset_id: str,
+        payload: DatasetFetchRequest,
+        request: Request,
+    ) -> OperationResponse:
+        result = _sdk(request).fetch_dataset(
+            dataset_id,
+            logical_name=payload.logical_name,
+            retries=payload.retries,
+            timeout=payload.timeout,
+        )
+        return OperationResponse(root=result.to_dict())
+
+    @application.post(
+        "/api/v2/datasets/verify",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 503),
+        tags=["data"],
+    )
+    def verify_datasets(request: Request) -> OperationResponse:
+        return OperationResponse(root=_sdk(request).verify_datasets().to_dict())
+
+    @application.post(
+        "/api/v2/data/backups",
+        response_model=OperationResponse,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def create_backup(
+        payload: BackupRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).create_data_backup(payload.destination).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/data/backups/offsite",
+        response_model=OperationResponse,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def create_offsite_backup(
+        payload: OffsiteBackupRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request)
+            .create_offsite_data_backup(payload.destination_root)
+            .to_dict()
+        )
+
+    @application.post(
+        "/api/v2/data/backups/verify",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def verify_backup(
+        payload: PathRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).verify_data_backup(payload.source).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/data/restores",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def restore_backup(
+        payload: PathRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).restore_data_backup(payload.source).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/data/restore-drills",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def restore_drill(
+        payload: RestoreDrillRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request)
+            .run_data_restore_drill(
+                receipt=payload.receipt,
+                workspace=payload.workspace,
+            )
+            .to_dict()
+        )
+
+    @application.post(
+        "/api/v2/data/gc",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 422, 503),
+        tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def garbage_collect(
+        payload: GarbageCollectRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).garbage_collect_data(execute=payload.execute).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/predictions/commit",
+        response_model=PredictionCommitment,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 422),
+        tags=["predictions"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def commit_prediction(
+        payload: PredictionCommitRequest,
+        request: Request,
+    ) -> PredictionCommitment:
+        result = _sdk(request).commit_json_prediction(
+            payload.prediction,
+            label=payload.label,
+        )
+        return PredictionCommitment(**result.to_dict())
+
+    @application.get(
+        "/api/v2/predictions/{commitment_id}",
+        response_model=PredictionCommitment,
+        responses=_error_responses(400, 404, 422),
+        tags=["predictions"],
+    )
+    def get_prediction(
+        commitment_id: str,
+        request: Request,
+    ) -> PredictionCommitment:
+        return PredictionCommitment(
+            **_sdk(request).get_prediction(commitment_id).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/predictions/{commitment_id}/verify",
+        response_model=PredictionVerification,
+        responses={
+            **_error_responses(400, 404, 422),
+            409: {"model": PredictionVerification},
+        },
+        tags=["predictions"],
+    )
+    def verify_prediction(
+        commitment_id: str,
+        payload: PredictionVerifyRequest,
+        request: Request,
+    ) -> PredictionVerification | JSONResponse:
+        result = _sdk(request).verify_json_prediction(
+            commitment_id,
+            payload.prediction,
+        )
+        if not result.matches:
+            return JSONResponse(status_code=409, content=result.to_dict())
+        return PredictionVerification(**result.to_dict())
+
+    @application.post(
+        "/api/v2/simulations",
+        response_model=SimulationResult,
+        responses=_error_responses(400, 401, 403, 422),
+        tags=["simulation"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def simulate(
+        payload: SimulationRequest,
+        request: Request,
+    ) -> SimulationResult:
+        result = _sdk(request).simulate(
+            SDKSimulationRequest(
+                n=payload.n,
+                weights=tuple(payload.weights),
+                grid=tuple(tuple(axis) for axis in payload.X_grid),
+                k=payload.k,
+                alpha=payload.alpha,
+                C0=payload.C0,
+            )
+        )
+        return SimulationResult(**result.to_dict())
 
     @application.get(
         "/api/v2/verification/physics",

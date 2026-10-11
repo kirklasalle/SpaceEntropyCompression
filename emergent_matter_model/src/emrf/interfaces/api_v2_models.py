@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, RootModel
 
 
 class APIModel(BaseModel):
@@ -22,6 +22,24 @@ class HealthResponse(APIModel):
     service: str
     version: str
     api_version: str
+
+
+class EnvironmentReport(APIModel):
+    emrf_version: str
+    api_version: str
+    python: str
+    python_ok: bool
+    platform: str
+    core_dependencies: dict[str, str | None]
+    optional_dependencies: dict[str, str | None]
+    missing_core: list[str]
+    registered_commands: int
+    missing_scripts: list[str]
+    source_only_unavailable: list[str]
+    app_root: str
+    data_root: str
+    manifest_present: bool
+    healthy: bool
 
 
 class CommandInfo(APIModel):
@@ -124,6 +142,89 @@ class ArtifactListResponse(APIModel):
     artifacts: list[ArtifactInfo]
 
 
+class DatasetListResponse(APIModel):
+    datasets: list[dict[str, Any]]
+
+
+class OperationResponse(RootModel[dict[str, Any]]):
+    pass
+
+
+class DatasetWriteRequest(APIModel):
+    logical_name: str | None = None
+    source: str | None = None
+
+
+class DatasetFetchRequest(APIModel):
+    logical_name: str | None = None
+    retries: int = Field(default=3, ge=0, le=20)
+    timeout: float = Field(default=180.0, gt=0, le=3600)
+
+
+class PathRequest(APIModel):
+    source: str = Field(min_length=1)
+
+
+class BackupRequest(APIModel):
+    destination: str = Field(min_length=1)
+
+
+class OffsiteBackupRequest(APIModel):
+    destination_root: str | None = Field(default=None, min_length=1)
+
+
+class RestoreDrillRequest(APIModel):
+    receipt: str | None = Field(default=None, min_length=1)
+    workspace: str | None = Field(default=None, min_length=1)
+
+
+class GarbageCollectRequest(APIModel):
+    execute: bool = False
+
+
+class PredictionCommitRequest(APIModel):
+    label: str = Field(min_length=1, max_length=100)
+    prediction: Any
+
+
+class PredictionVerifyRequest(APIModel):
+    prediction: Any
+
+
+class PredictionCommitment(APIModel):
+    commitment_id: str
+    label: str
+    created_utc: str
+    sha256: str
+    bytes: int
+    source_name: str | None
+    media_type: str
+    evidence_class: str
+    content_stored: bool
+
+
+class PredictionVerification(APIModel):
+    commitment_id: str
+    matches: bool
+    expected_sha256: str
+    actual_sha256: str
+    bytes: int
+
+
+class SimulationRequest(APIModel):
+    n: int = Field(ge=1)
+    weights: list[float]
+    X_grid: list[list[float]]
+    k: float = 1.0
+    alpha: float = 1.0
+    C0: float = 1.0
+
+
+class SimulationResult(APIModel):
+    shape: list[int]
+    M: Any
+
+
 class VerificationReport(APIModel):
     evidence_class: str
     all_passed: bool
@@ -137,14 +238,30 @@ __all__ = [
     "ArtifactInfo",
     "ArtifactListResponse",
     "ErrorResponse",
+    "EnvironmentReport",
+    "DatasetFetchRequest",
+    "DatasetListResponse",
+    "DatasetWriteRequest",
+    "BackupRequest",
+    "GarbageCollectRequest",
     "HealthResponse",
     "JobInfo",
     "JobListResponse",
     "JobSubmitRequest",
+    "OffsiteBackupRequest",
+    "OperationResponse",
+    "PathRequest",
+    "PredictionCommitment",
+    "PredictionCommitRequest",
+    "PredictionVerification",
+    "PredictionVerifyRequest",
+    "RestoreDrillRequest",
     "WorkerRequest",
     "RunInfo",
     "RunListResponse",
     "RunRequest",
     "RunResult",
+    "SimulationRequest",
+    "SimulationResult",
     "VerificationReport",
 ]

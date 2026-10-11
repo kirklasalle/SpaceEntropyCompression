@@ -2,20 +2,37 @@
 
 from __future__ import annotations
 
-from typing import Any
+import mimetypes
+from pathlib import Path, PurePosixPath
+from typing import Any, cast
 
 import emrf_registry
 
-from .errors import InvalidRequestError, ResourceNotFoundError
+from .errors import (
+    InvalidRequestError,
+    OperationUnavailableError,
+    ResourceNotFoundError,
+)
 from .models import (
+    ArtifactContent,
+    ArtifactInfo,
+    ArtifactListResponse,
     CommandInfo,
     CommandListResponse,
+    DatasetListResponse,
+    DatasetRecord,
+    EnvironmentReport,
     JobInfo,
     JobListResponse,
+    OperationResult,
+    PredictionCommitment,
+    PredictionVerification,
     RunInfo,
     RunListResponse,
     RunRequest,
     RunResult,
+    SimulationRequest,
+    SimulationResult,
     VerificationReport,
 )
 
@@ -71,6 +88,203 @@ class EMRFClient:
             for record in run_store().list(limit=limit)
         )
         return RunListResponse(records)
+
+    def environment_report(self, *, include_executable: bool = False) -> EnvironmentReport:
+        report = dict(emrf_registry.environment_report())
+        if not include_executable:
+            report.pop("executable", None)
+        return EnvironmentReport(report)
+
+    def list_datasets(self, *, verify: bool = False) -> DatasetListResponse:
+        library = self._data_library()
+        rows = self._data_call(lambda: library.catalog_status(verify=verify))
+        return DatasetListResponse(tuple(DatasetRecord(row) for row in rows))
+
+    def get_dataset(self, dataset_id: str, *, verify: bool = False) -> DatasetRecord:
+        library = self._data_library()
+        row = self._data_call(lambda: library.info(dataset_id, verify=verify))
+        return DatasetRecord(row)
+
+    def import_dataset(
+        self,
+        dataset_id: str,
+        *,
+        logical_name: str | None = None,
+        source: str | None = None,
+    ) -> OperationResult:
+        library = self._data_library()
+        holdings = self._data_call(
+            lambda: library.import_dataset(
+                dataset_id,
+                logical_name=logical_name,
+                source=source,
+            )
+        )
+        return OperationResult({"holdings": holdings})
+
+    def fetch_dataset(
+        self,
+        dataset_id: str,
+        *,
+        logical_name: str | None = None,
+        retries: int = 3,
+        timeout: float = 180.0,
+    ) -> OperationResult:
+        library = self._data_library()
+        holdings = self._data_call(
+            lambda: library.fetch_dataset(
+                dataset_id,
+                logical_name=logical_name,
+                retries=retries,
+                timeout=timeout,
+            )
+        )
+        return OperationResult({"holdings": holdings})
+
+    def verify_datasets(self) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(self._data_call(library.verify))
+
+    def create_data_backup(self, destination: str) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(
+            self._data_call(lambda: library.create_backup(destination))
+        )
+
+    def create_offsite_data_backup(
+        self,
+        destination_root: str | None = None,
+    ) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(
+            self._data_call(
+                lambda: library.create_offsite_backup(destination_root)
+            )
+        )
+
+    def verify_data_backup(self, source: str) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(
+            self._data_call(lambda: library.verify_backup(source))
+        )
+
+    def restore_data_backup(self, source: str) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(
+            self._data_call(lambda: library.restore_backup(source))
+        )
+
+    def run_data_restore_drill(
+        self,
+        *,
+        receipt: str | None = None,
+        workspace: str | None = None,
+    ) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(
+            self._data_call(
+                lambda: library.run_restore_drill(
+                    receipt=receipt,
+                    workspace=workspace,
+                )
+            )
+        )
+
+    def garbage_collect_data(self, *, execute: bool = False) -> OperationResult:
+        library = self._data_library()
+        return OperationResult(
+            self._data_call(lambda: library.garbage_collect(execute=execute))
+        )
+
+    def commit_json_prediction(
+        self,
+        prediction: Any,
+        *,
+        label: str,
+    ) -> PredictionCommitment:
+        from emrf_prediction_access import commit_json_prediction
+
+        try:
+            record = commit_json_prediction(prediction, label=label)
+        except (TypeError, ValueError, OSError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return PredictionCommitment.from_mapping(record)
+
+    def commit_prediction_file(
+        self,
+        path: str,
+        *,
+        label: str,
+    ) -> PredictionCommitment:
+        from emrf_prediction_access import commit_prediction_file
+
+        try:
+            record = commit_prediction_file(path, label=label)
+        except (TypeError, ValueError, OSError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return PredictionCommitment.from_mapping(record)
+
+    def get_prediction(self, commitment_id: str) -> PredictionCommitment:
+        from emrf_prediction_access import get_commitment
+
+        try:
+            record = get_commitment(commitment_id)
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "prediction", "commitment_id": commitment_id},
+            ) from None
+        except ValueError as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return PredictionCommitment.from_mapping(record)
+
+    def verify_json_prediction(
+        self,
+        commitment_id: str,
+        prediction: Any,
+    ) -> PredictionVerification:
+        from emrf_prediction_access import verify_json_prediction
+
+        try:
+            report = verify_json_prediction(commitment_id, prediction)
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "prediction", "commitment_id": commitment_id},
+            ) from None
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return PredictionVerification.from_mapping(report)
+
+    def verify_prediction_file(
+        self,
+        commitment_id: str,
+        path: str,
+    ) -> PredictionVerification:
+        from emrf_prediction_access import verify_prediction_file
+
+        try:
+            report = verify_prediction_file(commitment_id, path)
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "prediction", "commitment_id": commitment_id},
+            ) from None
+        except (TypeError, ValueError, OSError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return PredictionVerification.from_mapping(report)
+
+    def simulate(self, request: SimulationRequest) -> SimulationResult:
+        from server import _validate_and_parse_payload, run_simulation
+
+        try:
+            n, weights, grid, k, alpha, c0 = _validate_and_parse_payload(
+                request.to_dict()
+            )
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        values = run_simulation(n, weights, grid, k, alpha, c0)
+        return SimulationResult(tuple(int(size) for size in values.shape), values.tolist())
 
     def submit_job(
         self,
@@ -171,6 +385,55 @@ class EMRFClient:
             ) from None
         return RunInfo.from_mapping(public_record(record))
 
+    def list_artifacts(self, run_id: str) -> ArtifactListResponse:
+        root = self._run_path(run_id)
+        artifacts: list[ArtifactInfo] = []
+        for path in sorted(root.rglob("*")):
+            if not path.is_file() or path.is_symlink():
+                continue
+            resolved = path.resolve()
+            if root not in resolved.parents:
+                continue
+            artifacts.append(
+                ArtifactInfo(
+                    path=path.relative_to(root).as_posix(),
+                    bytes=path.stat().st_size,
+                    media_type=mimetypes.guess_type(path.name)[0]
+                    or "application/octet-stream",
+                )
+            )
+        return ArtifactListResponse(tuple(artifacts))
+
+    def get_artifact(self, run_id: str, relative_path: str) -> ArtifactContent:
+        root = self._run_path(run_id)
+        normalized = relative_path.replace("\\", "/")
+        path = PurePosixPath(normalized)
+        if (
+            not normalized
+            or path.is_absolute()
+            or any(part in {"", ".", ".."} for part in path.parts)
+        ):
+            raise InvalidRequestError("Artifact path is invalid.")
+        raw_candidate = root / Path(*path.parts)
+        if raw_candidate.is_symlink():
+            raise ResourceNotFoundError(
+                "Artifact was not found.",
+                details={"resource": "artifact", "path": normalized},
+            )
+        candidate = raw_candidate.resolve()
+        if root not in candidate.parents or not candidate.is_file():
+            raise ResourceNotFoundError(
+                "Artifact was not found.",
+                details={"resource": "artifact", "path": normalized},
+            )
+        info = ArtifactInfo(
+            path="/".join(path.parts),
+            bytes=candidate.stat().st_size,
+            media_type=mimetypes.guess_type(candidate.name)[0]
+            or "application/octet-stream",
+        )
+        return ArtifactContent(info, candidate)
+
     def verify_physics(self) -> VerificationReport:
         from emrf_physics_access import known_limit_report
 
@@ -185,6 +448,59 @@ class EMRFClient:
         from emrf_validation_access import engine_validation_report
 
         return VerificationReport.from_mapping(engine_validation_report())
+
+    @staticmethod
+    def _data_library() -> Any:
+        from emrf_data_access import data_library
+
+        return data_library()
+
+    @staticmethod
+    def _data_call(operation: Any) -> Any:
+        from emrf_data_access import data_errors
+
+        errors = data_errors()
+        try:
+            return operation()
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "dataset"},
+            ) from None
+        except FileNotFoundError as exc:
+            raise ResourceNotFoundError(
+                str(exc),
+                details={"resource": "data_path"},
+            ) from exc
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except errors.IntegrityError as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "integrity"},
+            ) from exc
+        except errors.AcquisitionError as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "acquisition"},
+            ) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "storage"},
+            ) from exc
+
+    @staticmethod
+    def _run_path(run_id: str) -> Path:
+        from emrf_run_access import run_store
+
+        try:
+            return cast(Path, run_store().get(run_id).path.resolve())
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "run", "run_id": run_id},
+            ) from None
 
 
 __all__ = ["EMRFClient"]

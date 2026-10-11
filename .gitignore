@@ -53,6 +53,7 @@ Desktop.ini
 
 # pytest
 .pytest_cache/
+.hypothesis/
 htmlcov/
 .coverage
 .coverage.*

@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
+from pathlib import Path
 from typing import Any
 
 
@@ -271,6 +272,95 @@ class DatasetInfo:
 
 
 @dataclass(frozen=True)
+class DatasetRecord:
+    payload: Mapping[str, Any]
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self.payload)
+
+
+@dataclass(frozen=True)
+class DatasetListResponse:
+    datasets: tuple[DatasetRecord, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"datasets": [dataset.to_dict() for dataset in self.datasets]}
+
+
+@dataclass(frozen=True)
+class OperationResult:
+    payload: Mapping[str, Any]
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self.payload)
+
+
+@dataclass(frozen=True)
+class EnvironmentReport:
+    payload: Mapping[str, Any]
+
+    @property
+    def healthy(self) -> bool:
+        return bool(self.payload["healthy"])
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self.payload)
+
+
+@dataclass(frozen=True)
+class SimulationRequest:
+    n: int
+    weights: tuple[float, ...]
+    grid: tuple[tuple[float, ...], ...]
+    k: float = 1.0
+    alpha: float = 1.0
+    C0: float = 1.0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "n": self.n,
+            "weights": list(self.weights),
+            "X_grid": [list(axis) for axis in self.grid],
+            "k": self.k,
+            "alpha": self.alpha,
+            "C0": self.C0,
+        }
+
+
+@dataclass(frozen=True)
+class SimulationResult:
+    shape: tuple[int, ...]
+    values: Any
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"shape": list(self.shape), "M": self.values}
+
+
+@dataclass(frozen=True)
+class ArtifactInfo:
+    path: str
+    bytes: int
+    media_type: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class ArtifactListResponse:
+    artifacts: tuple[ArtifactInfo, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"artifacts": [artifact.to_dict() for artifact in self.artifacts]}
+
+
+@dataclass(frozen=True)
+class ArtifactContent:
+    info: ArtifactInfo
+    file_path: Path
+
+
+@dataclass(frozen=True)
 class VerificationReport:
     evidence_class: str
     all_passed: bool
@@ -311,20 +401,68 @@ class PredictionCommitment:
     evidence_class: str
     content_stored: bool
 
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> PredictionCommitment:
+        return cls(
+            commitment_id=str(value["commitment_id"]),
+            label=str(value["label"]),
+            created_utc=str(value["created_utc"]),
+            sha256=str(value["sha256"]),
+            bytes=int(value["bytes"]),
+            source_name=(
+                None if value["source_name"] is None else str(value["source_name"])
+            ),
+            media_type=str(value["media_type"]),
+            evidence_class=str(value["evidence_class"]),
+            content_stored=bool(value["content_stored"]),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class PredictionVerification:
+    commitment_id: str
+    matches: bool
+    expected_sha256: str
+    actual_sha256: str
+    bytes: int
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> PredictionVerification:
+        return cls(
+            commitment_id=str(value["commitment_id"]),
+            matches=bool(value["matches"]),
+            expected_sha256=str(value["expected_sha256"]),
+            actual_sha256=str(value["actual_sha256"]),
+            bytes=int(value["bytes"]),
+        )
+
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
 __all__ = [
+    "ArtifactContent",
+    "ArtifactInfo",
+    "ArtifactListResponse",
     "CommandInfo",
     "CommandListResponse",
     "DatasetInfo",
+    "DatasetListResponse",
+    "DatasetRecord",
+    "EnvironmentReport",
     "ErrorResponse",
+    "OperationResult",
     "PredictionCommitment",
+    "PredictionVerification",
     "RunInfo",
     "RunListResponse",
     "RunRequest",
     "RunResult",
+    "SimulationRequest",
+    "SimulationResult",
     "JobInfo",
     "JobListResponse",
     "VerificationReport",

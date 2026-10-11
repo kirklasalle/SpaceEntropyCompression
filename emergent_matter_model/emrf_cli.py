@@ -31,9 +31,10 @@ import os
 import socket
 import subprocess
 import sys
+from pathlib import Path
 
 import emrf_registry as reg
-from emrf_sdk_access import EMRFClient, RunRequest
+from emrf_sdk_access import EMRFClient, RunRequest, SimulationRequest
 from emrf_version import __version__
 
 sdk = EMRFClient()
@@ -96,21 +97,25 @@ def _parse_grid(text: str) -> list[float]:
 def cmd_simulate(a: argparse.Namespace) -> int:
     import numpy as np
 
-    from server import _validate_and_parse_payload, run_simulation
-
-    payload = {"n": a.n, "weights": a.weights, "X_grid": a.grid,
-               "k": a.k, "alpha": a.alpha, "C0": a.C0}
     try:
-        n, weights, grid, k, alpha, c0 = _validate_and_parse_payload(payload)
+        result = sdk.simulate(
+            SimulationRequest(
+                n=a.n,
+                weights=tuple(a.weights),
+                grid=tuple(tuple(axis) for axis in a.grid),
+                k=a.k,
+                alpha=a.alpha,
+                C0=a.C0,
+            )
+        )
     except (TypeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    m = run_simulation(n, weights, grid, k, alpha, c0)
     if a.output:
-        np.save(a.output, m)
-        print(f"Saved array with shape {m.shape} to {a.output}")
+        np.save(a.output, np.asarray(result.values))
+        print(f"Saved array with shape {result.shape} to {a.output}")
     else:
-        _print_json({"shape": list(m.shape), "M": m.tolist()})
+        _print_json(result.to_dict())
     return 0
 
 
@@ -162,6 +167,16 @@ def cmd_runs(a: argparse.Namespace) -> int:
     if a.runs_command == "info":
         _print_json(sdk.get_run(a.run_id).to_dict())
         return 0
+    if a.runs_command == "artifacts":
+        _print_json(sdk.list_artifacts(a.run_id).to_dict())
+        return 0
+    if a.runs_command == "artifact":
+        artifact = sdk.get_artifact(a.run_id, a.path)
+        destination = Path(a.output)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(artifact.file_path.read_bytes())
+        _print_json({**artifact.info.to_dict(), "output": str(destination)})
+        return 0
     result = reg.resume_run(a.run_id, timeout=a.timeout)
     _print_json(result)
     return int(result["returncode"])
@@ -211,7 +226,7 @@ def cmd_jobs(a: argparse.Namespace) -> int:
 
 
 def cmd_data_catalog(a: argparse.Namespace) -> int:
-    rows = _data_library().catalog_status(verify=a.verify)
+    rows = [record.to_dict() for record in sdk.list_datasets(verify=a.verify).datasets]
     if a.json:
         _print_json(rows)
     else:
@@ -224,74 +239,74 @@ def cmd_data_catalog(a: argparse.Namespace) -> int:
 
 
 def cmd_data_info(a: argparse.Namespace) -> int:
-    _print_json(_data_library().info(a.dataset_id, verify=a.verify))
+    _print_json(sdk.get_dataset(a.dataset_id, verify=a.verify).to_dict())
     return 0
 
 
 def cmd_data_import(a: argparse.Namespace) -> int:
-    result = _data_library().import_dataset(
+    result = sdk.import_dataset(
         a.dataset_id,
         logical_name=a.logical_name,
         source=a.source,
     )
-    _print_json({"holdings": result})
+    _print_json(result.to_dict())
     return 0
 
 
 def cmd_data_fetch(a: argparse.Namespace) -> int:
-    result = _data_library().fetch_dataset(
+    result = sdk.fetch_dataset(
         a.dataset_id,
         logical_name=a.logical_name,
         retries=a.retries,
         timeout=a.timeout,
     )
-    _print_json({"holdings": result})
+    _print_json(result.to_dict())
     return 0
 
 
 def cmd_data_verify(a: argparse.Namespace) -> int:
-    result = _data_library().verify()
+    result = sdk.verify_datasets().to_dict()
     _print_json(result)
     return 0 if result["healthy"] else 1
 
 
 def cmd_data_backup(a: argparse.Namespace) -> int:
-    _print_json(_data_library().create_backup(a.destination))
+    _print_json(sdk.create_data_backup(a.destination).to_dict())
     return 0
 
 
 def cmd_data_backup_offsite(a: argparse.Namespace) -> int:
-    _print_json(_data_library().create_offsite_backup(a.destination_root))
+    _print_json(sdk.create_offsite_data_backup(a.destination_root).to_dict())
     return 0
 
 
 def cmd_data_backup_verify(a: argparse.Namespace) -> int:
-    _print_json(_data_library().verify_backup(a.source))
+    _print_json(sdk.verify_data_backup(a.source).to_dict())
     return 0
 
 
 def cmd_data_restore(a: argparse.Namespace) -> int:
-    _print_json(_data_library().restore_backup(a.source))
+    _print_json(sdk.restore_data_backup(a.source).to_dict())
     return 0
 
 
 def cmd_data_drill(a: argparse.Namespace) -> int:
     _print_json(
-        _data_library().run_restore_drill(
+        sdk.run_data_restore_drill(
             receipt=a.receipt,
             workspace=a.workspace,
-        )
+        ).to_dict()
     )
     return 0
 
 
 def cmd_data_gc(a: argparse.Namespace) -> int:
-    _print_json(_data_library().garbage_collect(execute=a.execute))
+    _print_json(sdk.garbage_collect_data(execute=a.execute).to_dict())
     return 0
 
 
 def cmd_doctor(a: argparse.Namespace) -> int:
-    rep = reg.environment_report()
+    rep = sdk.environment_report(include_executable=True).to_dict()
     if a.json:
         _print_json(rep)
     else:
@@ -365,12 +380,10 @@ def cmd_verify_engines(a: argparse.Namespace) -> int:
 
 
 def cmd_predict(a: argparse.Namespace) -> int:
-    from emrf_prediction_access import commit_prediction_file, verify_prediction_file
-
     if a.commit:
-        result = commit_prediction_file(a.commit, label=a.label)
+        result = sdk.commit_prediction_file(a.commit, label=a.label).to_dict()
     else:
-        result = verify_prediction_file(a.commitment_id, a.verify)
+        result = sdk.verify_prediction_file(a.commitment_id, a.verify).to_dict()
     _print_json(result)
     return 0 if result.get("matches", True) else 1
 
@@ -492,6 +505,14 @@ def build_parser() -> argparse.ArgumentParser:
     r.set_defaults(func=cmd_runs)
     r = rsub.add_parser("info", help="show one run")
     r.add_argument("run_id")
+    r.set_defaults(func=cmd_runs)
+    r = rsub.add_parser("artifacts", help="list files recorded for one run")
+    r.add_argument("run_id")
+    r.set_defaults(func=cmd_runs)
+    r = rsub.add_parser("artifact", help="copy one run artifact to a safe output path")
+    r.add_argument("run_id")
+    r.add_argument("path")
+    r.add_argument("--output", required=True)
     r.set_defaults(func=cmd_runs)
     r = rsub.add_parser("resume", help="resume a failed, timed-out or interrupted run")
     r.add_argument("run_id")

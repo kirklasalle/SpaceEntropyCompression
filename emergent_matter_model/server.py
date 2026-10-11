@@ -22,7 +22,14 @@ from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 
 import emrf_registry as registry
-from emrf_sdk_access import EMRFClient, RunRequest
+from emrf_sdk_access import (
+    EMRFClient,
+    InvalidRequestError,
+    OperationUnavailableError,
+    ResourceNotFoundError,
+    RunRequest,
+    SimulationRequest,
+)
 from emrf_version import API_VERSION, __version__
 from model import EmergentMatterModel
 
@@ -137,6 +144,16 @@ def _data_error(exc: Exception):
     errors = data_errors()
     AcquisitionError = errors.AcquisitionError
     IntegrityError = errors.IntegrityError
+    if isinstance(exc, ResourceNotFoundError):
+        return jsonify({'error': str(exc)}), 404
+    if isinstance(exc, InvalidRequestError):
+        return jsonify({'error': str(exc)}), 400
+    if isinstance(exc, OperationUnavailableError):
+        status = {
+            "integrity": 409,
+            "acquisition": 502,
+        }.get(exc.details.get("kind"), 500)
+        return jsonify({'error': str(exc)}), status
 
     if isinstance(exc, KeyError):
         return jsonify({'error': str(exc)}), 404
@@ -233,9 +250,7 @@ def version():
 @app.route('/api/v1/doctor', methods=['GET'])
 def doctor():
     """Read-only environment and dependency diagnostics (same as `emrf doctor`)."""
-    report = registry.environment_report()
-    report.pop('executable', None)
-    return jsonify(report)
+    return jsonify(sdk.environment_report().to_dict())
 
 
 @app.route('/api/v1/verification/physics', methods=['GET'])
@@ -271,9 +286,8 @@ def commit_prediction():
     if not isinstance(data, dict) or "prediction" not in data or "label" not in data:
         return jsonify({'error': 'JSON body requires label and prediction'}), 400
     try:
-        from emrf_prediction_access import commit_json_prediction
-
-        return jsonify(commit_json_prediction(data["prediction"], label=data["label"])), 201
+        result = sdk.commit_json_prediction(data["prediction"], label=data["label"])
+        return jsonify(result.to_dict()), 201
     except (TypeError, ValueError, OSError) as exc:
         return jsonify({'error': str(exc)}), 400
 
@@ -282,9 +296,7 @@ def commit_prediction():
 def prediction_commitment(commitment_id: str):
     """Return public metadata for a prediction commitment."""
     try:
-        from emrf_prediction_access import get_commitment
-
-        return jsonify(get_commitment(commitment_id))
+        return jsonify(sdk.get_prediction(commitment_id).to_dict())
     except KeyError as exc:
         return jsonify({'error': exc.args[0]}), 404
     except ValueError as exc:
@@ -298,9 +310,7 @@ def verify_prediction(commitment_id: str):
     if not isinstance(data, dict) or "prediction" not in data:
         return jsonify({'error': 'JSON body requires prediction'}), 400
     try:
-        from emrf_prediction_access import verify_json_prediction
-
-        report = verify_json_prediction(commitment_id, data["prediction"])
+        report = sdk.verify_json_prediction(commitment_id, data["prediction"]).to_dict()
         return jsonify(report), 200 if report["matches"] else 409
     except KeyError as exc:
         return jsonify({'error': exc.args[0]}), 404
@@ -480,7 +490,7 @@ def list_datasets():
     """Observational data library; ?verify=true re-hashes files (read-only)."""
     verify = request.args.get('verify', 'false').lower() in ('1', 'true', 'yes')
     try:
-        return jsonify({'datasets': _data_library().catalog_status(verify=verify)})
+        return jsonify(sdk.list_datasets(verify=verify).to_dict())
     except Exception as exc:
         return _data_error(exc)
 
@@ -489,7 +499,7 @@ def list_datasets():
 def get_dataset(dataset_id: str):
     verify = request.args.get('verify', 'false').lower() in ('1', 'true', 'yes')
     try:
-        return jsonify(_data_library().info(dataset_id, verify=verify))
+        return jsonify(sdk.get_dataset(dataset_id, verify=verify).to_dict())
     except Exception as exc:
         return _data_error(exc)
 
@@ -500,12 +510,12 @@ def import_dataset(dataset_id: str):
         return denied
     try:
         data = _json_object()
-        result = _data_library().import_dataset(
+        result = sdk.import_dataset(
             dataset_id,
             logical_name=data.get('logical_name'),
             source=data.get('source'),
         )
-        return jsonify({'holdings': result}), 201
+        return jsonify(result.to_dict()), 201
     except Exception as exc:
         return _data_error(exc)
 
@@ -516,13 +526,13 @@ def fetch_dataset(dataset_id: str):
         return denied
     try:
         data = _json_object()
-        result = _data_library().fetch_dataset(
+        result = sdk.fetch_dataset(
             dataset_id,
             logical_name=data.get('logical_name'),
             retries=data.get('retries', 3),
             timeout=data.get('timeout', 180.0),
         )
-        return jsonify({'holdings': result}), 201
+        return jsonify(result.to_dict()), 201
     except Exception as exc:
         return _data_error(exc)
 
@@ -530,7 +540,7 @@ def fetch_dataset(dataset_id: str):
 @app.route('/api/v1/datasets/verify', methods=['POST'])
 def verify_datasets():
     try:
-        result = _data_library().verify()
+        result = sdk.verify_datasets().to_dict()
         return jsonify(result), 200 if result['healthy'] else 409
     except Exception as exc:
         return _data_error(exc)
@@ -543,7 +553,7 @@ def create_data_backup():
     try:
         data = _json_object()
         destination = _required_json_text(data, 'destination')
-        return jsonify(_data_library().create_backup(destination)), 201
+        return jsonify(sdk.create_data_backup(destination).to_dict()), 201
     except Exception as exc:
         return _data_error(exc)
 
@@ -560,7 +570,7 @@ def create_offsite_data_backup():
         ):
             raise ValueError("destination_root must be non-empty text")
         return jsonify(
-            _data_library().create_offsite_backup(destination_root)
+            sdk.create_offsite_data_backup(destination_root).to_dict()
         ), 201
     except Exception as exc:
         return _data_error(exc)
@@ -573,7 +583,7 @@ def verify_data_backup():
     try:
         data = _json_object()
         source = _required_json_text(data, 'source')
-        return jsonify(_data_library().verify_backup(source))
+        return jsonify(sdk.verify_data_backup(source).to_dict())
     except Exception as exc:
         return _data_error(exc)
 
@@ -585,7 +595,7 @@ def restore_data_backup():
     try:
         data = _json_object()
         source = _required_json_text(data, 'source')
-        return jsonify(_data_library().restore_backup(source))
+        return jsonify(sdk.restore_data_backup(source).to_dict())
     except Exception as exc:
         return _data_error(exc)
 
@@ -602,10 +612,10 @@ def run_data_restore_drill():
             if value is not None and (not isinstance(value, str) or not value.strip()):
                 raise ValueError(f"{field} must be non-empty text")
         return jsonify(
-            _data_library().run_restore_drill(
+            sdk.run_data_restore_drill(
                 receipt=receipt,
                 workspace=workspace,
-            )
+            ).to_dict()
         )
     except Exception as exc:
         return _data_error(exc)
@@ -622,7 +632,7 @@ def garbage_collect_data():
             denied = _data_write_denied()
             if denied:
                 return denied
-        return jsonify(_data_library().garbage_collect(execute=execute))
+        return jsonify(sdk.garbage_collect_data(execute=execute).to_dict())
     except Exception as exc:
         return _data_error(exc)
 
@@ -653,11 +663,20 @@ def simulate():
         if not isinstance(data, dict):
             return jsonify({'error': 'Request body must be valid JSON'}), 400
 
-        n, weights, X_grid, k, alpha, C0 = _validate_and_parse_payload(data)
-        M = run_simulation(n, weights, X_grid, k, alpha, C0)
+        n, weights, grid, k, alpha, c0 = _validate_and_parse_payload(data)
+        result = sdk.simulate(
+            SimulationRequest(
+                n=n,
+                weights=tuple(weights),
+                grid=tuple(tuple(float(value) for value in axis) for axis in grid),
+                k=k,
+                alpha=alpha,
+                C0=c0,
+            )
+        )
 
-        logger.info("Simulation complete — shape %s", M.shape)
-        return jsonify({'M': M.tolist()})
+        logger.info("Simulation complete — shape %s", result.shape)
+        return jsonify({'M': result.values})
 
     except (ValueError, TypeError, KeyError) as exc:
         logger.warning("Bad request: %s", exc)

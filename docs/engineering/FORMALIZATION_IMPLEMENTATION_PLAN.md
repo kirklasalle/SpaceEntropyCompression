@@ -389,12 +389,25 @@ response mapping, and builds through a pinned Maven Wrapper. The previously
 committed 91 MiB Maven/JavaFX binary toolchains were removed from the current
 tree because the wrapper and `pom.xml` now manage those dependencies.
 
-**Parity inventory:** command discovery/execution, durable runs, durable jobs,
-and scientific verification have typed SDK, CLI, REST v1, and REST v2 paths.
-Data-library/backup, prediction, simulation, and environment-doctor operations
-remain on mature CLI/REST v1 paths but do not yet all have typed SDK and REST
-v2 adapters. Therefore the Phase 6 exit gate remains open; the next slice is
-typed SDK and REST v2 migration of those remaining operation families.
+**Remaining-family migration implemented (2026-10-11):** environment
+diagnostics, dataset catalog/acquisition/integrity, local and off-site
+backup/verification/restore drills, garbage collection, prediction
+commitment/reveal verification, simulation, and run artifacts now have typed
+SDK operations. The compatibility CLI and Flask REST v1 adapters call those
+operations without changing their established response shapes or enablement
+flags. FastAPI REST v2 exposes strict Pydantic contracts for every applicable
+family, protects mutations with its bearer-token policy, and returns stable
+SDK errors. Artifact containment, traversal, symlink and regular-file checks
+now live in the authoritative SDK rather than an HTTP adapter.
+
+**Phase 6 local certification (2026-10-11):** direct SDK, CLI, Flask REST v1,
+and FastAPI REST v2 parity/compatibility suites pass; the complete non-golden
+suite passes 322 tests; Ruff, bytecode compilation and Pylance diagnostics are
+clean. A clean wheel installed outside the source tree exposes all 20 migrated
+SDK operations, executes doctor and simulation successfully, and generates
+the expected 31-path OpenAPI document. REST v1 remains intentionally frozen:
+new artifact download and worker execution are v2-only rather than additions
+to the compatibility API.
 
 | Operation family | CLI | Typed SDK | REST v1 | REST v2 | Exit status |
 |---|---:|---:|---:|---:|---|
@@ -402,16 +415,17 @@ typed SDK and REST v2 migration of those remaining operation families.
 | Durable run list/detail | Yes | Yes | Yes | Yes | Certified |
 | Durable job submit/list/detail/cancel/worker | Yes | Yes | Yes, except worker HTTP | Yes | Certified adapters |
 | Physics/inference/engine verification | Yes | Yes | Yes | Yes | Certified |
-| Run artifact list/download | Filesystem | No | No | Yes | SDK/CLI gap |
-| Environment doctor | Yes | No | Yes | Health only | SDK/v2 gap |
-| Dataset catalog/acquisition/integrity | Yes | Contract only | Yes | No | SDK/v2 gap |
-| Backup/restore/offsite drills | Yes | No | Yes | No | SDK/v2 gap |
-| Prediction commitment/verification | Yes | Contract only | Yes | No | SDK/v2 gap |
-| Simulation model | Legacy script | No | Yes | No | SDK/v2 gap |
+| Run artifact list/download | Yes | Yes | Compatibility exclusion | Yes | Certified |
+| Environment doctor | Yes | Yes | Yes | Yes | Certified |
+| Dataset catalog/acquisition/integrity | Yes | Yes | Yes | Yes | Certified |
+| Backup/restore/offsite drills | Yes | Yes | Yes | Yes | Certified |
+| Prediction commitment/verification | Yes | Yes | Yes | Yes | Certified |
+| Simulation model | Yes | Yes | Yes | Yes | Certified |
 | Python/JavaFX/web visualization | Yes | Not applicable | REST v1 client | Not applicable | Certified |
 
 **Exit gate:** CLI/API/SDK parity tests cover every operation; v1 clients
-(including JavaFX and `visualize.py`) still work.
+(including JavaFX and `visualize.py`) still work. **Passed locally
+2026-10-11; cross-platform CI certification is required for release.**
 
 ## Phase 7 - Knowledge base, memory and library (2-3 weeks, then ongoing)
 
