@@ -144,8 +144,8 @@ parity for those environments.
   real-data golden comparison on the baseline environment
 - Local equivalent: `ci_local.ps1`; set `EMRF_RUN_GOLDEN=1` to include the
   expensive golden suite
-- JavaFX contract tests run on Java 17 through `javafx_client/mvnw`; Java 25
-  local warning mitigation is configured in `javafx_client/.mvn/jvm.config`
+- JavaFX contract tests run on Java 17 through `javafx_client/mvnw`; the
+  compiler release remains pinned to Java 17 for compatibility with newer JDKs
 
 ## Contribution
 - Follow code style and documentation guidelines
