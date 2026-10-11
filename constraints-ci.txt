@@ -5,7 +5,7 @@ jsonschema==4.26.0
 PyYAML==6.0.3
 fastapi==0.143.0
 starlette==1.7.0
-pydantic==2.12.5
+pydantic==2.14.0
 httpx==0.28.1
 httpx2==2.13.1
 uvicorn==0.40.0
