@@ -430,6 +430,28 @@ cross-platform certified by remote CI run `38126755336`.**
 
 ## Phase 7 - Knowledge base, memory and library (2-3 weeks, then ongoing)
 
+**Typed graph foundation implemented (2026-10-11):** `GRAPH_MEMORY.json` now
+validates against a packaged JSON Schema 2020-12 contract and a semantic
+validator that enforces unique/referentially valid nodes, acyclic inheritance,
+legal overrides, and evidence-linked non-proposed claims. The migrated graph
+classifies all 96 nodes into canonical kinds and qualifies all 113 edges with
+confidence, evidence class and provenance. Pure-Python knowledge services
+provide conditional claims, inheritance resolution, conflicts, pinned
+DOI/arXiv/ADS source registration with snapshot hashes and BibTeX, atomic
+query/export, and durable run/artifact evidence linking. Typed SDK, CLI and
+authenticated FastAPI v2 mutation adapters share this service. CI invokes
+`emrf kb validate`; UKS remains an unimplemented optional ADR-gated pilot.
+
+**Phase 7 local certification (2026-10-11):** all 333 non-golden tests pass;
+Ruff, focused mypy, bytecode compilation, Pylance diagnostics and dependency
+consistency checks pass. A clean wheel installed outside the checkout
+validated its portable 96-node seed, registered and queried a pinned
+literature source, and generated all 37 REST v2 paths. Canonical and packaged
+graph/schema hashes match. Independent review regressions cover concurrent
+first-use initialization, installed portability, typed evidence endpoints,
+terminal-run enforcement, post-publication artifact mutation and malformed
+graph validation.
+
 1. JSON Schema for `GRAPH_MEMORY.json`; validator in CI.
 2. Automatic links: run -> results -> claims -> sources -> datasets.
 3. Literature registry with DOI/arXiv/ADS, snapshots and BibTeX.
@@ -443,6 +465,8 @@ cross-platform certified by remote CI run `38126755336`.**
    if the pilot meets its success criterion.
 
 **Exit gate:** every current claim links to evidence or is marked untested.
+**Passed locally 2026-10-11; final cross-platform CI certification remains
+required.**
 
 ## Phase 8 - Documentation and support (2 weeks, then ongoing)
 

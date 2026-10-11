@@ -26,6 +26,7 @@ def _load_sdk() -> Any:
 _sdk = _load_sdk()
 EMRFClient = _sdk.EMRFClient
 InvalidRequestError = _sdk.InvalidRequestError
+KnowledgeSourceRequest = _sdk.KnowledgeSourceRequest
 OperationUnavailableError = _sdk.OperationUnavailableError
 ResourceNotFoundError = _sdk.ResourceNotFoundError
 RunRequest = _sdk.RunRequest
@@ -34,6 +35,7 @@ SimulationRequest = _sdk.SimulationRequest
 __all__ = [
     "EMRFClient",
     "InvalidRequestError",
+    "KnowledgeSourceRequest",
     "OperationUnavailableError",
     "ResourceNotFoundError",
     "RunRequest",

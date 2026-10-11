@@ -22,6 +22,7 @@ from emrf.sdk import (
     OperationUnavailableError,
     ResourceNotFoundError,
 )
+from emrf.sdk import KnowledgeSourceRequest as SDKKnowledgeSourceRequest
 from emrf.sdk import RunRequest as SDKRunRequest
 from emrf.sdk import SimulationRequest as SDKSimulationRequest
 
@@ -41,6 +42,10 @@ from .api_v2_models import (
     JobInfo,
     JobListResponse,
     JobSubmitRequest,
+    KnowledgeQueryResponse,
+    KnowledgeRunLinkRequest,
+    KnowledgeSourceRequest,
+    KnowledgeValidationResponse,
     OffsiteBackupRequest,
     OperationResponse,
     PathRequest,
@@ -105,7 +110,9 @@ def _error_response(
     )
 
 
-def _error_responses(*status_codes: int) -> dict[int, dict[str, object]]:
+def _error_responses(
+    *status_codes: int,
+) -> dict[int | str, dict[str, Any]]:
     return {status_code: {"model": ErrorResponse} for status_code in status_codes}
 
 
@@ -726,6 +733,111 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
             )
         )
         return SimulationResult(**result.to_dict())
+
+    @application.get(
+        "/api/v2/knowledge",
+        response_model=KnowledgeQueryResponse,
+        responses=_error_responses(400, 422, 503),
+        tags=["knowledge"],
+    )
+    def query_knowledge(
+        request: Request,
+        text: Annotated[str | None, Query(min_length=1)] = None,
+        kind: Annotated[str | None, Query()] = None,
+        lifecycle_status: Annotated[str | None, Query()] = None,
+        limit: Annotated[int, Query(ge=1, le=1000)] = 100,
+    ) -> KnowledgeQueryResponse:
+        result = _sdk(request).query_knowledge(
+            text,
+            kind=kind,
+            lifecycle_status=lifecycle_status,
+            limit=limit,
+        )
+        return KnowledgeQueryResponse(**result.to_dict())
+
+    @application.get(
+        "/api/v2/knowledge/validate",
+        response_model=KnowledgeValidationResponse,
+        responses=_error_responses(503),
+        tags=["knowledge"],
+    )
+    def validate_knowledge(request: Request) -> KnowledgeValidationResponse:
+        return KnowledgeValidationResponse(
+            **_sdk(request).validate_knowledge().to_dict()
+        )
+
+    @application.get(
+        "/api/v2/knowledge/export",
+        response_model=OperationResponse,
+        responses=_error_responses(503),
+        tags=["knowledge"],
+    )
+    def export_knowledge(request: Request) -> OperationResponse:
+        return OperationResponse(root=_sdk(request).knowledge_snapshot().to_dict())
+
+    @application.post(
+        "/api/v2/knowledge/sources",
+        response_model=OperationResponse,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 422, 503),
+        tags=["knowledge"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def add_knowledge_source(
+        payload: KnowledgeSourceRequest,
+        request: Request,
+    ) -> OperationResponse:
+        result = _sdk(request).add_knowledge_source(
+            SDKKnowledgeSourceRequest(
+                source_id=payload.id,
+                title=payload.title,
+                authors=tuple(payload.authors),
+                year=payload.year,
+                snapshot_sha256=payload.snapshot_sha256,
+                bibtex=payload.bibtex,
+                doi=payload.doi,
+                arxiv=payload.arxiv,
+                ads_bibcode=payload.ads_bibcode,
+            )
+        )
+        return OperationResponse(root=result.to_dict())
+
+    @application.post(
+        "/api/v2/knowledge/runs/{run_id}/link",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["knowledge"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def link_run_knowledge(
+        run_id: str,
+        payload: KnowledgeRunLinkRequest,
+        request: Request,
+    ) -> OperationResponse:
+        result = _sdk(request).link_run_knowledge(
+            run_id,
+            claim_ids=tuple(payload.claim_ids),
+            source_ids=tuple(payload.source_ids),
+            dataset_ids=tuple(payload.dataset_ids),
+        )
+        return OperationResponse(root=result.to_dict())
+
+    @application.get(
+        "/api/v2/knowledge/{node_id}",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 404, 422, 503),
+        tags=["knowledge"],
+    )
+    def get_knowledge_node(
+        node_id: str,
+        request: Request,
+        resolve_inheritance: Annotated[bool, Query()] = False,
+    ) -> OperationResponse:
+        result = _sdk(request).get_knowledge_node(
+            node_id,
+            resolve_inheritance=resolve_inheritance,
+        )
+        return OperationResponse(root=result.to_dict())
 
     @application.get(
         "/api/v2/verification/physics",

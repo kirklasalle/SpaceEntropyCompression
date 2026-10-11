@@ -24,6 +24,10 @@ from .models import (
     EnvironmentReport,
     JobInfo,
     JobListResponse,
+    KnowledgeNode,
+    KnowledgeQueryResponse,
+    KnowledgeSourceRequest,
+    KnowledgeValidationReport,
     OperationResult,
     PredictionCommitment,
     PredictionVerification,
@@ -51,6 +55,116 @@ class EMRFClient:
             for command in emrf_registry.list_commands(category)
         )
         return CommandListResponse(commands)
+
+    def validate_knowledge(self) -> KnowledgeValidationReport:
+        try:
+            report = self._knowledge_store().validate()
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return KnowledgeValidationReport.from_mapping(report)
+
+    def query_knowledge(
+        self,
+        text: str | None = None,
+        *,
+        kind: str | None = None,
+        lifecycle_status: str | None = None,
+        limit: int = 100,
+    ) -> KnowledgeQueryResponse:
+        try:
+            result = self._knowledge_store().query(
+                text,
+                kind=kind,
+                lifecycle_status=lifecycle_status,
+                limit=limit,
+            )
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return KnowledgeQueryResponse(
+            tuple(KnowledgeNode(node) for node in result["nodes"])
+        )
+
+    def get_knowledge_node(
+        self,
+        node_id: str,
+        *,
+        resolve_inheritance: bool = False,
+    ) -> KnowledgeNode:
+        try:
+            node = self._knowledge_store().get_node(
+                node_id,
+                resolve_inheritance=resolve_inheritance,
+            )
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "knowledge_node", "node_id": node_id},
+            ) from None
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return KnowledgeNode(node)
+
+    def add_knowledge_source(
+        self,
+        request: KnowledgeSourceRequest,
+    ) -> KnowledgeNode:
+        try:
+            node = self._knowledge_store().add_source(request.to_dict())
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return KnowledgeNode(node)
+
+    def knowledge_snapshot(self) -> OperationResult:
+        try:
+            graph = self._knowledge_store().load()
+            report = self._knowledge_store().validate()
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        if not report["valid"]:
+            raise OperationUnavailableError(
+                "Knowledge graph failed validation",
+                details={"errors": report["errors"]},
+            )
+        return OperationResult(graph)
+
+    def export_knowledge(self, destination: str) -> OperationResult:
+        try:
+            result = self._knowledge_store().export(destination)
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return OperationResult(result)
+
+    def link_run_knowledge(
+        self,
+        run_id: str,
+        *,
+        claim_ids: tuple[str, ...] = (),
+        source_ids: tuple[str, ...] = (),
+        dataset_ids: tuple[str, ...] = (),
+    ) -> OperationResult:
+        try:
+            result = self._knowledge_store().link_run(
+                run_id,
+                claim_ids=claim_ids,
+                source_ids=source_ids,
+                dataset_ids=dataset_ids,
+            )
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "knowledge_link", "run_id": run_id},
+            ) from None
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return OperationResult(result)
 
     def get_command(self, name: str) -> CommandInfo:
         try:
@@ -454,6 +568,12 @@ class EMRFClient:
         from emrf_data_access import data_library
 
         return data_library()
+
+    @staticmethod
+    def _knowledge_store() -> Any:
+        from emrf.knowledge import KnowledgeStore
+
+        return KnowledgeStore()
 
     @staticmethod
     def _data_call(operation: Any) -> Any:

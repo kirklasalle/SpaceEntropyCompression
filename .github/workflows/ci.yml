@@ -56,6 +56,8 @@ jobs:
         run: coverage report
       - name: Run doctor
         run: python emergent_matter_model/emrf_cli.py doctor
+      - name: Validate scientific knowledge graph
+        run: python emergent_matter_model/emrf_cli.py kb validate
 
   golden:
     name: Golden ${{ matrix.case }} / Windows / Python 3.10

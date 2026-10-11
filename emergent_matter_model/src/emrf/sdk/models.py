@@ -296,6 +296,97 @@ class OperationResult:
 
 
 @dataclass(frozen=True)
+class KnowledgeNode:
+    payload: Mapping[str, Any]
+
+    @property
+    def node_id(self) -> str:
+        return str(self.payload["id"])
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self.payload)
+
+
+@dataclass(frozen=True)
+class KnowledgeQueryResponse:
+    nodes: tuple[KnowledgeNode, ...]
+
+    @property
+    def count(self) -> int:
+        return len(self.nodes)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "nodes": [node.to_dict() for node in self.nodes],
+            "count": self.count,
+        }
+
+
+@dataclass(frozen=True)
+class KnowledgeSourceRequest:
+    source_id: str
+    title: str
+    authors: tuple[str, ...]
+    year: int
+    snapshot_sha256: str
+    bibtex: str
+    doi: str | None = None
+    arxiv: str | None = None
+    ads_bibcode: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.source_id,
+            "title": self.title,
+            "authors": list(self.authors),
+            "year": self.year,
+            "snapshot_sha256": self.snapshot_sha256,
+            "bibtex": self.bibtex,
+            "doi": self.doi,
+            "arxiv": self.arxiv,
+            "ads_bibcode": self.ads_bibcode,
+        }
+
+
+@dataclass(frozen=True)
+class KnowledgeValidationReport:
+    valid: bool
+    schema_version: str | None
+    graph_path: str
+    nodes: int
+    edges: int
+    errors: tuple[Mapping[str, str], ...]
+
+    @classmethod
+    def from_mapping(
+        cls,
+        value: Mapping[str, Any],
+    ) -> KnowledgeValidationReport:
+        return cls(
+            valid=bool(value["valid"]),
+            schema_version=(
+                None
+                if value["schema_version"] is None
+                else str(value["schema_version"])
+            ),
+            graph_path=str(value["graph_path"]),
+            nodes=int(value["nodes"]),
+            edges=int(value["edges"]),
+            errors=tuple(dict(error) for error in value["errors"]),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "valid": self.valid,
+            "schema_version": self.schema_version,
+            "graph_path": self.graph_path,
+            "nodes": self.nodes,
+            "edges": self.edges,
+            "errors": [dict(error) for error in self.errors],
+        }
+
+
+@dataclass(frozen=True)
 class EnvironmentReport:
     payload: Mapping[str, Any]
 
@@ -465,5 +556,9 @@ __all__ = [
     "SimulationResult",
     "JobInfo",
     "JobListResponse",
+    "KnowledgeNode",
+    "KnowledgeQueryResponse",
+    "KnowledgeSourceRequest",
+    "KnowledgeValidationReport",
     "VerificationReport",
 ]

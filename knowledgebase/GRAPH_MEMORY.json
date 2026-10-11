@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "GRAPH_MEMORY.schema.json",
   "meta": {
     "title": "EMRF Space-Entropy Compression Knowledge Graph & Memory",
     "version": "2.1.0",
@@ -44,7 +44,9 @@
       "filePath": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
       "locator": "sections 3.3 and 5",
       "evidence_status": "conditional_standard_GR_identity_not_empirical_discovery",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical"
     },
     {
       "id": "diagnostic:candidate_a_definition_counterexamples",
@@ -54,7 +56,13 @@
       "status": "algebra_checked_no_observational_fit",
       "filePath": "results/candidate_a_definition_checks.json",
       "evidence_status": "exact_background_algebra_not_observations",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:results/candidate_a_definition_checks.json"
+      ]
     },
     {
       "id": "candidate:collision_geometry_reference",
@@ -65,7 +73,9 @@
       "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "locator": "section 4",
       "evidence_status": "candidate_not_empirical_validation",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical"
     },
     {
       "id": "candidate:collision_exchange_channel",
@@ -76,7 +86,9 @@
       "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "locator": "section 5",
       "evidence_status": "conditional_accounting_not_complete_physical_model",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical"
     },
     {
       "id": "candidate:collision_observable_gate",
@@ -86,7 +98,9 @@
       "status": "candidate_a_functional_and_observable_mapping_pending",
       "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
       "evidence_status": "proposed_observable_not_a_completed_test",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:multidimensional_space",
@@ -97,7 +111,9 @@
       "status": "Core Architectural Principle (Clarified by Kirk LaSalle 2026-10-05)",
       "historical_status": "Core Architectural Principle (Clarified by Kirk LaSalle 2026-10-05)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:entropy_state_variable",
@@ -108,7 +124,9 @@
       "status": "Established Protocol",
       "historical_status": "Established Protocol",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:emergent_matter",
@@ -119,7 +137,9 @@
       "status": "Core Hypothesis",
       "historical_status": "Core Hypothesis",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:effective_curvature",
@@ -130,7 +150,9 @@
       "status": "Formulated",
       "historical_status": "Formulated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:bifurcation_framework",
@@ -141,7 +163,9 @@
       "status": "Established Protocol",
       "historical_status": "Established Protocol",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:kretschmann_scalar",
@@ -152,7 +176,9 @@
       "status": "Standard Physics",
       "historical_status": "Standard Physics",
       "evidence_status": "standard_formula_not_EMRF_validation",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:bekenstein_hawking_bound",
@@ -163,7 +189,9 @@
       "status": "Physical Constraint",
       "historical_status": "Physical Constraint",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "equation:emergent_matter_ansatz",
@@ -181,7 +209,9 @@
       ],
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "equation",
+      "evidence_class": "historical"
     },
     {
       "id": "equation:effective_curvature_sum",
@@ -195,7 +225,9 @@
       ],
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "equation",
+      "evidence_class": "historical"
     },
     {
       "id": "equation:kretschmann_schwarzschild",
@@ -211,7 +243,9 @@
       ],
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "equation",
+      "evidence_class": "historical"
     },
     {
       "id": "equation:1pn_precession",
@@ -228,7 +262,9 @@
       ],
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "equation",
+      "evidence_class": "historical"
     },
     {
       "id": "component:model_core",
@@ -240,7 +276,9 @@
       "status": "Implemented & Tested",
       "historical_status": "Implemented & Tested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:server_api",
@@ -252,7 +290,9 @@
       "status": "Implemented & Tested",
       "historical_status": "Implemented & Tested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:openapi_spec",
@@ -264,7 +304,9 @@
       "status": "Implemented",
       "historical_status": "Implemented",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:javafx_client",
@@ -276,7 +318,9 @@
       "status": "Scaffolded",
       "historical_status": "Scaffolded",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:viz_3d",
@@ -288,7 +332,9 @@
       "status": "Implemented",
       "historical_status": "Implemented",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:compare_schwarzschild",
@@ -300,7 +346,9 @@
       "status": "Implemented",
       "historical_status": "Implemented",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:physics_baseline",
@@ -312,7 +360,9 @@
       "status": "Historical implementation/audit claim; not physical verification",
       "historical_status": "Implemented & Verified (11/11 tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:fit_astrometry",
@@ -324,7 +374,9 @@
       "status": "Historical implementation/audit claim; not physical verification",
       "historical_status": "Implemented & Verified (11/11 tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:test_suite",
@@ -336,7 +388,9 @@
       "status": "Implemented (67/67 tests passing)",
       "historical_status": "Implemented (67/67 tests passing)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "dataset:s2_astrometry_csv",
@@ -347,7 +401,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:s29_astrometry_csv",
@@ -358,7 +414,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:s38_astrometry_csv",
@@ -369,7 +427,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:s55_astrometry_csv",
@@ -380,7 +440,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:s301_astrometry_csv",
@@ -391,7 +453,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "concept:multi_star_joint_fitting",
@@ -402,7 +466,9 @@
       "status": "Historical implementation/audit claim; not physical verification",
       "historical_status": "Implemented & Verified",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:sgra_s2",
@@ -413,7 +479,9 @@
       "status": "Primary Empirical Target",
       "historical_status": "Primary Empirical Target",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:sgra_s301",
@@ -424,7 +492,9 @@
       "status": "High-Impact Empirical Benchmark",
       "historical_status": "High-Impact Empirical Benchmark",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:sparc_rotation_curves",
@@ -435,7 +505,9 @@
       "status": "Secondary Empirical Target",
       "historical_status": "Secondary Empirical Target",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "paper:jacobson_1995",
@@ -445,11 +517,15 @@
         "Ted Jacobson"
       ],
       "year": 1995,
-      "doi": "10.1103/PhysRevLett.75.1260",
       "significance": "Foundational precedent deriving Einstein equations from Clausius entropy relation delta Q = T dS.",
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published",
+      "identifiers": {
+        "doi": "10.1103/PhysRevLett.75.1260"
+      }
     },
     {
       "id": "paper:verlinde_2011",
@@ -459,11 +535,15 @@
         "Erik Verlinde"
       ],
       "year": 2011,
-      "doi": "10.1007/JHEP04(2011)029",
       "significance": "Entropic gravity framework modeling gravitational force as an entropic gradient.",
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published",
+      "identifiers": {
+        "doi": "10.1007/JHEP04(2011)029"
+      }
     },
     {
       "id": "paper:sakharov_1967",
@@ -476,7 +556,10 @@
       "significance": "Induced gravity concept where spacetime curvature action emerges from underlying quantum fields.",
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published",
+      "legacy_unverified_source": true
     },
     {
       "id": "paper:bianconi_2026",
@@ -489,7 +572,10 @@
       "significance": "Contemporary formulation of emergent gravitational dynamics from statistical information manifolds.",
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published",
+      "legacy_unverified_source": true
     },
     {
       "id": "paper:gravity_s301_2026",
@@ -503,7 +589,10 @@
       "significance": "Detection of star S301 reaching 8% speed of light at 12 AU from Sgr A*.",
       "historical_status": null,
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published",
+      "legacy_unverified_source": true
     },
     {
       "id": "component:fit_sparc",
@@ -515,7 +604,9 @@
       "status": "Operational & Tested",
       "historical_status": "Operational & Tested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "dataset:sparc_ngc6503",
@@ -526,7 +617,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:sparc_ngc3198",
@@ -537,7 +630,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:sparc_ngc2841",
@@ -548,7 +643,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "publication:latex_preprint",
@@ -563,7 +660,9 @@
       "status": "Assembled",
       "historical_status": "Assembled",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "archival:zenodo_metadata",
@@ -574,7 +673,9 @@
       "status": "Configured",
       "historical_status": "Configured",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "component:fetch_sparc",
@@ -586,7 +687,9 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "dataset:sparc_expanded_catalog",
@@ -598,7 +701,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested & Validated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "doc:model_card",
@@ -609,7 +714,9 @@
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "theory:action_principle_derivation",
@@ -620,7 +727,9 @@
       "status": "Formulated",
       "historical_status": "Formulated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical"
     },
     {
       "id": "publication:arxiv_submission",
@@ -631,7 +740,9 @@
       "status": "Packaged",
       "historical_status": "Packaged",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "publication:cover_letter",
@@ -642,7 +753,9 @@
       "status": "Ready",
       "historical_status": "Ready",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "concept:cosmological_horizon_evolution",
@@ -653,7 +766,9 @@
       "status": "Withdrawn historical confirmation claim",
       "historical_status": "Empirically Confirmed (Delta-BIC = -100.08)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "concept",
+      "evidence_class": "historical"
     },
     {
       "id": "theory:jwst_high_redshift_predictions",
@@ -664,7 +779,9 @@
       "status": "Formulated",
       "historical_status": "Formulated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:jwst_high_z_kinematics",
@@ -676,7 +793,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested & Validated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "component:fit_jwst",
@@ -688,7 +807,9 @@
       "status": "Operational (8 unit tests)",
       "historical_status": "Operational (8 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:plot_publication_figures",
@@ -700,7 +821,9 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:validation_notebook",
@@ -712,7 +835,9 @@
       "status": "Historical implementation/audit claim; not physical verification",
       "historical_status": "Verified (3 automated tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:production_wsgi",
@@ -724,7 +849,9 @@
       "status": "Production Hardened",
       "historical_status": "Production Hardened",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "publication:release_draft_v0_7_0",
@@ -735,7 +862,9 @@
       "status": "Draft Ready",
       "historical_status": "Draft Ready",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "decision",
+      "evidence_class": "historical"
     },
     {
       "id": "component:stress_test_solar_system",
@@ -747,7 +876,9 @@
       "status": "Operational (6 unit tests)",
       "historical_status": "Operational (6 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:lensing_engine",
@@ -759,7 +890,9 @@
       "status": "Operational (7 unit tests)",
       "historical_status": "Operational (7 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:bullet_cluster_stress_test",
@@ -771,7 +904,9 @@
       "status": "Operational (5 unit tests)",
       "historical_status": "Operational (5 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:stress_test_galaxy_scatter",
@@ -783,7 +918,9 @@
       "status": "Operational (4 unit tests)",
       "historical_status": "Operational (4 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:plot_deep_perspectives",
@@ -795,7 +932,9 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:interactive_visualizer_suite",
@@ -807,7 +946,9 @@
       "status": "Operational (v0.8.0)",
       "historical_status": "Operational (v0.8.0)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:stress_test_gw_speed",
@@ -819,7 +960,9 @@
       "status": "Operational (4 unit tests)",
       "historical_status": "Operational (4 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:stress_test_wide_binaries",
@@ -831,7 +974,9 @@
       "status": "Operational (4 unit tests)",
       "historical_status": "Operational (4 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:stress_test_stability_ghosts",
@@ -843,7 +988,9 @@
       "status": "Operational (4 unit tests)",
       "historical_status": "Operational (4 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:stress_test_blind_challenge",
@@ -855,7 +1002,9 @@
       "status": "Operational (6 unit tests)",
       "historical_status": "Operational (6 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:stress_test_equivalence_principle",
@@ -863,11 +1012,13 @@
       "name": "Weak Equivalence Principle & MICROSCOPE Bounds Stress Test",
       "filePath": "emergent_matter_model/stress_test_equivalence_principle.py",
       "language": "Python",
-      "description": "Evaluates Eötvös parameter against MICROSCOPE satellite limit (|eta| <= 1e-15). Verifies universal trace coupling T^mu_mu to spatial metric deformation preserves WEP identically (|eta| = 0).",
+      "description": "Evaluates E\u00f6tv\u00f6s parameter against MICROSCOPE satellite limit (|eta| <= 1e-15). Verifies universal trace coupling T^mu_mu to spatial metric deformation preserves WEP identically (|eta| = 0).",
       "status": "Operational (5 unit tests)",
       "historical_status": "Operational (5 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:plot_extreme_rigor_figures",
@@ -879,7 +1030,9 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "whitepaper:gw170817_speed",
@@ -891,7 +1044,9 @@
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "whitepaper:wide_binaries_efe",
@@ -903,7 +1058,9 @@
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "whitepaper:hamiltonian_stability",
@@ -915,7 +1072,9 @@
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "whitepaper:equivalence_principle",
@@ -923,11 +1082,13 @@
       "name": "Weak Equivalence Principle & MICROSCOPE Bounds Whitepaper",
       "filePath": "knowledgebase/equivalence_principle_and_microscope_bounds.md",
       "language": "Markdown",
-      "description": "Analytical proof of exact WEP preservation and zero Eötvös violation in EMRF universal stress-energy trace coupling.",
+      "description": "Analytical proof of exact WEP preservation and zero E\u00f6tv\u00f6s violation in EMRF universal stress-energy trace coupling.",
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "component:cosmology_expansion",
@@ -939,7 +1100,9 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "component:cmb_acoustic_engine",
@@ -951,7 +1114,9 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "dataset:pantheon_plus",
@@ -962,7 +1127,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested & Validated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:desi_2024_bao",
@@ -973,7 +1140,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested & Validated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "dataset:planck_2018_cmb_peaks",
@@ -984,7 +1153,9 @@
       "status": "Historical ingestion claim; not authenticated by this graph",
       "historical_status": "Ingested & Validated",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "historical"
     },
     {
       "id": "stress_test:cosmology_expansion",
@@ -996,7 +1167,9 @@
       "status": "Operational (7 unit tests)",
       "historical_status": "Operational (7 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "stress_test:cmb_peaks",
@@ -1008,7 +1181,9 @@
       "status": "Operational (7 unit tests)",
       "historical_status": "Operational (7 unit tests)",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "whitepaper:cosmological_expansion",
@@ -1020,7 +1195,9 @@
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "whitepaper:cmb_acoustic_oscillations",
@@ -1032,7 +1209,9 @@
       "status": "Published",
       "historical_status": "Published",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "source",
+      "evidence_class": "published"
     },
     {
       "id": "component:plot_cosmology_figures",
@@ -1044,19 +1223,23 @@
       "status": "Operational",
       "historical_status": "Operational",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "software",
+      "evidence_class": "software"
     },
     {
       "id": "artifact:grand_due_diligence_audit_case_001",
       "type": "GovernanceArtifact",
-      "name": "The Grand Due Diligence Audit Report — Case 001 (EMRF)",
+      "name": "The Grand Due Diligence Audit Report \u2014 Case 001 (EMRF)",
       "filePath": "docs/GRAND_DUE_DILIGENCE_AUDIT_CASE_001_EMRF.md",
       "language": "Markdown",
       "description": "Formal execution of Case 001 under The Grand Due Diligence Audit Framework. Evaluates 42 criteria across 7 domains with 100/100 CQSI score, certifying Level 5 Gold Standard & Planetary Stewardship.",
       "status": "Historical implementation/audit claim; not physical verification",
       "historical_status": "Sealed & Ratified",
       "evidence_status": "legacy_record_requires_source_specific_review",
-      "use_for_empirical_confirmation": false
+      "use_for_empirical_confirmation": false,
+      "kind": "decision",
+      "evidence_class": "historical"
     },
     {
       "id": "recovery:thermodynamics_downstream",
@@ -1070,7 +1253,14 @@
       "locator": "paragraphs 019-020, 033-034 and 088",
       "source_sha256": "e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/emrf_full_text.txt",
+        "sha256:e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025"
+      ]
     },
     {
       "id": "recovery:compression_families",
@@ -1084,7 +1274,14 @@
       "locator": "lines 142-168",
       "source_sha256": "eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/update_emrf_docx.py.txt",
+        "sha256:eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83"
+      ]
     },
     {
       "id": "recovery:space_author_clarification",
@@ -1098,7 +1295,14 @@
       "locator": "section 4.3.1",
       "source_sha256": "6033b4a31202849133b2f1ee27dd4f6a50f2cf77c43b0b54fbbc63e36c1458dd",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/EMRF_MASTER_AUDIT_2026-10-05.md",
+        "sha256:6033b4a31202849133b2f1ee27dd4f6a50f2cf77c43b0b54fbbc63e36c1458dd"
+      ]
     },
     {
       "id": "recovery:three_star_design",
@@ -1112,7 +1316,14 @@
       "locator": "paragraphs 040-076, 109-121",
       "source_sha256": "e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/emrf_full_text.txt",
+        "sha256:e09bdeccb169efb1746c83ef86b7403e7fff836458fa2ce2ace94a1429606025"
+      ]
     },
     {
       "id": "recovery:unidentified_influence",
@@ -1126,7 +1337,14 @@
       "locator": "section 4.4, lines 185-195",
       "source_sha256": "eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/e5da707a-459a-4d74-91d8-b0c8df2a569a/update_emrf_docx.py.txt",
+        "sha256:eb6eac11e7b3de1b1e17e13bb5cc283ce00b9037b0a129050ff9f7e21683fa83"
+      ]
     },
     {
       "id": "recovery:cosmology_source_gap",
@@ -1140,7 +1358,14 @@
       "locator": "sections 2.1-2.2",
       "source_sha256": "f9a4ce24ae4c4a56e4bd57e495b9a2fdac0bfb2533f007430403a1afb2aa29c7",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/COSMOLOGICAL_FRONTIERS_IMPLEMENTATION_PLAN.md",
+        "sha256:f9a4ce24ae4c4a56e4bd57e495b9a2fdac0bfb2533f007430403a1afb2aa29c7"
+      ]
     },
     {
       "id": "recovery:correspondence_rebranding",
@@ -1154,7 +1379,14 @@
       "locator": "Pillar 3",
       "source_sha256": "3cc715c51dba0a2709dba1084bd2f1389d067ffd9f6bd776614fc63b6898495c",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/67e60b60-238b-4fb1-8fcc-1e4c3034f1fe/forward_document_emrf_peer_review_refinement.md",
+        "sha256:3cc715c51dba0a2709dba1084bd2f1389d067ffd9f6bd776614fc63b6898495c"
+      ]
     },
     {
       "id": "recovery:quantum_normalization",
@@ -1168,7 +1400,14 @@
       "locator": "compute_emergent_mass_integral",
       "source_sha256": "1a67fe8e1211d9803627f31f5e58190c37ae1e7fb1aa773b3814d769cc497337",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/quantum_vibrational_compression.py.txt",
+        "sha256:1a67fe8e1211d9803627f31f5e58190c37ae1e7fb1aa773b3814d769cc497337"
+      ]
     },
     {
       "id": "recovery:quarter_coefficient",
@@ -1182,7 +1421,14 @@
       "locator": "section 3.2 item 5",
       "source_sha256": "68e4652271232df51948e239b2740b041b2a0fd6e6fdd6cf91b3f23499dc2af5",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/FIRST_USE_CASE_LASALLE_SPATIAL_ONTOLOGY.md",
+        "sha256:68e4652271232df51948e239b2740b041b2a0fd6e6fdd6cf91b3f23499dc2af5"
+      ]
     },
     {
       "id": "recovery:ci_did_not_validate_physics",
@@ -1196,7 +1442,14 @@
       "locator": "lines 156-160",
       "source_sha256": "941a527beb441b06f04b41b9077a048497ab5cfb08fc2e643ea0b50049547296",
       "use_for_empirical_confirmation": false,
-      "evidence_status": "curated_historical_recovery"
+      "evidence_status": "curated_historical_recovery",
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:docs/archive/antigravity_recovery/sources/8de1a404-0739-40f4-a4af-8d636b604cc9/task-1598.log.txt",
+        "sha256:941a527beb441b06f04b41b9077a048497ab5cfb08fc2e643ea0b50049547296"
+      ]
     }
   ],
   "edges": [
@@ -1204,680 +1457,1020 @@
       "source": "definition:candidate_a_local_energy_reference",
       "target": "candidate:collision_geometry_reference",
       "relation": "recommends_precise_reference_for",
-      "evidence_status": "specific_definition_requires_author_review"
+      "evidence_status": "specific_definition_requires_author_review",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "diagnostic:candidate_a_definition_counterexamples",
       "target": "equation:emergent_matter_ansatz",
       "relation": "constrains_interpretation_of",
-      "evidence_status": "conditional_math_not_physical_falsification_of_all_candidates"
+      "evidence_status": "conditional_math_not_physical_falsification_of_all_candidates",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "candidate:collision_geometry_reference",
       "target": "recovery:compression_families",
       "relation": "proposes_interpretation_of",
-      "evidence_status": "author_review_required"
+      "evidence_status": "author_review_required",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "candidate:collision_exchange_channel",
       "target": "recovery:thermodynamics_downstream",
       "relation": "proposes_conditional_accounting_for",
-      "evidence_status": "new_AI_ansatz_not_recovered_derivation"
+      "evidence_status": "new_AI_ansatz_not_recovered_derivation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "candidate:collision_observable_gate",
       "target": "candidate:collision_exchange_channel",
       "relation": "requires_predictive_closure",
-      "evidence_status": "not_an_empirical_validation_link"
+      "evidence_status": "not_an_empirical_validation_link",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:multidimensional_space",
       "target": "concept:emergent_matter",
       "relation": "foundational_to",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:entropy_state_variable",
       "target": "concept:effective_curvature",
       "relation": "thermodynamic_coupling_in",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:effective_curvature",
       "target": "equation:effective_curvature_sum",
       "relation": "formulated_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:emergent_matter",
       "target": "equation:emergent_matter_ansatz",
       "relation": "quantified_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "equation:effective_curvature_sum",
       "target": "equation:emergent_matter_ansatz",
       "relation": "input_to",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "equation:emergent_matter_ansatz",
       "target": "component:model_core",
       "relation": "implemented_in",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:model_core",
       "target": "component:server_api",
       "relation": "served_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:server_api",
       "target": "component:openapi_spec",
       "relation": "specified_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:server_api",
       "target": "component:javafx_client",
       "relation": "consumed_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:model_core",
       "target": "component:viz_3d",
       "relation": "visualized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:model_core",
       "target": "component:test_suite",
       "relation": "historically_claimed_validated_by",
       "evidence_status": "historical_relationship_not_new_confirmation",
-      "historical_relation": "validated_by"
+      "historical_relation": "validated_by",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:kretschmann_scalar",
       "target": "equation:kretschmann_schwarzschild",
       "relation": "formulated_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "equation:kretschmann_schwarzschild",
       "target": "component:compare_schwarzschild",
       "relation": "tested_in",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:model_core",
       "target": "component:compare_schwarzschild",
       "relation": "benchmarked_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:bekenstein_hawking_bound",
       "target": "concept:emergent_matter",
       "relation": "asymptotic_boundary_for",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "paper:jacobson_1995",
       "target": "concept:entropy_state_variable",
       "relation": "thermodynamic_precedent",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "paper:verlinde_2011",
       "target": "concept:emergent_matter",
       "relation": "theoretical_precedent",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "paper:sakharov_1967",
       "target": "concept:emergent_matter",
       "relation": "historical_precedent",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "paper:bianconi_2026",
       "target": "concept:entropy_state_variable",
       "relation": "contemporary_analog",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "dataset:sgra_s2",
       "target": "concept:bifurcation_framework",
       "relation": "empirical_arbiter",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "dataset:sgra_s301",
       "target": "concept:bifurcation_framework",
       "relation": "empirical_arbiter",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "paper:gravity_s301_2026",
       "target": "dataset:sgra_s301",
       "relation": "source_publication",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "dataset:sparc_rotation_curves",
       "target": "concept:bifurcation_framework",
       "relation": "macro_astrophysical_test",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "equation:1pn_precession",
       "target": "dataset:sgra_s2",
       "relation": "gr_baseline_for",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:physics_baseline",
       "target": "component:fit_astrometry",
       "relation": "provides_orbital_dynamics",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:physics_baseline",
       "target": "concept:kretschmann_scalar",
       "relation": "computes_exact_invariant",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "dataset:s2_astrometry_csv",
       "relation": "ingests_and_fits",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "dataset:s29_astrometry_csv",
       "relation": "ingests_and_fits",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "dataset:s38_astrometry_csv",
       "relation": "ingests_and_fits",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "dataset:s55_astrometry_csv",
       "relation": "ingests_and_fits",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "dataset:s301_astrometry_csv",
       "relation": "ingests_and_fits",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "concept:multi_star_joint_fitting",
       "relation": "implements",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "concept:multi_star_joint_fitting",
       "target": "concept:bifurcation_framework",
       "relation": "global_cluster_arbiter",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_astrometry",
       "target": "concept:bifurcation_framework",
       "relation": "evaluates_delta_bic",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:physics_baseline",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:fit_astrometry",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fetch_sparc",
       "target": "dataset:sparc_expanded_catalog",
       "relation": "ingests_and_validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_sparc",
       "target": "dataset:sparc_expanded_catalog",
       "relation": "evaluates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_sparc",
       "target": "concept:bifurcation_framework",
       "relation": "tests_weak_acceleration_regime",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:fit_sparc",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "theory:action_principle_derivation",
       "target": "concept:multidimensional_space",
       "relation": "formalizes_variational_dynamics",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "theory:action_principle_derivation",
       "target": "concept:bifurcation_framework",
       "relation": "mathematical_proof_for_branches",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "doc:model_card",
       "target": "component:model_core",
       "relation": "classifies_and_audits",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "publication:latex_preprint",
       "target": "concept:multidimensional_space",
       "relation": "formalizes",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "publication:latex_preprint",
       "target": "concept:bifurcation_framework",
       "relation": "reports_verdict",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "publication:arxiv_submission",
       "target": "publication:latex_preprint",
       "relation": "distributes",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "publication:cover_letter",
       "target": "publication:latex_preprint",
       "relation": "submits_for_review",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "archival:zenodo_metadata",
       "target": "publication:latex_preprint",
       "relation": "archives",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "theory:jwst_high_redshift_predictions",
       "target": "concept:cosmological_horizon_evolution",
       "relation": "derives",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_jwst",
       "target": "dataset:jwst_high_z_kinematics",
       "relation": "evaluates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:fit_jwst",
       "target": "concept:cosmological_horizon_evolution",
       "relation": "tests_empirically",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:fit_jwst",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:plot_publication_figures",
       "target": "publication:latex_preprint",
       "relation": "generates_figures_for",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:validation_notebook",
       "target": "concept:bifurcation_framework",
       "relation": "demonstrates_empirically",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:validation_notebook",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:production_wsgi",
       "target": "component:server_api",
       "relation": "deploys_and_hardens",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "publication:release_draft_v0_7_0",
       "target": "publication:latex_preprint",
       "relation": "schedules_release_for",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "publication:release_draft_v0_7_0",
       "target": "archival:zenodo_metadata",
       "relation": "synchronizes_with",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_solar_system",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:lensing_engine",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:bullet_cluster_stress_test",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_galaxy_scatter",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_solar_system",
       "target": "concept:bifurcation_framework",
       "relation": "verifies_gr_screening_branch_a",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:lensing_engine",
       "target": "concept:bifurcation_framework",
       "relation": "tests_relativistic_null_geodesics",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:bullet_cluster_stress_test",
       "target": "concept:entropy_state_variable",
       "relation": "proves_thermal_entropy_decoupling",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_galaxy_scatter",
       "target": "concept:bifurcation_framework",
       "relation": "confirms_zero_intrinsic_scatter",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:plot_deep_perspectives",
       "target": "publication:latex_preprint",
       "relation": "generates_extended_figures_for",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:interactive_visualizer_suite",
       "target": "component:server_api",
       "relation": "hosted_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_gw_speed",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_wide_binaries",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_stability_ghosts",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_blind_challenge",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "component:stress_test_equivalence_principle",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_gw_speed",
       "target": "whitepaper:gw170817_speed",
       "relation": "formalized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_wide_binaries",
       "target": "whitepaper:wide_binaries_efe",
       "relation": "formalized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_stability_ghosts",
       "target": "whitepaper:hamiltonian_stability",
       "relation": "formalized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_equivalence_principle",
       "target": "whitepaper:equivalence_principle",
       "relation": "formalized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:stress_test_blind_challenge",
       "target": "concept:bifurcation_framework",
       "relation": "proves_strict_falsifiability",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:plot_extreme_rigor_figures",
       "target": "publication:latex_preprint",
       "relation": "generates_figures_9_10_11",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "stress_test:cosmology_expansion",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "stress_test:cmb_peaks",
       "relation": "validates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "stress_test:cosmology_expansion",
       "target": "dataset:pantheon_plus",
       "relation": "evaluates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "stress_test:cosmology_expansion",
       "target": "dataset:desi_2024_bao",
       "relation": "evaluates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "stress_test:cosmology_expansion",
       "target": "whitepaper:cosmological_expansion",
       "relation": "formalized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "stress_test:cmb_peaks",
       "target": "dataset:planck_2018_cmb_peaks",
       "relation": "evaluates",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "stress_test:cmb_peaks",
       "target": "whitepaper:cmb_acoustic_oscillations",
       "relation": "formalized_by",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:cosmology_expansion",
       "target": "concept:bifurcation_framework",
       "relation": "resolves_late_time_expansion",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:cmb_acoustic_engine",
       "target": "concept:bifurcation_framework",
       "relation": "resolves_early_universe_peaks",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:plot_cosmology_figures",
       "target": "publication:latex_preprint",
       "relation": "generates_figures_12_13",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "artifact:grand_due_diligence_audit_case_001",
       "target": "concept:bifurcation_framework",
       "relation": "certifies_compliance_with",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "component:test_suite",
       "target": "artifact:grand_due_diligence_audit_case_001",
       "relation": "empirically_verifies",
-      "evidence_status": "historical_relationship_not_new_confirmation"
+      "evidence_status": "historical_relationship_not_new_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:thermodynamics_downstream",
       "target": "concept:entropy_state_variable",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:thermodynamics_downstream",
       "target": "concept:emergent_matter",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:compression_families",
       "target": "concept:effective_curvature",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:compression_families",
       "target": "equation:emergent_matter_ansatz",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:space_author_clarification",
       "target": "concept:multidimensional_space",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:space_author_clarification",
       "target": "concept:entropy_state_variable",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:three_star_design",
       "target": "concept:multi_star_joint_fitting",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:three_star_design",
       "target": "dataset:sgra_s2",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:unidentified_influence",
       "target": "concept:bifurcation_framework",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:cosmology_source_gap",
       "target": "component:cosmology_expansion",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:cosmology_source_gap",
       "target": "component:cmb_acoustic_engine",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:correspondence_rebranding",
       "target": "concept:bifurcation_framework",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:correspondence_rebranding",
       "target": "publication:latex_preprint",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:quantum_normalization",
       "target": "concept:emergent_matter",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:quarter_coefficient",
       "target": "concept:bekenstein_hawking_bound",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:ci_did_not_validate_physics",
       "target": "component:test_suite",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     },
     {
       "source": "recovery:ci_did_not_validate_physics",
       "target": "component:compare_schwarzschild",
       "relation": "clarifies_or_qualifies",
-      "evidence_status": "documented_interpretive_link_not_validation"
+      "evidence_status": "documented_interpretive_link_not_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "legacy_graph_memory_v2.1.0"
     }
-  ]
+  ],
+  "schema_version": "1.0.0"
 }

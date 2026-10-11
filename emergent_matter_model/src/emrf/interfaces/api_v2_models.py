@@ -150,6 +150,43 @@ class OperationResponse(RootModel[dict[str, Any]]):
     pass
 
 
+class KnowledgeQueryResponse(APIModel):
+    nodes: list[dict[str, Any]]
+    count: int = Field(ge=0)
+
+
+class KnowledgeValidationError(APIModel):
+    path: str
+    message: str
+
+
+class KnowledgeValidationResponse(APIModel):
+    valid: bool
+    schema_version: str | None
+    graph_path: str
+    nodes: int = Field(ge=0)
+    edges: int = Field(ge=0)
+    errors: list[KnowledgeValidationError]
+
+
+class KnowledgeSourceRequest(APIModel):
+    id: str = Field(pattern=r"^source:[a-z0-9][a-z0-9_.-]*$")
+    title: str = Field(min_length=1)
+    authors: list[str] = Field(min_length=1)
+    year: int = Field(ge=1000, le=9999)
+    snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    bibtex: str = Field(min_length=1)
+    doi: str | None = Field(default=None, min_length=1)
+    arxiv: str | None = Field(default=None, min_length=1)
+    ads_bibcode: str | None = Field(default=None, min_length=1)
+
+
+class KnowledgeRunLinkRequest(APIModel):
+    claim_ids: list[str] = Field(default_factory=list)
+    source_ids: list[str] = Field(default_factory=list)
+    dataset_ids: list[str] = Field(default_factory=list)
+
+
 class DatasetWriteRequest(APIModel):
     logical_name: str | None = None
     source: str | None = None

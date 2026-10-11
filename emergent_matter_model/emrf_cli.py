@@ -34,7 +34,12 @@ import sys
 from pathlib import Path
 
 import emrf_registry as reg
-from emrf_sdk_access import EMRFClient, RunRequest, SimulationRequest
+from emrf_sdk_access import (
+    EMRFClient,
+    KnowledgeSourceRequest,
+    RunRequest,
+    SimulationRequest,
+)
 from emrf_version import __version__
 
 sdk = EMRFClient()
@@ -134,12 +139,6 @@ def cmd_data(a: argparse.Namespace) -> int:
     return 0
 
 
-def _data_library():
-    from emrf_data_access import data_library
-
-    return data_library()
-
-
 def _run_store():
     from emrf_run_access import run_store
 
@@ -221,8 +220,68 @@ def cmd_jobs(a: argparse.Namespace) -> int:
     if record is None:
         print("No queued jobs.")
         return 0
-    _print_json(_public_record(record))
-    return 0 if record.status in {"succeeded", "queued"} else 1
+    public = _public_record(record)
+    _print_json(public)
+    return 0 if public["status"] in {"succeeded", "queued"} else 1
+
+
+def cmd_knowledge(a: argparse.Namespace) -> int:
+    if a.kb_command == "validate":
+        report = sdk.validate_knowledge()
+        if a.json:
+            _print_json(report.to_dict())
+        else:
+            state = "valid" if report.valid else "invalid"
+            print(
+                f"Knowledge graph {state}: {report.nodes} nodes, "
+                f"{report.edges} edges, schema {report.schema_version}"
+            )
+            for error in report.errors:
+                print(f"  {error['path']}: {error['message']}", file=sys.stderr)
+        return 0 if report.valid else 1
+    if a.kb_command == "query":
+        result = sdk.query_knowledge(
+            a.text,
+            kind=a.kind,
+            lifecycle_status=a.status,
+            limit=a.limit,
+        )
+        if a.json:
+            _print_json(result.to_dict())
+        else:
+            for node in result.nodes:
+                row = node.to_dict()
+                label = row.get("name", row.get("title", ""))
+                print(f"{row['id']:<52} {row['kind']:<10} {label}")
+        return 0
+    if a.kb_command == "add-source":
+        bibtex = Path(a.bibtex_file).read_text(encoding="utf-8")
+        node = sdk.add_knowledge_source(
+            KnowledgeSourceRequest(
+                source_id=a.source_id,
+                title=a.title,
+                authors=tuple(a.author),
+                year=a.year,
+                snapshot_sha256=a.snapshot_sha256,
+                bibtex=bibtex,
+                doi=a.doi,
+                arxiv=a.arxiv,
+                ads_bibcode=a.ads_bibcode,
+            )
+        )
+        _print_json(node.to_dict())
+        return 0
+    if a.kb_command == "export":
+        _print_json(sdk.export_knowledge(a.output).to_dict())
+        return 0
+    result = sdk.link_run_knowledge(
+        a.run_id,
+        claim_ids=tuple(a.claim),
+        source_ids=tuple(a.source),
+        dataset_ids=tuple(a.dataset),
+    )
+    _print_json(result.to_dict())
+    return 0
 
 
 def cmd_data_catalog(a: argparse.Namespace) -> int:
@@ -264,7 +323,7 @@ def cmd_data_fetch(a: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_data_verify(a: argparse.Namespace) -> int:
+def cmd_data_verify(_a: argparse.Namespace) -> int:
     result = sdk.verify_datasets().to_dict()
     _print_json(result)
     return 0 if result["healthy"] else 1
@@ -532,6 +591,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     j.add_argument("args", nargs=argparse.REMAINDER)
     j.set_defaults(func=cmd_jobs)
+
     j = jsub.add_parser("list", help="list queued and completed jobs")
     j.add_argument("--limit", type=int, default=50)
     j.add_argument("--json", action="store_true")
@@ -546,6 +606,60 @@ def build_parser() -> argparse.ArgumentParser:
     j.add_argument("--worker-id")
     j.add_argument("--lease-seconds", type=float, default=3600)
     j.set_defaults(func=cmd_jobs)
+
+    s = sub.add_parser("kb", help="query and maintain scientific knowledge")
+    ksub = s.add_subparsers(dest="kb_command", required=True)
+    k = ksub.add_parser("validate", help="validate schema and graph integrity")
+    k.add_argument("--json", action="store_true")
+    k.set_defaults(func=cmd_knowledge)
+    k = ksub.add_parser("query", help="query knowledge nodes")
+    k.add_argument("text", nargs="?")
+    k.add_argument(
+        "--kind",
+        choices=(
+            "concept",
+            "equation",
+            "dataset",
+            "source",
+            "software",
+            "model",
+            "run",
+            "result",
+            "claim",
+            "decision",
+        ),
+    )
+    k.add_argument(
+        "--status",
+        choices=("proposed", "tested", "supported", "refuted", "retracted"),
+    )
+    k.add_argument("--limit", type=int, default=100)
+    k.add_argument("--json", action="store_true")
+    k.set_defaults(func=cmd_knowledge)
+    k = ksub.add_parser("add-source", help="register a pinned literature source")
+    k.add_argument("source_id", help="stable id in source:<name> form")
+    k.add_argument("--title", required=True)
+    k.add_argument("--author", action="append", required=True)
+    k.add_argument("--year", type=int, required=True)
+    identifiers = k.add_mutually_exclusive_group(required=True)
+    identifiers.add_argument("--doi")
+    identifiers.add_argument("--arxiv")
+    identifiers.add_argument("--ads-bibcode")
+    k.add_argument("--snapshot-sha256", required=True)
+    k.add_argument("--bibtex-file", required=True)
+    k.set_defaults(func=cmd_knowledge)
+    k = ksub.add_parser("export", help="export a validated JSON snapshot")
+    k.add_argument("--output", required=True)
+    k.set_defaults(func=cmd_knowledge)
+    k = ksub.add_parser(
+        "link-run",
+        help="link a durable run and its artifacts to scientific evidence",
+    )
+    k.add_argument("run_id")
+    k.add_argument("--claim", action="append", default=[])
+    k.add_argument("--source", action="append", default=[])
+    k.add_argument("--dataset", action="append", default=[])
+    k.set_defaults(func=cmd_knowledge)
 
     s = sub.add_parser("doctor", help="diagnose environment and dependencies")
     s.add_argument("--json", action="store_true")

@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://emrf.dev/schemas/graph-memory-1.0.0.json",
+  "title": "EMRF Scientific Knowledge Graph",
+  "type": "object",
+  "required": ["$schema", "schema_version", "meta", "nodes", "edges"],
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1},
+    "schema_version": {"const": "1.0.0"},
+    "meta": {
+      "type": "object",
+      "required": ["title", "version", "last_updated", "project", "evidence_policy"],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "last_updated": {"type": "string", "format": "date"},
+        "project": {"type": "string", "minLength": 1},
+        "evidence_policy": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "nodes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/node"}
+    },
+    "edges": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/edge"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "kind": {
+      "enum": [
+        "concept",
+        "equation",
+        "dataset",
+        "source",
+        "software",
+        "model",
+        "run",
+        "result",
+        "claim",
+        "decision"
+      ]
+    },
+    "lifecycle": {
+      "enum": ["proposed", "tested", "supported", "refuted", "retracted"]
+    },
+    "condition": {
+      "type": "object",
+      "required": ["parameter", "operator", "value", "unit"],
+      "properties": {
+        "parameter": {"type": "string", "minLength": 1},
+        "operator": {
+          "enum": ["eq", "ne", "lt", "le", "gt", "ge", "in", "not_in"]
+        },
+        "value": {},
+        "unit": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "kind",
+        "evidence_class",
+        "evidence_status",
+        "use_for_empirical_confirmation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*:[a-z0-9][a-z0-9_.-]*$"
+        },
+        "type": {"type": "string", "minLength": 1},
+        "kind": {"$ref": "#/$defs/kind"},
+        "name": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "evidence_class": {"type": "string", "minLength": 1},
+        "evidence_status": {"type": "string", "minLength": 1},
+        "use_for_empirical_confirmation": {"type": "boolean"},
+        "lifecycle_status": {"$ref": "#/$defs/lifecycle"},
+        "conditions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/condition"}
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*:.+$"
+          },
+          "uniqueItems": true
+        },
+        "identifiers": {
+          "type": "object",
+          "properties": {
+            "doi": {"type": "string", "minLength": 1},
+            "arxiv": {"type": "string", "minLength": 1},
+            "ads_bibcode": {"type": "string", "minLength": 1}
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bibtex": {"type": "string", "minLength": 1},
+        "legacy_unverified_source": {"const": true}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"kind": {"const": "claim"}},
+            "required": ["kind"]
+          },
+          "then": {"required": ["lifecycle_status"]}
+        },
+        {
+          "if": {
+            "properties": {"kind": {"const": "source"}},
+            "required": ["kind"]
+          },
+          "then": {
+            "anyOf": [
+              {"required": ["identifiers"]},
+              {"required": ["filePath"]},
+              {"required": ["legacy_unverified_source"]}
+            ]
+          }
+        }
+      ],
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "source",
+        "target",
+        "relation",
+        "confidence",
+        "evidence_class",
+        "provenance"
+      ],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1},
+        "relation": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "evidence_class": {"type": "string", "minLength": 1},
+        "provenance": {"type": "string", "minLength": 1},
+        "evidence_status": {"type": "string", "minLength": 1},
+        "overrides": {"type": "object"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "include": [
+    "emergent_matter_model"
+  ],
+  "exclude": [
+    "emergent_matter_model/.venv",
+    "emergent_matter_model/build"
+  ],
+  "extraPaths": [
+    "emergent_matter_model",
+    "emergent_matter_model/src"
+  ],
+  "pythonVersion": "3.10",
+  "typeCheckingMode": "basic"
+}

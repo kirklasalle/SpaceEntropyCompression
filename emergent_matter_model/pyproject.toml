@@ -16,6 +16,7 @@ dependencies = [
     "fastapi>=0.115,<0.129",
     "Flask>=3.0,<4",
     "flask-cors>=4.0,<5",
+    "jsonschema>=4.23,<5",
     "numpy>=1.26,<3",
     "matplotlib>=3.8,<4",
     "requests>=2.31,<3",
@@ -85,6 +86,7 @@ packages = [
     "emrf.core",
     "emrf.data",
     "emrf.interfaces",
+    "emrf.knowledge",
     "emrf.physics",
     "emrf.runs",
     "emrf.sdk",
@@ -96,6 +98,7 @@ emrf = "src/emrf"
 "emrf.core" = "src/emrf/core"
 "emrf.data" = "src/emrf/data"
 "emrf.interfaces" = "src/emrf/interfaces"
+"emrf.knowledge" = "src/emrf/knowledge"
 "emrf.physics" = "src/emrf/physics"
 "emrf.runs" = "src/emrf/runs"
 "emrf.sdk" = "src/emrf/sdk"
@@ -103,6 +106,7 @@ emrf = "src/emrf"
 
 [tool.setuptools.package-data]
 "emrf.data" = ["data_catalog.json"]
+"emrf.knowledge" = ["graph_memory.json", "graph_memory.schema.json"]
 
 [project.scripts]
 emrf = "emrf.interfaces.cli:main"

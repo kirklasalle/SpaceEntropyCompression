@@ -30,10 +30,35 @@
   [qualified graph](GRAPH_MEMORY.json): source hashes and attribution, not
   historical AI certification.
 
-The graph is now v2.1.0. Legacy nodes are preserved but explicitly marked as
-historical or source-review-dependent. In particular, old "validated" dataset
-labels and `validated_by` relationships must not be used as current empirical
-evidence. The old graph has been preserved in the recovery archive.
+The graph content is now v2.1.0 under the versioned
+[`GRAPH_MEMORY.schema.json`](GRAPH_MEMORY.schema.json) format. Legacy nodes are
+preserved but explicitly marked as historical or source-review-dependent.
+Every node has one canonical kind, every edge carries confidence, evidence
+class and provenance, and claim nodes use the lifecycle `proposed`, `tested`,
+`supported`, `refuted` or `retracted`. Conditions, inheritance overrides and
+explicit conflicts are schema-supported. In particular, old "validated"
+dataset labels and `validated_by` relationships must not be used as current
+empirical evidence. The old graph has been preserved in the recovery archive.
+
+The supported interfaces are:
+
+```text
+emrf kb validate [--json]
+emrf kb query [TEXT] [--kind KIND] [--status STATUS] [--json]
+emrf kb add-source source:ID --title TITLE --author AUTHOR --year YEAR \
+  (--doi DOI | --arxiv ID | --ads-bibcode CODE) \
+  --snapshot-sha256 SHA256 --bibtex-file FILE
+emrf kb export --output FILE
+emrf kb link-run RUN_ID [--claim ID] [--source ID] [--dataset ID]
+```
+
+`link-run` accepts only terminal durable runs, discovers and hashes regular,
+non-symlink artifacts, and creates the run -> result -> claim, claim -> source
+and run -> dataset links atomically. Re-linking rejects any artifact whose
+published bytes changed. New literature sources require a stable
+identifier, pinned retrieval-snapshot hash and BibTeX. REST v2 provides the
+same query, validation, export, source-registration and run-linking operations;
+mutations retain the v2 bearer-token requirement.
 The directory tree and version descriptions below are historical.
 
 > **Integrity notice (2026-10-07).** This document predates the independent audit in [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md). Empirical results quoted here (for example S-star ΔBIC = +70.743 or +141.3, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, wide-binary ΔBIC = −60.26, CMB χ²ᵥ = 0.924, "28,700+ observational constraints") were computed from synthetic data files (now quarantined in [`data/synthetic/`](../data/synthetic/README.md)) or from code whose answer was built in, so they **must not be cited**. "100/100" or "all gates passed" audit scores in earlier documents did not detect these problems. Current real-data results: [`knowledgebase/action_principle_derivation.md`](action_principle_derivation.md) §4.3.
