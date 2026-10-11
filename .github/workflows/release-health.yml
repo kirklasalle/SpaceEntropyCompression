@@ -23,17 +23,18 @@ jobs:
     name: Rehearse latest stable release
     runs-on: ubuntu-24.04
     timeout-minutes: 45
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Resolve immutable stable release
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_TAG: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          requested="${{ inputs.tag }}"
+          requested="$REQUESTED_TAG"
           if [[ -z "$requested" ]]; then
             requested="$(gh release view --json tagName --jq .tagName)"
           fi
@@ -68,6 +69,8 @@ jobs:
           python -m build --outdir rehearsal-build emergent_matter_model
           python -m twine check rehearsal-build/*
       - name: Download published release bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: gh release download "$RELEASE_TAG" --dir published-release
       - name: Verify complete checksum manifest
         shell: bash
@@ -98,6 +101,8 @@ jobs:
           PY
       - name: Verify release provenance
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           for asset in published-release/*; do
