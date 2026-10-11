@@ -45,7 +45,7 @@ usage: emrf run [-h] [--timeout TIMEOUT] name ...
 |---|---:|---|
 | `name` | Yes |  |
 | `--timeout` | No | seconds before aborting |
-| `args` | Yes |  |
+| `args` | No |  |
 
 ### `emrf simulate`
 
@@ -322,7 +322,7 @@ usage: emrf jobs submit [-h] [--timeout TIMEOUT] [--max-attempts MAX_ATTEMPTS]
 | `--timeout` | No |  |
 | `--max-attempts` | No |  |
 | `--evidence-class` | No |  |
-| `args` | Yes |  |
+| `args` | No |  |
 
 #### `emrf jobs list`
 
@@ -564,4 +564,4 @@ usage: emrf test [-h] ...
 
 | Argument | Required | Description |
 |---|---:|---|
-| `args` | Yes |  |
+| `args` | No |  |

@@ -9,13 +9,17 @@ permissions:
 
 jobs:
   documentation:
-    name: Documentation / Python 3.12
+    name: Documentation / Python ${{ matrix.python }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
           cache: pip
           cache-dependency-path: |
             requirements-dev.txt

@@ -67,7 +67,7 @@ def _document_parser(
         lines.extend(["| Argument | Required | Description |", "|---|---:|---|"])
         for action in options:
             names = ", ".join(action.option_strings) or action.dest
-            required = "Yes" if action.required else "No"
+            required = "Yes" if _action_is_required(action) else "No"
             description = (action.help or "").replace("|", "\\|")
             lines.append(f"| `{names}` | {required} | {description} |")
         lines.append("")
@@ -75,6 +75,16 @@ def _document_parser(
         if isinstance(action, argparse._SubParsersAction):
             for name, child in action.choices.items():
                 _document_parser(child, (*command, name), lines, level=min(level + 1, 6))
+
+
+def _action_is_required(action: argparse.Action) -> bool:
+    if action.option_strings:
+        return action.required
+    return action.nargs not in {
+        argparse.OPTIONAL,
+        argparse.ZERO_OR_MORE,
+        argparse.REMAINDER,
+    }
 
 
 def _api_reference(schema: dict[str, Any]) -> str:
