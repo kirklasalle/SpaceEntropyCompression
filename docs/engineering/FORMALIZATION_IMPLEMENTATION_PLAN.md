@@ -606,16 +606,27 @@ World-class research software must remain reproducible after its first formal
 release. Phase 10 governs supported-runtime migrations, dependency renewal,
 archival health, recovery rehearsals, and evidence-preserving maintenance.
 
-**First lifecycle slice implemented locally (2026-10-11):** all GitHub Actions
-have been moved to current Node.js 24-compatible release lines with immutable
-commit pins. CodeQL SARIF publication is on v4. Hosted runners are explicitly
-pinned to Ubuntu 24.04 and Windows Server 2022 rather than migrating `latest`
-aliases. Feature branches now run the expensive 15-job matrix only through
+**First lifecycle slice completed (2026-10-11):** all GitHub Actions have been
+moved to current Node.js 24-compatible release lines with immutable commit pins.
+CodeQL SARIF publication is on v4. Hosted runners are explicitly pinned to
+Ubuntu 24.04 and Windows Server 2022 rather than migrating `latest` aliases.
+Feature branches now run the expensive 15-job matrix only through
 `pull_request`; protected `main` retains push certification. CI and security
 workflows cancel superseded runs, while release publication remains
-non-cancellable. Regression tests enforce immutable action pins, minimum
-supported action lines, explicit runner images, non-duplicated branch
-validation, and concurrency policy.
+non-cancellable. Regression tests enforce immutable action pins and approved
+versions, explicit runner images and matrices, non-duplicated branch validation,
+and concurrency policy across both supported workflow-file extensions.
+
+**First lifecycle slice remote certification (2026-10-11):** protected PR #14
+passed the replacement CI and security checks after both review findings were
+resolved, then merged by rebase as commit
+`95bf735bcb2a51345821e33cd60856bfcef4a347`. Exact-main CI run `38179469801`,
+documentation run `38179469808`, security run `38179469783`, and OpenSSF
+Scorecard run `38179469833` all passed without deprecated Node.js 20, CodeQL v3,
+or runner-migration warnings. Branch protection remains strict with 18 required
+contexts; only the four runner-derived names changed, and administrator
+enforcement, linear history, conversation resolution, and force-push/deletion
+blocking remain enabled.
 
 Planned sustained-operations increments:
 
@@ -653,14 +664,11 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Run the replacement runner checks on the Phase 10 pull request, replace the
-   four obsolete required contexts with those successful names, then complete
-   protected-PR and exact-main certification.
-2. Add the monthly release-health rehearsal without republishing or moving the
+1. Add the monthly release-health rehearsal without republishing or moving the
    immutable 1.0.0 tag.
-3. Establish and measure recovery-time and recovery-point objectives for
+2. Establish and measure recovery-time and recovery-point objectives for
    observational data, runs, predictions and scientific knowledge.
-4. Define the supported-version/deprecation contract before any 1.1 interface
+3. Define the supported-version/deprecation contract before any 1.1 interface
    or schema change.
-5. Continue scientific work only through preregistered predictions,
+4. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
