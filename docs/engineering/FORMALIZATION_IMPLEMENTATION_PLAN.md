@@ -558,11 +558,24 @@ passes doctor, exposes 47 typed SDK commands and 37 REST v2 OpenAPI paths, and
 validates its portable packaged knowledge graph. Independent review found and
 closed release-source, catalog-integrity and versioned-metadata-URL gaps.
 
-**Remote Phase 9 certification is pending:** push the implementation, require
-the resulting green CI, documentation, security/package and Scorecard checks
-on protected `main`, then record their run identifiers. The immutable
-`v1.0.0` tag, public GitHub release, attestations and any new Zenodo deposit
-must be created only from that certified commit.
+**Remote Phase 9 pre-release certification (2026-10-11):** CI run
+`38163055353` passed all 15 jobs across Java 17, Windows/Linux Python
+3.10/3.12, both documentation interpreters and all eight scientific golden
+suites. Documentation run `38163055269`, security/package run `38163055278`
+and OpenSSF Scorecard run `38163055348` also passed; the dependency audit and
+Dependabot report zero open vulnerabilities. The first remote attempt exposed
+a Python 3.10-incompatible Hypothesis pin and a missing release-only PyYAML
+dependency; corrected Python 3.10/3.12 resolution and standalone release
+metadata validation passed before the successful replacement runs.
+
+`main` now enforces strict up-to-date status from 20 CI, documentation,
+security, dependency-review and Scorecard contexts, requires pull requests
+without an impossible solo-maintainer approval count, resolves conversations,
+enforces linear history and administrator compliance, and blocks force pushes
+and deletion. The immutable `v1.0.0` tag, public GitHub release, attestations
+and any new Zenodo deposit must be created only from the resulting protected
+certification commit. Release publication remains pending until this record is
+merged through those protected gates.
 
 1. Automated release: tests, golden results, SBOM (CycloneDX), pip-audit,
    CITATION/codemeta sync, changelog, signed artefacts, Zenodo DOI.
