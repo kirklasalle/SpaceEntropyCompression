@@ -1,5 +1,5 @@
 # Core
-astropy>=6.1,<8
+astropy>=8.0.1,<9
 fastapi>=0.143,<0.144
 Flask>=3.0,<4
 flask-cors>=6.0,<7
