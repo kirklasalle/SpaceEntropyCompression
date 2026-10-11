@@ -568,14 +568,17 @@ a Python 3.10-incompatible Hypothesis pin and a missing release-only PyYAML
 dependency; corrected Python 3.10/3.12 resolution and standalone release
 metadata validation passed before the successful replacement runs.
 
-`main` now enforces strict up-to-date status from 20 CI, documentation,
-security, dependency-review and Scorecard contexts, requires pull requests
-without an impossible solo-maintainer approval count, resolves conversations,
-enforces linear history and administrator compliance, and blocks force pushes
-and deletion. The immutable `v1.0.0` tag, public GitHub release, attestations
-and any new Zenodo deposit must be created only from the resulting protected
-certification commit. Release publication remains pending until this record is
-merged through those protected gates.
+`main` now enforces strict up-to-date status from all 18 pull-request CI,
+documentation, security/package and dependency-review contexts, requires pull
+requests without an impossible solo-maintainer approval count, resolves
+conversations, enforces linear history and administrator compliance, and blocks
+force pushes and deletion. Main-only Pages deployment and Scorecard/SARIF
+publication remain independently required by the release record rather than
+being configured as impossible pull-request checks. The immutable `v1.0.0`
+tag, public GitHub release, attestations and any new Zenodo deposit must be
+created only from the resulting protected certification commit. Release
+publication remains pending until this record is merged through those
+protected gates.
 
 1. Automated release: tests, golden results, SBOM (CycloneDX), pip-audit,
    CITATION/codemeta sync, changelog, signed artefacts, Zenodo DOI.
