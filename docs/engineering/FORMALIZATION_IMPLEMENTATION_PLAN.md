@@ -400,14 +400,15 @@ family, protects mutations with its bearer-token policy, and returns stable
 SDK errors. Artifact containment, traversal, symlink and regular-file checks
 now live in the authoritative SDK rather than an HTTP adapter.
 
-**Phase 6 local certification (2026-10-11):** direct SDK, CLI, Flask REST v1,
+**Phase 6 certification (2026-10-11):** direct SDK, CLI, Flask REST v1,
 and FastAPI REST v2 parity/compatibility suites pass; the complete non-golden
 suite passes 322 tests; Ruff, bytecode compilation and Pylance diagnostics are
 clean. A clean wheel installed outside the source tree exposes all 20 migrated
 SDK operations, executes doctor and simulation successfully, and generates
-the expected 31-path OpenAPI document. REST v1 remains intentionally frozen:
-new artifact download and worker execution are v2-only rather than additions
-to the compatibility API.
+the expected 31-path OpenAPI document. Remote CI run `38126755336` passed all
+13 jobs: Java 17, Windows/Linux Python 3.10/3.12, and all eight scientific
+golden suites. REST v1 remains intentionally frozen: new artifact download and
+worker execution are v2-only rather than additions to the compatibility API.
 
 | Operation family | CLI | Typed SDK | REST v1 | REST v2 | Exit status |
 |---|---:|---:|---:|---:|---|
@@ -424,8 +425,8 @@ to the compatibility API.
 | Python/JavaFX/web visualization | Yes | Not applicable | REST v1 client | Not applicable | Certified |
 
 **Exit gate:** CLI/API/SDK parity tests cover every operation; v1 clients
-(including JavaFX and `visualize.py`) still work. **Passed locally
-2026-10-11; cross-platform CI certification is required for release.**
+(including JavaFX and `visualize.py`) still work. **Passed 2026-10-11 and
+cross-platform certified by remote CI run `38126755336`.**
 
 ## Phase 7 - Knowledge base, memory and library (2-3 weeks, then ongoing)
 
