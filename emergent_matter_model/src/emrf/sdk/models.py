@@ -191,6 +191,72 @@ class RunListResponse:
 
 
 @dataclass(frozen=True)
+class JobInfo:
+    job_id: str
+    command: str
+    args: tuple[str, ...]
+    timeout_seconds: float | None
+    evidence_class: str
+    status: str
+    attempts: int
+    max_attempts: int
+    created_utc: str
+    updated_utc: str
+    lease_owner: str | None
+    lease_expires_utc: str | None
+    run_id: str | None
+    returncode: int | None
+    last_error: str | None
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> JobInfo:
+        return cls(
+            job_id=str(value["job_id"]),
+            command=str(value["command"]),
+            args=tuple(str(argument) for argument in value["args"]),
+            timeout_seconds=(
+                None
+                if value["timeout_seconds"] is None
+                else float(value["timeout_seconds"])
+            ),
+            evidence_class=str(value["evidence_class"]),
+            status=str(value["status"]),
+            attempts=int(value["attempts"]),
+            max_attempts=int(value["max_attempts"]),
+            created_utc=str(value["created_utc"]),
+            updated_utc=str(value["updated_utc"]),
+            lease_owner=(
+                None if value["lease_owner"] is None else str(value["lease_owner"])
+            ),
+            lease_expires_utc=(
+                None
+                if value["lease_expires_utc"] is None
+                else str(value["lease_expires_utc"])
+            ),
+            run_id=None if value["run_id"] is None else str(value["run_id"]),
+            returncode=(
+                None if value["returncode"] is None else int(value["returncode"])
+            ),
+            last_error=(
+                None if value["last_error"] is None else str(value["last_error"])
+            ),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        value = asdict(self)
+        value["args"] = list(self.args)
+        return value
+
+
+@dataclass(frozen=True)
+class JobListResponse:
+    jobs: tuple[JobInfo, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"jobs": [job.to_dict() for job in self.jobs]}
+
+
+@dataclass(frozen=True)
 class DatasetInfo:
     dataset_id: str
     title: str
@@ -259,5 +325,7 @@ __all__ = [
     "RunListResponse",
     "RunRequest",
     "RunResult",
+    "JobInfo",
+    "JobListResponse",
     "VerificationReport",
 ]

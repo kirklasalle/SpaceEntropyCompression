@@ -34,6 +34,12 @@ def test_v2_health_and_generated_openapi(client: TestClient):
         "/api/v2/commands/{name}/runs",
         "/api/v2/runs",
         "/api/v2/runs/{run_id}",
+        "/api/v2/jobs",
+        "/api/v2/jobs/{job_id}",
+        "/api/v2/jobs/{job_id}/cancel",
+        "/api/v2/jobs/worker/run-next",
+        "/api/v2/runs/{run_id}/artifacts",
+        "/api/v2/runs/{run_id}/artifacts/{relative_path}",
         "/api/v2/verification/physics",
         "/api/v2/verification/inference",
         "/api/v2/verification/engines",
@@ -136,6 +142,87 @@ def test_v2_durable_execution_and_run_reads_match_sdk(
     direct = EMRFClient().get_run(record.run_id).to_dict()
     assert client.get(f"/api/v2/runs/{record.run_id}").json() == direct
     assert client.get("/api/v2/runs").json()["runs"] == [direct]
+
+
+def test_v2_job_lifecycle_and_authenticated_artifacts(
+    client: TestClient,
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    monkeypatch.setenv(API_V2_TOKEN_ENV, "secret-token")
+    headers = {"Authorization": "Bearer secret-token"}
+
+    submitted = client.post(
+        "/api/v2/jobs",
+        headers=headers,
+        json={"command": "compare-schwarzschild", "args": ["--help"]},
+    )
+    assert submitted.status_code == 202
+    job_id = submitted.json()["job_id"]
+    assert client.get(f"/api/v2/jobs/{job_id}").json()["status"] == "queued"
+    assert client.get("/api/v2/jobs").json()["jobs"][0]["job_id"] == job_id
+    assert client.post(f"/api/v2/jobs/{job_id}/cancel", headers=headers).json()[
+        "status"
+    ] == "cancelled"
+
+    executed = client.post(
+        "/api/v2/commands/compare-schwarzschild/runs",
+        headers=headers,
+        json={"args": ["--help"]},
+    )
+    run_id = executed.json()["run_id"]
+    listed = client.get(
+        f"/api/v2/runs/{run_id}/artifacts", headers=headers
+    )
+    assert listed.status_code == 200
+    artifact = next(
+        item for item in listed.json()["artifacts"] if item["path"].startswith("stdout-")
+    )
+    downloaded = client.get(
+        f"/api/v2/runs/{run_id}/artifacts/{artifact['path']}",
+        headers=headers,
+    )
+    assert downloaded.status_code == 200
+    assert "Schwarzschild" in downloaded.text
+    assert client.get(
+        f"/api/v2/runs/{run_id}/artifacts/../run.json", headers=headers
+    ).status_code in {400, 404}
+    assert client.get(f"/api/v2/runs/{run_id}/artifacts").status_code == 401
+
+
+def test_v2_worker_executes_queued_job(
+    client: TestClient,
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    monkeypatch.setenv(API_V2_TOKEN_ENV, "secret-token")
+    headers = {"Authorization": "Bearer secret-token"}
+
+    submitted = client.post(
+        "/api/v2/jobs",
+        headers=headers,
+        json={"command": "compare-schwarzschild", "args": ["--help"]},
+    )
+    completed = client.post(
+        "/api/v2/jobs/worker/run-next",
+        headers=headers,
+        json={"worker_id": "api-test-worker", "lease_seconds": 120},
+    )
+
+    assert submitted.status_code == 202
+    assert completed.status_code == 200
+    assert completed.json()["job_id"] == submitted.json()["job_id"]
+    assert completed.json()["status"] == "succeeded"
+    assert completed.json()["run_id"]
+    assert client.post(
+        "/api/v2/jobs/worker/run-next",
+        headers=headers,
+        json={"worker_id": "api-test-worker"},
+    ).json() is None
 
 
 def test_v2_rejects_unsafe_or_invalid_execution(

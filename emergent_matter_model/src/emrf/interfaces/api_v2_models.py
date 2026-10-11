@@ -82,6 +82,48 @@ class RunListResponse(APIModel):
     runs: list[RunInfo]
 
 
+class JobInfo(APIModel):
+    job_id: str
+    command: str
+    args: list[str]
+    timeout_seconds: float | None
+    evidence_class: str
+    status: str
+    attempts: int
+    max_attempts: int
+    created_utc: str
+    updated_utc: str
+    lease_owner: str | None
+    lease_expires_utc: str | None
+    run_id: str | None
+    returncode: int | None
+    last_error: str | None
+
+
+class JobListResponse(APIModel):
+    jobs: list[JobInfo]
+
+
+class JobSubmitRequest(RunRequest):
+    command: str = Field(min_length=1)
+    max_attempts: int = Field(default=1, ge=1, le=100)
+
+
+class WorkerRequest(APIModel):
+    worker_id: str = Field(min_length=1, max_length=200)
+    lease_seconds: float = Field(default=3600, gt=0, le=86400)
+
+
+class ArtifactInfo(APIModel):
+    path: str
+    bytes: int = Field(ge=0)
+    media_type: str
+
+
+class ArtifactListResponse(APIModel):
+    artifacts: list[ArtifactInfo]
+
+
 class VerificationReport(APIModel):
     evidence_class: str
     all_passed: bool
@@ -92,8 +134,14 @@ class VerificationReport(APIModel):
 __all__ = [
     "CommandInfo",
     "CommandListResponse",
+    "ArtifactInfo",
+    "ArtifactListResponse",
     "ErrorResponse",
     "HealthResponse",
+    "JobInfo",
+    "JobListResponse",
+    "JobSubmitRequest",
+    "WorkerRequest",
     "RunInfo",
     "RunListResponse",
     "RunRequest",

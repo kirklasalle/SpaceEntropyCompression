@@ -10,6 +10,8 @@ from .errors import InvalidRequestError, ResourceNotFoundError
 from .models import (
     CommandInfo,
     CommandListResponse,
+    JobInfo,
+    JobListResponse,
     RunInfo,
     RunListResponse,
     RunRequest,
@@ -69,6 +71,93 @@ class EMRFClient:
             for record in run_store().list(limit=limit)
         )
         return RunListResponse(records)
+
+    def submit_job(
+        self,
+        request: RunRequest,
+        *,
+        max_attempts: int = 1,
+    ) -> JobInfo:
+        from emrf_run_access import public_record, run_store
+
+        command = self.get_command(request.command)
+        if command.gui or command.category == "service":
+            raise InvalidRequestError(
+                f"{request.command} is interactive or a service and cannot run as a job"
+            )
+        try:
+            record = run_store().enqueue(
+                request.command,
+                list(request.args),
+                timeout_seconds=request.timeout,
+                evidence_class=request.evidence_class,
+                max_attempts=max_attempts,
+            )
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return JobInfo.from_mapping(public_record(record))
+
+    def list_jobs(self, *, limit: int = 50) -> JobListResponse:
+        from emrf_run_access import public_record, run_store
+
+        jobs = tuple(
+            JobInfo.from_mapping(public_record(record))
+            for record in run_store().list_jobs(limit=limit)
+        )
+        return JobListResponse(jobs)
+
+    def get_job(self, job_id: str) -> JobInfo:
+        from emrf_run_access import public_record, run_store
+
+        try:
+            record = run_store().get_job(job_id)
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "job", "job_id": job_id},
+            ) from None
+        return JobInfo.from_mapping(public_record(record))
+
+    def cancel_job(self, job_id: str) -> JobInfo:
+        from emrf_run_access import public_record, run_store
+
+        try:
+            record = run_store().cancel_job(job_id)
+        except KeyError as exc:
+            raise ResourceNotFoundError(
+                exc.args[0],
+                details={"resource": "job", "job_id": job_id},
+            ) from None
+        except ValueError as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        return JobInfo.from_mapping(public_record(record))
+
+    def run_next_job(
+        self,
+        worker_id: str,
+        *,
+        lease_seconds: float = 3600,
+    ) -> JobInfo | None:
+        from emrf_run_access import public_record
+
+        if not isinstance(worker_id, str) or not worker_id.strip():
+            raise InvalidRequestError("worker_id must be non-empty text")
+        if (
+            isinstance(lease_seconds, bool)
+            or not isinstance(lease_seconds, (int, float))
+            or lease_seconds <= 0
+        ):
+            raise InvalidRequestError("lease_seconds must be a positive number")
+        try:
+            record = emrf_registry.run_next_job(
+                worker_id.strip(),
+                lease_seconds=float(lease_seconds),
+            )
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        if record is None:
+            return None
+        return JobInfo.from_mapping(public_record(record))
 
     def get_run(self, run_id: str) -> RunInfo:
         from emrf_run_access import public_record, run_store

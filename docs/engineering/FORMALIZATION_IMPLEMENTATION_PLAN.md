@@ -357,10 +357,24 @@ generations exercised by the cross-platform CI matrix; newer incompatible
 generations require an explicit recertification rather than being accepted
 silently.
 
+**Durable jobs and artifact access implemented (2026-10-10):** the typed SDK
+now supports submit, list, inspect, and cancel operations for the durable
+queue. FastAPI v2 exposes the corresponding authenticated mutation endpoints
+and read endpoints, including authenticated single-job worker execution, while
+artifact listing and download require the same bearer token and enforce
+run-root containment, regular-file checks, and symlink/path-traversal
+rejection. Existing Flask v1 job behavior is unchanged.
+The CI development constraints now include Schemathesis 3.39.16 and its
+certified Hypothesis generation; read-only generated-contract tests exercise
+the v2 generated OpenAPI document and the documented v1 contract without
+fuzzing authenticated mutations.
+
 1. `emrf.sdk` typed public API; CLI and API reimplemented as thin layers.
-2. REST v2 with FastAPI + pydantic (generated OpenAPI), jobs, artefact
-   download, token auth for mutating endpoints; v1 kept and tested.
-3. Schemathesis contract fuzzing of both API versions in CI.
+2. REST v2 with FastAPI + pydantic (generated OpenAPI), jobs, artifact
+   download, token auth for mutating endpoints; v1 kept and tested. **Done.**
+3. Schemathesis contract generation and response validation for safe read-only
+   v1 and v2 OpenAPI operations in CI. **Done.** Authenticated mutation fuzzing
+   remains intentionally excluded from ordinary CI.
 4. JavaFX client: Maven wrapper with declared dependencies; remove vendored
    SDK/Maven from git (history kept); decide keep vs retire in favour of the
    web dashboard.

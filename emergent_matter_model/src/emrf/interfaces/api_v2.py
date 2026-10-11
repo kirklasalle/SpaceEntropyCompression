@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 import logging
+import mimetypes
 import os
 import secrets
 import subprocess
+from pathlib import Path, PurePosixPath
 from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, Query, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -23,15 +25,21 @@ from emrf.sdk import (
 from emrf.sdk import RunRequest as SDKRunRequest
 
 from .api_v2_models import (
+    ArtifactInfo,
+    ArtifactListResponse,
     CommandInfo,
     CommandListResponse,
     ErrorResponse,
     HealthResponse,
+    JobInfo,
+    JobListResponse,
+    JobSubmitRequest,
     RunInfo,
     RunListResponse,
     RunRequest,
     RunResult,
     VerificationReport,
+    WorkerRequest,
 )
 
 API_V2_TOKEN_ENV = "EMRF_API_V2_TOKEN"
@@ -117,6 +125,58 @@ def _verification(report: Any) -> VerificationReport:
         checks=[dict(check) for check in report.checks],
         metadata=dict(report.metadata),
     )
+
+
+def _artifact_path(run_id: str, relative_path: str) -> tuple[Path, str]:
+    from emrf_run_access import run_store
+
+    try:
+        record = run_store().get(run_id)
+    except KeyError as exc:
+        raise APIError(404, "run_not_found", "Run was not found.") from exc
+    normalized = relative_path.replace("\\", "/")
+    path = PurePosixPath(normalized)
+    if (
+        not normalized
+        or path.is_absolute()
+        or any(part in {"", ".", ".."} for part in path.parts)
+    ):
+        raise APIError(400, "invalid_artifact_path", "Artifact path is invalid.")
+    raw_candidate = record.path / Path(*path.parts)
+    if raw_candidate.is_symlink():
+        raise APIError(404, "artifact_not_found", "Artifact was not found.")
+    candidate = raw_candidate.resolve()
+    root = record.path.resolve()
+    if root not in candidate.parents or not candidate.is_file():
+        raise APIError(404, "artifact_not_found", "Artifact was not found.")
+    return candidate, "/".join(path.parts)
+
+
+def _artifact_rows(run_id: str) -> list[dict[str, Any]]:
+    from emrf_run_access import run_store
+
+    try:
+        record = run_store().get(run_id)
+    except KeyError as exc:
+        raise APIError(404, "run_not_found", "Run was not found.") from exc
+    root = record.path.resolve()
+    rows: list[dict[str, Any]] = []
+    for path in sorted(record.path.rglob("*")):
+        if not path.is_file() or path.is_symlink():
+            continue
+        resolved = path.resolve()
+        if root not in resolved.parents:
+            continue
+        relative = path.relative_to(record.path).as_posix()
+        rows.append(
+            {
+                "path": relative,
+                "bytes": path.stat().st_size,
+                "media_type": mimetypes.guess_type(path.name)[0]
+                or "application/octet-stream",
+            }
+        )
+    return rows
 
 
 def create_app(client: EMRFClient | None = None) -> FastAPI:
@@ -306,6 +366,116 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     )
     def get_run(run_id: str, request: Request) -> RunInfo:
         return RunInfo(**_sdk(request).get_run(run_id).to_dict())
+
+    @application.post(
+        "/api/v2/jobs",
+        response_model=JobInfo,
+        status_code=202,
+        responses={400: {"model": ErrorResponse}, 401: {"model": ErrorResponse}},
+        tags=["jobs"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def submit_job(payload: JobSubmitRequest, request: Request) -> JobInfo:
+        return JobInfo(
+            **_sdk(request)
+            .submit_job(
+                SDKRunRequest(
+                    command=payload.command,
+                    args=tuple(payload.args),
+                    timeout=payload.timeout,
+                    evidence_class=payload.evidence_class,
+                    inputs=payload.inputs,
+                    seeds=payload.seeds,
+                ),
+                max_attempts=payload.max_attempts,
+            )
+            .to_dict()
+        )
+
+    @application.get(
+        "/api/v2/jobs",
+        response_model=JobListResponse,
+        responses={422: {"model": ErrorResponse}},
+        tags=["jobs"],
+    )
+    def list_jobs(
+        request: Request,
+        limit: Annotated[int, Query(ge=1, le=1000)] = 50,
+    ) -> JobListResponse:
+        result = _sdk(request).list_jobs(limit=limit)
+        return JobListResponse(jobs=[JobInfo(**job.to_dict()) for job in result.jobs])
+
+    @application.get(
+        "/api/v2/jobs/{job_id}",
+        response_model=JobInfo,
+        responses={404: {"model": ErrorResponse}},
+        tags=["jobs"],
+    )
+    def get_job(job_id: str, request: Request) -> JobInfo:
+        return JobInfo(**_sdk(request).get_job(job_id).to_dict())
+
+    @application.post(
+        "/api/v2/jobs/{job_id}/cancel",
+        response_model=JobInfo,
+        responses={
+            400: {"model": ErrorResponse},
+            401: {"model": ErrorResponse},
+            404: {"model": ErrorResponse},
+        },
+        tags=["jobs"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def cancel_job(job_id: str, request: Request) -> JobInfo:
+        return JobInfo(**_sdk(request).cancel_job(job_id).to_dict())
+
+    @application.post(
+        "/api/v2/jobs/worker/run-next",
+        response_model=JobInfo | None,
+        responses={
+            400: {"model": ErrorResponse},
+            401: {"model": ErrorResponse},
+        },
+        tags=["jobs"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def run_next_job(payload: WorkerRequest, request: Request) -> JobInfo | None:
+        result = _sdk(request).run_next_job(
+            payload.worker_id,
+            lease_seconds=payload.lease_seconds,
+        )
+        return None if result is None else JobInfo(**result.to_dict())
+
+    @application.get(
+        "/api/v2/runs/{run_id}/artifacts",
+        response_model=ArtifactListResponse,
+        responses={404: {"model": ErrorResponse}},
+        tags=["artifacts"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def list_artifacts(run_id: str) -> ArtifactListResponse:
+        return ArtifactListResponse(
+            artifacts=[ArtifactInfo(**row) for row in _artifact_rows(run_id)]
+        )
+
+    @application.get(
+        "/api/v2/runs/{run_id}/artifacts/{relative_path:path}",
+        response_class=FileResponse,
+        responses={
+            400: {"model": ErrorResponse},
+            401: {"model": ErrorResponse},
+            404: {"model": ErrorResponse},
+        },
+        tags=["artifacts"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def download_artifact(run_id: str, relative_path: str) -> FileResponse:
+        path, normalized = _artifact_path(run_id, relative_path)
+        media_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+        return FileResponse(
+            path,
+            media_type=media_type,
+            filename=Path(normalized).name,
+        )
 
     @application.get(
         "/api/v2/verification/physics",
