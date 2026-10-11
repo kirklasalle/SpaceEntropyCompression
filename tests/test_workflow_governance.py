@@ -71,7 +71,8 @@ APPROVED_RUNNERS = {"ubuntu-24.04", "windows-2022", "${{ matrix.os }}"}
 
 def _workflows() -> dict[str, tuple[str, dict[str, Any]]]:
     workflows: dict[str, tuple[str, dict[str, Any]]] = {}
-    for path in sorted(WORKFLOWS.glob("*.yml")):
+    paths = sorted((*WORKFLOWS.glob("*.yml"), *WORKFLOWS.glob("*.yaml")))
+    for path in paths:
         text = path.read_text(encoding="utf-8")
         value = yaml.load(text, Loader=yaml.BaseLoader)
         assert isinstance(value, dict), path.name
@@ -109,13 +110,17 @@ def test_actions_match_approved_immutable_releases() -> None:
 
 
 def test_runner_images_are_explicitly_approved() -> None:
-    workflows = _workflows()
-    for filename, (_, workflow) in workflows.items():
-        for runner in _values_for_key(workflow, "runs-on"):
-            assert runner in APPROVED_RUNNERS, (filename, runner)
-
-    ci_matrix = workflows["ci.yml"][1]["jobs"]["test"]["strategy"]["matrix"]
-    assert ci_matrix["os"] == ["ubuntu-24.04", "windows-2022"]
+    for filename, (_, workflow) in _workflows().items():
+        for job_name, job in workflow["jobs"].items():
+            runner = job["runs-on"]
+            assert runner in APPROVED_RUNNERS, (filename, job_name, runner)
+            if runner == "${{ matrix.os }}":
+                matrix = job["strategy"]["matrix"]
+                assert matrix["os"] == ["ubuntu-24.04", "windows-2022"], (
+                    filename,
+                    job_name,
+                    matrix["os"],
+                )
 
 
 def test_ci_triggers_do_not_duplicate_pull_request_branches() -> None:
