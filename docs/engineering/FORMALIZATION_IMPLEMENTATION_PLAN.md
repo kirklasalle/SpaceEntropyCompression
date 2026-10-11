@@ -500,8 +500,18 @@ A clean `0.9.1` wheel installed outside the checkout exposes the SDK support
 contract and creates CLI/SDK reports with verified SHA-256 digests and
 portable knowledge seeding. Review regressions cover invalid-graph privacy,
 JSON-only CLI output, exclusive publication, existing destinations,
-hard-link-free filesystems and default per-user placement. Cross-platform
-remote CI certification remains the final gate.
+hard-link-free filesystems and default per-user placement. This established
+the local gate before cross-platform remote certification.
+
+**Phase 8 remote certification (2026-10-11):** CI run `38155737472`
+passed all 15 jobs: Java 17, Windows/Linux Python 3.10/3.12, deterministic
+documentation generation on Python 3.10 and 3.12, and all eight scientific
+golden suites. Documentation run `38155737473` passed generated-reference and
+strict-build checks and published the live site at
+`https://kirklasalle.github.io/SpaceEntropyCompression/`. The first remote
+attempt exposed an interpreter-dependent `argparse` positional-required flag;
+the generator now derives requiredness from stable `nargs` semantics and has
+cross-version regression coverage in CI.
 
 1. Documentation site (Diataxis): tutorials (first SPARC result in 15
    minutes), how-tos, generated reference, physics explanations.
@@ -511,7 +521,8 @@ remote CI certification remains the final gate.
 **Exit gate:** supported documentation is generated reproducibly and published;
 diagnostic reports are privacy-safe, durable and installed-wheel compatible;
 and user/developer contribution, support and architecture paths are explicit.
-**Passed locally 2026-10-11; remote CI certification pending.**
+**Passed 2026-10-11 and cross-platform certified by CI run `38155737472`;
+the live documentation was published by run `38155737473`.**
 
 ## Phase 9 - Release engineering and governance (1-2 weeks)
 
