@@ -42,8 +42,12 @@ Also compare the file against `SHA256SUMS` from the same release.
 ## Monthly release-health rehearsal
 
 The read-only `Release health` workflow runs on the first day of each month and
-can also be dispatched for a specific stable tag. It resolves an existing
-annotated release tag without moving it, checks out its immutable commit, and:
+can also be dispatched for a specific stable tag. The protected
+`release/archives.json` registry records the post-publication DOI together with
+the immutable release URL and source commit, because an archive DOI may not
+exist when its tag is created. The workflow resolves an existing annotated
+release tag without moving it, requires it to match that registry, checks out
+its immutable commit, and:
 
 - validates synchronized release metadata and rebuilds the wheel and source
   distribution without publishing them;

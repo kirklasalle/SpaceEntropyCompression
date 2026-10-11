@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -13,6 +14,7 @@ from tools import validate_release_metadata as release_metadata
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "tools" / "validate_release_metadata.py"
 RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "release.yml"
+ARCHIVE_REGISTRY = ROOT / "release" / "archives.json"
 
 
 def test_release_workflow_requires_current_protected_main_commit() -> None:
@@ -20,6 +22,27 @@ def test_release_workflow_requires_current_protected_main_commit() -> None:
 
     assert 'test "$GITHUB_SHA" = "$(git rev-parse origin/main)"' in workflow
     assert "git merge-base --is-ancestor" not in workflow
+
+
+def test_archive_registry_binds_v1_tag_commit_and_doi() -> None:
+    registry = json.loads(ARCHIVE_REGISTRY.read_text(encoding="utf-8"))
+    assert registry["schema_version"] == "1.0"
+    release = registry["releases"]["v1.0.0"]
+
+    tag_sha = subprocess.run(
+        ["git", "rev-list", "-n", "1", "v1.0.0"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    assert release == {
+        "doi": release_metadata.RELEASE_DOI,
+        "release_url": (
+            "https://github.com/kirklasalle/SpaceEntropyCompression/releases/tag/v1.0.0"
+        ),
+        "source_sha": tag_sha,
+    }
 
 
 def test_release_metadata_matches_v1_tag(tmp_path: Path) -> None:
