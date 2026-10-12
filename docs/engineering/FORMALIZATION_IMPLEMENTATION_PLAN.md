@@ -705,7 +705,10 @@ Exact-main CI run `38291473965`, Documentation run `38291474116`, Security run
 
 Planned sustained-operations increments:
 
-1. Maintenance releases only through the protected release contract; new
+1. Periodically certify controlled non-empty observational and application
+   recovery together with the standard performance baseline. Retain both
+   successful and failed machine-readable evidence without publication rights.
+2. Maintenance releases only through the protected release contract; new
    physics claims require preregistration and the existing evidence lifecycle.
 
 **First-slice exit gate:** the replacement checks must pass on the migration
@@ -730,7 +733,9 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Continue scientific work only through preregistered predictions,
+1. Certify the recurring operational workflow through protected CI and retain
+   its first manually dispatched recovery and performance evidence.
+2. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
-2. Execute maintenance releases only through the protected release contract
+3. Execute maintenance releases only through the protected release contract
    and retain periodic recovery, archive-health and performance evidence.

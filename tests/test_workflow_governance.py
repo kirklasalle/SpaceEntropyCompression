@@ -137,6 +137,7 @@ def test_validation_and_publication_concurrency_is_safe() -> None:
     expected = {
         "ci.yml": "true",
         "docs.yml": "false",
+        "operational-certification.yml": "false",
         "release-health.yml": "false",
         "release.yml": "false",
         "security.yml": "true",
@@ -149,6 +150,40 @@ def test_validation_and_publication_concurrency_is_safe() -> None:
     assert workflows["release.yml"][1]["concurrency"]["group"] == (
         "release-${{ github.ref }}"
     )
+
+
+def test_operational_certification_is_read_only_and_retains_failures() -> None:
+    text, workflow = _workflows()["operational-certification.yml"]
+
+    assert workflow["on"] == {
+        "schedule": [{"cron": "41 5 8 * *"}],
+        "workflow_dispatch": "",
+    }
+    assert workflow["permissions"] == {"contents": "read"}
+    job = workflow["jobs"]["certify"]
+    assert job["timeout-minutes"] == "30"
+    steps = {step.get("name"): step for step in job["steps"] if "name" in step}
+    main_guard = steps["Require current protected main commit"]["run"]
+    assert 'test "$GITHUB_REF" = "refs/heads/main"' in main_guard
+    assert 'test "$GITHUB_SHA" = "$(git rev-parse origin/main)"' in main_guard
+    certification = steps["Run controlled operational certification"]
+    assert certification["continue-on-error"] == "true"
+    assert "--profile standard" in certification["run"]
+    assert "--repeats 2" in certification["run"]
+    upload = steps["Retain operational evidence"]
+    assert upload["if"] == "always()"
+    assert upload["with"]["if-no-files-found"] == "error"
+    assert upload["with"]["retention-days"] == "90"
+    assert steps["Enforce operational certification"]["if"] == (
+        "steps.certification.outcome == 'failure'"
+    )
+    for prohibited in (
+        "contents: write",
+        "git push",
+        "secrets.",
+        "twine upload",
+    ):
+        assert prohibited not in text
 
 
 def test_release_health_is_read_only_and_non_publishing() -> None:
