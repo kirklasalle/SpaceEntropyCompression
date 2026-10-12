@@ -60,6 +60,7 @@ from .api_v2_models import (
     RunResult,
     SimulationRequest,
     SimulationResult,
+    StateRestoreRequest,
     VerificationReport,
     WorkerRequest,
 )
@@ -656,6 +657,74 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     ) -> OperationResponse:
         return OperationResponse(
             root=_sdk(request).garbage_collect_data(execute=payload.execute).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/recovery/backups",
+        response_model=OperationResponse,
+        status_code=201,
+        responses=_error_responses(400, 401, 403, 422, 503),
+        tags=["recovery"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def create_state_backup(
+        payload: BackupRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).create_state_backup(payload.destination).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/recovery/backups/verify",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["recovery"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def verify_state_backup(
+        payload: PathRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request).verify_state_backup(payload.source).to_dict()
+        )
+
+    @application.post(
+        "/api/v2/recovery/restores",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["recovery"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def restore_state_backup(
+        payload: StateRestoreRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request)
+            .restore_state_backup(payload.source, payload.destination)
+            .to_dict()
+        )
+
+    @application.post(
+        "/api/v2/recovery/restore-drills",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
+        tags=["recovery"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def run_state_restore_drill(
+        payload: RestoreDrillRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request)
+            .run_state_restore_drill(
+                receipt=payload.receipt,
+                workspace=payload.workspace,
+            )
+            .to_dict()
         )
 
     @application.post(

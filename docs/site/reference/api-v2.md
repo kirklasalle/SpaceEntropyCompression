@@ -41,6 +41,10 @@ contract at `/api/v2/openapi.json`.
 | `POST` | `/api/v2/predictions/commit` | Required | predictions |
 | `GET` | `/api/v2/predictions/{commitment_id}` | No | predictions |
 | `POST` | `/api/v2/predictions/{commitment_id}/verify` | No | predictions |
+| `POST` | `/api/v2/recovery/backups` | Required | recovery |
+| `POST` | `/api/v2/recovery/backups/verify` | Required | recovery |
+| `POST` | `/api/v2/recovery/restore-drills` | Required | recovery |
+| `POST` | `/api/v2/recovery/restores` | Required | recovery |
 | `GET` | `/api/v2/runs` | No | runs |
 | `GET` | `/api/v2/runs/{run_id}` | No | runs |
 | `GET` | `/api/v2/runs/{run_id}/artifacts` | Required | artifacts |
@@ -93,6 +97,7 @@ require `EMRF_API_V2_TOKEN` and a matching bearer token.
 - `RunResult`
 - `SimulationRequest`
 - `SimulationResult`
+- `StateRestoreRequest`
 - `ValidationError`
 - `VerificationReport`
 - `WorkerRequest`

@@ -15,6 +15,7 @@ Usage examples::
     python emergent_matter_model/emrf_cli.py data backup DESTINATION
     python emergent_matter_model/emrf_cli.py data restore SOURCE
     python emergent_matter_model/emrf_cli.py data drill [--receipt FILE]
+    python emergent_matter_model/emrf_cli.py recovery drill [--receipt FILE]
     python emergent_matter_model/emrf_cli.py doctor [--json]
     python emergent_matter_model/emrf_cli.py serve [--host 127.0.0.1] [--port 5000]
     python emergent_matter_model/emrf_cli.py test [-- pytest args]
@@ -364,6 +365,22 @@ def cmd_data_gc(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_recovery(a: argparse.Namespace) -> int:
+    if a.recovery_command == "backup":
+        result = sdk.create_state_backup(a.destination)
+    elif a.recovery_command == "backup-verify":
+        result = sdk.verify_state_backup(a.source)
+    elif a.recovery_command == "restore":
+        result = sdk.restore_state_backup(a.source, a.destination)
+    else:
+        result = sdk.run_state_restore_drill(
+            receipt=a.receipt,
+            workspace=a.workspace,
+        )
+    _print_json(result.to_dict())
+    return 0
+
+
 def cmd_doctor(a: argparse.Namespace) -> int:
     rep = sdk.environment_report(include_executable=True).to_dict()
     support_report = None
@@ -564,6 +581,29 @@ def build_parser() -> argparse.ArgumentParser:
         help="remove reported unreferenced objects",
     )
     d.set_defaults(func=cmd_data_gc)
+
+    s = sub.add_parser(
+        "recovery",
+        help="back up and recover durable runs, predictions, and knowledge",
+    )
+    recovery = s.add_subparsers(dest="recovery_command", required=True)
+    r = recovery.add_parser("backup", help="create a verified application-state backup")
+    r.add_argument("destination")
+    r.set_defaults(func=cmd_recovery)
+    r = recovery.add_parser("backup-verify", help="verify an application-state backup")
+    r.add_argument("source")
+    r.set_defaults(func=cmd_recovery)
+    r = recovery.add_parser(
+        "restore",
+        help="restore into a new isolated destination",
+    )
+    r.add_argument("source")
+    r.add_argument("destination")
+    r.set_defaults(func=cmd_recovery)
+    r = recovery.add_parser("drill", help="run an isolated application-state drill")
+    r.add_argument("--receipt")
+    r.add_argument("--workspace")
+    r.set_defaults(func=cmd_recovery)
 
     s = sub.add_parser("runs", help="inspect and resume durable scientific runs")
     rsub = s.add_subparsers(dest="runs_command", required=True)

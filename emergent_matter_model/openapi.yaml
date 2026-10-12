@@ -468,6 +468,38 @@ paths:
       responses:
         '200': {description: Garbage-collection report}
         '403': {description: Destructive execution disabled}
+  /api/v1/recovery/backups:
+    post:
+      summary: Create a verified backup of runs, artifacts, predictions, and knowledge
+      operationId: createStateBackup
+      responses:
+        '201': {description: Application-state backup created}
+        '403': {description: Data mutation disabled}
+        '409': {description: Source changed or integrity validation failed}
+  /api/v1/recovery/backups/verify:
+    post:
+      summary: Verify an application-state backup
+      operationId: verifyStateBackup
+      responses:
+        '200': {description: Application-state backup verified}
+        '403': {description: Data mutation disabled}
+        '409': {description: Integrity validation failed}
+  /api/v1/recovery/restores:
+    post:
+      summary: Restore application state into a new isolated destination
+      operationId: restoreStateBackup
+      responses:
+        '200': {description: Application state restored and verified}
+        '403': {description: Data mutation disabled}
+        '409': {description: Integrity validation failed}
+  /api/v1/recovery/restore-drills:
+    post:
+      summary: Run an isolated full application-state recovery drill
+      operationId: runStateRestoreDrill
+      responses:
+        '200': {description: Drill passed and durable receipt written}
+        '403': {description: Data mutation disabled}
+        '409': {description: Drill or recovery-objective failure}
   /visualizer:
     get:
       summary: Interactive HTML/WebGL dashboard

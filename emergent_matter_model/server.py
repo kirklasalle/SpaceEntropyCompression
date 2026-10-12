@@ -642,6 +642,62 @@ def garbage_collect_data():
         return _data_error(exc)
 
 
+@app.route('/api/v1/recovery/backups', methods=['POST'])
+def create_state_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        destination = _required_json_text(_json_object(), 'destination')
+        return jsonify(sdk.create_state_backup(destination).to_dict()), 201
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/recovery/backups/verify', methods=['POST'])
+def verify_state_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        source = _required_json_text(_json_object(), 'source')
+        return jsonify(sdk.verify_state_backup(source).to_dict())
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/recovery/restores', methods=['POST'])
+def restore_state_backup():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        source = _required_json_text(data, 'source')
+        destination = _required_json_text(data, 'destination')
+        return jsonify(sdk.restore_state_backup(source, destination).to_dict())
+    except Exception as exc:
+        return _data_error(exc)
+
+
+@app.route('/api/v1/recovery/restore-drills', methods=['POST'])
+def run_state_restore_drill():
+    if denied := _data_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        receipt = data.get('receipt')
+        workspace = data.get('workspace')
+        for field, value in (("receipt", receipt), ("workspace", workspace)):
+            if value is not None and (not isinstance(value, str) or not value.strip()):
+                raise ValueError(f"{field} must be non-empty text")
+        return jsonify(
+            sdk.run_state_restore_drill(
+                receipt=receipt,
+                workspace=workspace,
+            ).to_dict()
+        )
+    except Exception as exc:
+        return _data_error(exc)
+
+
 @app.route('/api/v1/simulate', methods=['POST'])
 def simulate():
     """Run a simulation.

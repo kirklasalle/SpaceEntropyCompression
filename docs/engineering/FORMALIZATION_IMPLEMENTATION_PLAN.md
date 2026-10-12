@@ -669,13 +669,23 @@ receipt writes. Issue #20 closed automatically when PR #21 merged. Exact-main
 CI run `38256202517`, Documentation run `38256202171`, Security run
 `38256202424` and OpenSSF Scorecard run `38256202902` then all passed.
 
+**Fourth lifecycle slice implemented locally (2026-10-12):** a versioned
+application-state backup now takes a consistent SQLite snapshot of durable runs
+and jobs, hashes every run artifact and prediction commitment, and preserves
+the validated knowledge graph with its schema. Verification rejects tampering,
+unsafe paths, invalid relationships and semantic corruption. Restore requires a
+new isolated destination; the automated drill measures one-hour RPO/four-hour
+RTO objectives, fails when the source changes, and atomically retains success
+or failure receipts. The authoritative SDK now powers matching CLI, Flask REST
+v1 and authenticated FastAPI REST v2 operations. A supported-version and
+deprecation contract now covers Python, Java, SDK, CLI, REST, stored schemas,
+datasets and scientific certificates.
+
 Planned sustained-operations increments:
 
-1. Supported-version and deprecation policy for Python, Java, REST, SDK,
-   schemas, datasets and scientific certificates.
-2. Performance and resource baselines for large covariance, catalog and
+1. Performance and resource baselines for large covariance, catalog and
    knowledge workloads, with regression thresholds that do not alter physics.
-3. Maintenance releases only through the protected release contract; new
+2. Maintenance releases only through the protected release contract; new
    physics claims require preregistration and the existing evidence lifecycle.
 
 **First-slice exit gate:** the replacement checks must pass on the migration
@@ -700,9 +710,9 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Extend isolated recovery drills to durable runs, prediction commitments and
-   scientific knowledge snapshots.
-2. Define the supported-version/deprecation contract before any 1.1 interface
-   or schema change.
+1. Run and remotely certify the application-state recovery and version-policy
+   slice through protected infrastructure.
+2. Establish performance and resource baselines for large covariance, catalog,
+   run-artifact and knowledge workloads.
 3. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
