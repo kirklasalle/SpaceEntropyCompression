@@ -628,16 +628,30 @@ contexts; only the four runner-derived names changed, and administrator
 enforcement, linear history, conversation resolution, and force-push/deletion
 blocking remain enabled.
 
-**Second lifecycle slice implemented locally (2026-10-11):** a monthly and
-manually dispatchable, read-only release-health rehearsal resolves an existing
-stable annotated tag, requires its source commit, release URL and confirmed
+**Second lifecycle slice completed (2026-10-12):** a monthly and manually
+dispatchable, read-only release-health rehearsal resolves an existing stable
+annotated tag, requires its source commit, release URL and confirmed
 post-publication DOI to match a protected archive registry, rebuilds its
 distributions without publication, verifies complete release checksums and
 exact tag/commit/workflow attestations, exercises the published wheel's doctor,
 SDK, REST v2 OpenAPI and packaged knowledge in an isolated environment, checks
 the version-specific DOI, and retains a 90-day machine-readable receipt.
-Workflow-governance tests enforce its schedule,
-read-only permissions, non-cancellation, and non-publishing contract.
+Workflow-governance tests enforce its schedule, protected-main source, scoped
+credentials, injection-safe input handling, read-only permissions,
+non-cancellation, and non-publishing contract.
+
+**Second lifecycle slice remote certification (2026-10-12):** protected PRs
+#16, #17 and #18 established and hardened the rehearsal without moving or
+republishing `v1.0.0`. The final implementation commit is
+`f2cf336ea1d66d2a303248797320153de58a2c17`; exact-main CI run `38189552997`,
+documentation run `38189553064`, security run `38189553039`, and OpenSSF
+Scorecard run `38189553041` all passed. Manual release-health run `38189560943`
+then passed every source-rebuild, checksum, provenance, isolated-wheel,
+doctor, SDK, REST v2, knowledge and DOI check against certified release commit
+`cdad211fa8a65ed61535f31a4681d82604b1c473`, and its downloaded 90-day receipt
+was independently verified. Failed runs `38185094841` and `38187930382` remain
+preserved as evidence of the post-tag DOI lifecycle boundary and the corrected
+shell-parser defect rather than being hidden or deleted.
 
 Planned sustained-operations increments:
 
@@ -672,11 +686,9 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Run and remotely certify the monthly release-health rehearsal against the
-   immutable 1.0.0 tag without republishing or moving it.
-2. Establish and measure recovery-time and recovery-point objectives for
+1. Establish and measure recovery-time and recovery-point objectives for
    observational data, runs, predictions and scientific knowledge.
-3. Define the supported-version/deprecation contract before any 1.1 interface
+2. Define the supported-version/deprecation contract before any 1.1 interface
    or schema change.
-4. Continue scientific work only through preregistered predictions,
+3. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.

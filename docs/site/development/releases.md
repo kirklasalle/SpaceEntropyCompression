@@ -64,6 +64,13 @@ no tag movement, repository push, release creation, package upload, or archival
 publication step. A failed rehearsal is a maintenance incident; correct the
 cause through protected `main` without altering the published tag or its assets.
 
+The first certified rehearsal, run `38189560943`, verified `v1.0.0` against
+source commit `cdad211fa8a65ed61535f31a4681d82604b1c473` and DOI
+`10.5281/zenodo.23304395`. It passed the complete contract and retained a
+machine-readable receipt. Earlier failed rehearsals remain in the workflow
+history as auditable evidence of the corrected DOI-lifecycle and shell-parser
+failures.
+
 ## Zenodo boundary
 
 Zenodo confirmed the version-specific EMRF 1.0.0 archive as
