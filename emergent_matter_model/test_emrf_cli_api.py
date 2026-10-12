@@ -364,13 +364,19 @@ def test_api_job_mutation_disabled_by_default(client, monkeypatch):
     }).status_code == 403
 
 
-def test_api_datasets_and_doctor(client):
+def test_api_datasets_and_doctor(client, monkeypatch):
+    monkeypatch.delenv("EMRF_OFFSITE_BACKUP_DIR", raising=False)
     datasets = client.get("/api/v1/datasets").get_json()["datasets"]
     assert "sparc-rotation-curves" in {row["id"] for row in datasets}
     detail = client.get("/api/v1/datasets/sparc-rotation-curves").get_json()
     assert detail["catalog"]["id"] == "sparc-rotation-curves"
     rep = client.get("/api/v1/doctor").get_json()
     assert "executable" not in rep and rep["registered_commands"] == len(reg.COMMANDS)
+    assert rep["offsite_backup_destination_configured"] is False
+
+    monkeypatch.setenv("EMRF_OFFSITE_BACKUP_DIR", "independent-backup-root")
+    rep = client.get("/api/v1/doctor").get_json()
+    assert rep["offsite_backup_destination_configured"] is True
 
 
 def test_api_physics_verification(client):

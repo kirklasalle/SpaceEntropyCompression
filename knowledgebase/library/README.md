@@ -85,11 +85,12 @@ immutable holding conflicts. `backup-offsite` uses `EMRF_OFFSITE_BACKUP_DIR`
 or an explicit independent root; it never stores provider credentials and
 rejects destinations inside the managed data root. `data drill` creates a
 temporary backup, restores it into an empty store, fully verifies every object
-and holding, cleans its workspace, and writes an immutable JSON receipt. Keep
-at least one physical off-site copy and perform the quarterly restore drill
-required by the engineering plan. Reviewed receipts are retained under
-`knowledgebase/library/drills/`.
-
+and holding, cleans its workspace, and writes an immutable JSON receipt. No
+physical off-site destination is configured as of 2026-10-12, so the 3-2-1
+requirement remains unmet despite passing local recovery drills. Keep at least
+one physical off-site copy once an independent destination is available and
+perform the quarterly restore drill required by the engineering plan. Reviewed
+receipts are retained under `knowledgebase/library/drills/`.
 Matching REST endpoints are documented in `emergent_matter_model/openapi.yaml`.
 All data-changing REST operations are disabled unless a trusted server is
 started with `EMRF_API_ALLOW_DATA_WRITE=1`.
@@ -97,8 +98,11 @@ started with `EMRF_API_ALLOW_DATA_WRITE=1`.
 ## Authoritative source families
 
 The catalog links to SPARC, Pantheon+, DESI, DES-SN5YR, Union3, the Planck
-Legacy Archive, GWOSC, Gaia wide-binary releases and NIST CODATA. Software
-links point to each project's official documentation or repository.
+Legacy Archive, GWOSC, Gaia wide-binary releases and NIST CODATA. The Chae
+Gaia DR3 200 pc sample and its revised method materials are exact managed
+holdings from Zenodo record `8270396`; this source qualification is not itself
+an EMRF observational result. Software links point to each project's official
+documentation or repository.
 
-Last research review: 2026-10-09. Metadata marked `needs_confirmation` must be
+Last research review: 2026-10-12. Metadata marked `needs_confirmation` must be
 checked again before it is used in automated acquisition.

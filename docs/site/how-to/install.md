@@ -19,6 +19,11 @@ For a runtime-only installation, install the wheel without `[dev]`.
 - `EMRF_PROJECT_ROOT`: explicit source checkout.
 - `EMRF_OFFSITE_BACKUP_DIR`: provider-neutral off-site backup destination.
 
+`emrf doctor` reports whether an off-site destination is configured. This is
+advisory and does not claim that a physical copy exists or has passed a restore
+drill. Until an independent destination is supplied, continue local verified
+backups and restore drills but treat the 3-2-1 off-site requirement as unmet.
+
 Never place API bearer tokens in source files. `EMRF_API_V2_TOKEN` is read at
 runtime and is deliberately excluded from support reports.
 

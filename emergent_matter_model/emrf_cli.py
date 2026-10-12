@@ -411,6 +411,12 @@ def cmd_doctor(a: argparse.Namespace) -> int:
                 print(f"  {name:<12} {ver or 'NOT INSTALLED'}")
         print(f"registered commands: {rep['registered_commands']}; "
               f"missing scripts: {rep['missing_scripts'] or 'none'}")
+        print(
+            "off-site backup destination:",
+            "CONFIGURED"
+            if rep["offsite_backup_destination_configured"]
+            else "NOT CONFIGURED (advisory)",
+        )
         print("status:", "HEALTHY" if rep["healthy"] else "ATTENTION NEEDED")
         if support_report is not None:
             print(f"support report: {support_report.path}")

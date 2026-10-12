@@ -476,6 +476,9 @@ def environment_report() -> dict:
     optional = {d: _dist_version(d) for d in OPTIONAL_DEPENDENCIES}
     missing_scripts = [c.name for c in COMMANDS if not c.available and not c.source_only]
     source_only_unavailable = [c.name for c in COMMANDS if not c.available and c.source_only]
+    offsite_backup_destination_configured = bool(
+        os.environ.get("EMRF_OFFSITE_BACKUP_DIR")
+    )
     py_ok = sys.version_info >= (3, 10)
     return {
         "emrf_version": __version__,
@@ -493,5 +496,8 @@ def environment_report() -> dict:
         "app_root": str(REPO_ROOT),
         "data_root": str(data_root()),
         "manifest_present": MANIFEST.is_file(),
+        "offsite_backup_destination_configured": (
+            offsite_backup_destination_configured
+        ),
         "healthy": py_ok and not missing_scripts and all(core.values()),
     }
