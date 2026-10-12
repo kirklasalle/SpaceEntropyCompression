@@ -34,6 +34,9 @@ jobs:
           REQUESTED_TAG: ${{ inputs.tag }}
         run: |
           set -euo pipefail
+          git fetch origin main --no-tags
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
           requested="$REQUESTED_TAG"
           if [[ -z "$requested" ]]; then
             requested="$(gh release view --json tagName --jq .tagName)"
