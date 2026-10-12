@@ -83,6 +83,34 @@ Never run destructive recovery experiments against the only copy of research
 data. Production-scale rehearsals must restore into an explicitly isolated
 destination and preserve the source backup unchanged.
 
+## Periodic operational certification
+
+The read-only `Operational certification` workflow runs monthly and may also
+be dispatched manually from protected `main`. It creates controlled non-empty
+state containing one observational holding, one durable run and artifact, one
+queued job, and one prediction commitment. It then:
+
+1. runs the isolated observational-data recovery drill;
+2. runs the isolated application-state recovery drill;
+3. enforces the standard performance and resource baseline; and
+4. retains the individual recovery receipts and combined machine-readable
+   summary for 90 days, including evidence from failed drills.
+
+The workflow refuses to certify any commit other than the current protected
+`main` commit, has read-only repository permissions, never publishes a release,
+and does not replace production-scale off-site recovery exercises. Immutable
+release and DOI health remain independently rehearsed by the monthly
+`Release health` workflow.
+
+For a local controlled rehearsal:
+
+```text
+python tools/run_operational_certification.py \
+  --workspace operational-certification \
+  --receipt operational-certification/evidence/summary.json \
+  --profile standard --repeats 2
+```
+
 ## Incident handling
 
 - Treat an exceeded objective, invalid hash, incomplete relationship or
