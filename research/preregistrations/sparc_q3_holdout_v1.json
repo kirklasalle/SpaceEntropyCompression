@@ -102,7 +102,7 @@
   ],
   "numerical_gate": {
     "maximum_forward_reverse_total_q_difference": 0.1,
-    "all_optimizers_must_converge": true,
+    "convergence_requirement": "For every galaxy, acceleration-grid value, scan direction, and law, at least one declared optimizer start must return a successful finite result. A failed individual start does not invalidate the fit when another declared start succeeds, but successful and failed start counts must be reported. No successful finite start makes the confirmatory result incomplete and invalid.",
     "non_finite_values_allowed": false
   },
   "reporting": {

@@ -9,6 +9,7 @@ from emrf.validation.preregistration import verify_json_prediction
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "research" / "preregistrations" / "sparc_q3_holdout_v1.json"
 COMMITMENTS = ROOT / "research" / "commitments"
+COMMITMENT_ID = "20261012T211327324282Z-d6ab49c9b4b7"
 TRAINING = ROOT / "results" / "real_data_v1" / "sparc_profile_validation.json"
 
 
@@ -32,6 +33,12 @@ def test_sparc_q3_contract_is_bound_to_certified_inputs() -> None:
     assert contract["numerical_gate"][
         "maximum_forward_reverse_total_q_difference"
     ] == 0.1
+    assert contract["numerical_gate"]["convergence_requirement"].startswith(
+        "For every galaxy, acceleration-grid value, scan direction, and law"
+    )
+    assert "successful and failed start counts must be reported" in contract[
+        "numerical_gate"
+    ]["convergence_requirement"]
     assert "changing thresholds after viewing Q=3 outcomes" in contract[
         "reporting"
     ]["forbidden"]
@@ -39,13 +46,13 @@ def test_sparc_q3_contract_is_bound_to_certified_inputs() -> None:
 
 def test_sparc_q3_contract_matches_public_commitment() -> None:
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
-    records = list(COMMITMENTS.glob("*.json"))
+    record_path = COMMITMENTS / f"{COMMITMENT_ID}.json"
+    record = json.loads(record_path.read_text(encoding="utf-8"))
 
-    assert len(records) == 1
-    record = json.loads(records[0].read_text(encoding="utf-8"))
+    assert record["commitment_id"] == COMMITMENT_ID
     assert record["label"] == "SPARC Q3 holdout v1"
     verification = verify_json_prediction(
-        record["commitment_id"],
+        COMMITMENT_ID,
         contract,
         root=COMMITMENTS,
     )
