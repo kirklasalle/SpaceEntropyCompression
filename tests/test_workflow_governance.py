@@ -198,7 +198,13 @@ def test_release_health_is_read_only_and_non_publishing() -> None:
     assert "RELEASE_DOI=$release_doi" in resolver["run"]
     assert "RELEASE_URL=$expected_url" in resolver["run"]
     assert "re.fullmatch" in resolver["run"]
-    assert '[[ "$release_doi" =~' not in resolver["run"]
+    assert (
+        re.search(
+            r"\[\[[^\n]*\brelease_doi\b[^\n]*=~",
+            resolver["run"],
+        )
+        is None
+    )
     assert "CITATION.cff" not in resolver["run"]
 
     for prohibited in (
