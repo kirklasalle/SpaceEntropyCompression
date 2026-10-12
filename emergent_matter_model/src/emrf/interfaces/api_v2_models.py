@@ -39,6 +39,7 @@ class EnvironmentReport(APIModel):
     app_root: str
     data_root: str
     manifest_present: bool
+    offsite_backup_destination_configured: bool
     healthy: bool
 
 

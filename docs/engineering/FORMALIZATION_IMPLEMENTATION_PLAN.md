@@ -219,6 +219,12 @@ in `knowledgebase/library/drills/restore-2026-10-09.json`. A physical off-site
 copy still requires the owner or operator to supply a mounted, synchronized or
 provider-backed destination.
 
+**Physical off-site status confirmed (2026-10-12):** no physical off-site copy
+or independent destination exists yet. Local and isolated restore
+certifications remain valid, but they do not satisfy the 3-2-1 off-site
+requirement. Environment diagnostics report whether a destination is
+configured without treating configuration as proof that a copy exists.
+
 **Exit gate:** every dataset used by any result is in the catalog with
 licence, citation and verified hash; kill-during-fetch and corrupted-byte
 tests pass; restore drill succeeds; preservation gate.
@@ -758,6 +764,26 @@ comparator screen was also **rejected**: its `1.15e-10 m/s²` minimum lies
 outside `[1.22152425035699e-10, 1.2557224809968e-10] m/s²`. These are
 conditional same-catalogue lower-quality holdout outcomes, not calibrated
 significance, blind discovery, or independent replication.
+
+**Independent-survey source qualification started (2026-10-12):** Gaia DR3
+wide binaries were selected over THINGS/LITTLE THINGS and DES-SN5YR because
+they are independent of SPARC in instrument, physical scale and reduction and
+map to an external-field acceleration question already represented by an
+illustrative repository model. The authoritative Chae (2023) 200 pc sample,
+revised analysis materials, Newtonian-control generator and mass–magnitude
+relations are pinned from CC BY 4.0 Zenodo record `8270396`. All 12 exact
+holdings are present in the managed store; the complete library verifies 25
+holdings with no failures. No new observational outcome has been computed.
+
+The next gate is method and model qualification, not immediate fitting. The
+published selection/deprojection/control method must be independently
+reproduced with deterministic diagnostics, and the repository's current
+hard-coded wide-binary stress test must not be promoted into an EMRF prediction
+without derivation or explicit phenomenological classification. Only then may
+cuts, nuisance treatment, external-field model, comparators, numerical gates,
+primary statistic and rejection region be frozen in a new immutable
+commitment. The design and evidence limits are recorded in
+`docs/research/GAIA_WIDE_BINARY_STUDY_DESIGN.md`.
 
 ---
 
