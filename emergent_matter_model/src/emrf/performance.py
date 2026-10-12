@@ -9,6 +9,7 @@ import math
 import platform
 import statistics
 import tempfile
+import threading
 import time
 import tracemalloc
 from collections.abc import Callable, Mapping, Sequence
@@ -32,6 +33,7 @@ _DIMENSIONS = {
     "run_artifacts": {"artifacts", "artifact_bytes"},
     "knowledge": {"nodes"},
 }
+_BASELINE_LOCK = threading.Lock()
 
 
 class PerformanceBaselineRunner:
@@ -52,11 +54,25 @@ class PerformanceBaselineRunner:
         repeats: int | None = None,
         workloads: Sequence[str] | None = None,
     ) -> dict[str, Any]:
+        with _BASELINE_LOCK:
+            return self._run_serialized(
+                profile=profile,
+                repeats=repeats,
+                workloads=workloads,
+            )
+
+    def _run_serialized(
+        self,
+        *,
+        profile: str,
+        repeats: int | None,
+        workloads: Sequence[str] | None,
+    ) -> dict[str, Any]:
         profiles = self._baseline["profiles"]
         if profile not in profiles:
             raise ValueError(f"Unknown performance profile: {profile}")
         profile_config = profiles[profile]
-        selected = tuple(workloads or _WORKLOADS)
+        selected = _WORKLOADS if workloads is None else tuple(workloads)
         if (
             not selected
             or len(selected) != len(set(selected))
@@ -153,16 +169,23 @@ def _measure(
     results: list[dict[str, Any]] = []
     for _ in range(repeats):
         gc.collect()
-        tracemalloc.start()
+        tracer_was_running = tracemalloc.is_tracing()
+        starting_current = 0
+        if tracer_was_running:
+            starting_current, _ = tracemalloc.get_traced_memory()
+        else:
+            tracemalloc.start()
         started = time.perf_counter()
         try:
             result = operation()
         finally:
             duration = time.perf_counter() - started
             _, peak = tracemalloc.get_traced_memory()
-            tracemalloc.stop()
+            measured_peak = max(0, peak - starting_current)
+            if not tracer_was_running:
+                tracemalloc.stop()
         durations.append(duration)
-        peaks.append(peak)
+        peaks.append(measured_peak)
         results.append(result)
     canonical = {
         json.dumps(result, sort_keys=True, separators=(",", ":"))
@@ -279,26 +302,32 @@ def _prepare_artifacts(
     artifact_bytes = dimensions["artifact_bytes"]
     root = workspace / "run"
     payload = b"x" * artifact_bytes
+    expected_paths: list[str] = []
     for index in range(count):
-        path = root / f"group-{index % 20:02d}" / f"artifact-{index:06d}.bin"
+        relative = f"group-{index % 20:02d}/artifact-{index:06d}.bin"
+        path = root.joinpath(*relative.split("/"))
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
+        expected_paths.append(relative)
+    expected_paths.sort()
 
     def scan() -> dict[str, Any]:
         artifacts = scan_artifacts(root)
+        paths = [record.path for record in artifacts]
         return {
             "artifacts": len(artifacts),
             "total_bytes": sum(record.bytes for record in artifacts),
-            "first_path": artifacts[0].path,
-            "last_path": artifacts[-1].path,
+            "path_order_sha256": hashlib.sha256(
+                "\n".join(paths).encode("utf-8")
+            ).hexdigest(),
         }
 
-    ordered = scan_artifacts(root)
     expected = {
         "artifacts": count,
         "total_bytes": count * artifact_bytes,
-        "first_path": ordered[0].path,
-        "last_path": ordered[-1].path,
+        "path_order_sha256": hashlib.sha256(
+            "\n".join(expected_paths).encode("utf-8")
+        ).hexdigest(),
     }
     return scan, count * artifact_bytes, expected
 

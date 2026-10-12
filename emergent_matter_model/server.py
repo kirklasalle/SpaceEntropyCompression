@@ -285,6 +285,8 @@ def run_performance_baseline():
                 workloads=None if workloads is None else tuple(workloads),
             ).to_dict()
         )
+    except OperationUnavailableError as exc:
+        return jsonify({'error': str(exc)}), 503
     except Exception as exc:
         return _data_error(exc)
 
