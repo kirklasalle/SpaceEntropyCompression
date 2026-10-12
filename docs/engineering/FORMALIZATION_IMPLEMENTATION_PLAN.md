@@ -669,17 +669,22 @@ receipt writes. Issue #20 closed automatically when PR #21 merged. Exact-main
 CI run `38256202517`, Documentation run `38256202171`, Security run
 `38256202424` and OpenSSF Scorecard run `38256202902` then all passed.
 
-**Fourth lifecycle slice implemented locally (2026-10-12):** a versioned
+**Fourth lifecycle slice remotely certified (2026-10-12):** protected PR #23
+merged as `5fd8418f509cf89efa03d6a64b677ac5d4b9203a`. A versioned
 application-state backup now takes a consistent SQLite snapshot of durable runs
 and jobs, hashes every run artifact and prediction commitment, and preserves
 the validated knowledge graph with its schema. Verification rejects tampering,
-unsafe paths, invalid relationships and semantic corruption. Restore requires a
-new isolated destination; the automated drill measures one-hour RPO/four-hour
-RTO objectives, fails when the source changes, and atomically retains success
-or failure receipts. The authoritative SDK now powers matching CLI, Flask REST
-v1 and authenticated FastAPI REST v2 operations. A supported-version and
-deprecation contract now covers Python, Java, SDK, CLI, REST, stored schemas,
-datasets and scientific certificates.
+unsafe paths, false component summaries, malformed records and semantic
+corruption. Exclusive destination reservations and final existence checks keep
+backup and restore publication non-destructive under concurrent callers.
+Restore requires a new isolated destination; the automated drill measures
+one-hour RPO/four-hour RTO objectives, fails when the source changes, and
+atomically retains success or failure receipts. The authoritative SDK now
+powers matching CLI, Flask REST v1 and authenticated FastAPI REST v2 operations.
+A supported-version and deprecation contract now covers Python, Java, SDK, CLI,
+REST, stored schemas, datasets and scientific certificates. Exact-main CI run
+`38278148172`, Documentation run `38278148218`, Security run `38278148336` and
+OpenSSF Scorecard run `38278148473` all passed.
 
 Planned sustained-operations increments:
 
@@ -710,9 +715,7 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Run and remotely certify the application-state recovery and version-policy
-   slice through protected infrastructure.
-2. Establish performance and resource baselines for large covariance, catalog,
+1. Establish performance and resource baselines for large covariance, catalog,
    run-artifact and knowledge workloads.
-3. Continue scientific work only through preregistered predictions,
+2. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
