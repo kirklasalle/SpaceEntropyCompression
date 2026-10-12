@@ -10,7 +10,7 @@ Emergent Matter Research Framework (EMRF) command-line interface
 
 ```text
 usage: emrf [-h] [--version]
-            {list,run,simulate,data,recovery,runs,jobs,kb,doctor,verify,predict,serve,test}
+            {list,run,simulate,data,recovery,performance,runs,jobs,kb,doctor,verify,predict,serve,test}
             ...
 ```
 
@@ -283,6 +283,46 @@ usage: emrf recovery drill [-h] [--receipt RECEIPT] [--workspace WORKSPACE]
 |---|---:|---|
 | `--receipt` | No |  |
 | `--workspace` | No |  |
+
+### `emrf performance`
+
+Supported EMRF command.
+
+```text
+usage: emrf performance [-h] {run,check} ...
+```
+
+#### `emrf performance run`
+
+Supported EMRF command.
+
+```text
+usage: emrf performance run [-h] [--profile {test,standard}]
+                            [--repeats REPEATS]
+                            [--workload {covariance,catalog,run_artifacts,knowledge}]
+```
+
+| Argument | Required | Description |
+|---|---:|---|
+| `--profile` | No |  |
+| `--repeats` | No |  |
+| `--workload` | No | limit execution; repeat the option to select multiple workloads |
+
+#### `emrf performance check`
+
+Supported EMRF command.
+
+```text
+usage: emrf performance check [-h] [--profile {test,standard}]
+                              [--repeats REPEATS]
+                              [--workload {covariance,catalog,run_artifacts,knowledge}]
+```
+
+| Argument | Required | Description |
+|---|---:|---|
+| `--profile` | No |  |
+| `--repeats` | No |  |
+| `--workload` | No | limit execution; repeat the option to select multiple workloads |
 
 ### `emrf runs`
 

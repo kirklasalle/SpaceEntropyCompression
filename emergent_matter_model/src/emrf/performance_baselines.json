@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_version": "2026.10.1",
+  "reference_observation": {
+    "observed_utc": "2026-10-12",
+    "platform": "Windows AMD64, CPython 3.12.10",
+    "repeats": 2,
+    "measurements": {
+      "covariance": {
+        "median_seconds": 0.0081,
+        "peak_python_bytes": 17368,
+        "fixture_bytes": 2105344
+      },
+      "catalog": {
+        "median_seconds": 0.192,
+        "peak_python_bytes": 3189516,
+        "fixture_bytes": 622819
+      },
+      "run_artifacts": {
+        "median_seconds": 2.938,
+        "peak_python_bytes": 3136316,
+        "fixture_bytes": 8192000
+      },
+      "knowledge": {
+        "median_seconds": 1.646,
+        "peak_python_bytes": 2430904,
+        "fixture_bytes": 788608
+      }
+    }
+  },
+  "profiles": {
+    "test": {
+      "default_repeats": 1,
+      "workloads": {
+        "covariance": {
+          "dimensions": {"matrix_size": 64},
+          "thresholds": {
+            "max_median_seconds": 2.0,
+            "max_peak_python_bytes": 4194304,
+            "max_fixture_bytes": 1048576
+          }
+        },
+        "catalog": {
+          "dimensions": {"datasets": 50},
+          "thresholds": {
+            "max_median_seconds": 2.0,
+            "max_peak_python_bytes": 8388608,
+            "max_fixture_bytes": 1048576
+          }
+        },
+        "run_artifacts": {
+          "dimensions": {"artifacts": 50, "artifact_bytes": 128},
+          "thresholds": {
+            "max_median_seconds": 2.0,
+            "max_peak_python_bytes": 8388608,
+            "max_fixture_bytes": 1048576
+          }
+        },
+        "knowledge": {
+          "dimensions": {"nodes": 50},
+          "thresholds": {
+            "max_median_seconds": 3.0,
+            "max_peak_python_bytes": 16777216,
+            "max_fixture_bytes": 2097152
+          }
+        }
+      }
+    },
+    "standard": {
+      "default_repeats": 3,
+      "workloads": {
+        "covariance": {
+          "dimensions": {"matrix_size": 512},
+          "thresholds": {
+            "max_median_seconds": 2.0,
+            "max_peak_python_bytes": 8388608,
+            "max_fixture_bytes": 3145728
+          }
+        },
+        "catalog": {
+          "dimensions": {"datasets": 2500},
+          "thresholds": {
+            "max_median_seconds": 3.0,
+            "max_peak_python_bytes": 33554432,
+            "max_fixture_bytes": 1048576
+          }
+        },
+        "run_artifacts": {
+          "dimensions": {"artifacts": 2000, "artifact_bytes": 4096},
+          "thresholds": {
+            "max_median_seconds": 12.0,
+            "max_peak_python_bytes": 33554432,
+            "max_fixture_bytes": 10485760
+          }
+        },
+        "knowledge": {
+          "dimensions": {"nodes": 1200},
+          "thresholds": {
+            "max_median_seconds": 8.0,
+            "max_peak_python_bytes": 33554432,
+            "max_fixture_bytes": 2097152
+          }
+        }
+      }
+    }
+  }
+}

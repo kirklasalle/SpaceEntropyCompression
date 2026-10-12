@@ -9,6 +9,44 @@ info:
 servers:
   - url: http://127.0.0.1:5000
 paths:
+  /api/v1/performance/baselines:
+    post:
+      summary: Measure deterministic performance and resource baselines
+      operationId: runPerformanceBaseline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile:
+                  type: string
+                  enum: [test, standard]
+                  default: standard
+                repeats:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                workloads:
+                  type: array
+                  uniqueItems: true
+                  items:
+                    type: string
+                    enum: [covariance, catalog, run_artifacts, knowledge]
+      responses:
+        '200':
+          description: Performance baseline report
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request
+        '403':
+          description: Command execution disabled
+        '503':
+          description: Baseline execution unavailable
   /api/v1/health:
     get:
       summary: Service health check

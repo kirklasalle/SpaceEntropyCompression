@@ -374,6 +374,27 @@ class EMRFClient:
             }
         )
 
+    def run_performance_baseline(
+        self,
+        *,
+        profile: str = "standard",
+        repeats: int | None = None,
+        workloads: tuple[str, ...] | None = None,
+    ) -> OperationResult:
+        from emrf.performance import PerformanceBaselineRunner
+
+        try:
+            result = PerformanceBaselineRunner().run(
+                profile=profile,
+                repeats=repeats,
+                workloads=workloads,
+            )
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(str(exc)) from exc
+        return OperationResult(result)
+
     def commit_json_prediction(
         self,
         prediction: Any,
@@ -564,23 +585,19 @@ class EMRFClient:
         return RunInfo.from_mapping(public_record(record))
 
     def list_artifacts(self, run_id: str) -> ArtifactListResponse:
+        from emrf.runs.artifacts import scan_artifacts
+
         root = self._run_path(run_id)
-        artifacts: list[ArtifactInfo] = []
-        for path in sorted(root.rglob("*")):
-            if not path.is_file() or path.is_symlink():
-                continue
-            resolved = path.resolve()
-            if root not in resolved.parents:
-                continue
-            artifacts.append(
+        return ArtifactListResponse(
+            tuple(
                 ArtifactInfo(
-                    path=path.relative_to(root).as_posix(),
-                    bytes=path.stat().st_size,
-                    media_type=mimetypes.guess_type(path.name)[0]
-                    or "application/octet-stream",
+                    path=record.path,
+                    bytes=record.bytes,
+                    media_type=record.media_type,
                 )
+                for record in scan_artifacts(root)
             )
-        return ArtifactListResponse(tuple(artifacts))
+        )
 
     def get_artifact(self, run_id: str, relative_path: str) -> ArtifactContent:
         root = self._run_path(run_id)

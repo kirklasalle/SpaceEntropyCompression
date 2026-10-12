@@ -38,6 +38,7 @@ contract at `/api/v2/openapi.json`.
 | `POST` | `/api/v2/knowledge/sources` | Required | knowledge |
 | `GET` | `/api/v2/knowledge/validate` | No | knowledge |
 | `GET` | `/api/v2/knowledge/{node_id}` | No | knowledge |
+| `POST` | `/api/v2/performance/baselines` | Required | performance |
 | `POST` | `/api/v2/predictions/commit` | Required | predictions |
 | `GET` | `/api/v2/predictions/{commitment_id}` | No | predictions |
 | `POST` | `/api/v2/predictions/{commitment_id}/verify` | No | predictions |
@@ -86,6 +87,7 @@ require `EMRF_API_V2_TOKEN` and a matching bearer token.
 - `OffsiteBackupRequest`
 - `OperationResponse`
 - `PathRequest`
+- `PerformanceRequest`
 - `PredictionCommitRequest`
 - `PredictionCommitment`
 - `PredictionVerification`

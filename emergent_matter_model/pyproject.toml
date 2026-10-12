@@ -110,6 +110,7 @@ emrf = "src/emrf"
 "emrf.validation" = "src/emrf/validation"
 
 [tool.setuptools.package-data]
+"emrf" = ["performance_baselines.json"]
 "emrf.data" = ["data_catalog.json"]
 "emrf.knowledge" = ["graph_memory.json", "graph_memory.schema.json"]
 

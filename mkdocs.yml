@@ -35,6 +35,7 @@ nav:
       - Extension tutorial: development/extensions.md
       - Release engineering: development/releases.md
       - Recovery objectives: development/recovery.md
+      - Performance baselines: development/performance.md
       - Supported versions: development/versions.md
       - ADRs: development/adrs.md
   - Support: support.md

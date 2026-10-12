@@ -49,6 +49,7 @@ from .api_v2_models import (
     OffsiteBackupRequest,
     OperationResponse,
     PathRequest,
+    PerformanceRequest,
     PredictionCommitment,
     PredictionCommitRequest,
     PredictionVerification,
@@ -277,6 +278,31 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     )
     def doctor(request: Request) -> EnvironmentReport:
         return EnvironmentReport(**_sdk(request).environment_report().to_dict())
+
+    @application.post(
+        "/api/v2/performance/baselines",
+        response_model=OperationResponse,
+        responses=_error_responses(400, 401, 403, 422, 503),
+        tags=["performance"],
+        dependencies=[Depends(_require_execution_token)],
+    )
+    def run_performance_baseline(
+        payload: PerformanceRequest,
+        request: Request,
+    ) -> OperationResponse:
+        return OperationResponse(
+            root=_sdk(request)
+            .run_performance_baseline(
+                profile=payload.profile,
+                repeats=payload.repeats,
+                workloads=(
+                    None
+                    if payload.workloads is None
+                    else tuple(payload.workloads)
+                ),
+            )
+            .to_dict()
+        )
 
     @application.get(
         "/api/v2/commands",

@@ -381,6 +381,18 @@ def cmd_recovery(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_performance(a: argparse.Namespace) -> int:
+    result = sdk.run_performance_baseline(
+        profile=a.profile,
+        repeats=a.repeats,
+        workloads=None if a.workload is None else tuple(a.workload),
+    ).to_dict()
+    _print_json(result)
+    if a.performance_command == "check" and not result["passed"]:
+        return 1
+    return 0
+
+
 def cmd_doctor(a: argparse.Namespace) -> int:
     rep = sdk.environment_report(include_executable=True).to_dict()
     support_report = None
@@ -604,6 +616,30 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--receipt")
     r.add_argument("--workspace")
     r.set_defaults(func=cmd_recovery)
+
+    s = sub.add_parser(
+        "performance",
+        help="measure deterministic performance and resource baselines",
+    )
+    performance = s.add_subparsers(dest="performance_command", required=True)
+    for command, help_text in (
+        ("run", "measure workloads and report regressions"),
+        ("check", "fail when a workload exceeds its certified baseline"),
+    ):
+        baseline = performance.add_parser(command, help=help_text)
+        baseline.add_argument(
+            "--profile",
+            choices=("test", "standard"),
+            default="standard",
+        )
+        baseline.add_argument("--repeats", type=int)
+        baseline.add_argument(
+            "--workload",
+            action="append",
+            choices=("covariance", "catalog", "run_artifacts", "knowledge"),
+            help="limit execution; repeat the option to select multiple workloads",
+        )
+        baseline.set_defaults(func=cmd_performance)
 
     s = sub.add_parser("runs", help="inspect and resume durable scientific runs")
     rsub = s.add_subparsers(dest="runs_command", required=True)

@@ -13,6 +13,9 @@ Application-state backup, verification, isolated restore, and drills use
 write backup or receipt paths. REST v1 remains unauthenticated compatibility
 infrastructure and must not be exposed directly to an untrusted network.
 
+Performance baseline execution uses `EMRF_API_ALLOW_RUN=1`. It is deterministic
+but intentionally resource intensive, so expose it only to trusted operators.
+
 ## REST v2
 
 FastAPI v2 is served from the ASGI application:
@@ -34,5 +37,7 @@ and audit logging.
 
 All `/api/v2/recovery/*` operations require the bearer token, including
 verification, because callers can select server-side filesystem paths.
+`POST /api/v2/performance/baselines` also requires the token and should be
+protected by reverse-proxy request and concurrency limits.
 
 See the generated [REST v2 reference](../reference/api-v2.md).

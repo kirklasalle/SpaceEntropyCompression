@@ -686,11 +686,21 @@ REST, stored schemas, datasets and scientific certificates. Exact-main CI run
 `38278148172`, Documentation run `38278148218`, Security run `38278148336` and
 OpenSSF Scorecard run `38278148473` all passed.
 
+**Fifth lifecycle slice implemented locally (2026-10-12):** versioned,
+deterministic performance and resource baselines now cover a 512 x 512
+covariance solve, 2,500 catalog records, 2,000 run artifacts and a 1,200-node
+knowledge graph. Each workload records elapsed-time distributions, Python peak
+allocation, fixture or native-array bytes, platform provenance and exact
+scientific/software invariants. The authoritative SDK powers matching CLI,
+gated Flask REST v1 and authenticated FastAPI REST v2 operations. A dedicated
+Ubuntu 24.04 / Python 3.12 CI job enforces evidence-based thresholds without
+changing physics, tolerances or evidence classifications. The baseline update
+policy requires before-and-after evidence, a new version and the complete
+golden matrix.
+
 Planned sustained-operations increments:
 
-1. Performance and resource baselines for large covariance, catalog and
-   knowledge workloads, with regression thresholds that do not alter physics.
-2. Maintenance releases only through the protected release contract; new
+1. Maintenance releases only through the protected release contract; new
    physics claims require preregistration and the existing evidence lifecycle.
 
 **First-slice exit gate:** the replacement checks must pass on the migration
@@ -715,7 +725,7 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Establish performance and resource baselines for large covariance, catalog,
-   run-artifact and knowledge workloads.
+1. Remotely certify the performance and resource baseline slice through
+   protected infrastructure.
 2. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.

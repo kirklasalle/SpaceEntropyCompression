@@ -11,8 +11,8 @@ print(client.environment_report().to_dict())
 
 Operation families include command execution, runs, jobs, artifacts,
 verification, datasets, backup/restore, predictions, simulation, scientific
-knowledge, and support reports. Request and response values are immutable
-dataclasses exported from `emrf.sdk`.
+knowledge, deterministic performance baselines, and support reports. Request
+and response values are immutable dataclasses exported from `emrf.sdk`.
 
 ## Error contract
 

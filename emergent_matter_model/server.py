@@ -258,6 +258,37 @@ def doctor():
     return jsonify(sdk.environment_report().to_dict())
 
 
+@app.route('/api/v1/performance/baselines', methods=['POST'])
+def run_performance_baseline():
+    if denied := _run_write_denied():
+        return denied
+    try:
+        data = _json_object()
+        profile = data.get('profile', 'standard')
+        repeats = data.get('repeats')
+        workloads = data.get('workloads')
+        if not isinstance(profile, str):
+            raise ValueError("profile must be text")
+        if repeats is not None and (
+            isinstance(repeats, bool) or not isinstance(repeats, int)
+        ):
+            raise ValueError("repeats must be an integer")
+        if workloads is not None and (
+            not isinstance(workloads, list)
+            or not all(isinstance(item, str) for item in workloads)
+        ):
+            raise ValueError("workloads must be a list of strings")
+        return jsonify(
+            sdk.run_performance_baseline(
+                profile=profile,
+                repeats=repeats,
+                workloads=None if workloads is None else tuple(workloads),
+            ).to_dict()
+        )
+    except Exception as exc:
+        return _data_error(exc)
+
+
 @app.route('/api/v1/verification/physics', methods=['GET'])
 def verify_physics():
     """Run read-only foundational physics known-limit checks."""
