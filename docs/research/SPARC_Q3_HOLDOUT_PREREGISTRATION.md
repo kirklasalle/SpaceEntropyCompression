@@ -3,8 +3,16 @@
 - **Study:** `sparc-q3-holdout-v1`
 - **Status:** preregistered before computing the Q=3 profiles
 - **Authoritative contract:** `research/preregistrations/sparc_q3_holdout_v1.json`
-- **Commitment:** `20261012T205817322791Z-806cce833d62`
-- **Canonical JSON SHA-256:** `806cce833d62fa2349c5b19a0638e62991e33ed19f05cd65b15de147352fbbb0`
+- **Current commitment:** `20261012T211327324282Z-d6ab49c9b4b7`
+- **Canonical JSON SHA-256:** `d6ab49c9b4b7ecdc50bad2a57b5018ccffd0736bafcc7d61a59472e38614a602`
+- **Superseded pre-outcome commitment:** `20261012T205817322791Z-806cce833d62`
+
+The first commitment remains preserved. Review found that its multi-start
+convergence gate did not state whether one failed start invalidated an otherwise
+successful fit. Before computing any Q=3 outcome, the contract was clarified to
+require at least one successful finite start for every galaxy, grid value, scan
+direction, and law, while retaining counts of every successful and failed
+start. The current commitment binds that clarified contract.
 
 ## Purpose
 
