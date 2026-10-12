@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0.0",
+  "study_id": "sparc-q3-holdout-v1",
+  "title": "Prospective SPARC quality-3 holdout validation",
+  "status": "preregistered-before-holdout-fit",
+  "evidence_class": "observational-holdout",
+  "interpretation": {
+    "claim": "Tests whether acceleration-scale profiles fitted to the lower-quality SPARC Q=3 challenge sample are consistent with the already-certified Q<=2 profiles under the same declared nuisance treatment.",
+    "not_claimed": [
+      "blind discovery",
+      "independent survey replication",
+      "calibrated frequentist coverage",
+      "Bayesian model selection",
+      "proof of EMRF or any acceleration law"
+    ],
+    "prior_exposure": "The public SPARC catalogue and Q<=2 outcomes were previously examined. No repository result or analysis of the Q=3 profile was found before this contract was committed."
+  },
+  "observations": {
+    "dataset_id": "sparc-rotation-curves",
+    "version": "2016",
+    "citation": "Lelli, McGaugh & Schombert (2016), AJ 152, 157",
+    "doi": "10.3847/0004-6256/152/6/157",
+    "holdings": [
+      {
+        "path": "data/external/sparc/Rotmod_LTG.zip",
+        "bytes": 110737,
+        "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588",
+        "url": "https://astroweb.case.edu/SPARC/Rotmod_LTG.zip"
+      },
+      {
+        "path": "data/external/sparc/SPARC_Lelli2016c.mrt",
+        "bytes": 28259,
+        "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243",
+        "url": "https://astroweb.case.edu/SPARC/SPARC_Lelli2016c.mrt"
+      }
+    ]
+  },
+  "population": {
+    "include": [
+      "SPARC catalogue quality flag Q equals 3",
+      "catalogue inclination is at least 30 degrees",
+      "rotation-curve file has at least three rows after point filtering"
+    ],
+    "point_filter": [
+      "radius is greater than zero",
+      "observed velocity is greater than zero"
+    ],
+    "error_treatment": "Observed velocity uncertainty is floored at 1 km/s, matching the certified Q<=2 pipeline.",
+    "exclusions": "No galaxy satisfying every frozen rule may be removed after outcomes are computed. Missing or failed targets must be reported and make the confirmatory result incomplete."
+  },
+  "training_reference": {
+    "path": "results/real_data_v1/sparc_profile_validation.json",
+    "sha256": "0b01abdbd8a7e2cc9ec68a2713fad12016d4be951b796460cadd48cd76b81bcc",
+    "population": "Q<=2 and inclination>=30 degrees",
+    "galaxies": 153,
+    "points": 3168,
+    "numerically_verified": true
+  },
+  "analysis": {
+    "observable": "SPARC rotation velocity in the catalogue velocity coordinate",
+    "objective": "Gaussian velocity residual sum plus declared nuisance-parameter penalties",
+    "nuisance_parameters_per_galaxy": [
+      "log10 stellar mass-to-light ratio with centre 0.5 and width 0.1 dex",
+      "distance factor with catalogue uncertainty and a minimum fractional width of 0.02",
+      "inclination with catalogue uncertainty and a minimum width of 1 degree"
+    ],
+    "bulge_treatment": "Upsilon_bulge equals 1.4 times Upsilon_disk",
+    "unknown_covariance": "Radial covariance is unavailable and will not be invented.",
+    "a0_grid_si": {
+      "start": 5e-11,
+      "stop": 2.5e-10,
+      "step": 5e-12,
+      "include_horizon_values_for_h0_km_s_mpc": [
+        67.4,
+        73.0
+      ]
+    },
+    "optimizer": "The certified bounded multi-start least-squares profile with analytic Jacobian and continuation.",
+    "scan_order_check": "Repeat each profile in reverse grid order."
+  },
+  "hypotheses": [
+    {
+      "id": "H1-emrf-sqrt-generalization",
+      "law": "emrf_sqrt",
+      "training_a0_grid_minimum_si": 1.6e-10,
+      "training_delta_q_1_interval_si": [
+        1.55781092394229e-10,
+        1.60831784955957e-10
+      ],
+      "criterion": "Passes the conditional generalization screen only if the Q=3 grid minimum is not at a grid edge and lies inside the closed training interval. Otherwise the generalization claim is rejected."
+    },
+    {
+      "id": "H2-rar-comparator-generalization",
+      "law": "rar_exponential",
+      "training_a0_grid_minimum_si": 1.25e-10,
+      "training_delta_q_1_interval_si": [
+        1.22152425035699e-10,
+        1.2557224809968e-10
+      ],
+      "criterion": "Uses the identical conditional screen as H1 and is reported as a comparator, not as an EMRF claim."
+    }
+  ],
+  "numerical_gate": {
+    "maximum_forward_reverse_total_q_difference": 0.1,
+    "all_optimizers_must_converge": true,
+    "non_finite_values_allowed": false
+  },
+  "reporting": {
+    "required": [
+      "exact input and training-reference hashes",
+      "code revision and dirty state",
+      "runtime dependency versions",
+      "complete included galaxy names and counts",
+      "failed or missing targets",
+      "objective and data chi-square profiles",
+      "profile minima and conditional intervals",
+      "forward/reverse scan differences",
+      "criterion result for every registered hypothesis",
+      "limitations and any protocol deviation"
+    ],
+    "forbidden": [
+      "changing thresholds after viewing Q=3 outcomes",
+      "silently excluding failed galaxies",
+      "interpreting Delta Q equals 1 as calibrated significance",
+      "using BIC from the penalized objective",
+      "promoting this same-catalogue challenge to independent replication"
+    ]
+  }
+}

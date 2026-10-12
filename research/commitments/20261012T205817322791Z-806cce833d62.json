@@ -1,0 +1,11 @@
+{
+  "bytes": 4566,
+  "commitment_id": "20261012T205817322791Z-806cce833d62",
+  "content_stored": false,
+  "created_utc": "2026-10-12T20:58:17.322791+00:00",
+  "evidence_class": "preregistered-prediction",
+  "label": "SPARC Q3 holdout v1",
+  "media_type": "application/json",
+  "sha256": "806cce833d62fa2349c5b19a0638e62991e33ed19f05cd65b15de147352fbbb0",
+  "source_name": null
+}
