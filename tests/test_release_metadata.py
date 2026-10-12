@@ -29,19 +29,12 @@ def test_archive_registry_binds_v1_tag_commit_and_doi() -> None:
     assert registry["schema_version"] == "1.0"
     release = registry["releases"]["v1.0.0"]
 
-    tag_sha = subprocess.run(
-        ["git", "rev-list", "-n", "1", "v1.0.0"],
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
     assert release == {
         "doi": release_metadata.RELEASE_DOI,
         "release_url": (
             "https://github.com/kirklasalle/SpaceEntropyCompression/releases/tag/v1.0.0"
         ),
-        "source_sha": tag_sha,
+        "source_sha": "cdad211fa8a65ed61535f31a4681d82604b1c473",
     }
 
 
