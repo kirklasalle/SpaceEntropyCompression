@@ -50,7 +50,7 @@ jobs:
           release_doi="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["releases"][sys.argv[2]]["doi"])' "$registry" "$requested")"
           expected_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["releases"][sys.argv[2]]["source_sha"])' "$registry" "$requested")"
           expected_url="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["releases"][sys.argv[2]]["release_url"])' "$registry" "$requested")"
-          [[ "$release_doi" =~ ^10\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$ ]]
+          python -c 'import re,sys; raise SystemExit(not re.fullmatch(r"10\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+", sys.argv[1]))' "$release_doi"
           [[ "$expected_sha" =~ ^[0-9a-f]{40}$ ]]
           test "$(jq -r .url <<<"$release_json")" = "$expected_url"
           test "$(git cat-file -t "$requested")" = "tag"
