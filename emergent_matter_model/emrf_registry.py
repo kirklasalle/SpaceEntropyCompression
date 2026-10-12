@@ -19,7 +19,13 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 try:
-    from emrf_paths import app_root, data_root, project_root, resolve_data_path
+    from emrf_paths import (
+        app_root,
+        data_root,
+        project_root,
+        resolve_data_path,
+        resolve_offsite_backup_root,
+    )
     from emrf_version import API_VERSION, __version__
 except ModuleNotFoundError:  # package-qualified legacy import
     from emergent_matter_model.emrf_paths import (
@@ -27,6 +33,7 @@ except ModuleNotFoundError:  # package-qualified legacy import
         data_root,
         project_root,
         resolve_data_path,
+        resolve_offsite_backup_root,
     )
     from emergent_matter_model.emrf_version import API_VERSION, __version__
 
@@ -476,9 +483,12 @@ def environment_report() -> dict:
     optional = {d: _dist_version(d) for d in OPTIONAL_DEPENDENCIES}
     missing_scripts = [c.name for c in COMMANDS if not c.available and not c.source_only]
     source_only_unavailable = [c.name for c in COMMANDS if not c.available and c.source_only]
-    offsite_backup_destination_configured = bool(
-        os.environ.get("EMRF_OFFSITE_BACKUP_DIR")
-    )
+    try:
+        resolve_offsite_backup_root()
+    except ValueError:
+        offsite_backup_destination_configured = False
+    else:
+        offsite_backup_destination_configured = True
     py_ok = sys.version_info >= (3, 10)
     return {
         "emrf_version": __version__,
