@@ -29,6 +29,15 @@ from emergent_matter_model.sparc_real_analysis import (
 from emergent_matter_model.sparc_tension_diagnostics import build_subsets
 
 
+class OptimizerConvergenceError(RuntimeError):
+    """Retain the exact failed multi-start cell for evidence receipts."""
+
+    def __init__(self, message, *, cell, diagnostics):
+        super().__init__(message)
+        self.cell = cell
+        self.diagnostics = diagnostics
+
+
 def profile_interval(grid, objective):
     grid, objective = np.asarray(grid), np.asarray(objective)
     if (grid.ndim != 1 or objective.shape != grid.shape or len(grid) < 3
@@ -141,6 +150,7 @@ def fit_one(mg, nu, a0, centre, warm=None, diagnostics=None,
     if warm is not None:
         starts.append(warm)
     fits = []
+    initial_attempts = diagnostics["attempts"] if diagnostics is not None else 0
     initial_successes = diagnostics["successful"] if diagnostics is not None else 0
     initial_failures = diagnostics["failed"] if diagnostics is not None else 0
     for bounds in bounds_options:
@@ -161,11 +171,19 @@ def fit_one(mg, nu, a0, centre, warm=None, diagnostics=None,
     if diagnostics is not None and diagnostic_context is not None:
         diagnostics["cells"].append({
             **diagnostic_context,
+            "attempted": diagnostics["attempts"] - initial_attempts,
             "successful": diagnostics["successful"] - initial_successes,
             "failed": diagnostics["failed"] - initial_failures,
         })
     if not fits:
-        raise RuntimeError(f"No converged fit: {mg.gal.name}, a0={a0}, centre={centre}")
+        message = f"No converged fit: {mg.gal.name}, a0={a0}, centre={centre}"
+        if diagnostics is not None and diagnostic_context is not None:
+            raise OptimizerConvergenceError(
+                message,
+                cell=diagnostics["cells"][-1],
+                diagnostics=diagnostics,
+            )
+        raise RuntimeError(message)
     best = min(fits, key=lambda result: result.cost)
     return float(2 * best.cost), mg.chi2(best.x, nu, a0), best.x
 
