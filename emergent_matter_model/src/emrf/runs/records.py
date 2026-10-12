@@ -881,6 +881,7 @@ def _enable_wal(connection: sqlite3.Connection) -> None:
 
 
 def _migrate_job_queue(connection: sqlite3.Connection) -> None:
+    connection.execute("BEGIN IMMEDIATE")
     columns = {
         row["name"] for row in connection.execute("PRAGMA table_info(jobs)").fetchall()
     }

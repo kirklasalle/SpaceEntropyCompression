@@ -25,7 +25,7 @@ from .store import ContentAddressedStore
 _BACKUP_SCHEMA = "1.0.0"
 _MANIFEST = "backup_manifest.json"
 _DRILL_CATALOG = "data_catalog.json"
-_DEFAULT_DRILL_RPO_SECONDS = 0.0
+_DEFAULT_DRILL_RPO_SECONDS = 300.0
 _DEFAULT_DRILL_RTO_SECONDS = 300.0
 
 
@@ -240,6 +240,7 @@ class BackupManager:
                         "catalog_schema_version": catalog.schema_version,
                         "catalog_datasets": len(catalog.list()),
                     }
+                source_changed = not _manifest_matches_store(self.store, verified)
                 final_verification_seconds = time.perf_counter() - phase_started
                 result.update(
                     {
@@ -257,13 +258,23 @@ class BackupManager:
                             "restore": restore_seconds,
                             "final_verification": final_verification_seconds,
                         },
+                        "source_changed_during_drill": source_changed,
                         **catalog_result,
                     }
                 )
             duration_seconds = time.perf_counter() - started_counter
+            completed = datetime.now(timezone.utc)
+            recovery_point = datetime.fromisoformat(manifest["created_utc"])
+            recovery_point_age_seconds = max(
+                0.0,
+                (completed - recovery_point).total_seconds(),
+            )
             result["duration_seconds"] = duration_seconds
-            result["recovery_point_age_seconds"] = 0.0
-            result["rpo_met"] = rpo_seconds >= 0.0
+            result["recovery_point_age_seconds"] = recovery_point_age_seconds
+            result["rpo_met"] = (
+                not result["source_changed_during_drill"]
+                and recovery_point_age_seconds <= rpo_seconds
+            )
             result["rto_met"] = duration_seconds <= rto_seconds
             if not result["rpo_met"] or not result["rto_met"]:
                 raise IntegrityError("Restore drill exceeded its recovery objectives")
@@ -415,6 +426,43 @@ def _verify_registry_snapshot(root: Path, manifest: dict[str, Any]) -> None:
         raise IntegrityError("Backup manifest and registry snapshot differ")
 
 
+def _manifest_matches_store(
+    store: ContentAddressedStore,
+    manifest: dict[str, Any],
+) -> bool:
+    objects = {(stored.sha256, stored.bytes) for stored in store.list_objects(verify=True)}
+    holdings = {
+        (
+            holding.dataset_id,
+            holding.version,
+            holding.logical_name,
+            holding.sha256,
+            holding.source_url,
+            holding.citation,
+            holding.licence,
+            json.dumps(holding.metadata, sort_keys=True, separators=(",", ":")),
+        )
+        for holding in store.list_holdings(verify=True)
+    }
+    expected_objects = {
+        (entry["sha256"], entry["bytes"]) for entry in manifest["objects"]
+    }
+    expected_holdings = {
+        (
+            entry["dataset_id"],
+            entry["version"],
+            entry["logical_name"],
+            entry["sha256"],
+            entry.get("source_url"),
+            entry.get("citation"),
+            entry.get("licence"),
+            json.dumps(entry["metadata"], sort_keys=True, separators=(",", ":")),
+        )
+        for entry in manifest["holdings"]
+    }
+    return objects == expected_objects and holdings == expected_holdings
+
+
 def _copy_fsynced(source: Path, destination: Path) -> None:
     try:
         with source.open("rb") as input_file, destination.open("xb") as output:
@@ -426,11 +474,37 @@ def _copy_fsynced(source: Path, destination: Path) -> None:
 
 
 def _write_json_fsynced(path: Path, value: object) -> None:
+    temporary: Path | None = None
     try:
-        with path.open("x", encoding="utf-8", newline="\n") as output:
+        descriptor, name = tempfile.mkstemp(
+            prefix=f".{path.name}-",
+            suffix=".part",
+            dir=path.parent,
+        )
+        temporary = Path(name)
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as output:
             json.dump(value, output, indent=2, sort_keys=True)
             output.write("\n")
             output.flush()
             os.fsync(output.fileno())
+        os.link(temporary, path)
+        temporary.unlink()
+        temporary = None
+        _fsync_directory(path.parent)
     except OSError as exc:
-        raise StorageError(f"Could not write backup manifest: {path}") from exc
+        raise StorageError(f"Could not write backup JSON: {path}") from exc
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def _fsync_directory(path: Path) -> None:
+    flags = getattr(os, "O_DIRECTORY", 0) | os.O_RDONLY
+    try:
+        descriptor = os.open(path, flags)
+    except OSError:
+        return
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)

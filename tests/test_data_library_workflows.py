@@ -6,9 +6,11 @@ import json
 import urllib.error
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from typing import TextIO
 
+import emrf.data.backup as backup_module
 import pytest
-from emrf.core.errors import AcquisitionError, IntegrityError
+from emrf.core.errors import AcquisitionError, IntegrityError, StorageError
 from emrf.data import (
     BackupManager,
     ContentAddressedStore,
@@ -277,10 +279,11 @@ def test_restore_drill_writes_passed_receipt_and_cleans_workspace(tmp_path: Path
     assert recorded["objects_verified"] == 1
     assert recorded["holdings_verified"] == 1
     assert recorded["recovery_objectives"] == {
-        "rpo_seconds": 0.0,
+        "rpo_seconds": 300.0,
         "rto_seconds": 300.0,
     }
-    assert recorded["recovery_point_age_seconds"] == 0.0
+    assert 0.0 <= recorded["recovery_point_age_seconds"] <= 300.0
+    assert recorded["source_changed_during_drill"] is False
     assert recorded["rpo_met"] is True
     assert recorded["rto_met"] is True
     assert set(recorded["phase_seconds"]) == {
@@ -326,6 +329,54 @@ def test_restore_drill_fails_closed_when_rto_is_exceeded(tmp_path: Path) -> None
     assert recorded["status"] == "failed"
     assert recorded["rpo_met"] is True
     assert recorded["rto_met"] is False
+
+
+def test_restore_drill_fails_rpo_when_source_changes_during_recovery(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    store = ContentAddressedStore(tmp_path / "source")
+    stored = store.put_bytes(b"initial observation")
+    store.register_holding("dataset", "v1", "initial", stored)
+    manager = BackupManager(store)
+    original_create = manager.create
+
+    def create_with_concurrent_write(destination: str | Path):
+        manifest = original_create(destination)
+        concurrent = store.put_bytes(b"concurrent observation")
+        store.register_holding("dataset", "v1", "concurrent", concurrent)
+        return manifest
+
+    monkeypatch.setattr(manager, "create", create_with_concurrent_write)
+    receipt = tmp_path / "receipts" / "changed-source-drill.json"
+
+    with pytest.raises(IntegrityError, match="exceeded its recovery objectives"):
+        manager.drill(receipt)
+
+    recorded = json.loads(receipt.read_text(encoding="utf-8"))
+    assert recorded["status"] == "failed"
+    assert recorded["source_changed_during_drill"] is True
+    assert recorded["rpo_met"] is False
+
+
+def test_recovery_receipt_failure_never_publishes_partial_json(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    receipt = tmp_path / "receipt.json"
+
+    def fail_dump(value: object, output: TextIO, **kwargs: object) -> None:
+        del value, kwargs
+        output.write('{"partial"')
+        raise OSError("injected write failure")
+
+    monkeypatch.setattr(backup_module.json, "dump", fail_dump)
+
+    with pytest.raises(StorageError, match="Could not write backup JSON"):
+        backup_module._write_json_fsynced(receipt, {"status": "passed"})
+
+    assert not receipt.exists()
+    assert not list(tmp_path.glob("*.part"))
 
 
 @pytest.mark.parametrize(
