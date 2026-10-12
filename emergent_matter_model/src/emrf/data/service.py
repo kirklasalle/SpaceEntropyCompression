@@ -148,7 +148,11 @@ class DataLibrary:
         if receipt is None:
             timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
             receipt = self.store.root / "drills" / f"restore-{timestamp}.json"
-        result = self.backups.drill(receipt, workspace=workspace)
+        result = self.backups.drill(
+            receipt,
+            workspace=workspace,
+            catalog_path=self.catalog.path,
+        )
         return {"receipt": str(Path(receipt).expanduser().resolve()), **result}
 
     def garbage_collect(self, *, execute: bool = False) -> dict[str, Any]:

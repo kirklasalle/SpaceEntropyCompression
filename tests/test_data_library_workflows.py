@@ -276,10 +276,78 @@ def test_restore_drill_writes_passed_receipt_and_cleans_workspace(tmp_path: Path
     assert recorded["status"] == "passed"
     assert recorded["objects_verified"] == 1
     assert recorded["holdings_verified"] == 1
+    assert recorded["recovery_objectives"] == {
+        "rpo_seconds": 0.0,
+        "rto_seconds": 300.0,
+    }
+    assert recorded["recovery_point_age_seconds"] == 0.0
+    assert recorded["rpo_met"] is True
+    assert recorded["rto_met"] is True
+    assert set(recorded["phase_seconds"]) == {
+        "backup",
+        "backup_verification",
+        "restore",
+        "final_verification",
+    }
     assert list(workspace.iterdir()) == []
 
     with pytest.raises(FileExistsError, match="receipt already exists"):
         BackupManager(store).drill(receipt, workspace=workspace)
+
+
+def test_data_library_restore_drill_verifies_catalog(tmp_path: Path) -> None:
+    raw = b"catalog-backed observation"
+    catalog_path = tmp_path / "catalog.json"
+    _write_catalog(catalog_path, raw)
+    library = DataLibrary(root=tmp_path / "data", catalog_path=catalog_path)
+    stored = library.store.put_bytes(raw)
+    library.store.register_holding("example", "v1", "example.dat", stored)
+    receipt = tmp_path / "receipts" / "catalog-drill.json"
+
+    result = library.run_restore_drill(receipt=receipt)
+
+    assert result["status"] == "passed"
+    assert result["catalog_verified"] is True
+    assert result["catalog_schema_version"] == "1.0.0"
+    assert result["catalog_datasets"] == 1
+    assert len(result["catalog_sha256"]) == 64
+
+
+def test_restore_drill_fails_closed_when_rto_is_exceeded(tmp_path: Path) -> None:
+    store = ContentAddressedStore(tmp_path / "source")
+    stored = store.put_bytes(b"timed observation")
+    store.register_holding("dataset", "v1", "raw", stored)
+    receipt = tmp_path / "receipts" / "failed-drill.json"
+
+    with pytest.raises(IntegrityError, match="exceeded its recovery objectives"):
+        BackupManager(store).drill(receipt, rto_seconds=1e-12)
+
+    recorded = json.loads(receipt.read_text(encoding="utf-8"))
+    assert recorded["status"] == "failed"
+    assert recorded["rpo_met"] is True
+    assert recorded["rto_met"] is False
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    (
+        ("rpo_seconds", -1, "rpo_seconds must be non-negative"),
+        ("rpo_seconds", float("nan"), "rpo_seconds must be non-negative"),
+        ("rto_seconds", 0, "rto_seconds must be positive"),
+        ("rto_seconds", float("inf"), "rto_seconds must be positive"),
+    ),
+)
+def test_restore_drill_rejects_invalid_recovery_objectives(
+    tmp_path: Path,
+    field: str,
+    value: float,
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        BackupManager(ContentAddressedStore(tmp_path / "source")).drill(
+            tmp_path / "receipt.json",
+            **{field: value},
+        )
 
 
 def test_offsite_backup_requires_independent_configured_root(

@@ -653,15 +653,23 @@ was independently verified. Failed runs `38185094841` and `38187930382` remain
 preserved as evidence of the post-tag DOI lifecycle boundary and the corrected
 shell-parser defect rather than being hidden or deleted.
 
+**Third lifecycle slice implemented locally (2026-10-12):** the durable job
+queue now assigns a persistent monotonic sequence and claims by that sequence,
+including an in-place migration for existing registries. This preserves FIFO
+submission order when timestamps collide and removes random identifier suffixes
+from scheduling semantics. The existing isolated data restore drill now
+verifies the curated catalog, records phase timings and catalog hashes, enforces
+explicit zero-age/five-minute drill objectives, and fails closed with a retained
+receipt when an objective is missed. Operational RPO/RTO targets are defined
+for observations, catalogs, runs, predictions, knowledge and release state.
+
 Planned sustained-operations increments:
 
-1. Tested backup/restore and data-catalog disaster-recovery drills with
-   retained receipts and recovery-time evidence.
-2. Supported-version and deprecation policy for Python, Java, REST, SDK,
+1. Supported-version and deprecation policy for Python, Java, REST, SDK,
    schemas, datasets and scientific certificates.
-3. Performance and resource baselines for large covariance, catalog and
+2. Performance and resource baselines for large covariance, catalog and
    knowledge workloads, with regression thresholds that do not alter physics.
-4. Maintenance releases only through the protected release contract; new
+3. Maintenance releases only through the protected release contract; new
    physics claims require preregistration and the existing evidence lifecycle.
 
 **First-slice exit gate:** the replacement checks must pass on the migration
@@ -686,9 +694,11 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Establish and measure recovery-time and recovery-point objectives for
-   observational data, runs, predictions and scientific knowledge.
-2. Define the supported-version/deprecation contract before any 1.1 interface
+1. Run and remotely certify the deterministic queue and isolated recovery drill
+   on protected infrastructure, retaining its receipt and measured timings.
+2. Extend isolated recovery drills to durable runs, prediction commitments and
+   scientific knowledge snapshots.
+3. Define the supported-version/deprecation contract before any 1.1 interface
    or schema change.
-3. Continue scientific work only through preregistered predictions,
+4. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.

@@ -113,6 +113,86 @@ def test_job_queue_claims_once_and_retries_failures(tmp_path: Path) -> None:
     assert store.claim("worker-4") is None
 
 
+def test_job_queue_preserves_fifo_when_timestamps_and_ids_disagree(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    ids = iter(
+        (
+            "20260101T000000000000Z-ffffffff",
+            "20260101T000000000000Z-00000000",
+        )
+    )
+    monkeypatch.setattr("emrf.runs.records._new_id", lambda: next(ids))
+    monkeypatch.setattr(
+        "emrf.runs.records._utc_now",
+        lambda: "2026-01-01T00:00:00+00:00",
+    )
+    store = RunStore(tmp_path)
+    first = store.enqueue("analysis", ["--first"])
+    second = store.enqueue("analysis", ["--second"])
+
+    claimed_first = store.claim("worker-1")
+    claimed_second = store.claim("worker-2")
+
+    assert claimed_first is not None
+    assert claimed_second is not None
+    assert claimed_first.job_id == first.job_id
+    assert claimed_second.job_id == second.job_id
+
+
+def test_legacy_job_queue_migrates_to_deterministic_sequence(tmp_path: Path) -> None:
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    registry = tmp_path / "registry.sqlite"
+    with sqlite3.connect(registry) as connection:
+        connection.executescript(
+            """
+            CREATE TABLE jobs (
+                job_id TEXT PRIMARY KEY,
+                command TEXT NOT NULL,
+                args_json TEXT NOT NULL,
+                timeout_seconds REAL,
+                evidence_class TEXT NOT NULL,
+                status TEXT NOT NULL,
+                attempts INTEGER NOT NULL,
+                max_attempts INTEGER NOT NULL,
+                created_utc TEXT NOT NULL,
+                updated_utc TEXT NOT NULL,
+                lease_owner TEXT,
+                lease_expires_utc TEXT,
+                run_id TEXT,
+                returncode INTEGER,
+                last_error TEXT
+            );
+            """
+        )
+        for job_id in (
+            "20260101T000000000000Z-ffffffff",
+            "20260101T000000000000Z-00000000",
+        ):
+            connection.execute(
+                """
+                INSERT INTO jobs (
+                    job_id, command, args_json, evidence_class, status,
+                    attempts, max_attempts, created_utc, updated_utc
+                ) VALUES (?, 'analysis', '[]', 'software', 'queued', 0, 1, ?, ?)
+                """,
+                (job_id, "2026-01-01T00:00:00+00:00", "2026-01-01T00:00:00+00:00"),
+            )
+
+    store = RunStore(tmp_path)
+    store.initialize()
+
+    with sqlite3.connect(registry) as connection:
+        rows = connection.execute(
+            "SELECT job_id, queue_sequence FROM jobs ORDER BY queue_sequence"
+        ).fetchall()
+    assert rows == [
+        ("20260101T000000000000Z-ffffffff", 1),
+        ("20260101T000000000000Z-00000000", 2),
+    ]
+
+
 def test_concurrent_workers_cannot_claim_same_job(tmp_path: Path) -> None:
     store = RunStore(tmp_path)
     jobs = [store.enqueue("analysis", [str(index)]) for index in range(12)]
@@ -125,6 +205,21 @@ def test_concurrent_workers_cannot_claim_same_job(tmp_path: Path) -> None:
 
     assert len(claimed) == 12
     assert {job.job_id for job in claimed} == {job.job_id for job in jobs}
+
+
+def test_concurrent_enqueues_receive_unique_monotonic_sequences(tmp_path: Path) -> None:
+    def enqueue(index: int):
+        return RunStore(tmp_path).enqueue("analysis", [str(index)])
+
+    with ThreadPoolExecutor(max_workers=12) as executor:
+        jobs = list(executor.map(enqueue, range(24)))
+
+    with sqlite3.connect(tmp_path / "registry.sqlite") as connection:
+        rows = connection.execute(
+            "SELECT queue_sequence FROM jobs ORDER BY queue_sequence"
+        ).fetchall()
+    assert [row[0] for row in rows] == list(range(1, 25))
+    assert len({job.job_id for job in jobs}) == 24
 
 
 def test_concurrent_run_creation_publishes_complete_records(tmp_path: Path) -> None:
@@ -151,9 +246,9 @@ def test_registry_enforces_foreign_keys_and_wal(tmp_path: Path) -> None:
         connection.execute(
             """
             INSERT INTO jobs (
-                job_id, command, args_json, evidence_class, status, attempts,
+                job_id, queue_sequence, command, args_json, evidence_class, status, attempts,
                 max_attempts, created_utc, updated_utc, run_id
-            ) VALUES (?, ?, '[]', 'software', 'queued', 0, 1, ?, ?, ?)
+            ) VALUES (?, 1, ?, '[]', 'software', 'queued', 0, 1, ?, ?, ?)
             """,
             (
                 "20260101T000000000000Z-00000000",

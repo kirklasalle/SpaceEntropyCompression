@@ -34,6 +34,7 @@ nav:
       - Contributing: development/contributing.md
       - Extension tutorial: development/extensions.md
       - Release engineering: development/releases.md
+      - Recovery objectives: development/recovery.md
       - ADRs: development/adrs.md
   - Support: support.md
 markdown_extensions:
