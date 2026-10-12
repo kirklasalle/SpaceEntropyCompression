@@ -686,17 +686,22 @@ REST, stored schemas, datasets and scientific certificates. Exact-main CI run
 `38278148172`, Documentation run `38278148218`, Security run `38278148336` and
 OpenSSF Scorecard run `38278148473` all passed.
 
-**Fifth lifecycle slice implemented locally (2026-10-12):** versioned,
+**Fifth lifecycle slice remotely certified (2026-10-12):** protected PR #25
+merged as `4b6dad50ef63a8fa1838cfc45bd94f69eff943ce`. Versioned,
 deterministic performance and resource baselines now cover a 512 x 512
 covariance solve, 2,500 catalog records, 2,000 run artifacts and a 1,200-node
 knowledge graph. Each workload records elapsed-time distributions, Python peak
 allocation, fixture or native-array bytes, platform provenance and exact
-scientific/software invariants. The authoritative SDK powers matching CLI,
-gated Flask REST v1 and authenticated FastAPI REST v2 operations. A dedicated
-Ubuntu 24.04 / Python 3.12 CI job enforces evidence-based thresholds without
-changing physics, tolerances or evidence classifications. The baseline update
-policy requires before-and-after evidence, a new version and the complete
-golden matrix.
+scientific/software invariants. Complete runs are process-serialized, preserve
+external tracing state, reject empty selections, and independently verify the
+full artifact order. Deployment failures retain operational error semantics.
+The authoritative SDK powers matching CLI, gated Flask REST v1 and
+authenticated FastAPI REST v2 operations. A dedicated Ubuntu 24.04 / Python
+3.12 CI job enforces evidence-based thresholds without changing physics,
+tolerances or evidence classifications. The baseline update policy requires
+before-and-after evidence, a new version and the complete golden matrix.
+Exact-main CI run `38291473965`, Documentation run `38291474116`, Security run
+`38291474025` and OpenSSF Scorecard run `38291474113` all passed.
 
 Planned sustained-operations increments:
 
@@ -725,7 +730,7 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Remotely certify the performance and resource baseline slice through
-   protected infrastructure.
-2. Continue scientific work only through preregistered predictions,
+1. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
+2. Execute maintenance releases only through the protected release contract
+   and retain periodic recovery, archive-health and performance evidence.
