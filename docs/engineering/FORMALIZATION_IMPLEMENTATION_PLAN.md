@@ -703,13 +703,29 @@ before-and-after evidence, a new version and the complete golden matrix.
 Exact-main CI run `38291473965`, Documentation run `38291474116`, Security run
 `38291474025` and OpenSSF Scorecard run `38291474113` all passed.
 
+**Sixth lifecycle slice remotely certified (2026-10-12):** protected PR #27
+merged as `5fe33ffbf5220cc89246e68153ef23b6a5e015b5`. A read-only monthly and
+manually dispatchable workflow now certifies controlled non-empty
+observational and application state: one content-addressed holding, one durable
+run with an artifact, one queued job, one prediction commitment and the
+validated scientific knowledge graph. It executes both isolated recovery
+drills and the standard performance baseline, continues independent checks
+after an operational failure, and atomically retains individual and combined
+JSON evidence for 90 days before failing closed. The workflow refuses any
+commit other than current protected `main`, uses pinned actions and has no
+publication permissions. First operational-certification run `38301619284`
+passed on the merged commit; its downloaded receipt independently confirmed
+both recovery domains, all non-empty component counts, the performance gate
+and preserved scientific outputs. Exact-main CI run `38301598548`,
+Documentation run `38301598347`, Security run `38301598342` and OpenSSF
+Scorecard run `38301598266` all passed.
+
 Planned sustained-operations increments:
 
-1. Periodically certify controlled non-empty observational and application
-   recovery together with the standard performance baseline. Retain both
-   successful and failed machine-readable evidence without publication rights.
-2. Maintenance releases only through the protected release contract; new
+1. Maintenance releases only through the protected release contract; new
    physics claims require preregistration and the existing evidence lifecycle.
+2. Retain scheduled recovery, archive-health, security and performance
+   evidence; investigate and preserve failed receipts before corrective reruns.
 
 **First-slice exit gate:** the replacement checks must pass on the migration
 pull request before the four runner-derived required contexts are atomically
@@ -733,9 +749,9 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Certify the recurring operational workflow through protected CI and retain
-   its first manually dispatched recovery and performance evidence.
-2. Continue scientific work only through preregistered predictions,
+1. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
-3. Execute maintenance releases only through the protected release contract
+2. Execute maintenance releases only through the protected release contract
    and retain periodic recovery, archive-health and performance evidence.
+3. Treat every failed scheduled certification as durable incident evidence;
+   correct its root cause through protected `main` before rerunning it.
