@@ -305,5 +305,6 @@ __all__ = [
     "RunResult",
     "SimulationRequest",
     "SimulationResult",
+    "StateRestoreRequest",
     "VerificationReport",
 ]
