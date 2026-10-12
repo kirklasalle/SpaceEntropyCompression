@@ -378,6 +378,13 @@ def test_api_datasets_and_doctor(client, monkeypatch):
     rep = client.get("/api/v1/doctor").get_json()
     assert rep["offsite_backup_destination_configured"] is True
 
+    monkeypatch.setenv(
+        "EMRF_OFFSITE_BACKUP_DIR",
+        str(reg.data_root() / "not-independent"),
+    )
+    rep = client.get("/api/v1/doctor").get_json()
+    assert rep["offsite_backup_destination_configured"] is False
+
 
 def test_api_physics_verification(client):
     response = client.get("/api/v1/verification/physics")

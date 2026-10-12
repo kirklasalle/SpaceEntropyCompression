@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from emrf_paths import resolve_offsite_backup_root
 
 from .acquisition import ResumableFetcher
 from .backup import BackupManager
@@ -114,15 +115,10 @@ class DataLibrary:
         self,
         destination_root: str | Path | None = None,
     ) -> dict[str, Any]:
-        configured = destination_root or os.environ.get("EMRF_OFFSITE_BACKUP_DIR")
-        if configured is None:
-            raise ValueError(
-                "Set EMRF_OFFSITE_BACKUP_DIR or provide an off-site destination root"
-            )
-        root = Path(configured).expanduser().resolve()
-        data_root = self.store.root.expanduser().resolve()
-        if root == data_root or data_root in root.parents or root in data_root.parents:
-            raise ValueError("Off-site backup destination must be independent of the data root")
+        root = resolve_offsite_backup_root(
+            destination_root,
+            observational_root=self.store.root,
+        )
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         target = root / f"emrf-backup-{timestamp}"
         return {"offsite": True, **self.create_backup(target)}

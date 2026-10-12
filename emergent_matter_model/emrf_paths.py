@@ -48,6 +48,24 @@ def data_root() -> Path:
     return app_root() / "data"
 
 
+def resolve_offsite_backup_root(
+    value: str | Path | None = None,
+    *,
+    observational_root: str | Path | None = None,
+) -> Path:
+    """Resolve and validate an independent off-site backup destination."""
+    configured = value or os.environ.get("EMRF_OFFSITE_BACKUP_DIR")
+    if not configured:
+        raise ValueError(
+            "Set EMRF_OFFSITE_BACKUP_DIR or provide an off-site destination root"
+        )
+    root = Path(configured).expanduser().resolve()
+    managed = Path(observational_root or data_root()).expanduser().resolve()
+    if root == managed or managed in root.parents or root in managed.parents:
+        raise ValueError("Off-site backup destination must be independent of the data root")
+    return root
+
+
 def resolve_data_path(value: str | Path) -> Path:
     """Resolve a manifest path against the configured data/application root."""
     path = Path(value)
