@@ -13,7 +13,8 @@ import sqlite3
 import sys
 import tempfile
 import time
-from contextlib import closing
+from collections.abc import Generator
+from contextlib import closing, contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -53,35 +54,46 @@ class StateRecoveryManager:
 
     def create(self, destination: str | Path) -> dict[str, Any]:
         target = Path(destination).expanduser().resolve()
-        if target.exists():
-            raise FileExistsError(f"State backup destination already exists: {target}")
         target.parent.mkdir(parents=True, exist_ok=True)
-        before = self._source_fingerprint()
-        staging = Path(tempfile.mkdtemp(prefix=f".{target.name}-", dir=target.parent))
-        try:
-            self._copy_runs(staging / "runs")
-            self._copy_predictions(staging / "predictions")
-            self._copy_knowledge(staging / "knowledge")
-            after = self._source_fingerprint()
-            if before != after:
-                raise IntegrityError("Application state changed while its backup was created")
-            components = self._component_summary(staging)
-            files = _inventory(staging)
-            manifest = {
-                "schema_version": _SCHEMA_VERSION,
-                "created_utc": datetime.now(timezone.utc).isoformat(),
-                "source_fingerprint": after,
-                "files": files,
-                "components": components,
-            }
-            _write_json_exclusive(staging / _MANIFEST, manifest)
-            self.verify(staging)
-            os.replace(staging, target)
-            _fsync_directory(target.parent)
-            return manifest
-        except Exception:
-            shutil.rmtree(staging, ignore_errors=True)
-            raise
+        with _destination_lock(target):
+            if target.exists():
+                raise FileExistsError(
+                    f"State backup destination already exists: {target}"
+                )
+            before = self._source_fingerprint()
+            staging = Path(
+                tempfile.mkdtemp(prefix=f".{target.name}-", dir=target.parent)
+            )
+            try:
+                self._copy_runs(staging / "runs")
+                self._copy_predictions(staging / "predictions")
+                self._copy_knowledge(staging / "knowledge")
+                after = self._source_fingerprint()
+                if before != after:
+                    raise IntegrityError(
+                        "Application state changed while its backup was created"
+                    )
+                components = self._component_summary(staging)
+                files = _inventory(staging)
+                manifest = {
+                    "schema_version": _SCHEMA_VERSION,
+                    "created_utc": datetime.now(timezone.utc).isoformat(),
+                    "source_fingerprint": after,
+                    "files": files,
+                    "components": components,
+                }
+                _write_json_exclusive(staging / _MANIFEST, manifest)
+                self.verify(staging)
+                if target.exists():
+                    raise FileExistsError(
+                        f"State backup destination already exists: {target}"
+                    )
+                os.rename(staging, target)
+                _fsync_directory(target.parent)
+                return manifest
+            except Exception:
+                shutil.rmtree(staging, ignore_errors=True)
+                raise
 
     def verify(self, source: str | Path) -> dict[str, Any]:
         root, manifest = _read_manifest(source)
@@ -113,6 +125,8 @@ class StateRecoveryManager:
         _validate_registry(root / "runs")
         _validate_predictions(root / "predictions")
         _validate_knowledge(root / "knowledge")
+        if self._component_summary(root) != manifest["components"]:
+            raise IntegrityError("State backup component summary differs from its contents")
         if self._backup_fingerprint(root) != manifest["source_fingerprint"]:
             raise IntegrityError("State backup fingerprint differs from its manifest")
         return manifest
@@ -135,33 +149,44 @@ class StateRecoveryManager:
             raise ValueError(
                 "State restore destination must be isolated from active and backup state"
             )
-        if target.exists():
-            raise FileExistsError(f"State restore destination already exists: {target}")
         target.parent.mkdir(parents=True, exist_ok=True)
-        staging = Path(tempfile.mkdtemp(prefix=f".{target.name}-", dir=target.parent))
-        try:
-            for entry in manifest["files"]:
-                relative = _validate_file_entry(entry)
-                source_path = backup_root.joinpath(*relative.split("/"))
-                destination_path = staging.joinpath(*relative.split("/"))
-                destination_path.parent.mkdir(parents=True, exist_ok=True)
-                _copy_exclusive(source_path, destination_path)
-            _validate_registry(staging / "runs")
-            _validate_predictions(staging / "predictions")
-            _validate_knowledge(staging / "knowledge")
-            if self._backup_fingerprint(staging) != manifest["source_fingerprint"]:
-                raise IntegrityError("Restored application state differs from its backup")
-            os.replace(staging, target)
-            _fsync_directory(target.parent)
-            restored_runs = RunStore(target / "runs")
-            restored_runs.initialize()
-            return {
-                "destination": str(target),
-                **manifest["components"],
-            }
-        except Exception:
-            shutil.rmtree(staging, ignore_errors=True)
-            raise
+        with _destination_lock(target):
+            if target.exists():
+                raise FileExistsError(
+                    f"State restore destination already exists: {target}"
+                )
+            staging = Path(
+                tempfile.mkdtemp(prefix=f".{target.name}-", dir=target.parent)
+            )
+            try:
+                for entry in manifest["files"]:
+                    relative = _validate_file_entry(entry)
+                    source_path = backup_root.joinpath(*relative.split("/"))
+                    destination_path = staging.joinpath(*relative.split("/"))
+                    destination_path.parent.mkdir(parents=True, exist_ok=True)
+                    _copy_exclusive(source_path, destination_path)
+                _validate_registry(staging / "runs")
+                _validate_predictions(staging / "predictions")
+                _validate_knowledge(staging / "knowledge")
+                if self._backup_fingerprint(staging) != manifest["source_fingerprint"]:
+                    raise IntegrityError(
+                        "Restored application state differs from its backup"
+                    )
+                if target.exists():
+                    raise FileExistsError(
+                        f"State restore destination already exists: {target}"
+                    )
+                os.rename(staging, target)
+                _fsync_directory(target.parent)
+                restored_runs = RunStore(target / "runs")
+                restored_runs.initialize()
+                return {
+                    "destination": str(target),
+                    **manifest["components"],
+                }
+            except Exception:
+                shutil.rmtree(staging, ignore_errors=True)
+                raise
 
     def drill(
         self,
@@ -396,7 +421,7 @@ def _prediction_files(root: Path) -> list[Path]:
             continue
         if not path.is_file() or not _COMMITMENT_ID.fullmatch(path.name):
             raise IntegrityError(f"Unexpected prediction-state path: {path.name}")
-        get_commitment(path.stem, root=root)
+        _validate_commitment(get_commitment(path.stem, root=root), path.stem)
         rows.append(path)
     return rows
 
@@ -457,6 +482,8 @@ def _registry_rows(path: Path) -> dict[str, list[dict[str, Any]]]:
 
 
 def _validate_registry(root: Path) -> None:
+    from emrf.runs.records import _run_from_payload
+
     registry = root / "registry.sqlite"
     if not registry.is_file() or registry.is_symlink():
         raise IntegrityError("Run registry snapshot is missing or unsafe")
@@ -480,6 +507,7 @@ def _validate_registry(root: Path) -> None:
             raise IntegrityError(f"Could not read recovered run: {run_id}") from exc
         if payload.get("run_id") != run_id:
             raise IntegrityError(f"Recovered run identifier differs: {run_id}")
+        _run_from_payload(payload, root / run_id)
 
 
 def _validate_predictions(root: Path) -> None:
@@ -514,11 +542,25 @@ def _inventory(root: Path) -> list[dict[str, Any]]:
 def _read_manifest(source: str | Path) -> tuple[Path, dict[str, Any]]:
     root = Path(source).expanduser().resolve()
     try:
-        manifest = json.loads((root / _MANIFEST).read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+        text = (root / _MANIFEST).read_text(encoding="utf-8")
+    except FileNotFoundError:
+        raise
+    except OSError as exc:
+        raise IntegrityError(f"Could not read state backup manifest: {root}") from exc
+    try:
+        manifest = json.loads(text)
+    except json.JSONDecodeError as exc:
         raise IntegrityError(f"Could not read state backup manifest: {root}") from exc
     if not isinstance(manifest, dict) or manifest.get("schema_version") != _SCHEMA_VERSION:
         raise IntegrityError("Unsupported state backup manifest schema")
+    if set(manifest) != {
+        "schema_version",
+        "created_utc",
+        "source_fingerprint",
+        "files",
+        "components",
+    }:
+        raise IntegrityError("State backup manifest contains unknown fields")
     if not isinstance(manifest.get("files"), list):
         raise IntegrityError("State backup manifest files must be a list")
     components = manifest.get("components")
@@ -589,6 +631,73 @@ def _copy_exclusive(source: Path, destination: Path) -> None:
             os.fsync(output.fileno())
     except OSError as exc:
         raise StorageError(f"Could not copy application state: {source}") from exc
+
+
+def _validate_commitment(record: object, commitment_id: str) -> None:
+    if not isinstance(record, dict):
+        raise IntegrityError(f"Prediction commitment must be an object: {commitment_id}")
+    required = {
+        "commitment_id",
+        "label",
+        "created_utc",
+        "sha256",
+        "bytes",
+        "source_name",
+        "media_type",
+        "evidence_class",
+        "content_stored",
+    }
+    digest = record.get("sha256")
+    if (
+        set(record) != required
+        or record.get("commitment_id") != commitment_id
+        or not isinstance(record.get("label"), str)
+        or not record["label"]
+        or not isinstance(record.get("created_utc"), str)
+        or not isinstance(digest, str)
+        or len(digest) != 64
+        or any(character not in "0123456789abcdef" for character in digest)
+        or isinstance(record.get("bytes"), bool)
+        or not isinstance(record.get("bytes"), int)
+        or record["bytes"] < 0
+        or (
+            record.get("source_name") is not None
+            and not isinstance(record["source_name"], str)
+        )
+        or not isinstance(record.get("media_type"), str)
+        or not record["media_type"]
+        or record.get("evidence_class") != "preregistered-prediction"
+        or record.get("content_stored") is not False
+    ):
+        raise IntegrityError(f"Prediction commitment is invalid: {commitment_id}")
+    try:
+        created = datetime.fromisoformat(record["created_utc"])
+    except ValueError as exc:
+        raise IntegrityError(
+            f"Prediction commitment time is invalid: {commitment_id}"
+        ) from exc
+    if created.tzinfo is None:
+        raise IntegrityError(
+            f"Prediction commitment time lacks timezone: {commitment_id}"
+        )
+
+
+@contextmanager
+def _destination_lock(target: Path) -> Generator[None, None, None]:
+    lock = target.with_name(f".{target.name}.recovery.lock")
+    try:
+        descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError as exc:
+        raise FileExistsError(
+            f"State destination is reserved by another operation: {target}"
+        ) from exc
+    try:
+        os.write(descriptor, f"{os.getpid()}\n".encode("ascii"))
+        os.fsync(descriptor)
+        yield
+    finally:
+        os.close(descriptor)
+        lock.unlink(missing_ok=True)
 
 
 def _write_json_exclusive(path: Path, value: object) -> None:

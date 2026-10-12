@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import emrf_cli
@@ -80,6 +81,92 @@ def test_application_state_backup_detects_tampering(tmp_path: Path) -> None:
 
     with pytest.raises(IntegrityError, match="hash differs"):
         manager.verify(backup)
+
+
+def test_application_state_backup_rejects_false_component_summary(
+    tmp_path: Path,
+) -> None:
+    manager = _manager(tmp_path)
+    backup = tmp_path / "backup"
+    manager.create(backup)
+    manifest_path = backup / "state_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["components"]["runs"] += 1
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(IntegrityError, match="component summary differs"):
+        manager.verify(backup)
+
+
+def test_application_state_backup_rejects_invalid_prediction_record(
+    tmp_path: Path,
+) -> None:
+    manager = _manager(tmp_path)
+    commitment = next(manager.predictions_root.glob("*.json"))
+    record = json.loads(commitment.read_text(encoding="utf-8"))
+    del record["sha256"]
+    commitment.write_text(json.dumps(record), encoding="utf-8")
+
+    with pytest.raises(IntegrityError, match="commitment is invalid"):
+        manager.create(tmp_path / "backup")
+
+
+def test_application_state_backup_rejects_invalid_run_record(tmp_path: Path) -> None:
+    manager = _manager(tmp_path)
+    run_path = next(
+        path
+        for path in manager.runs.root.iterdir()
+        if path.is_dir() and not path.name.startswith(".")
+    )
+    record_path = run_path / "run.json"
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    del record["command"]
+    record_path.write_text(json.dumps(record), encoding="utf-8")
+
+    with pytest.raises(IntegrityError, match="Invalid run record"):
+        manager.create(tmp_path / "backup")
+
+
+def test_concurrent_state_backups_cannot_publish_same_destination(
+    tmp_path: Path,
+) -> None:
+    manager = _manager(tmp_path)
+    destination = tmp_path / "backup"
+
+    def create() -> object:
+        try:
+            return manager.create(destination)
+        except FileExistsError as exc:
+            return exc
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        results = list(executor.map(lambda _: create(), range(2)))
+
+    assert sum(isinstance(result, dict) for result in results) == 1
+    assert sum(isinstance(result, FileExistsError) for result in results) == 1
+    assert manager.verify(destination)["components"]["runs"] == 1
+
+
+def test_concurrent_state_restores_cannot_publish_same_destination(
+    tmp_path: Path,
+) -> None:
+    manager = _manager(tmp_path)
+    backup = tmp_path / "backup"
+    destination = tmp_path / "restored"
+    manager.create(backup)
+
+    def restore() -> object:
+        try:
+            return manager.restore(backup, destination)
+        except FileExistsError as exc:
+            return exc
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        results = list(executor.map(lambda _: restore(), range(2)))
+
+    assert sum(isinstance(result, dict) for result in results) == 1
+    assert sum(isinstance(result, FileExistsError) for result in results) == 1
+    assert (destination / "runs" / "registry.sqlite").is_file()
 
 
 def test_application_state_restore_is_non_destructive(tmp_path: Path) -> None:
@@ -239,3 +326,10 @@ def test_state_recovery_all_operations_route_through_sdk(
     assert created["components"] == verified["components"]
     assert restored["runs"] == 1
     assert drilled["status"] == "passed"
+
+
+def test_state_recovery_missing_backup_maps_to_not_found(tmp_path: Path) -> None:
+    from emrf.sdk import ResourceNotFoundError
+
+    with pytest.raises(ResourceNotFoundError):
+        EMRFClient().verify_state_backup(str(tmp_path / "missing"))

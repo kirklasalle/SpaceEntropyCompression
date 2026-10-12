@@ -330,8 +330,8 @@ class EMRFClient:
         result = self._recovery_call(lambda: manager.create(destination))
         return OperationResult(
             {
-                "destination": str(Path(destination).expanduser().resolve()),
                 **result,
+                "destination": str(Path(destination).expanduser().resolve()),
             }
         )
 
@@ -340,8 +340,8 @@ class EMRFClient:
         result = self._recovery_call(lambda: manager.verify(source))
         return OperationResult(
             {
-                "source": str(Path(source).expanduser().resolve()),
                 **result,
+                "source": str(Path(source).expanduser().resolve()),
             }
         )
 
@@ -369,8 +369,8 @@ class EMRFClient:
         )
         return OperationResult(
             {
-                "receipt": str(Path(receipt).expanduser().resolve()),
                 **result,
+                "receipt": str(Path(receipt).expanduser().resolve()),
             }
         )
 

@@ -17,7 +17,8 @@ to tighten or revise them rather than silently weakening a failed gate.
 | Managed observational objects and holdings | 24 hours | 24 hours | Implemented: verified off-site content-addressed backup and isolated restore |
 | Curated data catalog | 0 for a release; 24 hours during development | 4 hours | Implemented: protected Git history and catalog verification in the data drill |
 | Durable runs, jobs and artifacts | 1 hour | 4 hours | Implemented: consistent registry snapshot, complete artifact hashes and isolated restore |
-| Prediction commitments and verification records | 1 hour | 4 hours | Implemented: immutable commitment validation and isolated restore |
+| Prediction commitments | 1 hour | 4 hours | Implemented: immutable commitment validation and isolated restore |
+| Prediction verification outcomes | 1 hour | 4 hours | Target defined; outcomes are currently transient and are not represented as durable records |
 | Scientific knowledge graph and source library | 24 hours | 4 hours | Implemented: graph and schema validation, protected Git, and isolated restore |
 | Release metadata and application configuration | 0 for a release | 1 hour | Implemented for releases through protected Git and immutable release artifacts |
 

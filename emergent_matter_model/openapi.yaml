@@ -472,6 +472,15 @@ paths:
     post:
       summary: Create a verified backup of runs, artifacts, predictions, and knowledge
       operationId: createStateBackup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [destination]
+              properties:
+                destination: {type: string, minLength: 1}
       responses:
         '201': {description: Application-state backup created}
         '403': {description: Data mutation disabled}
@@ -480,6 +489,15 @@ paths:
     post:
       summary: Verify an application-state backup
       operationId: verifyStateBackup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [source]
+              properties:
+                source: {type: string, minLength: 1}
       responses:
         '200': {description: Application-state backup verified}
         '403': {description: Data mutation disabled}
@@ -488,6 +506,16 @@ paths:
     post:
       summary: Restore application state into a new isolated destination
       operationId: restoreStateBackup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [source, destination]
+              properties:
+                source: {type: string, minLength: 1}
+                destination: {type: string, minLength: 1}
       responses:
         '200': {description: Application state restored and verified}
         '403': {description: Data mutation disabled}
@@ -496,6 +524,15 @@ paths:
     post:
       summary: Run an isolated full application-state recovery drill
       operationId: runStateRestoreDrill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                receipt: {type: string, minLength: 1}
+                workspace: {type: string, minLength: 1}
       responses:
         '200': {description: Drill passed and durable receipt written}
         '403': {description: Data mutation disabled}
