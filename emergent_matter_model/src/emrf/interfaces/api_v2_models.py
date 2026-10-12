@@ -215,6 +215,11 @@ class RestoreDrillRequest(APIModel):
     workspace: str | None = Field(default=None, min_length=1)
 
 
+class StateRestoreRequest(APIModel):
+    source: str = Field(min_length=1)
+    destination: str = Field(min_length=1)
+
+
 class GarbageCollectRequest(APIModel):
     execute: bool = False
 

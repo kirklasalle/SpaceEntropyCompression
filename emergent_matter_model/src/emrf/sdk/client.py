@@ -325,6 +325,55 @@ class EMRFClient:
             self._data_call(lambda: library.garbage_collect(execute=execute))
         )
 
+    def create_state_backup(self, destination: str) -> OperationResult:
+        manager = self._recovery_manager()
+        result = self._recovery_call(lambda: manager.create(destination))
+        return OperationResult(
+            {
+                "destination": str(Path(destination).expanduser().resolve()),
+                **result,
+            }
+        )
+
+    def verify_state_backup(self, source: str) -> OperationResult:
+        manager = self._recovery_manager()
+        result = self._recovery_call(lambda: manager.verify(source))
+        return OperationResult(
+            {
+                "source": str(Path(source).expanduser().resolve()),
+                **result,
+            }
+        )
+
+    def restore_state_backup(
+        self,
+        source: str,
+        destination: str,
+    ) -> OperationResult:
+        manager = self._recovery_manager()
+        return OperationResult(
+            self._recovery_call(lambda: manager.restore(source, destination))
+        )
+
+    def run_state_restore_drill(
+        self,
+        *,
+        receipt: str | None = None,
+        workspace: str | None = None,
+    ) -> OperationResult:
+        manager = self._recovery_manager()
+        if receipt is None:
+            receipt = str(manager.default_receipt_path())
+        result = self._recovery_call(
+            lambda: manager.drill(receipt, workspace=workspace)
+        )
+        return OperationResult(
+            {
+                "receipt": str(Path(receipt).expanduser().resolve()),
+                **result,
+            }
+        )
+
     def commit_json_prediction(
         self,
         prediction: Any,
@@ -589,6 +638,38 @@ class EMRFClient:
         from emrf.knowledge import KnowledgeStore
 
         return KnowledgeStore()
+
+    @staticmethod
+    def _recovery_manager() -> Any:
+        from emrf_recovery_access import recovery_manager
+
+        return recovery_manager()
+
+    @staticmethod
+    def _recovery_call(operation: Any) -> Any:
+        from emrf.core.errors import IntegrityError
+
+        try:
+            return operation()
+        except FileExistsError as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except FileNotFoundError as exc:
+            raise ResourceNotFoundError(
+                str(exc),
+                details={"resource": "state_backup"},
+            ) from exc
+        except (TypeError, ValueError) as exc:
+            raise InvalidRequestError(str(exc)) from exc
+        except IntegrityError as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "integrity"},
+            ) from exc
+        except OSError as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "storage"},
+            ) from exc
 
     @staticmethod
     def _data_call(operation: Any) -> Any:

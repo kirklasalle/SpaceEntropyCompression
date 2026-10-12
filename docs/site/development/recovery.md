@@ -16,9 +16,9 @@ to tighten or revise them rather than silently weakening a failed gate.
 |---|---:|---:|---|
 | Managed observational objects and holdings | 24 hours | 24 hours | Implemented: verified off-site content-addressed backup and isolated restore |
 | Curated data catalog | 0 for a release; 24 hours during development | 4 hours | Implemented: protected Git history and catalog verification in the data drill |
-| Durable runs, jobs and artifacts | 1 hour | 4 hours | Target defined; store-specific backup and restore drill remain pending |
-| Prediction commitments and verification records | 1 hour | 4 hours | Target defined; store-specific backup and restore drill remain pending |
-| Scientific knowledge graph and source library | 24 hours | 4 hours | Target defined; protected Git provides source recovery, but a state drill remains pending |
+| Durable runs, jobs and artifacts | 1 hour | 4 hours | Implemented: consistent registry snapshot, complete artifact hashes and isolated restore |
+| Prediction commitments and verification records | 1 hour | 4 hours | Implemented: immutable commitment validation and isolated restore |
+| Scientific knowledge graph and source library | 24 hours | 4 hours | Implemented: graph and schema validation, protected Git, and isolated restore |
 | Release metadata and application configuration | 0 for a release | 1 hour | Implemented for releases through protected Git and immutable release artifacts |
 
 An RPO of zero for a released artifact means the exact protected and published
@@ -50,6 +50,33 @@ Example:
 ```text
 emrf data drill --receipt recovery-receipt.json
 ```
+
+## Application-state recovery drill
+
+`emrf recovery drill` and the equivalent SDK and REST operations protect:
+
+- the consistent SQLite run/job registry;
+- every durable run file, including checkpoints, logs and result artifacts;
+- every immutable prediction-commitment record; and
+- the scientific knowledge graph together with the schema that validates it.
+
+The backup manifest hashes every file and a canonical logical inventory.
+Creation fails if the source changes while it is copied. Restore is
+non-destructive and accepts only a destination that does not already exist.
+The isolated drill restores all components, revalidates SQLite integrity and
+relationships, reparses every prediction commitment, validates the knowledge
+schema and semantics, and compares the restored logical fingerprint.
+
+```text
+emrf recovery backup state-backup
+emrf recovery backup-verify state-backup
+emrf recovery restore state-backup isolated-state
+emrf recovery drill --receipt state-recovery-receipt.json
+```
+
+The application-state drill enforces the strictest combined operational target:
+a one-hour RPO and four-hour RTO. A source change after the snapshot fails the
+RPO rather than producing success-shaped evidence.
 
 Never run destructive recovery experiments against the only copy of research
 data. Production-scale rehearsals must restore into an explicitly isolated

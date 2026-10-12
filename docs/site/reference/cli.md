@@ -10,7 +10,7 @@ Emergent Matter Research Framework (EMRF) command-line interface
 
 ```text
 usage: emrf [-h] [--version]
-            {list,run,simulate,data,runs,jobs,kb,doctor,verify,predict,serve,test}
+            {list,run,simulate,data,recovery,runs,jobs,kb,doctor,verify,predict,serve,test}
             ...
 ```
 
@@ -225,6 +225,64 @@ usage: emrf data gc [-h] [--execute]
 | Argument | Required | Description |
 |---|---:|---|
 | `--execute` | No | remove reported unreferenced objects |
+
+### `emrf recovery`
+
+Supported EMRF command.
+
+```text
+usage: emrf recovery [-h] {backup,backup-verify,restore,drill} ...
+```
+
+#### `emrf recovery backup`
+
+Supported EMRF command.
+
+```text
+usage: emrf recovery backup [-h] destination
+```
+
+| Argument | Required | Description |
+|---|---:|---|
+| `destination` | Yes |  |
+
+#### `emrf recovery backup-verify`
+
+Supported EMRF command.
+
+```text
+usage: emrf recovery backup-verify [-h] source
+```
+
+| Argument | Required | Description |
+|---|---:|---|
+| `source` | Yes |  |
+
+#### `emrf recovery restore`
+
+Supported EMRF command.
+
+```text
+usage: emrf recovery restore [-h] source destination
+```
+
+| Argument | Required | Description |
+|---|---:|---|
+| `source` | Yes |  |
+| `destination` | Yes |  |
+
+#### `emrf recovery drill`
+
+Supported EMRF command.
+
+```text
+usage: emrf recovery drill [-h] [--receipt RECEIPT] [--workspace WORKSPACE]
+```
+
+| Argument | Required | Description |
+|---|---:|---|
+| `--receipt` | No |  |
+| `--workspace` | No |  |
 
 ### `emrf runs`
 
