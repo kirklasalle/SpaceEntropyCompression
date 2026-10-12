@@ -1,10 +1,10 @@
 # SPARC quality-3 holdout preregistration
 
-**Study:** `sparc-q3-holdout-v1`  
-**Status:** preregistered before computing the Q=3 profiles  
-**Authoritative contract:** `research/preregistrations/sparc_q3_holdout_v1.json`  
-**Commitment:** `20261012T205817322791Z-806cce833d62`  
-**Canonical JSON SHA-256:** `806cce833d62fa2349c5b19a0638e62991e33ed19f05cd65b15de147352fbbb0`
+- **Study:** `sparc-q3-holdout-v1`
+- **Status:** preregistered before computing the Q=3 profiles
+- **Authoritative contract:** `research/preregistrations/sparc_q3_holdout_v1.json`
+- **Commitment:** `20261012T205817322791Z-806cce833d62`
+- **Canonical JSON SHA-256:** `806cce833d62fa2349c5b19a0638e62991e33ed19f05cd65b15de147352fbbb0`
 
 ## Purpose
 
