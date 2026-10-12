@@ -384,15 +384,25 @@ class EMRFClient:
         from emrf.performance import PerformanceBaselineRunner
 
         try:
-            result = PerformanceBaselineRunner().run(
+            runner = PerformanceBaselineRunner()
+        except (OSError, ValueError) as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "performance_baseline"},
+            ) from exc
+        try:
+            result = runner.run(
                 profile=profile,
                 repeats=repeats,
                 workloads=workloads,
             )
         except (TypeError, ValueError) as exc:
             raise InvalidRequestError(str(exc)) from exc
-        except OSError as exc:
-            raise OperationUnavailableError(str(exc)) from exc
+        except (OSError, RuntimeError) as exc:
+            raise OperationUnavailableError(
+                str(exc),
+                details={"kind": "performance_baseline"},
+            ) from exc
         return OperationResult(result)
 
     def commit_json_prediction(

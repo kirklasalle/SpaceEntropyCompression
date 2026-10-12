@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import json
+import threading
+import time
+import tracemalloc
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import emrf_cli
@@ -9,7 +13,12 @@ import server
 from emrf import performance
 from emrf.interfaces.api_v2 import API_V2_TOKEN_ENV, create_app
 from emrf.performance import PerformanceBaselineRunner
-from emrf.sdk import EMRFClient, InvalidRequestError, OperationResult
+from emrf.sdk import (
+    EMRFClient,
+    InvalidRequestError,
+    OperationResult,
+    OperationUnavailableError,
+)
 from fastapi.testclient import TestClient
 
 
@@ -46,6 +55,64 @@ def test_test_profile_measures_all_workloads_and_preserves_invariants() -> None:
     assert all(row["invariants"]["passed"] for row in report["workloads"])
     assert all(row["measurements"]["median_seconds"] >= 0 for row in report["workloads"])
     assert all(row["measurements"]["peak_python_bytes"] > 0 for row in report["workloads"])
+
+
+def test_concurrent_baseline_runs_are_serialized(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    guard = threading.Lock()
+    active = 0
+    maximum_active = 0
+
+    def workload(*args: object, **kwargs: object) -> dict[str, object]:
+        nonlocal active, maximum_active
+        with guard:
+            active += 1
+            maximum_active = max(maximum_active, active)
+        time.sleep(0.05)
+        with guard:
+            active -= 1
+        return {
+            "name": "covariance",
+            "dimensions": {"matrix_size": 64},
+            "measurements": {},
+            "thresholds": {},
+            "invariants": {"passed": True, "checks": []},
+            "passed": True,
+            "violations": [],
+        }
+
+    monkeypatch.setattr(PerformanceBaselineRunner, "_run_workload", workload)
+    runners = (PerformanceBaselineRunner(), PerformanceBaselineRunner())
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        reports = list(
+            executor.map(
+                lambda runner: runner.run(
+                    profile="test",
+                    workloads=("covariance",),
+                ),
+                runners,
+            )
+        )
+
+    assert maximum_active == 1
+    assert all(report["passed"] for report in reports)
+
+
+def test_baseline_preserves_preexisting_tracemalloc_state() -> None:
+    was_tracing = tracemalloc.is_tracing()
+    if not was_tracing:
+        tracemalloc.start()
+    try:
+        report = PerformanceBaselineRunner().run(
+            profile="test",
+            workloads=("covariance",),
+        )
+        assert report["passed"] is True
+        assert tracemalloc.is_tracing()
+    finally:
+        if not was_tracing:
+            tracemalloc.stop()
 
 
 def test_baseline_failure_names_threshold_without_changing_result(
@@ -99,6 +166,28 @@ def test_scientific_invariant_failure_cannot_pass_performance_gate(
     assert report["workloads"][0]["violations"] == ["scientific_invariants"]
 
 
+def test_artifact_order_regression_fails_complete_sequence_invariant(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    original = performance.scan_artifacts
+    monkeypatch.setattr(
+        performance,
+        "scan_artifacts",
+        lambda root: tuple(reversed(original(root))),
+    )
+
+    report = PerformanceBaselineRunner().run(
+        profile="test",
+        workloads=("run_artifacts",),
+    )
+
+    assert report["passed"] is False
+    assert report["scientific_outputs_preserved"] is False
+    checks = report["workloads"][0]["invariants"]["checks"]
+    order = next(check for check in checks if check["field"] == "path_order_sha256")
+    assert order["passed"] is False
+
+
 def test_sdk_validates_performance_requests() -> None:
     result = EMRFClient().run_performance_baseline(
         profile="test",
@@ -112,6 +201,20 @@ def test_sdk_validates_performance_requests() -> None:
             profile="test",
             workloads=("covariance", "covariance"),
         )
+    with pytest.raises(InvalidRequestError, match="unique values"):
+        EMRFClient().run_performance_baseline(profile="test", workloads=())
+
+
+def test_sdk_maps_invalid_baseline_deployment_to_unavailable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fail_constructor() -> None:
+        raise ValueError("malformed packaged baseline")
+
+    monkeypatch.setattr(performance, "PerformanceBaselineRunner", fail_constructor)
+
+    with pytest.raises(OperationUnavailableError, match="malformed packaged baseline"):
+        EMRFClient().run_performance_baseline(profile="test")
 
 
 def test_cli_run_and_check_have_stable_exit_semantics(
@@ -165,6 +268,16 @@ def test_flask_performance_route_is_gated_and_routes_through_sdk(
 
     assert response.status_code == 200
     assert response.get_json()["passed"] is True
+
+    def unavailable(**kwargs: object) -> OperationResult:
+        raise OperationUnavailableError("baseline unavailable")
+
+    monkeypatch.setattr(server.sdk, "run_performance_baseline", unavailable)
+    unavailable_response = server.app.test_client().post(
+        "/api/v1/performance/baselines",
+        json={"profile": "test"},
+    )
+    assert unavailable_response.status_code == 503
 
 
 def test_v2_performance_route_requires_token_and_routes_through_sdk(
