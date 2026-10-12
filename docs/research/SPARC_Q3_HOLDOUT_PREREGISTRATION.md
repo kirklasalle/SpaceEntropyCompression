@@ -1,7 +1,7 @@
 # SPARC quality-3 holdout preregistration
 
 - **Study:** `sparc-q3-holdout-v1`
-- **Status:** preregistered before computing the Q=3 profiles
+- **Status:** completed from the preregistered contract on protected `main`
 - **Authoritative contract:** `research/preregistrations/sparc_q3_holdout_v1.json`
 - **Current commitment:** `20261012T211327324282Z-d6ab49c9b4b7`
 - **Canonical JSON SHA-256:** `d6ab49c9b4b7ecdc50bad2a57b5018ccffd0736bafcc7d61a59472e38614a602`
@@ -74,3 +74,28 @@ A scientifically rejected hypothesis does not make the computation fail.
 Workflow failure means the analysis was incomplete, an input or commitment did
 not match, or a numerical gate failed. The output records the primary claim as
 `consistent` or `rejected` separately from operational completeness.
+
+## Protected outcome
+
+Workflow run `38315325901` executed the frozen protocol from clean protected
+`main` revision `f09633b6bded2b239372dd76630b1e38d92e0992`. The complete
+artifact is preserved unchanged at
+`results/real_data_v1/sparc_q3_holdout_v1.json` with SHA-256
+`87dea72269652bea6e24d03876dfe4c65075d7254031b2852e31a09add55231a`.
+Independent receipt checks confirmed the committed input, training-result and
+preregistration hashes; all 10 eligible galaxies and 109 points; no missing or
+silently excluded targets; no protocol deviations; and passing optimizer and
+forward/reverse numerical gates for both laws.
+
+The preregistered outcomes are:
+
+- **H1 EMRF square-root generalization: `rejected`.** The Q=3 grid minimum is
+  `1.50e-10 m/s²`. It is not on a grid edge, but it is outside the frozen Q≤2
+  interval `[1.55781092394229e-10, 1.60831784955957e-10] m/s²`.
+- **H2 RAR comparator generalization: `rejected`.** The Q=3 grid minimum is
+  `1.15e-10 m/s²`. It is not on a grid edge, but it is outside the frozen Q≤2
+  interval `[1.22152425035699e-10, 1.2557224809968e-10] m/s²`.
+
+These outcomes reject only the declared conditional same-catalogue
+lower-quality generalization screens. They are not calibrated significance,
+blind discovery, or independent-survey replication.

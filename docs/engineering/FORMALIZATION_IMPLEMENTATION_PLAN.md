@@ -734,6 +734,31 @@ request must then merge normally, and the exact merged `main` commit must pass
 CI, documentation, security and Scorecard publication without Node.js 20,
 CodeQL v3 or runner-migration warnings.
 
+## Phase 11 - Evidence-qualified scientific challenges (in progress)
+
+**SPARC quality-3 holdout completed (2026-10-12):** the protocol and exact
+input/training hashes were frozen before outcome computation through protected
+PR #29 and commitment `20261012T211327324282Z-d6ab49c9b4b7`. Protected PR #30
+then added the manually dispatched, read-only analyzer with independent
+population derivation, forward/reverse scans, complete optimizer diagnostics,
+and separate scientific and operational gates. Its 19 CI and security checks
+passed before the implementation merged as
+`f09633b6bded2b239372dd76630b1e38d92e0992`.
+
+Run `38315325901` executed that exact clean `main` revision. The retained
+artifact is preserved unchanged as
+`results/real_data_v1/sparc_q3_holdout_v1.json` (SHA-256
+`87dea72269652bea6e24d03876dfe4c65075d7254031b2852e31a09add55231a`).
+Independent checks confirmed a complete population of 10 Q=3 galaxies and 109
+points, no missing or silently excluded targets, no protocol deviations, and
+passing convergence and scan-order gates for both laws. The preregistered EMRF
+screen was **rejected**: its `1.50e-10 m/s²` holdout minimum lies outside the
+frozen `[1.55781092394229e-10, 1.60831784955957e-10] m/s²` interval. The RAR
+comparator screen was also **rejected**: its `1.15e-10 m/s²` minimum lies
+outside `[1.22152425035699e-10, 1.2557224809968e-10] m/s²`. These are
+conditional same-catalogue lower-quality holdout outcomes, not calibrated
+significance, blind discovery, or independent replication.
+
 ---
 
 ## Risk register
