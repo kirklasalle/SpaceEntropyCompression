@@ -139,6 +139,7 @@ def test_validation_and_publication_concurrency_is_safe() -> None:
         "docs.yml": "false",
         "operational-certification.yml": "false",
         "release-health.yml": "false",
+        "sparc-q3-holdout.yml": "false",
         "release.yml": "false",
         "security.yml": "true",
     }
@@ -183,6 +184,31 @@ def test_operational_certification_is_read_only_and_retains_failures() -> None:
         "secrets.",
         "twine upload",
     ):
+        assert prohibited not in text
+
+
+def test_sparc_q3_holdout_is_manual_read_only_and_retains_failures() -> None:
+    text, workflow = _workflows()["sparc-q3-holdout.yml"]
+
+    assert workflow["on"] == {"workflow_dispatch": ""}
+    assert workflow["permissions"] == {"contents": "read"}
+    job = workflow["jobs"]["analyze"]
+    assert job["timeout-minutes"] == "45"
+    steps = {step.get("name"): step for step in job["steps"] if "name" in step}
+    main_guard = steps["Require current protected main commit"]["run"]
+    assert 'test "$GITHUB_REF" = "refs/heads/main"' in main_guard
+    assert 'test "$GITHUB_SHA" = "$(git rev-parse origin/main)"' in main_guard
+    holdout = steps["Execute protected holdout"]
+    assert holdout["continue-on-error"] == "true"
+    assert "run_sparc_q3_holdout.py" in holdout["run"]
+    upload = steps["Retain holdout evidence"]
+    assert upload["if"] == "always()"
+    assert upload["with"]["if-no-files-found"] == "error"
+    assert upload["with"]["retention-days"] == "90"
+    assert steps["Enforce complete analysis"]["if"] == (
+        "steps.holdout.outcome == 'failure'"
+    )
+    for prohibited in ("contents: write", "schedule:", "secrets.", "git push"):
         assert prohibited not in text
 
 

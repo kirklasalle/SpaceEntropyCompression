@@ -102,7 +102,8 @@ def residual_jacobian(x, mg, nu, a0, centre):
     return jac
 
 
-def fit_one(mg, nu, a0, centre, warm=None):
+def fit_one(mg, nu, a0, centre, warm=None, diagnostics=None,
+            diagnostic_context=None):
     nominal = np.array([np.log10(centre), 1.0, mg.gal.inclination_deg])
     starts = [nominal, nominal + np.array([-.3, -.05, -2.]),
               nominal + np.array([.3, .05, 2.])]
@@ -140,15 +141,29 @@ def fit_one(mg, nu, a0, centre, warm=None):
     if warm is not None:
         starts.append(warm)
     fits = []
+    initial_successes = diagnostics["successful"] if diagnostics is not None else 0
+    initial_failures = diagnostics["failed"] if diagnostics is not None else 0
     for bounds in bounds_options:
         for start in starts:
             start = np.clip(start, bounds[0], bounds[1])
+            if diagnostics is not None:
+                diagnostics["attempts"] += 1
             res = least_squares(residual_vector, start,
                                 args=(mg, nu, a0, centre), jac=residual_jacobian, x_scale=scale,
                                 bounds=bounds,
                                 max_nfev=600, ftol=1e-10, xtol=1e-10, gtol=1e-9)
             if res.success and np.isfinite(res.cost):
                 fits.append(res)
+                if diagnostics is not None:
+                    diagnostics["successful"] += 1
+            elif diagnostics is not None:
+                diagnostics["failed"] += 1
+    if diagnostics is not None and diagnostic_context is not None:
+        diagnostics["cells"].append({
+            **diagnostic_context,
+            "successful": diagnostics["successful"] - initial_successes,
+            "failed": diagnostics["failed"] - initial_failures,
+        })
     if not fits:
         raise RuntimeError(f"No converged fit: {mg.gal.name}, a0={a0}, centre={centre}")
     best = min(fits, key=lambda result: result.cost)
@@ -156,7 +171,7 @@ def fit_one(mg, nu, a0, centre, warm=None):
 
 
 def scan(gals, grid, centre=.5, reverse=False, bulge_ratio=1.4,
-         law="rar_exponential", free_bulge=False):
+         law="rar_exponential", free_bulge=False, diagnostics=None):
     if free_bulge:
         from emergent_matter_model.sparc_bulge_test import FreeBulgeGalaxy
         models = [FreeBulgeGalaxy(g) for g in gals]
@@ -171,7 +186,9 @@ def scan(gals, grid, centre=.5, reverse=False, bulge_ratio=1.4,
     for j in (range(len(grid)-1, -1, -1) if reverse else range(len(grid))):
         for k, mg in enumerate(models):
             objectives[j, k], chi[j, k], warm[k] = fit_one(
-                mg, LAWS[law][1], grid[j], centre, warm[k])
+                mg, LAWS[law][1], grid[j], centre, warm[k], diagnostics,
+                {"law": law, "direction": "reverse" if reverse else "forward",
+                 "galaxy": mg.gal.name, "a0": float(grid[j])})
     return objectives, chi
 
 

@@ -152,6 +152,8 @@ COMMANDS: tuple[Command, ...] = (
             "Compression-claims audit"),
     Command("golden-results", _T + "run_golden_results.py", "audit",
             "Re-run real-data analyses and compare golden JSON results"),
+    Command("sparc-q3-holdout", _T + "run_sparc_q3_holdout.py", "audit",
+            "Execute the protected SPARC quality-3 holdout study"),
     Command("operational-certification", _T + "run_operational_certification.py", "audit",
             "Certify controlled recovery and performance evidence"),
     Command("show-your-work", _T + "show_your_work_audit.py", "audit", "Show-your-work audit"),

@@ -1,0 +1,54 @@
+name: SPARC Q3 holdout
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sparc-q3-holdout-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    name: Execute preregistered holdout
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Require current protected main commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
+      - name: Install certified dependencies
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
+      - name: Execute protected holdout
+        id: holdout
+        continue-on-error: true
+        run: >-
+          python tools/run_sparc_q3_holdout.py
+          --output holdout-evidence/sparc-q3-holdout-v1.json
+      - name: Retain holdout evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sparc-q3-holdout-${{ github.sha }}-${{ github.run_id }}
+          path: holdout-evidence/sparc-q3-holdout-v1.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce complete analysis
+        if: steps.holdout.outcome == 'failure'
+        run: exit 1
