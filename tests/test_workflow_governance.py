@@ -190,7 +190,14 @@ def test_release_health_is_read_only_and_non_publishing() -> None:
     assert resolver["env"]["REQUESTED_TAG"] == "${{ inputs.tag }}"
     assert "${{ inputs.tag }}" not in resolver["run"]
     assert "registry=release/archives.json" in resolver["run"]
+    assert 'test "$GITHUB_REF" = "refs/heads/main"' in resolver["run"]
+    assert 'test "$GITHUB_SHA" = "$(git rev-parse origin/main)"' in resolver["run"]
     assert 'test "$release_sha" = "$expected_sha"' in resolver["run"]
+    assert '["doi"]' in resolver["run"]
+    assert '["release_url"]' in resolver["run"]
+    assert "RELEASE_DOI=$release_doi" in resolver["run"]
+    assert "RELEASE_URL=$expected_url" in resolver["run"]
+    assert "CITATION.cff" not in resolver["run"]
 
     for prohibited in (
         "actions/attest",
