@@ -664,10 +664,10 @@ catalog hashes, measures recovery-point age, rejects concurrent source changes,
 enforces explicit five-minute drill objectives, and atomically retains success
 or failure receipts. Operational RPO/RTO targets are defined for observations,
 catalogs, runs, predictions, knowledge and release state. Review regressions
-cover concurrent migration, stale recovery points and interrupted receipt
-writes. Exact-main CI run `38256202517`, Documentation run `38256202171`,
-Security run `38256202424` and OpenSSF Scorecard run `38256202902` all passed;
-issue #20 closed only after that protected certification.
+cover concurrent migration, source changes during recovery and interrupted
+receipt writes. Issue #20 closed automatically when PR #21 merged. Exact-main
+CI run `38256202517`, Documentation run `38256202171`, Security run
+`38256202424` and OpenSSF Scorecard run `38256202902` then all passed.
 
 Planned sustained-operations increments:
 
