@@ -653,15 +653,21 @@ was independently verified. Failed runs `38185094841` and `38187930382` remain
 preserved as evidence of the post-tag DOI lifecycle boundary and the corrected
 shell-parser defect rather than being hidden or deleted.
 
-**Third lifecycle slice implemented locally (2026-10-12):** the durable job
-queue now assigns a persistent monotonic sequence and claims by that sequence,
-including an in-place migration for existing registries. This preserves FIFO
-submission order when timestamps collide and removes random identifier suffixes
-from scheduling semantics. The existing isolated data restore drill now
-verifies the curated catalog, records phase timings and catalog hashes, enforces
-explicit five-minute drill objectives, and fails closed with a retained
-receipt when an objective is missed. Operational RPO/RTO targets are defined
-for observations, catalogs, runs, predictions, knowledge and release state.
+**Third lifecycle slice remotely certified (2026-10-12):** protected PR #21
+merged as `bdbe16cdeaaae577f92ec29ffacb7aff80da368a`. The durable job queue
+now assigns a persistent monotonic sequence and claims by that sequence,
+including a serialized in-place migration for existing registries. This
+preserves FIFO submission order when timestamps collide and removes random
+identifier suffixes from scheduling semantics. The existing isolated data
+restore drill now verifies the curated catalog, records phase timings and
+catalog hashes, measures recovery-point age, rejects concurrent source changes,
+enforces explicit five-minute drill objectives, and atomically retains success
+or failure receipts. Operational RPO/RTO targets are defined for observations,
+catalogs, runs, predictions, knowledge and release state. Review regressions
+cover concurrent migration, stale recovery points and interrupted receipt
+writes. Exact-main CI run `38256202517`, Documentation run `38256202171`,
+Security run `38256202424` and OpenSSF Scorecard run `38256202902` all passed;
+issue #20 closed only after that protected certification.
 
 Planned sustained-operations increments:
 
@@ -694,11 +700,9 @@ CodeQL v3 or runner-migration warnings.
 
 ## Immediate next steps
 
-1. Run and remotely certify the deterministic queue and isolated recovery drill
-   on protected infrastructure, retaining its receipt and measured timings.
-2. Extend isolated recovery drills to durable runs, prediction commitments and
+1. Extend isolated recovery drills to durable runs, prediction commitments and
    scientific knowledge snapshots.
-3. Define the supported-version/deprecation contract before any 1.1 interface
+2. Define the supported-version/deprecation contract before any 1.1 interface
    or schema change.
-4. Continue scientific work only through preregistered predictions,
+3. Continue scientific work only through preregistered predictions,
    independently traceable observations and evidence-qualified claims.
