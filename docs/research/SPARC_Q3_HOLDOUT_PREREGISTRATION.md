@@ -58,3 +58,19 @@ input hashes, training-result hash, nuisance treatment, numerical gates,
 hypotheses, reporting requirements, and prohibited interpretations. Its
 canonical JSON content is protected by the accompanying immutable prediction
 commitment.
+
+## Protected execution
+
+The manually dispatched `SPARC Q3 holdout` workflow is the supported execution
+path. It refuses commits other than current protected `main`, downloads and
+hash-verifies the preregistered official holdings, verifies the training result
+and prediction commitment, executes both laws in forward and reverse grid
+order, and retains the complete or failed JSON evidence for 90 days. It has
+read-only repository permissions and no schedule. Every supported execution is
+bound to an exact protected commit and retains a run-specific evidence artifact;
+manual reruns remain possible and must not replace or conceal earlier evidence.
+
+A scientifically rejected hypothesis does not make the computation fail.
+Workflow failure means the analysis was incomplete, an input or commitment did
+not match, or a numerical gate failed. The output records the primary claim as
+`consistent` or `rejected` separately from operational completeness.
