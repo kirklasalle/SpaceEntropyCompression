@@ -42,6 +42,12 @@ class EnvironmentReport(APIModel):
     healthy: bool
 
 
+class PerformanceRequest(APIModel):
+    profile: str = Field(default="standard", pattern="^(test|standard)$")
+    repeats: int | None = Field(default=None, ge=1, le=10)
+    workloads: list[str] | None = None
+
+
 class CommandInfo(APIModel):
     name: str
     script: str
@@ -293,6 +299,7 @@ __all__ = [
     "OffsiteBackupRequest",
     "OperationResponse",
     "PathRequest",
+    "PerformanceRequest",
     "PredictionCommitment",
     "PredictionCommitRequest",
     "PredictionVerification",
