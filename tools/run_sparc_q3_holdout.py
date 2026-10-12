@@ -18,7 +18,12 @@ import numpy as np
 import scipy
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+MODEL_ROOT = ROOT / "emergent_matter_model"
+SOURCE_ROOT = MODEL_ROOT / "src"
+for source in (ROOT, MODEL_ROOT, SOURCE_ROOT):
+    source_text = str(source)
+    if source_text not in sys.path:
+        sys.path.insert(0, source_text)
 
 from emrf.validation.preregistration import verify_json_prediction
 
@@ -29,7 +34,11 @@ from emergent_matter_model.sparc_real_analysis import (
     parse_rotmod,
     parse_sparc_table,
 )
-from tools.run_sparc_profile_validation import scan, summarize
+from tools.run_sparc_profile_validation import (
+    OptimizerConvergenceError,
+    scan,
+    summarize,
+)
 
 CONTRACT_PATH = ROOT / "research" / "preregistrations" / "sparc_q3_holdout_v1.json"
 COMMITMENTS_ROOT = ROOT / "research" / "commitments"
@@ -351,6 +360,11 @@ def main(argv: list[str] | None = None) -> int:
             "analysis_complete": False,
             "error": {"type": type(exc).__name__, "message": str(exc)},
         }
+        if isinstance(exc, OptimizerConvergenceError):
+            failure["optimizer_failure"] = {
+                "cell": exc.cell,
+                "accumulated_diagnostics": exc.diagnostics,
+            }
         _write_json_atomic(output, failure)
         print(json.dumps(failure, indent=2, sort_keys=True))
         return 1

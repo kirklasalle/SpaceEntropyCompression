@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 
 from tools import run_sparc_profile_validation as profile_module
 from tools import run_sparc_q3_holdout as holdout_module
@@ -139,5 +141,70 @@ def test_multi_start_diagnostics_count_failed_and_successful_attempts(
         "attempts": 3,
         "successful": 2,
         "failed": 1,
-        "cells": [{**context, "successful": 2, "failed": 1}],
+        "cells": [
+            {**context, "attempted": 3, "successful": 2, "failed": 1}
+        ],
     }
+
+
+def test_all_start_failure_writes_structured_incomplete_receipt(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(
+        profile_module,
+        "least_squares",
+        lambda *args, **kwargs: SimpleNamespace(
+            success=False,
+            cost=np.inf,
+            x=np.array([0.0, 1.0, 45.0]),
+        ),
+    )
+    galaxy = SimpleNamespace(inclination_deg=45.0, name="probe")
+    model = SimpleNamespace(
+        gal=galaxy,
+        sig_fd=0.1,
+        sig_i=1.0,
+        bounds=[(-1.3, 0.7), (0.5, 1.5), (30.0, 60.0)],
+        vb2_disk=np.array([1.0]),
+        vb2_star=np.array([1.0]),
+        vb2_gas=np.array([1.0]),
+        vb2_bul=np.array([0.0]),
+    )
+    context = {
+        "law": "emrf_sqrt",
+        "direction": "forward",
+        "galaxy": "probe",
+        "a0": 1e-10,
+    }
+    diagnostics = {"attempts": 0, "successful": 0, "failed": 0, "cells": []}
+
+    with pytest.raises(profile_module.OptimizerConvergenceError) as captured:
+        profile_module.fit_one(
+            model,
+            lambda value: value,
+            1e-10,
+            0.5,
+            diagnostics=diagnostics,
+            diagnostic_context=context,
+        )
+
+    def fail_holdout(output: Path) -> dict:
+        del output
+        raise captured.value
+
+    monkeypatch.setattr(holdout_module, "run_holdout", fail_holdout)
+    output = tmp_path / "failure.json"
+
+    assert holdout_module.main(["--output", str(output)]) == 1
+    receipt = json.loads(output.read_text(encoding="utf-8"))
+    assert receipt["status"] == "incomplete"
+    assert receipt["analysis_complete"] is False
+    assert "hypotheses" not in receipt
+    assert receipt["optimizer_failure"]["cell"] == {
+        **context,
+        "attempted": 3,
+        "successful": 0,
+        "failed": 3,
+    }
+    assert receipt["optimizer_failure"]["accumulated_diagnostics"] == diagnostics
