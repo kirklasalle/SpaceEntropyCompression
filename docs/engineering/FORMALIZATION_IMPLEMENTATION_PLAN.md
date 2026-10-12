@@ -659,7 +659,7 @@ including an in-place migration for existing registries. This preserves FIFO
 submission order when timestamps collide and removes random identifier suffixes
 from scheduling semantics. The existing isolated data restore drill now
 verifies the curated catalog, records phase timings and catalog hashes, enforces
-explicit zero-age/five-minute drill objectives, and fails closed with a retained
+explicit five-minute drill objectives, and fails closed with a retained
 receipt when an objective is missed. Operational RPO/RTO targets are defined
 for observations, catalogs, runs, predictions, knowledge and release state.
 

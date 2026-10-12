@@ -37,7 +37,8 @@ all development work.
 5. copy and re-parse the curated catalog, recording its SHA-256 digest, schema
    version and dataset count;
 6. measure backup, backup verification, restore and final-verification time;
-7. enforce a zero-age drill snapshot and a five-minute local drill RTO; and
+7. enforce five-minute local RPO and RTO thresholds and fail the RPO if the
+   managed source changes after its backup snapshot; and
 8. atomically retain a JSON receipt, including failed receipts.
 
 The five-minute drill threshold certifies the controlled local recovery

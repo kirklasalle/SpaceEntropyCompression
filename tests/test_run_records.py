@@ -193,6 +193,42 @@ def test_legacy_job_queue_migrates_to_deterministic_sequence(tmp_path: Path) -> 
     ]
 
 
+def test_concurrent_legacy_queue_initialization_is_serialized(tmp_path: Path) -> None:
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    registry = tmp_path / "registry.sqlite"
+    with sqlite3.connect(registry) as connection:
+        connection.executescript(
+            """
+            CREATE TABLE jobs (
+                job_id TEXT PRIMARY KEY,
+                command TEXT NOT NULL,
+                args_json TEXT NOT NULL,
+                timeout_seconds REAL,
+                evidence_class TEXT NOT NULL,
+                status TEXT NOT NULL,
+                attempts INTEGER NOT NULL,
+                max_attempts INTEGER NOT NULL,
+                created_utc TEXT NOT NULL,
+                updated_utc TEXT NOT NULL,
+                lease_owner TEXT,
+                lease_expires_utc TEXT,
+                run_id TEXT,
+                returncode INTEGER,
+                last_error TEXT
+            );
+            """
+        )
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        list(executor.map(lambda _: RunStore(tmp_path).initialize(), range(8)))
+
+    with sqlite3.connect(registry) as connection:
+        columns = {
+            row[1] for row in connection.execute("PRAGMA table_info(jobs)").fetchall()
+        }
+    assert "queue_sequence" in columns
+
+
 def test_concurrent_workers_cannot_claim_same_job(tmp_path: Path) -> None:
     store = RunStore(tmp_path)
     jobs = [store.enqueue("analysis", [str(index)]) for index in range(12)]
