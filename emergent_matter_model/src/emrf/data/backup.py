@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import platform
 import shutil
 import sqlite3
 import sys
 import tempfile
+import time
 from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +24,9 @@ from .store import ContentAddressedStore
 
 _BACKUP_SCHEMA = "1.0.0"
 _MANIFEST = "backup_manifest.json"
+_DRILL_CATALOG = "data_catalog.json"
+_DEFAULT_DRILL_RPO_SECONDS = 0.0
+_DEFAULT_DRILL_RTO_SECONDS = 300.0
 
 
 class BackupManager:
@@ -85,10 +90,10 @@ class BackupManager:
         object_keys: set[tuple[str, int]] = set()
         for entry in manifest["objects"]:
             path = _safe_object_path(root, entry)
-            key = (entry["sha256"], entry["bytes"])
-            if key in object_keys:
+            object_key = (entry["sha256"], entry["bytes"])
+            if object_key in object_keys:
                 raise IntegrityError(f"Backup repeats object: {entry['sha256']}")
-            object_keys.add(key)
+            object_keys.add(object_key)
             ContentAddressedStore._verify_path(
                 path,
                 entry["sha256"],
@@ -96,10 +101,10 @@ class BackupManager:
             )
         holding_keys: set[tuple[str, str, str]] = set()
         for entry in manifest["holdings"]:
-            key = _validate_holding(entry, {digest for digest, _ in object_keys})
-            if key in holding_keys:
-                raise IntegrityError(f"Backup repeats holding: {key}")
-            holding_keys.add(key)
+            holding_key = _validate_holding(entry, {digest for digest, _ in object_keys})
+            if holding_key in holding_keys:
+                raise IntegrityError(f"Backup repeats holding: {holding_key}")
+            holding_keys.add(holding_key)
         _verify_registry_snapshot(root, manifest)
         return manifest
 
@@ -141,8 +146,25 @@ class BackupManager:
         receipt: str | Path,
         *,
         workspace: str | Path | None = None,
+        catalog_path: str | Path | None = None,
+        rpo_seconds: float = _DEFAULT_DRILL_RPO_SECONDS,
+        rto_seconds: float = _DEFAULT_DRILL_RTO_SECONDS,
     ) -> dict[str, Any]:
         """Create, restore and fully verify a temporary backup with a durable receipt."""
+        if (
+            isinstance(rpo_seconds, bool)
+            or not isinstance(rpo_seconds, (int, float))
+            or not math.isfinite(rpo_seconds)
+            or rpo_seconds < 0
+        ):
+            raise ValueError("rpo_seconds must be non-negative")
+        if (
+            isinstance(rto_seconds, bool)
+            or not isinstance(rto_seconds, (int, float))
+            or not math.isfinite(rto_seconds)
+            or rto_seconds <= 0
+        ):
+            raise ValueError("rto_seconds must be positive")
         receipt_path = Path(receipt).expanduser().resolve()
         if receipt_path.exists():
             raise FileExistsError(f"Restore-drill receipt already exists: {receipt_path}")
@@ -152,6 +174,7 @@ class BackupManager:
             workspace_path = Path(workspace).expanduser().resolve()
             workspace_path.mkdir(parents=True, exist_ok=True)
         started = datetime.now(timezone.utc)
+        started_counter = time.perf_counter()
         result: dict[str, Any] = {
             "schema_version": "1.0.0",
             "started_utc": started.isoformat(),
@@ -160,6 +183,10 @@ class BackupManager:
             "python_version": platform.python_version(),
             "platform": platform.platform(),
             "implementation": sys.implementation.name,
+            "recovery_objectives": {
+                "rpo_seconds": rpo_seconds,
+                "rto_seconds": rto_seconds,
+            },
         }
         try:
             with tempfile.TemporaryDirectory(
@@ -169,10 +196,22 @@ class BackupManager:
                 root = Path(temporary)
                 backup = root / "backup"
                 restored = ContentAddressedStore(root / "restored-data")
+                phase_started = time.perf_counter()
                 manifest = self.create(backup)
+                source_catalog_bytes: bytes | None = None
+                if catalog_path is not None:
+                    source_catalog = Path(catalog_path).expanduser().resolve()
+                    source_catalog_bytes = source_catalog.read_bytes()
+                    _copy_fsynced(source_catalog, backup / _DRILL_CATALOG)
+                backup_seconds = time.perf_counter() - phase_started
+                phase_started = time.perf_counter()
                 verified = self.verify(backup)
+                backup_verification_seconds = time.perf_counter() - phase_started
                 manifest_bytes = (backup / _MANIFEST).read_bytes()
+                phase_started = time.perf_counter()
                 restore_result = BackupManager(restored).restore(backup)
+                restore_seconds = time.perf_counter() - phase_started
+                phase_started = time.perf_counter()
                 restored_objects = restored.list_objects(verify=True)
                 restored_holdings = restored.list_holdings(verify=True)
                 expected_objects = len(verified["objects"])
@@ -182,9 +221,28 @@ class BackupManager:
                     or len(restored_holdings) != expected_holdings
                 ):
                     raise IntegrityError("Restore drill produced incomplete holdings")
+                catalog_result: dict[str, Any] = {}
+                if source_catalog_bytes is not None:
+                    from .catalog import DataCatalog
+
+                    catalog_backup = backup / _DRILL_CATALOG
+                    catalog_bytes = catalog_backup.read_bytes()
+                    if catalog_bytes != source_catalog_bytes:
+                        raise IntegrityError("Restore drill backup contains an invalid catalog")
+                    restored_catalog = root / "restored-data-catalog.json"
+                    _copy_fsynced(catalog_backup, restored_catalog)
+                    if restored_catalog.read_bytes() != catalog_bytes:
+                        raise IntegrityError("Restore drill produced an invalid catalog")
+                    catalog = DataCatalog(restored_catalog)
+                    catalog_result = {
+                        "catalog_verified": True,
+                        "catalog_sha256": hashlib.sha256(catalog_bytes).hexdigest(),
+                        "catalog_schema_version": catalog.schema_version,
+                        "catalog_datasets": len(catalog.list()),
+                    }
+                final_verification_seconds = time.perf_counter() - phase_started
                 result.update(
                     {
-                        "status": "passed",
                         "backup_created_utc": manifest["created_utc"],
                         "backup_manifest_sha256": hashlib.sha256(
                             manifest_bytes
@@ -193,8 +251,23 @@ class BackupManager:
                         "holdings_verified": expected_holdings,
                         "restored_objects": restore_result["objects"],
                         "restored_holdings": restore_result["holdings"],
+                        "phase_seconds": {
+                            "backup": backup_seconds,
+                            "backup_verification": backup_verification_seconds,
+                            "restore": restore_seconds,
+                            "final_verification": final_verification_seconds,
+                        },
+                        **catalog_result,
                     }
                 )
+            duration_seconds = time.perf_counter() - started_counter
+            result["duration_seconds"] = duration_seconds
+            result["recovery_point_age_seconds"] = 0.0
+            result["rpo_met"] = rpo_seconds >= 0.0
+            result["rto_met"] = duration_seconds <= rto_seconds
+            if not result["rpo_met"] or not result["rto_met"]:
+                raise IntegrityError("Restore drill exceeded its recovery objectives")
+            result["status"] = "passed"
         except Exception as exc:
             result.update(
                 {
@@ -204,12 +277,10 @@ class BackupManager:
                 }
             )
             result["completed_utc"] = datetime.now(timezone.utc).isoformat()
+            result.setdefault("duration_seconds", time.perf_counter() - started_counter)
             _write_json_fsynced(receipt_path, result)
             raise
         result["completed_utc"] = datetime.now(timezone.utc).isoformat()
-        result["duration_seconds"] = (
-            datetime.fromisoformat(result["completed_utc"]) - started
-        ).total_seconds()
         _write_json_fsynced(receipt_path, result)
         return result
 

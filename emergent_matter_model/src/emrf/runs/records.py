@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS runs (
 );
 CREATE TABLE IF NOT EXISTS jobs (
     job_id TEXT PRIMARY KEY,
+    queue_sequence INTEGER NOT NULL,
     command TEXT NOT NULL,
     args_json TEXT NOT NULL,
     timeout_seconds REAL,
@@ -63,7 +64,6 @@ CREATE TABLE IF NOT EXISTS jobs (
     returncode INTEGER,
     last_error TEXT
 );
-CREATE INDEX IF NOT EXISTS jobs_status_created_idx ON jobs(status, created_utc);
 """
 
 
@@ -130,6 +130,7 @@ class RunStore:
             self.root.mkdir(parents=True, exist_ok=True)
             with self._connect() as connection:
                 connection.executescript(_SCHEMA)
+                _migrate_job_queue(connection)
             self._reconcile_run_index()
             self._initialized = True
         except (OSError, sqlite3.Error) as exc:
@@ -364,9 +365,14 @@ class RunStore:
             connection.execute(
                 """
                 INSERT INTO jobs (
-                    job_id, command, args_json, timeout_seconds, evidence_class,
+                    job_id, queue_sequence, command, args_json,
+                    timeout_seconds, evidence_class,
                     status, attempts, max_attempts, created_utc, updated_utc
-                ) VALUES (?, ?, ?, ?, ?, 'queued', 0, ?, ?, ?)
+                ) VALUES (
+                    ?,
+                    (SELECT COALESCE(MAX(queue_sequence), 0) + 1 FROM jobs),
+                    ?, ?, ?, ?, 'queued', 0, ?, ?, ?
+                )
                 """,
                 (
                     job_id,
@@ -426,7 +432,7 @@ class RunStore:
                 """
                 SELECT job_id FROM jobs
                 WHERE status='queued' AND attempts < max_attempts
-                ORDER BY created_utc, job_id
+                ORDER BY queue_sequence
                 LIMIT 1
                 """
             ).fetchone()
@@ -500,7 +506,7 @@ class RunStore:
         self.initialize()
         with self._connect() as connection:
             rows = connection.execute(
-                "SELECT * FROM jobs ORDER BY created_utc DESC LIMIT ?",
+                "SELECT * FROM jobs ORDER BY queue_sequence DESC LIMIT ?",
                 (limit,),
             ).fetchall()
         return [_job_from_row(row) for row in rows]
@@ -872,3 +878,39 @@ def _enable_wal(connection: sqlite3.Connection) -> None:
             if "locked" not in str(exc).lower() or attempt == 99:
                 raise
             time.sleep(min(0.01 * (attempt + 1), 0.1))
+
+
+def _migrate_job_queue(connection: sqlite3.Connection) -> None:
+    columns = {
+        row["name"] for row in connection.execute("PRAGMA table_info(jobs)").fetchall()
+    }
+    if "queue_sequence" not in columns:
+        connection.execute("ALTER TABLE jobs ADD COLUMN queue_sequence INTEGER")
+    next_sequence = connection.execute(
+        "SELECT COALESCE(MAX(queue_sequence), 0) + 1 FROM jobs"
+    ).fetchone()[0]
+    rows = connection.execute(
+        """
+        SELECT job_id FROM jobs
+        WHERE queue_sequence IS NULL
+        ORDER BY created_utc, rowid
+        """
+    ).fetchall()
+    for row in rows:
+        connection.execute(
+            "UPDATE jobs SET queue_sequence = ? WHERE job_id = ?",
+            (next_sequence, row["job_id"]),
+        )
+        next_sequence += 1
+    connection.execute(
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS jobs_queue_sequence_idx
+        ON jobs(queue_sequence)
+        """
+    )
+    connection.execute(
+        """
+        CREATE INDEX IF NOT EXISTS jobs_status_sequence_idx
+        ON jobs(status, queue_sequence)
+        """
+    )
