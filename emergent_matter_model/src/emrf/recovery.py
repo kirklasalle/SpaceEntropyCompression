@@ -439,7 +439,10 @@ def _backup_run_inventory(root: Path) -> dict[str, Any]:
         {"path": relative, "bytes": path.stat().st_size, "sha256": _sha256(path)}
         for relative, path in _run_files(root)
     ]
-    return {"files": files, "registry": _registry_rows(root / "registry.sqlite")}
+    return {
+        "files": files,
+        "registry": _registry_rows(root / "registry.sqlite", immutable=True),
+    }
 
 
 def _source_prediction_inventory(root: Path) -> list[dict[str, Any]]:
@@ -462,8 +465,17 @@ def _source_knowledge_inventory(store: KnowledgeStore) -> dict[str, Any]:
     }
 
 
-def _registry_rows(path: Path) -> dict[str, list[dict[str, Any]]]:
-    with closing(sqlite3.connect(path)) as connection:
+def _registry_rows(
+    path: Path,
+    *,
+    immutable: bool = False,
+) -> dict[str, list[dict[str, Any]]]:
+    if immutable:
+        connection_target = f"file:{path}?mode=ro&immutable=1"
+        connection = sqlite3.connect(connection_target, uri=True)
+    else:
+        connection = sqlite3.connect(path)
+    with closing(connection) as connection:
         connection.row_factory = sqlite3.Row
         runs = []
         for row in connection.execute("SELECT * FROM runs ORDER BY run_id").fetchall():
@@ -488,7 +500,7 @@ def _validate_registry(root: Path) -> None:
     if not registry.is_file() or registry.is_symlink():
         raise IntegrityError("Run registry snapshot is missing or unsafe")
     with closing(
-        sqlite3.connect(f"file:{registry}?mode=ro", uri=True)
+        sqlite3.connect(f"file:{registry}?mode=ro&immutable=1", uri=True)
     ) as connection:
         if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise IntegrityError("Run registry failed SQLite integrity checking")

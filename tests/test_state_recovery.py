@@ -167,6 +167,8 @@ def test_concurrent_state_restores_cannot_publish_same_destination(
     assert sum(isinstance(result, dict) for result in results) == 1
     assert sum(isinstance(result, FileExistsError) for result in results) == 1
     assert (destination / "runs" / "registry.sqlite").is_file()
+    assert not (backup / "runs" / "registry.sqlite-wal").exists()
+    assert not (backup / "runs" / "registry.sqlite-shm").exists()
 
 
 def test_application_state_restore_is_non_destructive(tmp_path: Path) -> None:
