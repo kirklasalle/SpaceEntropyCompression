@@ -1,6 +1,6 @@
 {
   "dirty": false,
-  "generated_utc": "2026-10-13T14:56:35.938121+00:00",
+  "generated_utc": "2026-10-13T14:58:59.497623+00:00",
   "input": {
     "bytes": 46642671,
     "dataset_id": "gaia-chae-dr3-wide-binaries",
@@ -49,7 +49,7 @@
     "source_quality_rows": 45126
   },
   "qualification_id": "gaia-wide-binary-method-v1",
-  "revision": "70a4dbb25f84aafce7e0683ec07458781e9b5a40",
+  "revision": "e53705b9e3fff92174c3170d896b1fab68c61138",
   "schema_version": "1.0.0",
   "selection": {
     "configuration": {

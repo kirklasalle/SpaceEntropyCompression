@@ -29,8 +29,8 @@
   },
   "qualification": {
     "path": "results/real_data_v1/gaia_wide_binary_method_qualification.json",
-    "sha256": "a34c37208feb2365a58c22c6d6a6ce7c20938f80d4e9ffb0a00d3e7428468330",
-    "revision": "70a4dbb25f84aafce7e0683ec07458781e9b5a40",
+    "sha256": "65b5400b7dd1c96b1f860c70465f441bbc388a964c56bf5cdc6dfcbb90cd3099",
+    "revision": "e53705b9e3fff92174c3170d896b1fab68c61138",
     "status": "qualified-for-preregistration",
     "outcome_computed": false,
     "selected_rows": 19716,
