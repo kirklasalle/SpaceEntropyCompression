@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-
 from emrf.validation.wide_binaries import (
     REQUIRED_COLUMNS,
     SelectionConfig,

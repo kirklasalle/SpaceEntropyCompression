@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0.0",
+  "study_id": "gaia-wide-binary-v1",
+  "title": "Prospective Gaia DR3 wide-binary compatibility test",
+  "status": "preregistered-before-observational-outcome",
+  "evidence_class": "independent-survey-replication-with-known-published-outcome",
+  "interpretation": {
+    "claim": "Tests whether a frozen phenomenological external-field comparator and Newtonian gravity are compatible with a Gaia DR3 wide-binary acceleration residual under the declared selection, deprojection, multiplicity, and uncertainty treatment.",
+    "not_claimed": [
+      "blind discovery of the Gaia wide-binary anomaly",
+      "a first-principles EMRF prediction",
+      "independence from Chae's published scientific result",
+      "proof of modified gravity or rejection of every Newtonian systematic model",
+      "calibrated population-wide frequentist coverage"
+    ],
+    "prior_exposure": "Chae's published anomaly and approximate reported effect sizes were known before this contract. No observational Gaia outcome has been computed by the repository qualification implementation."
+  },
+  "observations": {
+    "dataset_id": "gaia-chae-dr3-wide-binaries",
+    "version": "zenodo-8270396",
+    "citation": "Chae (2023), The Astrophysical Journal 952, 128",
+    "doi": "10.3847/1538-4357/ace101",
+    "holding": {
+      "path": "data/external/gaia/gaia_dr3_MSMS_d200pc.csv",
+      "bytes": 46642671,
+      "sha256": "0b10a6e66d59bc781c0902a3cd3dc2c37db5ffdc9677113e0cdd54f9c80d6804",
+      "url": "https://zenodo.org/records/8270396/files/gaia_dr3_MSMS_d200pc.csv"
+    }
+  },
+  "qualification": {
+    "path": "results/real_data_v1/gaia_wide_binary_method_qualification.json",
+    "sha256": "a34c37208feb2365a58c22c6d6a6ce7c20938f80d4e9ffb0a00d3e7428468330",
+    "revision": "70a4dbb25f84aafce7e0683ec07458781e9b5a40",
+    "status": "qualified-for-preregistration",
+    "outcome_computed": false,
+    "selected_rows": 19716,
+    "selected_identifier_sha256": "b03dc97483efec5c65cc8f392e3a34dca4baf8f0855e93e786fef651fe9415f4"
+  },
+  "population": {
+    "selection": {
+      "chance_alignment_probability": "strictly less than 0.01",
+      "projected_separation_kau": "strictly between 0.2 and 30",
+      "weighted_distance_pc": "strictly between 0 and 200",
+      "extinction_corrected_absolute_g": "strictly between 4 and 14",
+      "declination_deg": "strictly greater than -28",
+      "main_sequence": "the published revised-script color cut",
+      "maximum_relative_proper_motion_error": "strictly less than 0.005",
+      "component_distance_match": "within three combined standard deviations plus the published orbital allowance"
+    },
+    "exclusions": "Every row satisfying the frozen selection is analyzed. No row, acceleration bin, Monte Carlo realization, or multiplicity scenario may be removed after an observational residual is computed.",
+    "expected_selected_rows": 19716
+  },
+  "analysis": {
+    "coordinates": {
+      "x": "log10(g_N / (m s^-2))",
+      "y": "log10(g / (m s^-2))",
+      "orthogonal_residual_dex": "(y - x) / sqrt(2)"
+    },
+    "acceleration_bin_edges": [
+      -11.5,
+      -9.8,
+      -8.5,
+      -7.5
+    ],
+    "bin_boundary_rule": "open intervals",
+    "named_bins": {
+      "low": [
+        -11.5,
+        -9.8
+      ],
+      "mid": [
+        -9.8,
+        -8.5
+      ],
+      "high_control": [
+        -8.5,
+        -7.5
+      ]
+    },
+    "deprojection": "Use the qualified deterministic implementation of isotropic inclination, the published eccentricity uncertainty, uniform mean anomaly, and Kepler-equation orbital phase.",
+    "newtonian_control": "Generate controls locally from the same frozen population, mass model, nuisance scenario, and deterministic sampling streams. The published virtual Newtonian CSV is prohibited.",
+    "mass_magnitude_relation": "Use the pinned revised-script mass-magnitude tables with ML_choice v and the published interpolation and extinction corrections.",
+    "proper_motion_uncertainty": "Perturb both components using their catalogued uncertainties in every Monte Carlo realization.",
+    "radial_velocity": "Use the published 3 km/s radial-velocity uncertainty treatment where applicable; do not impose a post-outcome radial-velocity cut.",
+    "unresolved_multiplicity": {
+      "primary_fraction": 0.5,
+      "sensitivity_fractions": [
+        0.3,
+        0.7
+      ],
+      "treatment": "Reproduce the pinned revised source's higher-order multiplicity assignment and hidden-companion orbital model using deterministic generators.",
+      "decision_rule": "Only the 0.5 result determines confirmatory outcomes. Sensitivity scenarios are reported in full and cannot replace the primary after outcomes are known."
+    },
+    "sampling": {
+      "generator": "numpy.random.Generator(PCG64) constructed from SeedSequence",
+      "base_seed": 2026101301,
+      "named_streams": [
+        "bootstrap",
+        "observational-deprojection",
+        "proper-motion-perturbation",
+        "multiplicity-assignment",
+        "hidden-companion-orbits",
+        "newtonian-control"
+      ],
+      "realizations": 2048,
+      "resampling": "For each realization, sample selected binary rows with replacement, then use paired row indices and paired nuisance streams for observation and Newtonian control.",
+      "interval": "The closed 2.5 and 97.5 percentiles of the 2048 paired realization statistics."
+    },
+    "primary_statistic": "In the low bin, the median observed orthogonal residual minus the median locally generated Newtonian-control orthogonal residual, evaluated per paired realization.",
+    "secondary_statistics": [
+      "The identically constructed paired residual in the mid bin.",
+      "The identically constructed paired residual in the high-control bin.",
+      "All three residuals under multiplicity fractions 0.3 and 0.7."
+    ]
+  },
+  "comparators": [
+    {
+      "id": "phenomenological-external-field",
+      "classification": "phenomenological comparator, not a first-principles EMRF prediction",
+      "formula": "g_model/g_N = 1 / (1 - exp(-sqrt(hypot(g_N, g_ext) / a0)))",
+      "a0_si": 1.2e-10,
+      "external_field_si": 1.2e-10,
+      "low_reference_gn_si": 7.079457843841374e-11,
+      "low_predicted_ratio": 1.516157722131278,
+      "low_predicted_orthogonal_residual_dex": 0.1278055783326812,
+      "mid_reference_gn_si": 1.2302687708123811e-09,
+      "mid_predicted_ratio": 1.0420756511519855,
+      "mid_predicted_orthogonal_residual_dex": 0.012656679930213948
+    },
+    {
+      "id": "newtonian",
+      "predicted_orthogonal_residual_dex": 0.0
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1-low-external-field-compatibility",
+      "role": "primary",
+      "criterion": "Compatible only if 0.1278055783326812 dex lies inside the closed primary 95 percent interval. Otherwise this declared phenomenological comparator is rejected."
+    },
+    {
+      "id": "H2-low-newtonian-compatibility",
+      "role": "primary-comparator",
+      "criterion": "Newtonian compatibility is rejected only if 0 dex lies outside the closed primary 95 percent interval; otherwise it is retained."
+    },
+    {
+      "id": "H3-mid-external-field-compatibility",
+      "role": "secondary",
+      "criterion": "Compatible only if 0.012656679930213948 dex lies inside the closed mid-bin 95 percent interval. It cannot override H1."
+    }
+  ],
+  "numerical_gate": {
+    "minimum_rows_per_bin_per_realization": 100,
+    "non_finite_values_allowed": false,
+    "newtonian_high_control_absolute_median_max_dex": 0.01,
+    "convergence_check": "Compare statistics from the first 1024 realizations with all 2048 realizations.",
+    "maximum_convergence_median_difference_dex": 0.005,
+    "maximum_convergence_interval_endpoint_difference_dex": 0.01,
+    "failure_rule": "Any missing selected row, empty or undersized bin, non-finite value, failed control, failed convergence threshold, or incomplete multiplicity scenario makes the confirmatory result incomplete. Partial outcomes must not be classified as accepted or rejected."
+  },
+  "reporting": {
+    "required": [
+      "exact input, qualification, preregistration, and commitment hashes",
+      "code revision and dirty state",
+      "runtime dependency versions",
+      "complete selection counts and selected identifier hash",
+      "per-bin counts for every realization",
+      "all 2048 primary and secondary realization statistics",
+      "primary and sensitivity intervals",
+      "all numerical-gate measurements",
+      "criterion result for every registered hypothesis",
+      "limitations and every protocol deviation"
+    ],
+    "forbidden": [
+      "computing an observational outcome before this contract is committed and merged to protected main",
+      "changing cuts, bins, seeds, ensemble size, nuisance fractions, comparators, or thresholds after viewing outcomes",
+      "using the published virtual Newtonian CSV",
+      "silently excluding failed rows or realizations",
+      "selecting a sensitivity scenario as primary after viewing outcomes",
+      "describing the phenomenological comparator as a derived first-principles EMRF prediction",
+      "describing a known published anomaly as a blind discovery",
+      "claiming that agreement proves EMRF or that disagreement establishes Newtonian gravity"
+    ]
+  }
+}

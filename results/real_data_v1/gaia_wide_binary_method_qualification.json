@@ -1,0 +1,70 @@
+{
+  "dirty": false,
+  "generated_utc": "2026-10-13T14:56:35.938121+00:00",
+  "input": {
+    "bytes": 46642671,
+    "dataset_id": "gaia-chae-dr3-wide-binaries",
+    "sha256": "0b10a6e66d59bc781c0902a3cd3dc2c37db5ffdc9677113e0cdd54f9c80d6804",
+    "version": "zenodo-8270396"
+  },
+  "limitations": [
+    "No Gaia kinematic acceleration or anomaly was computed.",
+    "Population counts use source metadata needed for frozen selection.",
+    "The external-field formula is phenomenological, not a derived first-principles EMRF prediction.",
+    "Published Gaia outcomes were known before this qualification."
+  ],
+  "method": {
+    "deprojection": "Deterministic implementation of isotropic inclination, published eccentricity uncertainty, uniform mean anomaly, and Kepler-equation orbital phase.",
+    "newtonian_control": "Must be generated locally from frozen seeds; the published virtual Newtonian CSV is not an input.",
+    "unresolved_multiplicity": "Must be frozen as a nuisance sensitivity before outcomes."
+  },
+  "model": {
+    "a0_si": 1.2e-10,
+    "classification": "phenomenological-external-field-comparator",
+    "derived_first_principles_emrf_prediction": false,
+    "external_field_si": 1.2e-10,
+    "formula": "g_model/g_N = 1 / (1 - exp(-sqrt(hypot(g_N, g_ext) / a0)))",
+    "high_acceleration_limit": 1.0,
+    "predicted_acceleration_ratios": [
+      1.0001084816599743,
+      1.0420756511519855,
+      1.516157722131278
+    ],
+    "reference_newtonian_accelerations_si": [
+      1e-08,
+      1.2302687708123811e-09,
+      7.079457843841374e-11
+    ]
+  },
+  "outcome_computed": false,
+  "platform": {
+    "numpy": "2.3.5",
+    "python": "3.12.10",
+    "system": "Windows-10-10.0.19045-SP0"
+  },
+  "population": {
+    "catalog_rows": 81880,
+    "selected_identifier_sha256": "b03dc97483efec5c65cc8f392e3a34dca4baf8f0855e93e786fef651fe9415f4",
+    "selected_rows": 19716,
+    "source_quality_rows": 45126
+  },
+  "qualification_id": "gaia-wide-binary-method-v1",
+  "revision": "70a4dbb25f84aafce7e0683ec07458781e9b5a40",
+  "schema_version": "1.0.0",
+  "selection": {
+    "configuration": {
+      "absolute_g_max": 14.0,
+      "absolute_g_min": 4.0,
+      "chance_alignment_max": 0.01,
+      "declination_min_deg": -28.0,
+      "distance_match_sigma": 3.0,
+      "distance_max_pc": 200.0,
+      "distance_min_pc": 0.0,
+      "projected_separation_max_kau": 30.0,
+      "projected_separation_min_kau": 0.2,
+      "proper_motion_relative_error_max": 0.005
+    },
+    "observational_velocity_or_acceleration_used": false
+  },
+  "status": "qualified-for-preregistration"
+}

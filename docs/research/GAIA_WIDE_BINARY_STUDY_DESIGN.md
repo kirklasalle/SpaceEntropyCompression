@@ -2,9 +2,9 @@
 
 ## Status
 
-- **Stage:** source-qualified feasibility and method audit
+- **Stage:** method-qualified preregistration
 - **Outcome computation:** not started
-- **Preregistration:** not yet frozen
+- **Preregistration:** frozen in `research/preregistrations/gaia_wide_binary_v1.json`
 - **Evidence class if completed:** prospective independent-survey test with known published outcomes
 
 This document selects and qualifies the observational source for the next
@@ -63,32 +63,31 @@ analysis of the archived catalogue. It evaluates four hard-coded illustrative
 bins with a phenomenological external-field formula. It therefore cannot serve
 as the confirmatory implementation or as the source of acceptance thresholds.
 
-## Gates before preregistration
+## Preregistered design
+
+The outcome-blind method qualification reproduced the 19,716-row frozen
+population and its ordered identifier hash from the exact 46,642,671-byte
+catalogue. It also qualified deterministic orbital deprojection and explicitly
+classified the external-field expression as a phenomenological comparator,
+not a first-principles EMRF prediction.
+
+The immutable contract freezes open acceleration bins at `[-11.5, -9.8,
+-8.5, -7.5]`, a primary unresolved-multiplicity fraction of 0.5 with 0.3 and
+0.7 sensitivity runs, 2,048 paired deterministic bootstrap/Monte Carlo
+realizations, locally generated Newtonian controls, a low-acceleration primary
+statistic, comparator values, 95 percent interval decisions, and fail-closed
+convergence gates. No observational analyzer existed when these choices were
+frozen.
+
+## Gates before outcome execution
 
 No observational outcome may be computed until all of these gates pass:
 
-1. **Published-method reproduction:** independently parse the pinned CSV and
-   reproduce the revised sample-selection and deterministic Newtonian-control
-   machinery using fixed random seeds. Record every exclusion and compare
-   population counts against the published method.
-2. **Model qualification:** derive or explicitly classify the EMRF
-   external-field prediction. The existing quadrature/exponential stress-test
-   formula must not be promoted to a first-principles prediction merely because
-   code exists.
-3. **Nuisance freeze:** preregister distance, projected-separation,
-   chance-alignment, proper-motion, RUWE, radial-velocity, extinction,
-   mass–magnitude and unresolved-multiplicity treatment. No cut may be changed
-   after viewing EMRF-versus-observation residuals.
-4. **Determinism and convergence:** specify seeds, Monte Carlo ensemble size,
-   convergence thresholds, bin edges and failure evidence. Results remain
-   incomplete if any declared numerical gate fails.
-5. **Comparator freeze:** define Newtonian and published external-field
-   comparators before evaluation. Penalized objectives must not be reported as
-   unpenalized likelihoods or BIC.
-6. **Hypothesis freeze:** bind exact inputs, implementation revision, primary
-   statistic, uncertainty construction, rejection region and prohibited
-   interpretations in an immutable prediction commitment.
-7. **Protected execution:** implement only after the commitment merges, then
+1. **Immutable commitment:** verify the exact preregistration against its named
+   metadata-only prediction commitment.
+2. **Independent review:** merge the qualification, contract, and commitment
+   to protected `main` before adding any observational outcome implementation.
+3. **Protected execution:** implement only after the commitment merges, then
    execute from exact protected `main` with retained complete-or-failed
    evidence.
 

@@ -76,8 +76,10 @@ def load_catalog(path: str | Path) -> np.ndarray:
 
 def select_population(
     rows: np.ndarray,
-    config: SelectionConfig = SelectionConfig(),
+    config: SelectionConfig | None = None,
 ) -> tuple[np.ndarray, dict[str, int | str]]:
+    if config is None:
+        config = SelectionConfig()
     names = set(rows.dtype.names or ())
     missing = sorted(set(REQUIRED_COLUMNS) - names)
     if missing:
