@@ -798,6 +798,19 @@ read-only evidence workflow. No observational outcome was computed during
 implementation. The next gate is protected review and merge of the analyzer;
 only its exact clean `main` revision may be dispatched.
 
+**Independent-survey execution retained but incomplete (2026-10-13):**
+protected PR #34 merged the separately reviewed analyzer, and workflow run
+`38433748930` executed exact clean `main` revision
+`05102abb581b7f5a87c1ec43977c5f53915b0586`. The unchanged evidence artifact
+has SHA-256
+`c19f828a221000981c08924be2197f238c75b34e7af66469956701f3bc5a6a0a`.
+Population identity, finite values, minimum bin sizes and convergence gates all
+passed. The frozen raw Newtonian high-control median gate failed in all three
+multiplicity scenarios, so the result is incomplete and all hypotheses remain
+unclassified. No threshold or method may be changed retroactively. Any
+follow-up must use a new preregistered protocol that explicitly diagnoses the
+control offset before another observational confrontation.
+
 ---
 
 ## Risk register
