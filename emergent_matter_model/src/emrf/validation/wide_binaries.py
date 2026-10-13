@@ -199,7 +199,7 @@ def sample_deprojected_accelerations(
     if (
         np.any(separation <= 0)
         or np.any(mass <= 0)
-        or np.any(velocity < 0)
+        or np.any(velocity <= 0)
         or not all(np.all(np.isfinite(value)) for value in arrays)
     ):
         raise ValueError("Deprojection inputs must be finite and physical")
@@ -241,7 +241,13 @@ def sample_deprojected_accelerations(
     )
     velocity_3d = velocity / velocity_projection
     kinematic = np.square(velocity_3d * 1000) / radius_meters
-    return np.log10(newtonian), np.log10(kinematic)
+    log_newtonian = np.log10(newtonian)
+    log_kinematic = np.log10(kinematic)
+    if not np.all(np.isfinite(log_newtonian)) or not np.all(
+        np.isfinite(log_kinematic)
+    ):
+        raise RuntimeError("Deprojection produced non-finite accelerations")
+    return log_newtonian, log_kinematic
 
 
 def phenomenological_external_field_ratio(
@@ -268,14 +274,15 @@ def _solve_kepler(
     mean_anomaly: np.ndarray,
     eccentricity: np.ndarray,
 ) -> np.ndarray:
-    anomaly = np.array(mean_anomaly, dtype=float, copy=True)
-    for _ in range(20):
-        residual = anomaly - eccentricity * np.sin(anomaly) - mean_anomaly
-        step = residual / (1 - eccentricity * np.cos(anomaly))
-        anomaly -= step
-        if np.max(np.abs(step)) <= 1e-12:
-            return anomaly
-    raise RuntimeError("Kepler solver did not converge")
+    normalized = np.mod(mean_anomaly, 2 * np.pi)
+    lower = np.zeros_like(normalized, dtype=float)
+    upper = np.full_like(normalized, 2 * np.pi, dtype=float)
+    for _ in range(64):
+        anomaly = (lower + upper) / 2
+        residual = anomaly - eccentricity * np.sin(anomaly) - normalized
+        lower = np.where(residual <= 0, anomaly, lower)
+        upper = np.where(residual > 0, anomaly, upper)
+    return (lower + upper) / 2
 
 
 __all__ = [

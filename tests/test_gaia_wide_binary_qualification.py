@@ -51,5 +51,10 @@ def test_qualification_never_uses_observational_outcomes(
 
     assert result["status"] == "qualified-for-preregistration"
     assert result["outcome_computed"] is False
-    assert result["selection"]["observational_velocity_or_acceleration_used"] is False
+    assert (
+        result["selection"][
+            "relative_binary_velocity_or_acceleration_outcome_computed"
+        ]
+        is False
+    )
     assert result["model"]["derived_first_principles_emrf_prediction"] is False

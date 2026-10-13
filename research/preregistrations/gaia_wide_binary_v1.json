@@ -21,7 +21,7 @@
     "citation": "Chae (2023), The Astrophysical Journal 952, 128",
     "doi": "10.3847/1538-4357/ace101",
     "holding": {
-      "path": "data/external/gaia/gaia_dr3_MSMS_d200pc.csv",
+      "path": "data/external/gaia_wide_binaries/gaia_dr3_MSMS_d200pc.csv",
       "bytes": 46642671,
       "sha256": "0b10a6e66d59bc781c0902a3cd3dc2c37db5ffdc9677113e0cdd54f9c80d6804",
       "url": "https://zenodo.org/records/8270396/files/gaia_dr3_MSMS_d200pc.csv"
