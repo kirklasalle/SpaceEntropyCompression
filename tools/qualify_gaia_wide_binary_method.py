@@ -10,7 +10,7 @@ import platform
 import subprocess
 import sys
 import tempfile
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -109,7 +109,7 @@ def qualify(catalog: Path) -> dict:
     return {
         "schema_version": "1.0.0",
         "qualification_id": "gaia-wide-binary-method-v1",
-        "generated_utc": datetime.now(UTC).isoformat(),
+        "generated_utc": datetime.now(timezone.utc).isoformat(),
         "status": "qualified-for-preregistration",
         "outcome_computed": False,
         "input": {
