@@ -12,6 +12,7 @@ QUALIFICATION = (
     ROOT / "results" / "real_data_v1" / "gaia_wide_binary_method_qualification.json"
 )
 COMMITMENTS = ROOT / "research" / "commitments"
+COMMITMENT_ID = "20261013T151329957398Z-27f69e8d6ff6"
 
 
 def test_gaia_contract_is_bound_to_outcome_blind_qualification() -> None:
@@ -47,17 +48,14 @@ def test_gaia_contract_is_bound_to_outcome_blind_qualification() -> None:
 
 def test_gaia_contract_matches_named_commitment() -> None:
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
-    records = [
-        json.loads(path.read_text(encoding="utf-8"))
-        for path in COMMITMENTS.glob("*.json")
-    ]
-    matching = [
-        record for record in records if record["label"] == "Gaia wide-binary v1"
-    ]
+    record = json.loads(
+        (COMMITMENTS / f"{COMMITMENT_ID}.json").read_text(encoding="utf-8")
+    )
 
-    assert len(matching) == 1
+    assert record["commitment_id"] == COMMITMENT_ID
+    assert record["label"] == "Gaia wide-binary v1 final"
     verification = verify_json_prediction(
-        matching[0]["commitment_id"],
+        COMMITMENT_ID,
         contract,
         root=COMMITMENTS,
     )
