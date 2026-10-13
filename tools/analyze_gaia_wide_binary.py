@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
@@ -18,8 +19,11 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_ROOT = ROOT / "emergent_matter_model"
-if str(MODEL_ROOT) not in sys.path:
-    sys.path.insert(0, str(MODEL_ROOT))
+SOURCE_ROOT = MODEL_ROOT / "src"
+for source in (MODEL_ROOT, SOURCE_ROOT):
+    source_text = str(source)
+    if source_text not in sys.path:
+        sys.path.insert(0, source_text)
 
 from emrf.validation.preregistration import verify_json_prediction  # noqa: E402
 from emrf.validation.wide_binaries import (  # noqa: E402
@@ -321,7 +325,7 @@ def analyze(
             np.all(np.isfinite(residual))
             and np.min(observed_counts) >= 100
             and np.min(control_counts) >= 100
-            and abs(summary["paired_residual_median_dex"][2]) <= 0.01
+            and abs(summary["control_median_dex"][2]) <= 0.01
             and max(summary["convergence"]["median_difference_dex"]) <= 0.005
             and max(
                 summary["convergence"]["interval_endpoint_difference_dex"]
@@ -444,7 +448,28 @@ def main() -> int:
     parser.add_argument("--mass-relation", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     arguments = parser.parse_args()
-    result = analyze(arguments.catalog, arguments.mass_relation)
+    try:
+        result = analyze(arguments.catalog, arguments.mass_relation)
+    except Exception as exc:
+        revision = None
+        dirty = None
+        with contextlib.suppress(OSError, subprocess.CalledProcessError):
+            revision, dirty = _revision()
+        result = {
+            "schema_version": "1.0.0",
+            "study_id": "gaia-wide-binary-v1",
+            "generated_utc": datetime.now(timezone.utc).isoformat(),
+            "status": "incomplete",
+            "analysis_complete": False,
+            "revision": revision,
+            "dirty": dirty,
+            "failure": {
+                "type": type(exc).__name__,
+                "message": str(exc),
+            },
+            "protocol_deviations": [],
+        }
+        print(f"Gaia analysis failed: {type(exc).__name__}: {exc}", file=sys.stderr)
     _write_json_atomic(arguments.output, result)
     print(
         json.dumps(
@@ -453,11 +478,12 @@ def main() -> int:
                 "analysis_complete": result["analysis_complete"],
                 "revision": result["revision"],
                 "dirty": result["dirty"],
-                "population": result["population"],
-                "hypotheses": result["hypotheses"],
+                "population": result.get("population"),
+                "hypotheses": result.get("hypotheses"),
+                "failure": result.get("failure"),
                 "numerical_gates": {
                     fraction: scenario["numerical_gate_passed"]
-                    for fraction, scenario in result["scenarios"].items()
+                    for fraction, scenario in result.get("scenarios", {}).items()
                 },
             },
             indent=2,

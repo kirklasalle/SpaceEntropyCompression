@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -48,4 +49,38 @@ def test_non_finite_failure_evidence_serializes_as_null(tmp_path: Path) -> None:
     assert analysis.json.loads(output.read_text(encoding="utf-8")) == {
         "failed_statistic": None,
         "status": "incomplete",
+    }
+
+
+def test_runner_writes_incomplete_receipt_on_analysis_failure(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    output = tmp_path / "failed.json"
+    monkeypatch.setattr(
+        analysis,
+        "analyze",
+        lambda *args, **kwargs: (_ for _ in ()).throw(ValueError("bad holding")),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "analyze_gaia_wide_binary.py",
+            "--catalog",
+            "missing.csv",
+            "--mass-relation",
+            "missing.dat",
+            "--output",
+            str(output),
+        ],
+    )
+
+    assert analysis.main() == 2
+    receipt = analysis.json.loads(output.read_text(encoding="utf-8"))
+    assert receipt["status"] == "incomplete"
+    assert receipt["analysis_complete"] is False
+    assert receipt["failure"] == {
+        "message": "bad holding",
+        "type": "ValueError",
     }
