@@ -790,6 +790,14 @@ observational analyzer be implemented, reviewed separately and executed from
 exact protected `main`. The design and evidence limits are recorded in
 `docs/research/GAIA_WIDE_BINARY_STUDY_DESIGN.md`.
 
+**Independent-survey analyzer implemented (2026-10-13):** after the reviewed
+commitment merged through protected PR #33, a separate implementation added
+deterministic multiplicity treatment, eccentric orbital controls, paired
+bootstrap/deprojection ensembles, immutable-input verification and a manual
+read-only evidence workflow. No observational outcome was computed during
+implementation. The next gate is protected review and merge of the analyzer;
+only its exact clean `main` revision may be dispatched.
+
 ---
 
 ## Risk register
