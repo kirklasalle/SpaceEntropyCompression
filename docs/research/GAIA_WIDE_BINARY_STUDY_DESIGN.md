@@ -2,10 +2,10 @@
 
 ## Status
 
-- **Stage:** method-qualified preregistration
-- **Outcome computation:** not started
+- **Stage:** protected execution retained; confirmatory result incomplete
+- **Outcome computation:** completed once from exact protected `main`
 - **Preregistration:** frozen in `research/preregistrations/gaia_wide_binary_v1.json`
-- **Analyzer:** implemented separately; protected review and merge required before use
+- **Analyzer:** merged through protected PR #34 and executed at `05102abb`
 - **Evidence class if completed:** prospective independent-survey test with known published outcomes
 
 This document selects and qualifies the observational source for the next
@@ -98,6 +98,25 @@ and 0.7 unresolved-multiplicity scenarios, generates Newtonian controls
 locally, and retains all 2,048 paired realization statistics. Its manual,
 read-only workflow refuses non-`main` or stale revisions and uploads evidence
 even when a numerical gate makes the scientific result incomplete.
+
+## Protected execution result
+
+Workflow run `38433748930` executed exact clean revision
+`05102abb581b7f5a87c1ec43977c5f53915b0586`. Its retained artifact is preserved
+unchanged at `results/real_data_v1/gaia_wide_binary_v1.json` with SHA-256
+`c19f828a221000981c08924be2197f238c75b34e7af66469956701f3bc5a6a0a`.
+The selected population contained all 19,716 frozen identifiers, every bin had
+more than 2,200 rows in every realization, all values were finite, and all
+declared convergence thresholds passed.
+
+The confirmatory result is nevertheless **incomplete**. The preregistered
+absolute Newtonian high-control median threshold was `0.01 dex`; the observed
+control medians were `-0.1564`, `-0.1732`, and `-0.1387 dex` for multiplicity
+fractions 0.5, 0.3, and 0.7. Consequently no H1, H2, or H3 compatibility
+classification is permitted. The retained residual intervals are diagnostic
+evidence only and must not be promoted to accepted or rejected hypotheses.
+Changing the control construction or threshold would require a new,
+prospectively committed protocol and cannot repair this execution.
 
 ## Evidence limits
 
