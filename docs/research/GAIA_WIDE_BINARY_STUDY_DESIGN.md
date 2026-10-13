@@ -5,6 +5,7 @@
 - **Stage:** method-qualified preregistration
 - **Outcome computation:** not started
 - **Preregistration:** frozen in `research/preregistrations/gaia_wide_binary_v1.json`
+- **Analyzer:** implemented separately; protected review and merge required before use
 - **Evidence class if completed:** prospective independent-survey test with known published outcomes
 
 This document selects and qualifies the observational source for the next
@@ -90,6 +91,13 @@ No observational outcome may be computed until all of these gates pass:
 3. **Protected execution:** implement only after the commitment merges, then
    execute from exact protected `main` with retained complete-or-failed
    evidence.
+
+The implementation preserves the frozen population identity, derives masses
+from the pinned V-band relation, evaluates the primary 0.5 and sensitivity 0.3
+and 0.7 unresolved-multiplicity scenarios, generates Newtonian controls
+locally, and retains all 2,048 paired realization statistics. Its manual,
+read-only workflow refuses non-`main` or stale revisions and uploads evidence
+even when a numerical gate makes the scientific result incomplete.
 
 ## Evidence limits
 

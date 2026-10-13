@@ -58,6 +58,22 @@ class SelectionConfig:
     distance_match_sigma: float = 3.0
 
 
+@dataclass(frozen=True)
+class MassComponents:
+    primary_a: np.ndarray
+    companion_a: np.ndarray
+    primary_b: np.ndarray
+    companion_b: np.ndarray
+
+    @property
+    def total_a(self) -> np.ndarray:
+        return self.primary_a + self.companion_a
+
+    @property
+    def total_b(self) -> np.ndarray:
+        return self.primary_b + self.companion_b
+
+
 def load_catalog(path: str | Path) -> np.ndarray:
     rows = np.genfromtxt(
         Path(path),
@@ -175,6 +191,141 @@ def projected_velocity_km_s(rows: np.ndarray) -> np.ndarray:
     return PM_DISTANCE_TO_KM_S * np.hypot(delta_ra, delta_dec)
 
 
+def assign_multiplicity(
+    rows: np.ndarray,
+    *,
+    mass_magnitude_coefficients: np.ndarray,
+    fraction: float,
+    rng: np.random.Generator,
+) -> MassComponents:
+    if not 0 <= fraction <= 1:
+        raise ValueError("Multiplicity fraction must be between zero and one")
+    coefficients = np.asarray(mass_magnitude_coefficients, dtype=float)
+    if coefficients.shape != (11,) or not np.all(np.isfinite(coefficients)):
+        raise ValueError("Mass-magnitude coefficients must contain 11 finite values")
+
+    magnitude_a = rows["MagG1"] - rows["A_G_Amag"]
+    magnitude_b = rows["MagG2"] - rows["A_G_Bmag"]
+    primary_a = _mass_from_magnitude(magnitude_a, coefficients)
+    primary_b = _mass_from_magnitude(magnitude_b, coefficients)
+    companion_a = np.zeros(len(rows), dtype=float)
+    companion_b = np.zeros(len(rows), dtype=float)
+
+    multiple = rng.random(len(rows)) <= fraction
+    option = rng.random(len(rows))
+    has_a = multiple & ((option > 0.6) | (option <= 0.3))
+    has_b = multiple & (option <= 0.6)
+    primary_a, companion_a = _split_unresolved_mass(
+        magnitude_a,
+        primary_a,
+        has_a,
+        coefficients,
+        rng,
+    )
+    primary_b, companion_b = _split_unresolved_mass(
+        magnitude_b,
+        primary_b,
+        has_b,
+        coefficients,
+        rng,
+    )
+    return MassComponents(primary_a, companion_a, primary_b, companion_b)
+
+
+def perturbed_projected_velocity_km_s(
+    rows: np.ndarray,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    distance = _weighted_distance(rows)
+    delta_ra = (
+        rows["mu1ramasyr"]
+        + rows["mu1ra_errmasyr"] * rng.standard_normal(len(rows))
+        - rows["mu2ramasyr"]
+        - rows["mu2ra_errmasyr"] * rng.standard_normal(len(rows))
+    ) * distance
+    delta_dec = (
+        rows["mu1decmasyr"]
+        + rows["mu1dec_errmasyr"] * rng.standard_normal(len(rows))
+        - rows["mu2decmasyr"]
+        - rows["mu2dec_errmasyr"] * rng.standard_normal(len(rows))
+    ) * distance
+    velocity = PM_DISTANCE_TO_KM_S * np.hypot(delta_ra, delta_dec)
+    if np.any(~np.isfinite(velocity)) or np.any(velocity <= 0):
+        raise RuntimeError("Proper-motion perturbation produced invalid velocity")
+    return velocity
+
+
+def sample_newtonian_control_velocity_km_s(
+    rows: np.ndarray,
+    components: MassComponents,
+    *,
+    orbit_rng: np.random.Generator,
+    companion_rng: np.random.Generator,
+    proper_motion_rng: np.random.Generator,
+) -> np.ndarray:
+    total_mass = components.total_a + components.total_b
+    (
+        radius_au,
+        semimajor_au,
+        phase,
+        inclination,
+        eccentricity,
+        periapsis,
+    ) = _sample_orbit(
+        rows["skau"] * 1000,
+        rows["e"],
+        rows["e0"],
+        rows["e1"],
+        orbit_rng,
+    )
+    speed_term = 2 / radius_au - 1 / semimajor_au
+    if np.any(speed_term <= 0):
+        raise RuntimeError("Newtonian control generated an unbound outer orbit")
+    speed = 1e-3 * np.sqrt(
+        G_SI * M_SUN_KG * total_mass / AU_METERS * speed_term
+    )
+    velocity_x, velocity_y = _project_orbital_velocity(
+        speed,
+        phase,
+        inclination,
+        eccentricity,
+        periapsis,
+    )
+
+    hidden_a_x, hidden_a_y = _sample_photocenter_velocity(
+        components.primary_a,
+        components.companion_a,
+        semimajor_au,
+        _weighted_distance(rows),
+        companion_rng,
+    )
+    hidden_b_x, hidden_b_y = _sample_photocenter_velocity(
+        components.primary_b,
+        components.companion_b,
+        semimajor_au,
+        _weighted_distance(rows),
+        companion_rng,
+    )
+    velocity_x += hidden_a_x - hidden_b_x
+    velocity_y += hidden_a_y - hidden_b_y
+
+    distance = _weighted_distance(rows)
+    noise_x = distance * (
+        rows["mu1ra_errmasyr"] * proper_motion_rng.standard_normal(len(rows))
+        - rows["mu2ra_errmasyr"] * proper_motion_rng.standard_normal(len(rows))
+    )
+    noise_y = distance * (
+        rows["mu1dec_errmasyr"] * proper_motion_rng.standard_normal(len(rows))
+        - rows["mu2dec_errmasyr"] * proper_motion_rng.standard_normal(len(rows))
+    )
+    velocity_x += PM_DISTANCE_TO_KM_S * noise_x
+    velocity_y += PM_DISTANCE_TO_KM_S * noise_y
+    velocity = np.hypot(velocity_x, velocity_y)
+    if np.any(~np.isfinite(velocity)) or np.any(velocity <= 0):
+        raise RuntimeError("Newtonian control produced invalid projected velocity")
+    return velocity
+
+
 def sample_deprojected_accelerations(
     *,
     projected_separation_kau: np.ndarray,
@@ -285,12 +436,209 @@ def _solve_kepler(
     return (lower + upper) / 2
 
 
+def _weighted_distance(rows: np.ndarray) -> np.ndarray:
+    weights_a = 1 / np.square(rows["d1_errpc"])
+    weights_b = 1 / np.square(rows["d2_errpc"])
+    return (
+        rows["d1pc"] * weights_a + rows["d2pc"] * weights_b
+    ) / (weights_a + weights_b)
+
+
+def _mass_from_magnitude(
+    magnitude: np.ndarray,
+    coefficients: np.ndarray,
+) -> np.ndarray:
+    mass = np.power(10.0, np.polynomial.polynomial.polyval(magnitude, coefficients))
+    if np.any(~np.isfinite(mass)) or np.any(mass <= 0):
+        raise RuntimeError("Mass-magnitude relation produced invalid mass")
+    return mass
+
+
+def _split_unresolved_mass(
+    magnitude: np.ndarray,
+    unsplit_mass: np.ndarray,
+    selected: np.ndarray,
+    coefficients: np.ndarray,
+    rng: np.random.Generator,
+) -> tuple[np.ndarray, np.ndarray]:
+    primary = np.array(unsplit_mass, copy=True)
+    companion = np.zeros_like(primary)
+    count = int(np.count_nonzero(selected))
+    if count == 0:
+        return primary, companion
+    delta_magnitude = 12 * rng.power(0.3, count)
+    primary_light = 1 / (1 + np.power(10.0, -0.4 * delta_magnitude))
+    primary_magnitude = -2.5 * np.log10(primary_light) + magnitude[selected]
+    companion_magnitude = (
+        -2.5 * np.log10(np.maximum(1 - primary_light, 1e-20))
+        + magnitude[selected]
+    )
+    primary[selected] = _mass_from_magnitude(primary_magnitude, coefficients)
+    companion[selected] = _mass_from_magnitude(companion_magnitude, coefficients)
+    return primary, companion
+
+
+def _sample_orbit(
+    projected_separation_au: np.ndarray,
+    eccentricity: np.ndarray,
+    eccentricity_low: np.ndarray,
+    eccentricity_high: np.ndarray,
+    rng: np.random.Generator,
+) -> tuple[
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+]:
+    inclination = np.arccos(rng.random(len(projected_separation_au)))
+    normal = rng.standard_normal(len(projected_separation_au))
+    eccentricity_draw = np.clip(
+        eccentricity
+        + np.where(
+            normal < 0,
+            normal * (eccentricity - eccentricity_low),
+            normal * (eccentricity_high - eccentricity),
+        ),
+        0.001,
+        0.999,
+    )
+    mean_anomaly = 2 * np.pi * rng.random(len(projected_separation_au))
+    eccentric_anomaly = _solve_kepler(mean_anomaly, eccentricity_draw)
+    true_anomaly = 2 * np.arctan2(
+        np.sqrt(1 + eccentricity_draw) * np.sin(eccentric_anomaly / 2),
+        np.sqrt(1 - eccentricity_draw) * np.cos(eccentric_anomaly / 2),
+    )
+    periapsis = 2 * np.pi * rng.random(len(projected_separation_au))
+    phase = periapsis + true_anomaly
+    projection = np.sqrt(
+        np.square(np.cos(phase))
+        + np.square(np.cos(inclination) * np.sin(phase))
+    )
+    radius_au = projected_separation_au / projection
+    semimajor_au = (
+        radius_au
+        * (1 + eccentricity_draw * np.cos(true_anomaly))
+        / (1 - np.square(eccentricity_draw))
+    )
+    return (
+        radius_au,
+        semimajor_au,
+        phase,
+        inclination,
+        eccentricity_draw,
+        periapsis,
+    )
+
+
+def _sample_photocenter_velocity(
+    primary_mass: np.ndarray,
+    companion_mass: np.ndarray,
+    outer_semimajor_au: np.ndarray,
+    distance_pc: np.ndarray,
+    rng: np.random.Generator,
+) -> tuple[np.ndarray, np.ndarray]:
+    velocity_x = np.zeros_like(primary_mass)
+    velocity_y = np.zeros_like(primary_mass)
+    selected = companion_mass > 0
+    if not np.any(selected):
+        return velocity_x, velocity_y
+
+    primary = primary_mass[selected]
+    companion = companion_mass[selected]
+    maximum = np.minimum(
+        distance_pc[selected],
+        0.3 * outer_semimajor_au[selected],
+    )
+    if np.any(maximum <= 0.01):
+        raise RuntimeError("Hidden-companion semimajor-axis range is empty")
+    semimajor = np.power(
+        10.0,
+        rng.uniform(np.log10(0.01), np.log10(maximum)),
+    )
+    eccentricity_shape = np.clip(
+        1 - 1.26411333 + 0.85366141 * np.log10(semimajor),
+        0.001,
+        2.2,
+    )
+    eccentricity = rng.power(eccentricity_shape)
+    mean_anomaly = 2 * np.pi * rng.random(len(primary))
+    eccentric_anomaly = _solve_kepler(mean_anomaly, eccentricity)
+    true_anomaly = 2 * np.arctan2(
+        np.sqrt(1 + eccentricity) * np.sin(eccentric_anomaly / 2),
+        np.sqrt(1 - eccentricity) * np.cos(eccentric_anomaly / 2),
+    )
+    periapsis = 2 * np.pi * rng.random(len(primary))
+    phase = periapsis + true_anomaly
+    radius = (
+        semimajor
+        * (1 - np.square(eccentricity))
+        / (1 + eccentricity * np.cos(true_anomaly))
+    )
+    inclination = np.arccos(rng.random(len(primary)))
+    period_years = np.sqrt(
+        np.power(semimajor, 3) / (primary + companion)
+    )
+    alpha = 3.5
+    photocenter_factor = (
+        primary
+        * companion
+        * (
+            np.power(primary, alpha - 1)
+            - np.power(companion, alpha - 1)
+        )
+        / (
+            (primary + companion)
+            * (np.power(primary, alpha) + np.power(companion, alpha))
+        )
+    )
+    photocenter_factor = np.where(period_years < 3, 0, photocenter_factor)
+    speed = photocenter_factor * 1e-3 * np.sqrt(
+        G_SI
+        * M_SUN_KG
+        * (primary + companion)
+        / AU_METERS
+        * (2 / radius - 1 / semimajor)
+    )
+    projected_x, projected_y = _project_orbital_velocity(
+        speed,
+        phase,
+        inclination,
+        eccentricity,
+        periapsis,
+    )
+    velocity_x[selected] = projected_x
+    velocity_y[selected] = projected_y
+    return velocity_x, velocity_y
+
+
+def _project_orbital_velocity(
+    speed: np.ndarray,
+    phase: np.ndarray,
+    inclination: np.ndarray,
+    eccentricity: np.ndarray,
+    periapsis: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    direction_x = -(np.sin(phase) + eccentricity * np.sin(periapsis))
+    direction_y = np.cos(phase) + eccentricity * np.cos(periapsis)
+    normalization = np.hypot(direction_x, direction_y)
+    return (
+        speed * direction_x / normalization,
+        speed * np.cos(inclination) * direction_y / normalization,
+    )
+
+
 __all__ = [
+    "MassComponents",
     "REQUIRED_COLUMNS",
     "SelectionConfig",
+    "assign_multiplicity",
     "load_catalog",
     "phenomenological_external_field_ratio",
+    "perturbed_projected_velocity_km_s",
     "projected_velocity_km_s",
     "sample_deprojected_accelerations",
+    "sample_newtonian_control_velocity_km_s",
     "select_population",
 ]

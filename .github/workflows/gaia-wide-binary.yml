@@ -1,0 +1,67 @@
+name: Gaia wide-binary replication
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gaia-wide-binary-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    name: Execute preregistered replication
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Require current protected main commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints-ci.txt
+      - name: Install certified dependencies
+        run: python -m pip install -r requirements-dev.txt -c constraints-ci.txt
+      - name: Acquire frozen Gaia holdings
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gaia-input" "$RUNNER_TEMP/gaia-evidence"
+          curl --fail --location --retry 5 \
+            --output "$RUNNER_TEMP/gaia-input/gaia_dr3_MSMS_d200pc.csv" \
+            https://zenodo.org/api/records/8270396/files/gaia_dr3_MSMS_d200pc.csv/content
+          curl --fail --location --retry 5 \
+            --output "$RUNNER_TEMP/gaia-input/M_MagG_polyfit_V_Ic.dat" \
+            https://zenodo.org/api/records/8270396/files/M_MagG_polyfit_V_Ic.dat/content
+      - name: Execute protected replication
+        id: replication
+        continue-on-error: true
+        run: >-
+          python tools/analyze_gaia_wide_binary.py
+          --catalog "${{ runner.temp }}/gaia-input/gaia_dr3_MSMS_d200pc.csv"
+          --mass-relation "${{ runner.temp }}/gaia-input/M_MagG_polyfit_V_Ic.dat"
+          --output "${{ runner.temp }}/gaia-evidence/gaia-wide-binary-v1.json"
+      - name: Retain replication evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: gaia-wide-binary-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/gaia-evidence/gaia-wide-binary-v1.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce complete analysis
+        if: steps.replication.outcome == 'failure'
+        run: exit 1
