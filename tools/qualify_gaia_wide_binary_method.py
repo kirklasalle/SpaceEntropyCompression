@@ -121,7 +121,7 @@ def qualify(catalog: Path) -> dict:
         "population": population,
         "selection": {
             "configuration": SelectionConfig().__dict__,
-            "observational_velocity_or_acceleration_used": False,
+            "relative_binary_velocity_or_acceleration_outcome_computed": False,
         },
         "model": {
             "classification": "phenomenological-external-field-comparator",

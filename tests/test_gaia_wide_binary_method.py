@@ -5,6 +5,7 @@ import pytest
 from emrf.validation.wide_binaries import (
     REQUIRED_COLUMNS,
     SelectionConfig,
+    _solve_kepler,
     phenomenological_external_field_ratio,
     sample_deprojected_accelerations,
     select_population,
@@ -91,6 +92,33 @@ def test_deprojection_is_deterministic_and_physical() -> None:
     assert first[1] == pytest.approx(second[1], rel=0, abs=0)
     assert np.all(np.isfinite(first[0]))
     assert np.all(np.isfinite(first[1]))
+
+
+def test_kepler_solver_handles_high_eccentricity_draws() -> None:
+    mean_anomaly = np.linspace(0, 2 * np.pi, 257, endpoint=False)
+    eccentricity = np.full_like(mean_anomaly, 0.999)
+
+    eccentric_anomaly = _solve_kepler(mean_anomaly, eccentricity)
+
+    residual = (
+        eccentric_anomaly
+        - eccentricity * np.sin(eccentric_anomaly)
+        - mean_anomaly
+    )
+    assert np.max(np.abs(residual)) < 1e-12
+
+
+def test_deprojection_rejects_zero_projected_velocity() -> None:
+    with pytest.raises(ValueError, match="finite and physical"):
+        sample_deprojected_accelerations(
+            projected_separation_kau=np.array([1.0]),
+            total_mass_msun=np.array([1.0]),
+            projected_velocity_km_s=np.array([0.0]),
+            eccentricity=np.array([0.5]),
+            eccentricity_low=np.array([0.2]),
+            eccentricity_high=np.array([0.8]),
+            rng=np.random.default_rng(20261013),
+        )
 
 
 def test_phenomenological_model_has_newtonian_limit_and_finite_boost() -> None:
