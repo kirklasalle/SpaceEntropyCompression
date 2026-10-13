@@ -12,7 +12,7 @@ QUALIFICATION = (
     ROOT / "results" / "real_data_v1" / "gaia_wide_binary_method_qualification.json"
 )
 COMMITMENTS = ROOT / "research" / "commitments"
-COMMITMENT_ID = "20261013T151329957398Z-27f69e8d6ff6"
+COMMITMENT_ID = "20261013T152653227562Z-58b1e63993fa"
 
 
 def test_gaia_contract_is_bound_to_outcome_blind_qualification() -> None:
@@ -25,6 +25,9 @@ def test_gaia_contract_is_bound_to_outcome_blind_qualification() -> None:
     ).hexdigest()
     assert qualification["outcome_computed"] is False
     assert qualification["dirty"] is False
+    assert contract["observations"]["holding"]["path"] == (
+        "data/external/gaia_wide_binaries/gaia_dr3_MSMS_d200pc.csv"
+    )
     assert contract["qualification"]["selected_identifier_sha256"] == qualification[
         "population"
     ]["selected_identifier_sha256"]
@@ -53,7 +56,7 @@ def test_gaia_contract_matches_named_commitment() -> None:
     )
 
     assert record["commitment_id"] == COMMITMENT_ID
-    assert record["label"] == "Gaia wide-binary v1 final"
+    assert record["label"] == "Gaia wide-binary v1 reviewed"
     verification = verify_json_prediction(
         COMMITMENT_ID,
         contract,

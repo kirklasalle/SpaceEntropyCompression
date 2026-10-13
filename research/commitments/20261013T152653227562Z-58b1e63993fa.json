@@ -1,0 +1,11 @@
+{
+  "bytes": 8121,
+  "commitment_id": "20261013T152653227562Z-58b1e63993fa",
+  "content_stored": false,
+  "created_utc": "2026-10-13T15:26:53.227562+00:00",
+  "evidence_class": "preregistered-prediction",
+  "label": "Gaia wide-binary v1 reviewed",
+  "media_type": "application/json",
+  "sha256": "58b1e63993fa045adb0764083a92fffb5f825771ae669c6208ed275d118bc828",
+  "source_name": null
+}

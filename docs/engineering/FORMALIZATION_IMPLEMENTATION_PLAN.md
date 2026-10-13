@@ -782,13 +782,13 @@ first-principles EMRF result. The preregistration now freezes exact selection,
 acceleration bins, multiplicity sensitivities, 2,048 deterministic paired
 realizations, locally generated Newtonian controls, comparator values,
 hypotheses and fail-closed numerical gates. Its metadata-only prediction
-commitment is `20261013T151329957398Z-27f69e8d6ff6`. The earlier
-`20261013T145910763389Z-2aa0128c29d9` record remains immutable evidence of the
-superseded draft generated before Python 3.10 compatibility was restored. The
-next gate is protected review and merge of the final contract. Only afterward
-may the observational analyzer be implemented, reviewed separately and
-executed from exact protected `main`. The design and evidence limits are
-recorded in `docs/research/GAIA_WIDE_BINARY_STUDY_DESIGN.md`.
+commitment is `20261013T152653227562Z-58b1e63993fa`. The earlier commitment
+records remain immutable evidence of superseded drafts generated before
+Python 3.10 compatibility and review findings were resolved. The next gate is
+protected review and merge of the final contract. Only afterward may the
+observational analyzer be implemented, reviewed separately and executed from
+exact protected `main`. The design and evidence limits are recorded in
+`docs/research/GAIA_WIDE_BINARY_STUDY_DESIGN.md`.
 
 ---
 
