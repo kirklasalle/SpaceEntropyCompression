@@ -765,7 +765,7 @@ outside `[1.22152425035699e-10, 1.2557224809968e-10] m/s²`. These are
 conditional same-catalogue lower-quality holdout outcomes, not calibrated
 significance, blind discovery, or independent replication.
 
-**Independent-survey source qualification started (2026-10-12):** Gaia DR3
+**Independent-survey preregistration frozen (2026-10-13):** Gaia DR3
 wide binaries were selected over THINGS/LITTLE THINGS and DES-SN5YR because
 they are independent of SPARC in instrument, physical scale and reduction and
 map to an external-field acceleration question already represented by an
@@ -775,14 +775,17 @@ relations are pinned from CC BY 4.0 Zenodo record `8270396`. All 12 exact
 holdings are present in the managed store; the complete library verifies 25
 holdings with no failures. No new observational outcome has been computed.
 
-The next gate is method and model qualification, not immediate fitting. The
-published selection/deprojection/control method must be independently
-reproduced with deterministic diagnostics, and the repository's current
-hard-coded wide-binary stress test must not be promoted into an EMRF prediction
-without derivation or explicit phenomenological classification. Only then may
-cuts, nuisance treatment, external-field model, comparators, numerical gates,
-primary statistic and rejection region be frozen in a new immutable
-commitment. The design and evidence limits are recorded in
+Outcome-blind qualification reproduced the frozen 19,716-row population and
+ordered identifier hash, qualified deterministic deprojection, and classified
+the repository external-field expression as phenomenological rather than a
+first-principles EMRF result. The preregistration now freezes exact selection,
+acceleration bins, multiplicity sensitivities, 2,048 deterministic paired
+realizations, locally generated Newtonian controls, comparator values,
+hypotheses and fail-closed numerical gates. Its metadata-only prediction
+commitment is `20261013T145910763389Z-2aa0128c29d9`. The next gate is protected
+review and merge of this contract. Only afterward may the observational
+analyzer be implemented, reviewed separately and executed from exact protected
+`main`. The design and evidence limits are recorded in
 `docs/research/GAIA_WIDE_BINARY_STUDY_DESIGN.md`.
 
 ---
