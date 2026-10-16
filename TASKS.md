@@ -1,12 +1,12 @@
 # EMRF active research tasks
 
-Research selection updated October 16, 2026. Earlier task lists marked several assumptions or
+Research selection updated October 16, 2026: A and B run concurrently. Earlier task lists marked several assumptions or
 synthetic exercises as completed physical validation; those statuses are not
 carried forward.
 
 | Task | State | Acceptance condition |
 |---|---|---|
-| Select research candidates and active work | Decided: A and B selected; B active | Work one candidate at a time; A retained but paused |
+| Select research candidates and work mode | Decided: A and B selected and run concurrently | Separate records and preregistrations for each; see the [dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md) |
 | Test restricted Candidate B Higgs portal | First check done: compatible with limit | Exact physical Higgs mass, specified potential and widths; frozen preregistration; no hidden fit assumptions |
 | Extend B data tests | Done: rate likelihood compatible with limit; CMS stronger at 3 of 12 points | Width-matched CMS-HIG-24-002 comparison and ATLAS global-mu likelihood under a frozen second preregistration |
 | Deepen B constraints | Next if pursued | STXS likelihood with correlations, interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration |

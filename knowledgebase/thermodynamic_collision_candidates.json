@@ -1,15 +1,17 @@
 {
   "schema_version": 1,
-  "phase": "candidates_a_b_selected_b_active",
+  "phase": "candidates_a_b_dual_concurrent",
   "author_approved": true,
-  "approval_scope": "Candidates A and B selected for research, one active at a time; B active. Restricted tree-level Higgs-portal test approved, not physical validation or selection of measured parameters.",
+  "approval_scope": "Candidates A and B selected for research and run concurrently as separate programs. Restricted tree-level Higgs-portal test approved, not physical validation or selection of measured parameters.",
   "author_decision": {
     "author": "Kirk LaSalle",
     "date": "2026-10-16",
-    "statement": "Include B as a selected candidate; both A and B can be worked, one at a time. Today work with B.",
+    "statement": "Since we are now running dual experiment concurrently with candidate A and B, I believe we need to be honest and transparent.",
     "selected_candidates": ["candidate-a", "candidate-b"],
-    "active_candidate": "candidate-b",
-    "work_policy": "one_candidate_at_a_time",
+    "active_candidates": ["candidate-a", "candidate-b"],
+    "work_policy": "dual_concurrent_programs",
+    "program_document": "docs/EMRF_DUAL_CANDIDATE_PROGRAM.md",
+    "maturity_note": "B has three preregistered public-data tests; A has exact-background algebra checks only and no observational test until C and M are chosen. This reflects the order of work, not relative merit.",
     "specific_functional_selected": false
   },
   "author_decision_history": [
@@ -20,6 +22,15 @@
       "selected_candidate": "candidate-a",
       "unselected_candidate": "candidate-b",
       "scope": "Historical decision, superseded by dual selection on 2026-10-16"
+    },
+    {
+      "author": "Kirk LaSalle",
+      "date": "2026-10-16",
+      "statement": "Include B as a selected candidate; both A and B can be worked, one at a time. Today work with B.",
+      "selected_candidates": ["candidate-a", "candidate-b"],
+      "active_candidate": "candidate-b",
+      "work_policy": "one_candidate_at_a_time",
+      "scope": "Historical decision, superseded later on 2026-10-16 by concurrent dual programs. Candidate B files frozen in this phase keep their 'B active' wording."
     }
   ],
   "new_mechanism_implemented": false,
@@ -63,7 +74,7 @@
     "evidence_kind": "exact_background_algebra_not_observations"
   },
   "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
-  "policy": "Both A and B are selected research candidates. Work on one at a time; B is active and A is retained but paused. Keep recovered intent, standard physics, restricted test hypotheses and empirical evidence separate. Selection is not physical validation.",
+  "policy": "Both A and B are selected research candidates, run concurrently as separate programs with separate preregistrations and artifacts. Evidence about one is not evidence for the other without a frozen comparison. Keep recovered intent, standard physics, restricted test hypotheses and empirical evidence separate. Selection is not physical validation.",
   "parallel_exploration": {
     "candidate": "candidate-b",
     "status": "selected_active_restricted_test_preparation",
@@ -532,7 +543,7 @@
     {
       "id": "candidate-a",
       "classification": "proposed",
-      "selection_status": "selected_paused_functional_pending",
+      "selection_status": "selected_active_functional_pending",
       "statement": "C is a geometry/energy diagnostic without an additional heat channel.",
       "sources": ["recovered_intent"],
       "attribution": "Recovered model-family direction; precise F remains unselected",
@@ -599,8 +610,8 @@
   ],
   "review_gate": {
     "required": true,
-    "state": "candidates_a_b_selected_b_active",
-    "active_candidate": "candidate-b",
+    "state": "candidates_a_b_dual_concurrent",
+    "active_candidates": ["candidate-a", "candidate-b"],
     "active_questions": [
       "Can the approved restricted Higgs-portal prediction be compared with a qualified public Higgs-rate likelihood?",
       "What exact parameter domain, nuisance treatment and confidence construction can be frozen before inference?",

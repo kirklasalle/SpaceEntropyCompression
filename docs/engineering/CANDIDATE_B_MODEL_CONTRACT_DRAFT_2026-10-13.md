@@ -3,8 +3,9 @@
 **Date:** 2026-10-13  
 **Decision status:** Restricted first test approved on 2026-10-16; broader model
 and numerical inference protocol remain open.  
-**Research status:** Both A and B are selected research candidates.
-Only one is worked at a time: **B active, A retained but paused**.  
+**Research status:** Both A and B are selected research candidates and run
+concurrently ([dual-candidate program](../EMRF_DUAL_CANDIDATE_PROGRAM.md)).
+Sections 15–17 were written while B was the one active candidate.  
 **Selection status:** Kirk's 2026-10-16 decision supersedes the exclusive
 Candidate A selection of 2026-10-08; it does not establish physical validity.
 **Author decision (2026-10-13):** Kirk LaSalle specifies that the additional

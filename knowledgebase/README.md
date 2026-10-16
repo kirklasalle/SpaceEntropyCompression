@@ -18,9 +18,10 @@
 
 - [Collision candidate specification](../docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md)
   and [candidate ledger](thermodynamic_collision_candidates.json): Kirk selected
-  A and B as research candidates (October 16, 2026), with one active at a time:
-  B active and A retained but paused. A's exact functional remains unspecified.
-  The restricted B Higgs-portal test is approved, not empirically validated; see the
+  A and B as research candidates (October 16, 2026), and they now run
+  concurrently as a [dual-candidate program](../docs/EMRF_DUAL_CANDIDATE_PROGRAM.md).
+  A's exact functional remains unspecified.
+  B's restricted Higgs-portal tests give bounds, not empirical validation; see the
   [dimensionality exploration](../docs/engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
   and [draft model contract](../docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md).
   The B tests are pinned by two frozen preregistrations and a theory-input

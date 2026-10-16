@@ -2,7 +2,7 @@
 
 - **Principal investigator:** Kirk LaSalle
 - **Repository:** https://github.com/kirklasalle/SpaceEntropyCompression
-- **Scope:** current `main` research revision, October 8, 2026
+- **Scope:** current `main` research revision, October 16, 2026
 **License:** [MIT](emergent_matter_model/LICENSE)
 
 ## Intended use
@@ -19,13 +19,18 @@ of matter emergence, gravity unification or entropy generation.
 | Standard mathematical baseline | Kepler/1PN utilities; exact-background Candidate A checks | Conditional algebra or software agreement with a known formula |
 | Real-data baseline | DESI flat-LCDM fit; full-covariance Pantheon+ fit | Results under the stated baseline and data assumptions, not EMRF validation |
 | Conditional model comparison | Fresh SPARC four-law profiles and influence checks | Comparative fit behavior with nuisance/systematic caveats |
-| Proposed interpretation | Candidate A and its recommended C definition | A selected research direction, not a selected unique functional or equivalence proof |
+| Preregistered coupling bound | Candidate B restricted Higgs portal against ATLAS and CMS public results | Compatibility with an upper bound on the new coupling; never support for B |
+| Proposed interpretation | Candidates A and B; A's recommended C definition | Selected research programs, not a selected unique functional, equivalence proof or validated sector |
 | Historical illustration | Bullet maps, CMB templates, synthetic catalogs and old dashboard | Demonstration only; no observational verdict |
 | Historical recovery | Archived drafts, code, logs, audio and screenshots | Provenance of statements/development, not confirmation of the statements |
 
-## Selected interpretation
+## Selected interpretations
 
-Candidate A re-describes existing geometry/energy organization, without adding
+Kirk LaSalle runs two candidate programs concurrently; see the
+[dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md). Neither is
+confirmed, and evidence about one is not evidence for the other.
+
+**Candidate A** re-describes existing geometry/energy organization, without adding
 an independent heat source or reservoir. The recommended reference
 C_m=(G+Lambda g)(n,n) gives rho_E=c² C_m/(8πG) if Einstein's equation is assumed
 and the observer is specified. The power-law ansatz requires alpha=1 and fixed
@@ -35,6 +40,13 @@ microscopic matter or equivalence of the full dynamics.
 See the [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
 Tidal curvature, local material density, thermal entropy and regional mass
 must not be substituted for one another.
+
+**Candidate B** adds a separately budgeted exchange sector. It began as an
+AI-proposed ansatz; it has been tested only as a restricted one-circle,
+tree-level Higgs portal. Three preregistered comparisons with ATLAS and CMS
+public results allow the new coupling to vanish and bound it from above. See
+the [model contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md),
+sections 16–17.
 
 ## Data and statistical constraints
 
@@ -64,9 +76,12 @@ equivalent to measurement-table ingestion.
 
 ## Validation and limitations
 
-244 software tests passed locally. Tests include synthetic fixtures, API
-behavior, document structure and graph/provenance checks. They do not constitute
-244 physical tests. The current compiled paper is a research draft, not accepted
+On October 16, 2026, 580 non-golden software tests passed locally; 3 property-based
+tests failed from an internal error in the installed `hypothesis` library
+(`'TreeNode' object has no attribute 'is_exhausted'`), not from EMRF code.
+Tests include synthetic fixtures, API behavior, document structure and
+graph/provenance checks. They do not constitute 580 physical tests. The current
+compiled paper is a research draft, not accepted
 or peer-reviewed work. Consult [status](STATUS.md), [top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
 and [reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md).
 
