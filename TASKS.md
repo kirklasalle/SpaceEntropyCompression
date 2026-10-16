@@ -1,12 +1,14 @@
 # EMRF active research tasks
 
-Updated October 8, 2026. Earlier task lists marked several assumptions or
+Research selection updated October 16, 2026. Earlier task lists marked several assumptions or
 synthetic exercises as completed physical validation; those statuses are not
 carried forward.
 
 | Task | State | Acceptance condition |
 |---|---|---|
-| Select Candidate A versus additional exchange sector | Decided: A | Recorded author decision, with B retained historically |
+| Select research candidates and active work | Decided: A and B selected; B active | Work one candidate at a time; A retained but paused |
+| Test restricted Candidate B Higgs portal | First check done: compatible with limit | Exact physical Higgs mass, specified potential and widths; frozen preregistration; no hidden fit assumptions |
+| Extend B data tests | Next if pursued | Width-matched CMS-HIG-24-002 resonance comparison; correlated Higgs-rate likelihood with nuisances frozen before evaluation |
 | Choose exact C and intended M | Awaiting author review | Explicit units, observer/boundary, independent normalization and domain |
 | Assess equivalence and matter mapping | Conditional identities/counterexamples documented | No inference of complete equivalence from fits or one scalar identity |
 | Recover original theory intentions | Completed with stated coverage limits | Source-hashed archive, qualified graph and attribution |

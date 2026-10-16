@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "preregistration_id": "candidate-b-restricted-higgs-portal-v1",
+  "date": "2026-10-16",
+  "protocol": "knowledgebase/candidate_b_first_test_protocol.json",
+  "author_direction": "Kirk LaSalle selected Candidates A and B, one active at a time, with B active on 2026-10-16, and asked that B be put to the test against real public data.",
+  "registration_scope": "Local prospective numerical preregistration, frozen by SHA-256 before the ATLAS Figure 4 contour coordinates were retrieved into this workspace. It is not an external registry entry.",
+  "model": {
+    "bulk_potential": "V_bulk = m5^2 Phi^2 / 2 on flat R^(3,1) x S^1_R; bulk self-interactions set to zero at the matching scale (restricted tree-level closure, not radiative closure)",
+    "brane_potential": "V_H = lambda (H^dagger H - v^2/2)^2 with lambda = m_h0^2/(2 v^2)",
+    "portal": "-g_xi xi_b (H^dagger H - v^2/2), reduced to -sum_n mu_n phi_n (v h + h^2/2), mu_0 = mu_4, mu_n = sqrt(2) mu_4 for n >= 1",
+    "basis": "(h, phi_0, phi_1c, ..., phi_Nc); sine modes vanish at the brane and decouple",
+    "cubic_couplings": "d^3V/dh^3 = 6 lambda v = 3 m_h0^2 / v; d^3V/dh^2 dphi_n = mu_n; no other tree-level scalar cubic terms",
+    "mass_matching": "solve for the unmixed m_h0 so the lightest eigenmass equals M_H exactly",
+    "rate_prediction": "the observed Higgs state has kappa_V = kappa_F = kappa = |U_h1|, with no additional decay width because every other state is heavier than M_H",
+    "heavy_widths": "on-shell two-scalar widths from the full cubic tensor; tree-level on-shell WW, ZZ and t tbar widths scaled by U_hi^2; the sum is a lower bound on each total width because bb, gg, gamma gamma, off-shell and loop channels are omitted"
+  },
+  "constants": {
+    "G_F_GeV_minus2": 1.1663788e-5,
+    "v_GeV": "derived as (sqrt(2) G_F)^(-1/2)",
+    "M_H_GeV": 125.09,
+    "M_H_sensitivity_GeV": [125.2],
+    "m_W_GeV": 80.3692,
+    "m_Z_GeV": 91.188,
+    "m_t_GeV": 172.57,
+    "source": "PDG Review of Particle Physics 2024 central values; M_H = 125.09 GeV is the ATLAS-CMS Run-1 combined mass, with 125.2 GeV as a sensitivity probe"
+  },
+  "parameter_grid": {
+    "inverse_radius_GeV": [10.0, 100.0, 1000.0],
+    "m5_GeV": [150.0, 300.0, 600.0, 1200.0],
+    "cutoff_GeV": 3000.0,
+    "tower_levels": "N_Lambda = floor(R sqrt(Lambda^2 - m5^2)); require N_Lambda >= 1",
+    "mu4_scan": "for each grid point, the coupling mu_4 is the constrained quantity; scan monotonically from 0 by bisection on kappa(mu_4)",
+    "choice_basis": "R^-1 spans three decades, m5 spans 1.2 M_H to 1.2 TeV and Lambda matches the 3 TeV upper edge of the CMS-HIG-24-002 window; no value was chosen from the ATLAS contour"
+  },
+  "validity_flags": {
+    "eigenmasses_below_cutoff": "required",
+    "isolation": "lightest additional eigenmass >= 130 GeV for applying the 125 GeV Higgs-rate product",
+    "brane_coefficient_convention": "|mu5/sqrt(Lambda)| < 1, with mu5 = mu4 sqrt(2 pi R); reported as a convention flag, not an exclusion",
+    "brane_quartic_convention": "lambda_0 = m_h0^2/(2 v^2) <= 1; reported as a working perturbativity flag",
+    "narrow_width_flag": "Gamma_lower/M < 0.01 for future direct-search applicability"
+  },
+  "comparison": {
+    "data_product": "ATLAS Nature 607 (2022) 52, HEPData 10.17182/hepdata.130266.v1/t4, observed 95% CL joint contour in (kappa_V, kappa_F) without invisible or undetected decays",
+    "statistic": "intersection of the segment {(k,k): 0 <= k <= 1} with the published observed 95% joint region",
+    "kappa_floor": "kappa_lo = smallest k on that segment inside the region; translate to mu4_max(R, m5, Lambda) where kappa(mu4) = kappa_lo",
+    "outcome_rules": {
+      "incompatible": "empty intersection: the restricted hypothesis is incompatible with this published region for every parameter point",
+      "compatible_with_limit": "non-empty intersection: report kappa_lo, whether k=1 is inside, and mu4_max for each valid grid point",
+      "ambiguous_data": "missing observed 95% contour, open or unordered contour, or incompatible assumptions: stop and report"
+    },
+    "forbidden": [
+      "choosing or optimizing grid points after reading the contour",
+      "quoting a B-specific one-parameter confidence interval or p-value",
+      "treating compatibility as confirmation of Candidate B",
+      "treating 68% contours or expected contours as the observed 95% result"
+    ]
+  },
+  "deferred_tests": {
+    "cms_hig_24_002_direct_resonance": "requires mixed-state production cross sections and width-matched signal hypotheses; the heavy widths computed here are an input, not a test",
+    "stxs_or_full_likelihood": "requires a published likelihood or a validated reinterpretation product"
+  }
+}

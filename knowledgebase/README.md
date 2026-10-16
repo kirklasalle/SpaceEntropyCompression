@@ -18,9 +18,12 @@
 
 - [Collision candidate specification](../docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md)
   and [candidate ledger](thermodynamic_collision_candidates.json): Kirk selected
-  Candidate A (geometry/energy re-description). Its exact functional remains
-  unspecified. Candidate B is an unselected AI proposal retained for history;
-  neither selection nor a proposal is observational confirmation.
+  A and B as research candidates (October 16, 2026), with one active at a time:
+  B active and A retained but paused. A's exact functional remains unspecified.
+  The restricted B Higgs-portal test is approved, not empirically validated; see the
+  [dimensionality exploration](../docs/engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
+  and [draft model contract](../docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md).
+  Neither selection nor a proposal is observational confirmation.
 
 - [Antigravity recovery audit](../docs/ANTIGRAVITY_RECOVERY_AUDIT.md): search
   coverage, preserved sources, original conceptual distinctions and limits.

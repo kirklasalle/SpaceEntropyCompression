@@ -832,3 +832,35 @@ control offset before another observational confrontation.
    and retain periodic recovery, archive-health and performance evidence.
 3. Treat every failed scheduled certification as durable incident evidence;
    correct its root cause through protected `main` before rerunning it.
+
+### Candidate B exploratory formalization (2026-10-13)
+
+Kirk LaSalle requested that Candidate B work begin by making the dimensionality
+of \(X\) explicit and examining the co-location analogy. The
+[Candidate B dimensionality exploration](CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
+records the scope, distinguishes field overlap from an entropy-zero claim, and
+lists the definitions and data required before a physical test. The
+[Candidate B model contract](CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md)
+sets out a draft for author review. The existing local equations passed a
+conditional algebra-and-units audit under their fixed-volume, three-dimensional
+assumptions. An assistant-proposed flat one-circle benchmark now supplies an
+explicit Kaluza--Klein reduction, stability and mixing envelopes, a
+source-bounded parameter domain, and a contract for future Higgs/resonance
+likelihood work. These are conditional calculations, not a selected geometry
+or numerical constraint. On 2026-10-16 these definitions reached verification
+parity with Candidate A: `tools/check_candidate_b_definitions.py` executes them
+at stipulated probes and writes a hashed artifact,
+`results/candidate_b_definition_checks.json`. Focused tests cover the script,
+and the contract records a decision-ready outcome (sections 14–15). The
+benchmark ordinary differential equation (ODE) is not a collision simulation.
+The next gate was to close the bulk potential and new
+widths, verify suitable public statistical products, and preregister the domain
+before evaluating any likelihood; for the restricted model this is now done. On October 16, Kirk selected both A and B
+for research, one active at a time, with B active and A paused. He approved
+the restricted quadratic Higgs-portal test; see
+[contract section 16](CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
+for exact mass matching, tree-level widths, the frozen preregistration and the
+first public-data outcome: conditional compatibility with the ATLAS observed
+95% (kappa_V, kappa_F) region and conditional mu4 bounds, with no likelihood
+evaluated. No collision
+simulation, data fit, likelihood, or empirical validation has been performed.

@@ -3,7 +3,7 @@
   "meta": {
     "title": "EMRF Space-Entropy Compression Knowledge Graph & Memory",
     "version": "2.1.0",
-    "last_updated": "2026-10-08",
+    "last_updated": "2026-10-16",
     "creator": "Antigravity & Kirk LaSalle",
     "project": "Emergent Matter Research Framework (EMRF) / Space-Entropy Compression",
     "repository": "D:\\Projects\\SpaceEntropyCompression",
@@ -23,18 +23,99 @@
     "collision_candidate_review": {
       "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "ledger": "knowledgebase/thermodynamic_collision_candidates.json",
-      "state": "candidate_a_selected_functional_pending",
-      "selected_candidate": "candidate:collision_geometry_reference",
-      "decision_source": "Kirk LaSalle: I'm for candidate A. (2026-10-08)",
-      "approval_scope": "direction only; no functional or empirical validation selected",
+      "state": "candidates_a_b_selected_b_active",
+      "selected_candidates": ["candidate:collision_geometry_reference", "candidate:collision_exchange_channel"],
+      "active_candidate": "candidate:collision_exchange_channel",
+      "work_policy": "one_candidate_at_a_time",
+      "decision_source": "Kirk LaSalle: select both A and B, work one at a time, B active (2026-10-16)",
+      "approval_scope": "research candidates and restricted tree-level Higgs-portal test; not empirical validation",
       "functional_comparison": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
       "recommended_functional_node": "definition:candidate_a_local_energy_reference",
       "specific_functional_approved": false,
       "new_mechanism_implemented": false,
-      "empirically_validated": false
+      "empirically_validated": false,
+      "candidate_b_parallel_exploration": {
+        "contract": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md",
+        "working_interaction_node": "definition:candidate_b_brane_higgs_portal",
+        "diagnostic_node": "diagnostic:candidate_b_benchmark_checks",
+        "restricted_test_node": "result:candidate_b_atlas_contour_test",
+        "candidate_b_selected": true,
+        "candidate_a_selection_changed": false
+      }
     }
   },
   "nodes": [
+    {
+      "id": "definition:candidate_b_brane_higgs_portal",
+      "type": "WorkingHypothesis",
+      "name": "Bulk compression scalar / brane Higgs portal on a one-circle benchmark",
+      "description": "Assistant-proposed species-specific brane Higgs portal on flat R^{3,1} x S^1_R, approved by Kirk on 2026-10-16 for a restricted quadratic tree-level test. Selection does not establish the interaction, extra dimension, energy origin or dissipation.",
+      "status": "author_selected_restricted_test_hypothesis",
+      "filePath": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md",
+      "locator": "sections 7, 10-15 and 16",
+      "evidence_status": "conditional_benchmark_not_physical_interaction",
+      "use_for_empirical_confirmation": false,
+      "kind": "model",
+      "evidence_class": "historical",
+      "lifecycle_status": "proposed"
+    },
+    {
+      "id": "diagnostic:candidate_b_benchmark_checks",
+      "type": "MathematicalDiagnostic",
+      "name": "Candidate B local-cell, dimensional, KK-envelope and paired-exchange checks",
+      "description": "Executed benchmark algebra and a homogeneous toy integration confirm unit consistency, ledger closure, exact Schur stability, the coth tower limit, perturbative-mixing domain and reversible paired exchange. It also shows the entropy sign needs Gamma_C>=0 and the portal supplies no dissipation. No parameter is selected and no likelihood is evaluated.",
+      "status": "algebra_checked_no_observational_fit",
+      "filePath": "results/candidate_b_definition_checks.json",
+      "evidence_status": "benchmark_algebra_and_toy_integration_not_observations",
+      "use_for_empirical_confirmation": false,
+      "kind": "claim",
+      "evidence_class": "historical",
+      "lifecycle_status": "supported",
+      "evidence_refs": [
+        "file:results/candidate_b_definition_checks.json"
+      ]
+    },
+    {
+      "id": "decision:candidate_b_restricted_test_preregistration",
+      "type": "Preregistration",
+      "name": "Frozen preregistration of the restricted Candidate B Higgs-portal test",
+      "description": "Grid R^-1 in {10,100,1000} GeV, m5 in {150,300,600,1200} GeV, Lambda=3000 GeV; constants, flags and outcome rules fixed before the ATLAS contour coordinates were retrieved. SHA-256 69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d.",
+      "status": "frozen_2026-10-16",
+      "filePath": "knowledgebase/candidate_b_restricted_test_preregistration.json",
+      "evidence_status": "analysis_plan_not_evidence",
+      "use_for_empirical_confirmation": false,
+      "kind": "decision",
+      "evidence_class": "procedural"
+    },
+    {
+      "id": "dataset:atlas_higgs_kappa_v_kappa_f_contour",
+      "type": "EmpiricalDataset",
+      "name": "ATLAS Run-2 Higgs combination, Figure 4 observed (kappa_V, kappa_F) contours",
+      "description": "HEPData 10.17182/hepdata.130266.v1/t4 (Nature 607 (2022) 52): two closed observed loops, identified by nesting as the 68% and 95% joint regions. SHA-256 pinned in the data catalog; raw file git-ignored.",
+      "status": "retrieved_and_hash_pinned_2026-10-16",
+      "filePath": "data/external/candidate_b/raw/hepdata_130266_v1_figure4.yaml",
+      "identifiers": {"doi": "10.17182/hepdata.130266.v1/t4"},
+      "evidence_status": "published_summary_region_not_likelihood",
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "observational"
+    },
+    {
+      "id": "result:candidate_b_atlas_contour_test",
+      "type": "ConditionalCompatibilityCheck",
+      "name": "Restricted Candidate B diagonal versus the ATLAS observed 95% joint region",
+      "description": "Outcome compatible_with_limit: (k,k) lies inside the observed 95% region for 0.9759 <= k <= 1, giving conditional mu4 bounds from 1.73 to 956 GeV across the grid. The model contains the SM decoupling limit, so these data cannot refute it. No likelihood or one-parameter interval; not evidence for Candidate B.",
+      "status": "compatible_with_limit",
+      "filePath": "results/candidate_b_atlas_contour_test.json",
+      "evidence_status": "conditional_compatibility_not_confirmation",
+      "use_for_empirical_confirmation": false,
+      "kind": "result",
+      "evidence_class": "observational_comparison",
+      "evidence_refs": [
+        "file:results/candidate_b_atlas_contour_test.json",
+        "sha256:69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d"
+      ]
+    },
     {
       "id": "definition:candidate_a_local_energy_reference",
       "type": "RecommendedDefinition",
@@ -69,7 +150,7 @@
       "type": "ProposedCandidate",
       "name": "Candidate A: geometry/energy re-description",
       "description": "A diagnostic C functional with standard collision dynamics; no new heat source. Precise F and equivalence remain to be specified.",
-      "status": "selected_by_author_functional_pending_not_implemented",
+      "status": "selected_paused_functional_pending",
       "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "locator": "section 4",
       "evidence_status": "candidate_not_empirical_validation",
@@ -81,8 +162,8 @@
       "id": "candidate:collision_exchange_channel",
       "type": "ProposedCandidate",
       "name": "Candidate B: local energy-exchange accounting",
-      "description": "AI-proposed fixed-volume driven/damped coordinate with paired energy transfers and conditional thermal entropy increase. Not Kirk's recovered law; physical drive, field mapping, momentum and entropy closure remain missing.",
-      "status": "not_selected_retained_for_history",
+      "description": "Selected active research candidate as of 2026-10-16; A remains selected but paused. The local accounting ansatz and restricted Higgs-portal test are conditional models, not validated physics; drive, full momentum and entropy closure remain open.",
+      "status": "selected_active_restricted_test_preparation",
       "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "locator": "section 5",
       "evidence_status": "conditional_accounting_not_complete_physical_model",
@@ -94,8 +175,8 @@
       "id": "candidate:collision_observable_gate",
       "type": "ProposedResearchGate",
       "name": "Density/temperature shock diagnostic and identifiability gate",
-      "description": "For selected Candidate A, require an explicit functional and observable mapping; an equivalent re-description has no independent new-heating signature. Candidate B's closure questions remain historical, not the selected direction.",
-      "status": "candidate_a_functional_and_observable_mapping_pending",
+      "description": "Both candidates are selected, with only B active. A still needs a functional and observable mapping. B's restricted test has been compared with the ATLAS joint (kappa_V, kappa_F) contour (conditional compatibility only); a width-matched direct-resonance comparison and a correlated likelihood remain. Neither selection establishes new heating or empirical confirmation.",
+      "status": "candidate_b_contour_check_done_direct_resonance_and_likelihood_pending",
       "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
       "evidence_status": "proposed_observable_not_a_completed_test",
       "use_for_empirical_confirmation": false,
@@ -1453,6 +1534,51 @@
     }
   ],
   "edges": [
+    {
+      "source": "definition:candidate_b_brane_higgs_portal",
+      "target": "candidate:collision_exchange_channel",
+      "relation": "proposes_working_interaction_for",
+      "evidence_status": "author_selected_restricted_test_hypothesis_not_physical_interaction",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "candidate_b_parity_checks_2026-10-16"
+    },
+    {
+      "source": "decision:candidate_b_restricted_test_preregistration",
+      "target": "result:candidate_b_atlas_contour_test",
+      "relation": "fixes_analysis_plan_for",
+      "evidence_status": "frozen_before_data_comparison",
+      "confidence": 0.5,
+      "evidence_class": "procedural",
+      "provenance": "candidate_b_restricted_test_2026-10-16"
+    },
+    {
+      "source": "dataset:atlas_higgs_kappa_v_kappa_f_contour",
+      "target": "result:candidate_b_atlas_contour_test",
+      "relation": "compared_in",
+      "evidence_status": "published_summary_region_not_likelihood",
+      "confidence": 0.5,
+      "evidence_class": "observational",
+      "provenance": "candidate_b_restricted_test_2026-10-16"
+    },
+    {
+      "source": "result:candidate_b_atlas_contour_test",
+      "target": "definition:candidate_b_brane_higgs_portal",
+      "relation": "constrains_parameters_of",
+      "evidence_status": "conditional_compatibility_not_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "observational_comparison",
+      "provenance": "candidate_b_restricted_test_2026-10-16"
+    },
+    {
+      "source": "diagnostic:candidate_b_benchmark_checks",
+      "target": "definition:candidate_b_brane_higgs_portal",
+      "relation": "constrains_interpretation_of",
+      "evidence_status": "conditional_math_not_physical_validation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "candidate_b_parity_checks_2026-10-16"
+    },
     {
       "source": "definition:candidate_a_local_energy_reference",
       "target": "candidate:collision_geometry_reference",

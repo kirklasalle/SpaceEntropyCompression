@@ -1,10 +1,23 @@
 # EMRF research roadmap
 
-Current direction: Candidate A, as selected by Kirk LaSalle. This replaces the
+Current selection (October 16, 2026): A and B, as selected by Kirk LaSalle.
+Work one candidate at a time: **B is active; A is retained but paused**.
+This replaces the
 historical timeline that treated incomplete physics as completed milestones.
 No schedule or guaranteed discovery is implied.
 
-## 1. Define the selected interpretation
+## 1. Test the active Candidate B hypothesis
+
+Follow the [restricted Higgs-portal test contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test).
+The tree-level potential, Higgs-mass matching, lower-bound widths, frozen
+preregistration and ATLAS joint-contour comparison are done; the outcome is
+conditional compatibility with mu4 bounds. Next, if pursued: the
+width-matched CMS-HIG-24-002 direct-resonance comparison and a correlated
+Higgs-rate likelihood.
+Do not manufacture a likelihood from summary uncertainties or limit curves.
+An excluded restricted model is not exclusion of every possible Candidate B.
+
+### Candidate A work retained for its next active session
 
 Review the [Candidate A functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
 Choose the intended meaning of M and the precise C functional. Distinguish

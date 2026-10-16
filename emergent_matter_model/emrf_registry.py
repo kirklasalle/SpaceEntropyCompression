@@ -155,6 +155,12 @@ COMMANDS: tuple[Command, ...] = (
     # audit / integrity
     Command("check-candidate-a", _T + "check_candidate_a_definitions.py", "audit",
             "Candidate A definition checks"),
+    Command("check-candidate-b", _T + "check_candidate_b_definitions.py", "audit",
+            "Candidate B benchmark checks"),
+    Command("prepare-candidate-b", _T + "prepare_candidate_b_test.py", "audit",
+            "Selected Candidate B restricted model and data-readiness checks"),
+    Command("evaluate-candidate-b-atlas", _T + "evaluate_candidate_b_atlas_contour.py", "audit",
+            "Preregistered Candidate B comparison with the ATLAS kappa_V-kappa_F contour"),
     Command("check-compression-claims", _T + "check_compression_claims.py", "audit",
             "Compression-claims audit"),
     Command("golden-results", _T + "run_golden_results.py", "audit",

@@ -1,5 +1,10 @@
 # EMRF: theory-to-software-to-observation audit
 
+> **Selection update (2026-10-16):** Kirk now selects both A and B as research
+> candidates, one active at a time, with B active. The October 8 statements
+> below are historical. See the [current B test contract](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test);
+> selection is not evidence of physical validity.
+
 > **Candidate A definition comparison:** the
 > [new mathematical assessment](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 > distinguishes local observer energy, vacuum tidal curvature and regional

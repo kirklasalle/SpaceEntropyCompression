@@ -1,16 +1,27 @@
 {
   "schema_version": 1,
-  "phase": "candidate_a_selected_functional_pending",
+  "phase": "candidates_a_b_selected_b_active",
   "author_approved": true,
-  "approval_scope": "Candidate A direction only; no specific functional, implementation or validation approved",
+  "approval_scope": "Candidates A and B selected for research, one active at a time; B active. Restricted tree-level Higgs-portal test approved, not physical validation or selection of measured parameters.",
   "author_decision": {
     "author": "Kirk LaSalle",
-    "date": "2026-10-08",
-    "statement": "I'm for candidate A.",
-    "selected_candidate": "candidate-a",
-    "unselected_candidate": "candidate-b",
+    "date": "2026-10-16",
+    "statement": "Include B as a selected candidate; both A and B can be worked, one at a time. Today work with B.",
+    "selected_candidates": ["candidate-a", "candidate-b"],
+    "active_candidate": "candidate-b",
+    "work_policy": "one_candidate_at_a_time",
     "specific_functional_selected": false
   },
+  "author_decision_history": [
+    {
+      "author": "Kirk LaSalle",
+      "date": "2026-10-08",
+      "statement": "I'm for candidate A.",
+      "selected_candidate": "candidate-a",
+      "unselected_candidate": "candidate-b",
+      "scope": "Historical decision, superseded by dual selection on 2026-10-16"
+    }
+  ],
   "new_mechanism_implemented": false,
   "empirically_validated": false,
   "functional_comparison": {
@@ -52,7 +63,242 @@
     "evidence_kind": "exact_background_algebra_not_observations"
   },
   "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
-  "policy": "Candidate A is selected as the direction. Keep recovered intent, standard physics and proposed definitions separate. Candidate B remains an unselected historical proposal. Define and review C before implementation; selection is not physical validation.",
+  "policy": "Both A and B are selected research candidates. Work on one at a time; B is active and A is retained but paused. Keep recovered intent, standard physics, restricted test hypotheses and empirical evidence separate. Selection is not physical validation.",
+  "parallel_exploration": {
+    "candidate": "candidate-b",
+    "status": "selected_active_restricted_test_preparation",
+    "document": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md",
+    "dimensionality_document": "docs/engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md",
+    "candidate_a_selection_changed": false,
+    "candidate_b_selected": true,
+    "mechanism_implemented": false,
+    "empirically_validated": false,
+    "diagnostic_script": "tools/check_candidate_b_definitions.py",
+    "diagnostic_artifact": "results/candidate_b_definition_checks.json",
+    "executed_checks": {
+      "date": "2026-10-16",
+      "status": "algebra_checked_no_observational_fit",
+      "evidence_kind": "benchmark_algebra_and_toy_integration_not_observations",
+      "document_section": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#14-executed-benchmark-checks",
+      "checks": [
+        "fixed-volume local-cell units and paired energy ledgers under RK4 integration",
+        "D-volume densities reduce to 3-volume densities only after integrating an extra-dimensional measure",
+        "portal mass dimensions for D = 3, 4, 5, 6 and 9, including the reduced 4D coupling",
+        "orthonormal one-circle modes, vanishing sine modes at the brane and projection non-injectivity",
+        "Schur stability envelope versus truncated mass-matrix eigenvalues",
+        "finite KK stability sum versus the coth closed form and the mu_5 form of the bound",
+        "tree-level tower elimination versus the O_H^2 operator coefficient",
+        "perturbative kappa_V versus exact diagonalization, Higgs-component sum rule and near-degeneracy refusal",
+        "inversion of the conditional kappa_min envelope",
+        "unmixed-mass preselection for the CMS 4-lepton window",
+        "paired, reversible zero-mode/Higgs energy exchange in a homogeneous toy integration"
+      ],
+      "failures_under_stated_assumptions": [
+        "negative Gamma_C gives negative thermal entropy production, so the sign is an assumption, not a theorem",
+        "the perturbative Higgs admixture misestimates kappa_V near a Higgs-KK degeneracy (0.714 forced versus 0.853 exact in the probe)",
+        "a strictly massless zero mode cannot carry a nonzero portal coupling in the minimal quadratic benchmark",
+        "the reversible portal supplies no damping coefficient Gamma_C or thermal entropy production"
+      ],
+      "toy_integration_scope": "homogeneous ODE benchmark used to verify stated identities; not a collision simulation, data test or coupling constraint",
+      "probe_values": "rounded v = 246 GeV, unmixed m_h = 125 GeV and stipulated R, m5, Lambda, mu_4, kappa_min; none is selected, measured or fitted",
+      "parameters_selected_or_measured": false,
+      "likelihood_evaluated": false,
+      "observational_data_used": false,
+      "candidate_b_selected": true,
+      "selection_basis": "Kirk's separate 2026-10-16 author decision, not these algebra checks"
+    },
+    "decision_ready_outcome": {
+      "succeeds": "the local cell, portal dimensions, one-circle reduction, stability and mixing envelopes, and paired exchange are internally consistent and executable under their stated assumptions",
+      "fails_under_stated_assumptions": "entropy sign without Gamma_C >= 0; perturbative mixing near degeneracy; massless zero mode with nonzero coupling; portal as a source of dissipation",
+      "remains_open": "physical realization of the geometry, entropy closure, full heavy-state widths, approved numerical inference domain and verified public likelihood; the restricted quadratic tree-level test is now approved",
+      "recommended_next_review": "qualify public Higgs-rate statistical products, freeze the inference protocol, then test the restricted hypothesis without converting summary errors or upper limits into a likelihood"
+    },
+    "consistency_audit": {
+      "scope": "existing fixed-volume Candidate B equations under the stated three-dimensional physical-volume convention",
+      "outcome": "algebraically_and_dimensionally_consistent_conditionally",
+      "assumptions": [
+        "dimensionless xi = C/C0",
+        "constant I_C",
+        "differentiable V_C",
+        "paired drive, compression-sector, and thermal energy transfers",
+        "T > 0 and Gamma_C >= 0 for nonnegative thermal entropy production"
+      ],
+      "higher_dimensional_extension": "not_defined_or_audited",
+      "physical_interaction_established": false
+    },
+    "author_decisions": [
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "status of the additional coordinates d_i in X",
+        "statement": "The additional coordinates d_i are physical spatial dimensions.",
+        "remaining_open": "Their metric, coordinate ranges, topology, coupling, and reduction to observable three-dimensional quantities."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "entropy concept for the first Candidate B pass",
+        "statement": "Use thermodynamic entropy S; do not assume that its value is zero.",
+        "remaining_open": "The subsystem, coarse-graining, reference convention, and initial/final states."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "role of field co-location in Candidate B",
+        "statement": "Field co-location is intended to enter Candidate B's energy-exchange law.",
+        "remaining_open": "The physical interaction, fields/species, coupling, and energy source that connect co-location to exchange."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "interaction-route comparison",
+        "statement": "Compare established Standard Model interactions with a new compression-field coupling.",
+        "remaining_open": "Which route or specific interaction, if any, supports the Candidate B exchange law."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "comparison within the new-coupling route",
+        "statement": "Compare universal couplings with species-specific couplings.",
+        "remaining_open": "No universal metric/scalar coupling or species-specific operator has been selected."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "comparison of coupling classes",
+        "statement": "Compare universal coupling to total stress-energy with species-specific coupling.",
+        "remaining_open": "The comparison is requested; no Candidate B coupling has been selected."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-13",
+        "subject": "status of the worked Higgs-portal hypothesis",
+        "statement": "Retain the worked Higgs portal as an unselected working hypothesis for further exploration.",
+        "remaining_open": "This does not select a physical Candidate B interaction or establish that the portal describes nature."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-16",
+        "subject": "first selected Candidate B test hypothesis",
+        "statement": "Proceed with the restricted Higgs-portal test (recommended)",
+        "approved_scope": "One-circle quadratic bulk scalar at tree level, extra scalars heavier than the observed Higgs, exact physical Higgs mass matching and universal Higgs-rate suppression; derive heavy two-scalar decays rather than assuming zero.",
+        "remaining_open": "Public statistical-product qualification, numerical inference preregistration, complete heavy widths and empirical outcome."
+      }
+    ],
+    "worked_interaction": {
+      "status": "author_selected_restricted_test_hypothesis",
+      "document": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md",
+      "model": "bulk compression scalar coupled to the gauge-invariant brane Higgs operator",
+      "interaction_term": "-g_xi xi_b (H† H - v^2/2)",
+      "fields": ["bulk compression scalar xi", "brane Standard Model Higgs doublet H"],
+      "selection_changed": true,
+      "physical_interaction_established": false,
+      "derived_scope": "conditional bulk scalar source, brane Higgs backreaction, and paired tangential energy-momentum exchange for the stated action",
+      "comparison_sources": [
+        "standard_model_overview",
+        "dilaton_ep_couplings",
+        "microscope_wep_test",
+        "action_principle_source",
+        "pdg_extra_dimensions",
+        "atlas_higgs_couplings",
+        "atlas_higgs_interpretations",
+        "atlas_higgs_characterization",
+        "cms_heavy_scalar_zz"
+      ],
+      "energy_source_status": "paired transfer is sourced by the compression-scalar sector when energy flows to the brane; how that sector is excited or replenished is unspecified",
+      "geometry_benchmark": {
+        "status": "author_approved_restricted_test_assumption",
+        "bulk": "flat R^(3,1) x S^1_R with y identified modulo 2 pi R",
+        "extra_spatial_dimensions": 1,
+        "standard_model_localization": "fixed 3+1D brane at y=0",
+        "compression_scalar_localization": "bulk real periodic scalar",
+        "reduction": "canonical Fourier/Kaluza-Klein modes; brane zero-mode coupling mu_4=mu_5/sqrt(2 pi R)",
+        "radius_selected_or_measured": false
+      },
+      "independent_constraint": {
+        "source": "atlas_higgs_couplings",
+        "observable": "published Run-2 Higgs vector-boson coupling modifier",
+        "method": "cutoff-dependent perturbative KK mixing envelope parameterized by a future model-specific lower coupling modifier kappa_min",
+        "numerical_status": "no likelihood-based numerical Candidate B coupling limit claimed; earlier approximate one-sigma single-mode translation withdrawn; the conditional mu_4 compatibility bounds in selected_restricted_test come from a published joint 95% region, not a likelihood",
+        "internal_stability_envelope": "mu_4^2 < m_h^2/[v^2 S_stab(R,m5,Lambda)]",
+        "mixing_envelope": "mu_4^2 <= (kappa_min^-2-1)/[v^2 S_mix(R,m5,Lambda)] away from Higgs-KK degeneracies",
+        "validity_domain": "R>0, m5>0, Lambda>=max(m5,mh), and max_n |v mu_n/(mh^2-m_n^2)| << 1",
+        "low_energy_operator": "Delta L_eff = (mu_4^2/2) S_stab O_H^2 when external momenta are below all integrated-out mode masses",
+        "near_degeneracy_treatment": "finite mass matrix, widths, decays, and resonance likelihood required",
+        "source_bounded_domain": {
+          "theory": "R>0, m5>0, finite Lambda>=max(m5,mh), positive finite mass matrix, and all retained eigenmasses below Lambda",
+          "tower_requirement": "N_Lambda>=1, equivalently Lambda^2>=m5^2+R^-2; N_Lambda=0 is a zero-mode EFT",
+          "working_perturbativity_convention": "|mu5/sqrt(Lambda)| < 1; convention only, not an experimental exclusion",
+          "direct_resonance_example": "CMS-HIG-24-002 applies only to matching scalar-to-ZZ production/width hypotheses from 130 GeV to 3 TeV",
+          "gravitational_extra_dimension_bounds_applied": false
+        },
+        "likelihood_contract": {
+          "sources": ["atlas_higgs_interpretations", "atlas_higgs_characterization", "cms_heavy_scalar_zz"],
+          "parameters": ["R", "m5", "Lambda", "mu5", "bulk-potential and new-width parameters"],
+          "prediction": "exact finite KK mass-matrix diagonalization, Higgs-component sum rule, production rates, partial widths, new widths, and resolved or joint spectral templates",
+          "channels": ["published 125 GeV Higgs rate/STXS likelihood", "topology-matched direct scalar resonance likelihood"],
+          "forbidden_shortcut": "do not convert published uncertainties or 95% upper-limit curves into an ad hoc likelihood",
+          "evaluated": false
+        },
+        "full_kk_tower_constrained": false,
+        "new_data_test_or_simulation_run": true,
+        "new_data_test_scope": "one preregistered compatibility check of the restricted hypothesis against the published ATLAS observed 95% (kappa_V, kappa_F) contour; see selected_restricted_test"
+      },
+      "unresolved": [
+        "whether the flat one-circle geometry and brane localization describe nature",
+        "radius R, bulk mass, EFT cutoff, and radius stabilization",
+        "full KK-tower phenomenological constraint",
+        "brane embedding dynamics and normal momentum balance",
+        "model-specific numerical coupling constraint and nonlinear stability",
+        "thermalization and entropy production"
+      ]
+    },
+    "coupling_comparison": {
+      "universal": "schematic conformal metric coupling; scalar source proportional to the stress-energy trace",
+      "species_specific": "worked brane-localized Higgs-operator portal",
+      "selected": true,
+      "selection_scope": "species-specific Higgs portal for the first restricted test, not an established physical interaction"
+    },
+    "selected_restricted_test": {
+      "date": "2026-10-16",
+      "document_section": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test",
+      "protocol": "knowledgebase/candidate_b_first_test_protocol.json",
+      "preregistration": {
+        "path": "knowledgebase/candidate_b_restricted_test_preregistration.json",
+        "sha256": "69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d",
+        "frozen_before_contour_coordinates_retrieved": true,
+        "grid": "R^-1 in {10, 100, 1000} GeV, m5 in {150, 300, 600, 1200} GeV, Lambda = 3000 GeV"
+      },
+      "open_items_closed_for_restricted_model": {
+        "bulk_potential": "quadratic tree-level bulk potential with exact secular-equation mass matching; no bulk self-interaction, by preregistered restriction",
+        "decay_widths": "tree-level two-scalar widths from the derived cubic couplings plus Higgs-fraction-scaled on-shell WW, ZZ and t tbar widths; a lower bound, since bb, gg, gamma gamma, off-shell and loop channels are omitted",
+        "parameter_range": "preregistered grid above",
+        "public_data": "ATLAS Nature 607 (2022) 52 Figure 4 observed contour, HEPData 10.17182/hepdata.130266.v1/t4, SHA-256 pinned in the data catalog"
+      },
+      "scripts": ["tools/prepare_candidate_b_test.py", "tools/evaluate_candidate_b_atlas_contour.py"],
+      "artifacts": ["results/candidate_b_test_readiness.json", "results/candidate_b_atlas_contour_test.json"],
+      "outcome": "compatible_with_limit",
+      "kappa_lo": 0.97591,
+      "kappa_lo_meaning": "lowest k for which (k, k) lies inside the published observed 95% joint region; the SM point (1, 1) is inside",
+      "contour_vertex_spacing_at_crossing": 0.0046,
+      "mu4_max_GeV_range_over_grid": [1.73, 956.4],
+      "flags_raised": [
+        "every m5 = 1200 GeV point exceeds the |mu5/sqrt(Lambda)| < 1 convention at mu4_max; at R^-1 = 10 and 100 GeV it also exceeds lambda0 <= 1",
+        "R^-1 = 1000 GeV with m5 = 600 and 1200 GeV give a lightest-additional-state lower-bound width above 1% of its mass at mu4_max"
+      ],
+      "higgs_mass_sensitivity": "M_H = 125.2 GeV changes mu4_max by at most 0.4%",
+      "likelihood_evaluated": false,
+      "one_parameter_interval_claimed": false,
+      "candidate_b_confirmed": false,
+      "interpretation": "The restricted hypothesis predicts kappa_V = kappa_F = kappa <= 1 and therefore contains the SM decoupling limit, so this data set can bound mu4 but cannot refute the restricted model. The result is conditional compatibility, not evidence for Candidate B.",
+      "deferred": [
+        "CMS-HIG-24-002 width-matched direct heavy-scalar ZZ resonance comparison",
+        "full STXS likelihood with correlations",
+        "loop and off-shell heavy-state widths"
+      ]
+    },
+    "next_gate": "if pursued, run the CMS-HIG-24-002 width-matched direct-resonance comparison for the preregistered grid and qualify a correlated Higgs-rate likelihood before any one-parameter interval; do not convert the contour bound into a likelihood"
+  },
   "sources": [
     {
       "id": "recovered_intent",
@@ -112,6 +358,72 @@
       "kind": "theoretical_precedent",
       "verified_scope": "abstract explicitly states entropy-area and Clausius assumptions",
       "limitation": "Not a derivation of all thermodynamic laws from EMRF"
+    },
+    {
+      "id": "standard_model_overview",
+      "url": "https://home.cern/science/physics/standard-model/",
+      "kind": "authoritative_overview",
+      "verified_scope": "matter particle families, strong/electromagnetic/weak interactions and carrier particles",
+      "limitation": "Overview, not a derivation of a Candidate B coupling"
+    },
+    {
+      "id": "dilaton_ep_couplings",
+      "url": "https://arxiv.org/abs/1007.2792",
+      "kind": "theoretical_paper",
+      "verified_scope": "dilaton couplings to Standard Model parameters and composition-dependent equivalence-principle effects",
+      "limitation": "Not a proposed or selected Candidate B interaction"
+    },
+    {
+      "id": "microscope_wep_test",
+      "url": "https://arxiv.org/abs/2209.15488",
+      "kind": "observational_study",
+      "verified_scope": "MICROSCOPE weak-equivalence-principle result and context for constraints on new interactions",
+      "limitation": "Does not constrain a Candidate B model until its coupling and prediction are specified"
+    },
+    {
+      "id": "action_principle_source",
+      "path": "knowledgebase/action_principle_derivation.md",
+      "locator": "section 2",
+      "kind": "project_theory_note",
+      "verified_scope": "existing scalar-field action sketch explicitly leaves its source coupling unspecified",
+      "limitation": "Not a complete or validated Candidate B action"
+    },
+    {
+      "id": "pdg_extra_dimensions",
+      "url": "https://pdg.lbl.gov/2025/reviews/rpp2025-rev-extra-dimensions.pdf",
+      "kind": "review",
+      "verified_scope": "Particle Data Group review of extra dimensions and Kaluza-Klein models",
+      "limitation": "General framework reference; does not select this model's circle radius, scalar, or brane"
+    },
+    {
+      "id": "atlas_higgs_couplings",
+      "url": "https://arxiv.org/abs/2207.00092",
+      "kind": "experimental_combination",
+      "verified_scope": "ATLAS Run-2 Higgs interactions are consistent with Standard Model expectations; used only to identify the relevant external constraint class",
+      "limitation": "Not a fit to this bulk-scalar KK model; no numerical Candidate B coupling limit is attributed to this source"
+    },
+    {
+      "id": "atlas_higgs_interpretations",
+      "url": "https://arxiv.org/abs/2402.05742",
+      "doi": "10.1007/JHEP11(2024)097",
+      "kind": "experimental_interpretation",
+      "verified_scope": "ATLAS interpretations of Run-2 Higgs production, decay-rate, and differential-cross-section measurements",
+      "limitation": "Provides relevant Higgs observables and interpretations, not a drop-in likelihood for this KK tower"
+    },
+    {
+      "id": "atlas_higgs_characterization",
+      "url": "https://arxiv.org/abs/2404.05498",
+      "doi": "10.1016/j.physrep.2024.11.001",
+      "kind": "experimental_review",
+      "verified_scope": "ATLAS Run-2 review of Higgs mass, width, spin, parity, and interactions",
+      "limitation": "Review and measurement context; does not supply preferred Candidate B parameters"
+    },
+    {
+      "id": "cms_heavy_scalar_zz",
+      "url": "https://cms-results.web.cern.ch/cms-results/public-results/preliminary-results/HIG-24-002/index.html",
+      "kind": "experimental_search",
+      "verified_scope": "CMS direct neutral-scalar search in ZZ to four leptons from 130 GeV to 3 TeV for stated production and width hypotheses",
+      "limitation": "Published limits are not a KK-tower likelihood and apply only when mass, production, width, and topology match"
     }
   ],
   "claims": [
@@ -134,7 +446,7 @@
     {
       "id": "candidate-a",
       "classification": "proposed",
-      "selection_status": "selected_direction_functional_pending",
+      "selection_status": "selected_paused_functional_pending",
       "statement": "C is a geometry/energy diagnostic without an additional heat channel.",
       "sources": ["recovered_intent"],
       "attribution": "Recovered model-family direction; precise F remains unselected",
@@ -143,7 +455,7 @@
     {
       "id": "candidate-b",
       "classification": "proposed",
-      "selection_status": "not_selected_retained_for_history",
+      "selection_status": "selected_active_restricted_test_preparation",
       "statement": "A local driven internal coordinate can transfer dissipated energy to a thermal bath with paired source/sink bookkeeping.",
       "sources": [],
       "attribution": "New AI-proposed generic effective ansatz, not Kirk's recovered law or a novel physical discovery",
@@ -154,7 +466,8 @@
         "dot(u_th) = Gamma_C dot(xi)^2",
         "dot(u_drive) = -J dot(xi)"
       ],
-      "limitation": "Local fixed-volume accounting only; physical drive, spatial momentum, gravity, geometric entropy and transport closure remain missing"
+      "limitation": "Local fixed-volume accounting only; physical drive, spatial momentum, gravity, geometric entropy and transport closure remain missing",
+      "exploratory_followup": "The assistant-proposed brane Higgs portal is now author-selected as a restricted test hypothesis, not validated physics."
     },
     {
       "id": "candidate-b-conditional-identity",
@@ -200,7 +513,13 @@
   ],
   "review_gate": {
     "required": true,
-    "state": "candidate_a_selected_functional_pending",
+    "state": "candidates_a_b_selected_b_active",
+    "active_candidate": "candidate-b",
+    "active_questions": [
+      "Can the approved restricted Higgs-portal prediction be compared with a qualified public Higgs-rate likelihood?",
+      "What exact parameter domain, nuisance treatment and confidence construction can be frozen before inference?",
+      "Which heavy-state widths and experimental templates are required before direct resonance testing?"
+    ],
     "questions": [
       "Which precise geometry/energy functional defines C within Candidate A?",
       "What units, normalization, domain and information are retained by that definition?",
@@ -209,7 +528,7 @@
       "Which observations can test the resulting mapping without implying a new heating channel?"
     ],
     "not_authorized": [
-      "implementing a new physical mechanism",
+      "treating the restricted test hypothesis as an established physical mechanism",
       "running a collision simulation",
       "fitting a newly invented C heating law to observations",
       "claiming a new theorem, entropy solution or empirical confirmation"

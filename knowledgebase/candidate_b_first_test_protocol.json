@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "protocol_id": "candidate-b-atlas-joint-contour-v1",
+  "date": "2026-10-16",
+  "author_approval": "Kirk LaSalle approved the restricted Higgs-portal test and the published joint-contour compatibility screen.",
+  "registration_scope": "Local prospective protocol recorded before numerical contour coordinates were inspected; not an external preregistration.",
+  "research_selection": {
+    "selected_candidates": ["candidate-a", "candidate-b"],
+    "active_candidate": "candidate-b",
+    "work_policy": "one_candidate_at_a_time"
+  },
+  "hypothesis": {
+    "bulk": "flat R^(3,1) x S^1_R; real scalar with V_bulk = m5^2 phi^2 / 2",
+    "brane": "SM at y=0; V_H = lambda (H^dagger H - v^2/2)^2; linear scalar Higgs portal",
+    "order": "tree-level restricted EFT; additional renormalized scalar operators set to zero at the matching scale, not a claim of radiative closure",
+    "spectrum": "finite cosine tower and zero mode; free sine modes decouple",
+    "mass_matching": "choose the unmixed Higgs mass parameter to match the lightest mixed eigenmass M_H",
+    "domain": "R>0; m5>M_H; finite cutoff with all retained eigenmasses below cutoff; positive mass matrix; |mu5/sqrt(cutoff)|<1; N>=1 for a tower, N=0 only as a separate EFT limit",
+    "rate_domain": "0 <= kappa <= 1; kappa_V=kappa_F=kappa, universal SM loop amplitudes at this order, no additional Higgs decay width",
+    "applicability": "one isolated observed Higgs state; no extra contribution to the measured Higgs signal or background templates; detector isolation must be checked before applying results to particular near-degenerate parameter points",
+    "heavy_widths": "derive on-shell two-scalar partial widths; do not assume heavy total widths or other multibody/off-shell channels vanish"
+  },
+  "data": {
+    "record": "https://www.hepdata.net/record/130266",
+    "record_doi": "10.17182/hepdata.130266",
+    "table_doi": "10.17182/hepdata.130266.v1/t4",
+    "table": "Figure 4",
+    "source_paper": "ATLAS, Nature 607 (2022) 52-59, arXiv:2207.00092",
+    "required_product": "observed joint 95% confidence contour in kappa_V,kappa_F with no invisible or undetected decays",
+    "version_policy": "pin actual raw file SHA-256, bytes, URL, version and qualifiers before evaluation; abort on incompatible assumptions",
+    "expected_contour_use": "not used for observed compatibility decisions",
+    "raw_data_policy": "public collaboration data only; raw files in git-ignored data/external/candidate_b; no plot digitization"
+  },
+  "method": {
+    "comparison": "intersect the physical diagonal (kappa,kappa), 0<=kappa<=1, with the published observed 95% two-parameter confidence region",
+    "interpolation": "piecewise-linear segments between supplied ordered contour vertices; do not extrapolate a likelihood",
+    "closure": "verify contour ordering and closure; if endpoints are not identical, report the closing-segment length and require it to be comparable to supplied neighboring segments",
+    "uncertainty": "report numerical polygon-intersection precision separately from statistical precision; quote coupling endpoints conservatively at the supplied contour resolution",
+    "nuisances": "use only the collaboration's joint-contour construction; do not reprofile or multiply one-dimensional scans",
+    "inference": "no likelihood reconstruction, no new p-value, no B-specific 95% one-parameter confidence interval, no discovery claim",
+    "interpretation": "outside the supplied joint region means incompatible with that published region under its assumptions, not exclusion of all Candidate B models",
+    "parameter_translation": "conditional on fixed R,m5,cutoff,v,M_H and data applicability; do not choose or optimize these parameters after seeing the contour",
+    "stop_conditions": [
+      "missing provenance or incompatible fit assumptions",
+      "missing/ambiguous observed 95% contour",
+      "unordered, open or self-intersecting contour without a justified interpretation",
+      "unresolved extra Higgs signal contributions",
+      "attempt to turn published intervals or upper limits into likelihood values"
+    ]
+  },
+  "full_likelihood_preregistration": "not yet frozen; public likelihood, nuisance and confidence-construction qualification still required"
+}

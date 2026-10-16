@@ -45,7 +45,7 @@ hide new failures behind pre-existing diagnostics.
 ```powershell
 & .\emergent_matter_model\.venv\Scripts\python.exe -m pytest -m "not golden" -q
 # Apply Ruff to the changed files; example:
-& .\emergent_matter_model\.venv\Scripts\python.exe -m ruff check tools\check_candidate_a_definitions.py
+& .\emergent_matter_model\.venv\Scripts\python.exe -m ruff check tools\check_candidate_a_definitions.py tools\check_candidate_b_definitions.py
 # Validate knowledge and generated documentation:
 & .\emergent_matter_model\.venv\Scripts\python.exe emergent_matter_model\emrf_cli.py kb validate
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\generate_docs_reference.py --check

@@ -99,7 +99,11 @@ calls `POST /api/v1/simulate`).
 
 ### 3.5 Audit, integrity and release tools
 
-`tools/check_candidate_a_definitions.py`, `check_compression_claims.py`,
+`tools/check_candidate_a_definitions.py`, `check_candidate_b_definitions.py`
+(Candidate B benchmark algebra), `prepare_candidate_b_test.py`
+(selected restricted B model and data-readiness checks),
+`evaluate_candidate_b_atlas_contour.py` (preregistered B comparison with the
+ATLAS joint coupling contour), `check_compression_claims.py`,
 `show_your_work_audit.py`, `verify_antigravity_recovery.py`,
 `recover_antigravity_evidence.py`, `integrate_recovered_graph.py`,
 `build_real_data_report.py`, `build_sparc_paper.py`,

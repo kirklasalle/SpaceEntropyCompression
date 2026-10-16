@@ -1,13 +1,14 @@
 # EMRF collision candidates: energy transfer and thermodynamic entropy
 
-**Status: Candidate A selected by Kirk LaSalle on October 8, 2026.**
-His decision, "I'm for candidate A", selects the geometry/energy re-description
-direction, not a particular functional, a proof of equivalence or empirical
-validation. Candidate B remains an **unselected historical proposal**.
+**Current status (October 16, 2026): A and B selected by Kirk LaSalle.**
+Work on only one at a time: **B is active; A remains selected but paused**.
+The October 8 decision, "I'm for candidate A", remains part of the history,
+but no longer makes the selection exclusive. The first restricted B Higgs-portal
+test is approved; neither selection is empirical validation.
 No new collision solver, dynamics, simulation, mock observations or observational
 fit accompanies this decision.
 
-### Selected direction and next gate
+### Candidate A direction and next gate (retained, paused)
 
 The subsequent [Candidate A functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 now supplies precise local-curvature, observer-energy and regional-energy options.
@@ -15,7 +16,7 @@ It recommends an observer-projected Einstein-curvature reference for
 energy-equivalent density, with tidal curvature kept separate. This is a
 recommendation for review, not an author-selected functional or proof of emergence.
 
-Continue with C as a description of existing geometry/energy organization,
+For Candidate A, continue with C as a description of existing geometry/energy organization,
 without introducing a separate C energy reservoir, new heat source or force.
 Thermodynamic behavior remains downstream of the selected standard dynamics.
 The next step is to compare precise C_G/C_E definitions, their units, invariance
@@ -216,6 +217,26 @@ no new heating prediction, no theorem of matter emergence.
 recovered law and not an original discovery.** A driven, damped internal
 coordinate is a familiar effective modelling structure. Its value here is to
 make conservation and assumptions explicit, not to rename it as proven gravity.
+
+**Exploratory follow-up (2026-10-13):** Kirk requested that Candidate B
+exploration begin with greater emphasis on the dimensionality of \(X\). The
+[dimensionality and co-location note](engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
+clarifies the domain and entropy questions and records the motivating joke
+verbatim. This begins documentation and formalization only; the Candidate B
+mechanism remains incomplete, unvalidated, and without a selected physical
+coupling or observational prediction. See the separate
+[draft model contract](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md),
+which now includes an assistant-proposed one-circle KK benchmark, conditional
+stability/mixing envelopes, a source-bounded parameter domain, and a future
+Higgs/resonance likelihood contract. On 2026-10-16 its algebra was executed at
+stipulated benchmark probes by a
+[diagnostic script](../tools/check_candidate_b_definitions.py) with a hashed
+[result artifact](../results/candidate_b_definition_checks.json); see contract
+sections 14–15. These are internal consistency checks only. No likelihood,
+collision simulation, or data test has been run. The later October 16 author
+decision selects both candidates and makes B active. The
+[restricted first test and public-data gate](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
+supersede the earlier unselected status without changing the historical checks.
 
 ### 5.1 Restricted local example
 
