@@ -280,19 +280,8 @@ def _git(*args: str) -> str:
         return "unavailable"
 
 
-def run(evaluate: Callable[[list[Galaxy], str, float], dict[str, Any]] = evaluate_population
-        ) -> dict[str, Any]:
-    """Run every frozen step and return the artifact dictionary."""
-    verify_preregistration()
-    sparc = fetch_sparc()
-    holdings = verify_data(sparc)
-    primary = load_sparc(sparc)
-    secondary = [g for g in load_sparc(sparc, max_quality=3) if g.quality == 3]
-    deviations = []
-    if len(primary) != 153 or sum(g.n for g in primary) != 3168:
-        deviations.append(f"Primary population has {len(primary)} galaxies and "
-                          f"{sum(g.n for g in primary)} points, not 153 and 3168")
-    report: dict[str, Any] = {
+def _report_header() -> dict[str, Any]:
+    return {
         "schema_version": 1,
         "test_id": "candidate-a-option2-sparc-baryonic-v1",
         "candidate": "candidate-a",
@@ -303,7 +292,7 @@ def run(evaluate: Callable[[list[Galaxy], str, float], dict[str, Any]] = evaluat
         "preregistration_sha256": FROZEN_PREREGISTRATION_SHA256,
         "source_sha256": _sha(Path(__file__)),
         "dependency_sha256": {name: _sha(ROOT / name) for name in SOURCE_DEPENDENCIES},
-        "data": holdings,
+        "data": [],
         "environment": {"python": platform.python_version(), "numpy": np.__version__,
                         "scipy": scipy.__version__},
         "revision": _git("rev-parse", "HEAD"),
@@ -312,8 +301,31 @@ def run(evaluate: Callable[[list[Galaxy], str, float], dict[str, Any]] = evaluat
             "the natural parameter scales (0.1 dex, sigma_fD, sigma_i, max(V_obs)^2, 0.5 dex).",
             "The halo radius uses the catalogue radius; the free r_c absorbs distance rescaling.",
         ],
-        "protocol_deviations": deviations,
+        "protocol_deviations": [],
     }
+
+
+def run(evaluate: Callable[[list[Galaxy], str, float], dict[str, Any]] = evaluate_population
+        ) -> dict[str, Any]:
+    """Run every frozen step and return the artifact dictionary.
+
+    Any failed input check stops the test with an ``incomplete`` report, as the
+    preregistration requires, instead of raising past the caller.
+    """
+    report = _report_header()
+    try:
+        verify_preregistration()
+        sparc = fetch_sparc()
+        report["data"] = verify_data(sparc)
+        primary = load_sparc(sparc)
+        secondary = [g for g in load_sparc(sparc, max_quality=3) if g.quality == 3]
+    except (IncompleteTestError, ValueError, OSError) as error:
+        report.update(outcome="incomplete", incomplete_reason=f"Input verification failed: {error}")
+        return report
+    if len(primary) != 153 or sum(g.n for g in primary) != 3168:
+        report["protocol_deviations"].append(
+            f"Primary population has {len(primary)} galaxies and "
+            f"{sum(g.n for g in primary)} points, not 153 and 3168")
     try:
         populations: dict[str, dict[str, Any]] = {}
         for label, sample in (("primary", primary), ("secondary_q3", secondary)):

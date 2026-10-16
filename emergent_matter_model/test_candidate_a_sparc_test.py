@@ -78,6 +78,42 @@ def test_unpinned_data_is_refused(tmp_path):
         TOOL.verify_data(tmp_path)
 
 
+def _refuse_evaluation(*_args):
+    raise AssertionError("evaluation must not start after a failed input check")
+
+
+def test_run_reports_modified_preregistration_as_incomplete(tmp_path, monkeypatch):
+    copy = tmp_path / "prereg.json"
+    copy.write_bytes(TOOL.PREREGISTRATION.read_bytes() + b" ")
+    monkeypatch.setattr(TOOL, "PREREGISTRATION", copy)
+    monkeypatch.setattr(TOOL, "fetch_sparc", lambda: pytest.fail("fetched after refusal"))
+    report = TOOL.run(_refuse_evaluation)
+    assert report["outcome"] == "incomplete"
+    assert "Preregistration" in report["incomplete_reason"]
+    assert report["data"] == [] and "populations" not in report
+
+
+def test_run_reports_unpinned_data_as_incomplete(tmp_path, monkeypatch):
+    for name, (_, size) in TOOL.PINNED_DATA.items():
+        (tmp_path / name).write_bytes(b"0" * size)
+    monkeypatch.setattr(TOOL, "fetch_sparc", lambda: tmp_path)
+    report = TOOL.run(_refuse_evaluation)
+    assert report["outcome"] == "incomplete"
+    assert "pinned hash" in report["incomplete_reason"]
+
+
+def test_cli_writes_incomplete_report_for_modified_cache(tmp_path, monkeypatch):
+    def modified_cache():
+        raise ValueError("Unverified or modified SPARC cache: Rotmod_LTG.zip; use --force")
+
+    monkeypatch.setattr(TOOL, "fetch_sparc", modified_cache)
+    output = tmp_path / "report.json"
+    assert TOOL.main(["--output", str(output)]) == 1
+    written = json.loads(output.read_text(encoding="utf-8"))
+    assert written["outcome"] == "incomplete"
+    assert "modified SPARC cache" in written["incomplete_reason"]
+
+
 # --- model algebra ------------------------------------------------------------
 
 def test_halo_term_limits():
