@@ -856,7 +856,9 @@ benchmark ordinary differential equation (ODE) is not a collision simulation.
 The next gate was to close the bulk potential and new
 widths, verify suitable public statistical products, and preregister the domain
 before evaluating any likelihood; for the restricted model this is now done. On October 16, Kirk selected both A and B
-for research, one active at a time, with B active and A paused. He approved
+for research, first one active at a time with B active, then later that day
+as concurrent programs (see the
+[dual-candidate program](../EMRF_DUAL_CANDIDATE_PROGRAM.md)). He approved
 the restricted quadratic Higgs-portal test; see
 [contract section 16](CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
 for exact mass matching, tree-level widths, the frozen preregistration and the

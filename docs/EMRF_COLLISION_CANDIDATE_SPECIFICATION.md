@@ -1,14 +1,15 @@
 # EMRF collision candidates: energy transfer and thermodynamic entropy
 
-**Current status (October 16, 2026): A and B selected by Kirk LaSalle.**
-Work on only one at a time: **B is active; A remains selected but paused**.
+**Current status (October 16, 2026): A and B selected by Kirk LaSalle and run
+concurrently** as a [dual-candidate program](EMRF_DUAL_CANDIDATE_PROGRAM.md).
+Earlier the same day they were worked one at a time, with B first.
 The October 8 decision, "I'm for candidate A", remains part of the history,
-but no longer makes the selection exclusive. The first restricted B Higgs-portal
-test is approved; neither selection is empirical validation.
+but no longer makes the selection exclusive. The restricted B Higgs-portal
+tests give coupling bounds; neither selection is empirical validation.
 No new collision solver, dynamics, simulation, mock observations or observational
 fit accompanies this decision.
 
-### Candidate A direction and next gate (retained, paused)
+### Candidate A direction and next gate
 
 The subsequent [Candidate A functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 now supplies precise local-curvature, observer-energy and regional-energy options.
@@ -234,7 +235,8 @@ stipulated benchmark probes by a
 [result artifact](../results/candidate_b_definition_checks.json); see contract
 sections 14–15. These are internal consistency checks only. No likelihood,
 collision simulation, or data test has been run. The later October 16 author
-decision selects both candidates and makes B active. The
+decision selects both candidates and first made B active; both now run
+concurrently. The
 [restricted first test and public-data gate](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
 supersede the earlier unselected status without changing the historical checks.
 The

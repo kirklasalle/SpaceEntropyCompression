@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Dual-candidate program: A and B run concurrently
+- Kirk LaSalle stated on 2026-10-16 that Candidates A and B now run
+  concurrently, and asked for honest, transparent documentation. This
+  supersedes the earlier same-day "one at a time, B active" arrangement, which
+  stays in the ledger's decision history.
+- Added `docs/EMRF_DUAL_CANDIDATE_PROGRAM.md`. It covers:
+  - what each candidate claims, and where each came from;
+  - what has been done for each;
+  - where the work is uneven: B has three preregistered public-data tests, A
+    has none yet;
+  - the integrity rules shared by both, including a look-elsewhere rule.
+- README: restored the hero banner (`docs/assets/emrf_hero_banner.jpg`) with
+  an "artistic illustration only" caption and Kirk's principal-investigator
+  quote. Replaced the "Candidate A within GR" badge with an A + B badge.
+  - Added a side-by-side A/B table.
+  - Removed the outdated "No B likelihood has yet been evaluated".
+  - Listed B's three public-data results.
+- Updated the ledger (`dual_concurrent_programs`), both graph copies, STATUS,
+  ROADMAP, TASKS, MODEL_CARD, the collision specification, the top-down audit,
+  the formalization plan, the Candidate B notes and the docs-site physics page.
+  MODEL_CARD now covers Candidate B and reports the current local test count.
+- Files frozen during the one-at-a-time phase (B preregistrations, protocol
+  and result artifacts) were deliberately not edited, so their SHA-256 freezes
+  still hold.
+
 ### Candidate B extended tests: Higgs-rate likelihood and CMS direct resonance
 - Kirk LaSalle approved taking Candidate B further on 2026-10-16. A second
   preregistration, `knowledgebase/candidate_b_extended_test_preregistration.json`

@@ -13,15 +13,18 @@ def test_direction_approval_does_not_claim_implementation_or_validation():
     assert ledger["author_approved"] is True
     decision = ledger["author_decision"]
     assert decision["selected_candidates"] == ["candidate-a", "candidate-b"]
-    assert decision["active_candidate"] == "candidate-b"
-    assert decision["active_candidate"] in decision["selected_candidates"]
-    assert decision["work_policy"] == "one_candidate_at_a_time"
+    assert decision["active_candidates"] == decision["selected_candidates"]
+    assert decision["work_policy"] == "dual_concurrent_programs"
+    assert (ROOT / decision["program_document"]).is_file()
     assert ledger["author_decision_history"][0]["selected_candidate"] == "candidate-a"
+    previous = ledger["author_decision_history"][1]
+    assert previous["work_policy"] == "one_candidate_at_a_time"
+    assert previous["active_candidate"] == "candidate-b"
     assert ledger["author_decision"]["specific_functional_selected"] is False
     assert "not physical validation" in ledger["approval_scope"]
     assert ledger["new_mechanism_implemented"] is False
     assert ledger["empirically_validated"] is False
-    assert ledger["review_gate"]["state"] == "candidates_a_b_selected_b_active"
+    assert ledger["review_gate"]["state"] == "candidates_a_b_dual_concurrent"
     sources = {s["id"] for s in ledger["sources"]}
     ids = [c["id"] for c in ledger["claims"]]
     assert len(ids) == len(set(ids))
@@ -117,14 +120,31 @@ def test_candidate_graph_nodes_and_edges_are_qualified():
         if edge["source"].startswith("candidate:collision_"):
             assert edge["relation"] != "validated_by"
     review = graph["meta"]["collision_candidate_review"]
-    assert review["state"] == "candidates_a_b_selected_b_active"
+    assert review["state"] == "candidates_a_b_dual_concurrent"
     assert review["selected_candidates"] == [
         "candidate:collision_geometry_reference", "candidate:collision_exchange_channel"]
-    assert review["active_candidate"] == "candidate:collision_exchange_channel"
-    assert review["work_policy"] == "one_candidate_at_a_time"
+    assert review["active_candidates"] == review["selected_candidates"]
+    assert review["work_policy"] == "dual_concurrent_programs"
     assert nodes["candidate:collision_exchange_channel"]["status"] == (
         "selected_active_restricted_test_preparation")
+    assert nodes["candidate:collision_geometry_reference"]["status"] == (
+        "selected_active_functional_pending")
     assert review["new_mechanism_implemented"] is False
+
+
+def test_dual_candidate_program_is_linked_and_makes_no_confirmation_claim():
+    path = ROOT / "docs" / "EMRF_DUAL_CANDIDATE_PROGRAM.md"
+    text = path.read_text(encoding="utf-8")
+    for target in re.findall(r"\]\(([^)]+)\)", text):
+        if "://" not in target and not target.startswith("#"):
+            assert (path.parent / unquote(target.split("#")[0])).exists(), target
+    assert "Neither candidate is confirmed" in text
+    assert "bounds, not detections" in text
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "docs/EMRF_DUAL_CANDIDATE_PROGRAM.md" in readme
+    banner = re.search(r"!\[[^\]]*\]\((docs/assets/[^)]+)\)", readme)
+    assert banner and (ROOT / banner.group(1)).is_file()
+    assert "Artistic illustration only" in readme
 
 
 def test_specification_local_links_and_explicit_stopping_point():

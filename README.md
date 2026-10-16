@@ -1,9 +1,13 @@
 # Emergent Matter Research Framework (EMRF)
 
+![EMRF Space-Entropy Compression hero banner: an artistic illustration of a knotted structure in a curved spacetime grid](docs/assets/emrf_hero_banner.jpg)
+
+<sub>Artistic illustration only; not data, a simulation output or a depiction of a confirmed result.</sub>
+
 **A research toolkit for geometric descriptions of matter, reproducible astronomical baselines, and critical tests of space-entropy hypotheses.**
 
 [![Status: Research, not a validated theory](https://img.shields.io/badge/status-research%20not%20validated-orange)](MODEL_CARD.md)
-[![Direction: Candidate A within GR](https://img.shields.io/badge/direction-Candidate%20A%20within%20GR-blue)](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
+[![Candidates: A and B, run concurrently](https://img.shields.io/badge/candidates-A%20%2B%20B%20concurrent-blue)](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md)
 [![Continuous integration](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml)
 [![Security](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/kirklasalle/SpaceEntropyCompression/badge)](https://scorecard.dev/viewer/?uri=github.com/kirklasalle/SpaceEntropyCompression)
@@ -12,9 +16,12 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
 [![EMRF 1.0.0 DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23304395.svg)](https://doi.org/10.5281/zenodo.23304395)
 
-**Author and principal investigator: Kirk LaSalle.** Current documentation: October 11, 2026.
+**Author and principal investigator: Kirk LaSalle.** Current documentation: October 16, 2026.
 The CI badge and version-specific archive certify software and release provenance,
 not physical confirmation of the EMRF hypotheses.
+
+> *"Let every line of mathematics be weighed in truth. Let every line of code execute without deceit. Let every discovery serve the protection and elevation of life upon our shared Earth—for humanity, for the creatures of land, sea, and sky, and for the generations yet unborn. These works shall indeed be good works."*
+> — **Kirk LaSalle, Principal Investigator**
 
 ## Read this first
 
@@ -30,22 +37,32 @@ results and self-awarded audit certifications are withdrawn. See the
 Old documents, figures, release assets and audio can still contain those claims;
 their presence is historical evidence, not an endorsement.
 
-## Selected candidates: A and B; active work: B
+## Dual-candidate program: A and B run concurrently
 
-Kirk selected **Candidate A: C describes existing geometry and energy
-organization**, rather than introducing an additional reservoir, force or
-heating channel. He also asked whether the formulation can be found inside GR.
-On October 16, 2026, Kirk also selected **Candidate B**, the proposed additional
-exchange sector. Both candidates remain selected; **only one is worked at a
-time, and B is active**. A is retained but paused, not rejected.
+EMRF now runs two research programs side by side. Both are active; neither is
+paused, and **neither is confirmed**. The
+[dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md) states what each
+claims, what has been done for each, where the work is uneven, and the rules
+that apply to both.
 
-The first approved B test is a restricted one-circle, quadratic bulk-scalar
-Higgs portal at tree level, with exact Higgs-mass matching and heavier extra
-scalars. See the [test contract and data gate](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test).
-Selection is permission to investigate, not evidence that B or its extra
-dimension exists. No B likelihood has yet been evaluated.
+| | Candidate A | Candidate B |
+|---|---|---|
+| Idea | C re-describes existing geometry and energy organization, inside GR; no new force or reservoir | A separately budgeted energy-exchange sector; tested as a restricted extra-dimension Higgs portal |
+| Origin | Kirk's recovered intention | AI-proposed ansatz; extra dimensions specified by Kirk; benchmark assistant-proposed and Kirk-approved |
+| Done so far | Exact-background mathematics and counterexamples | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
+| Outcome | No observational test yet: the precise C and M are not chosen | Compatible with limit: bounds on the new coupling, **not** evidence for B |
+| Next gate | Kirk selects C and M; find an observable that could differ from GR | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
 
-### Candidate A reference (retained, paused)
+Kirk selected A on October 8, 2026, added B on October 16 (initially worked one
+at a time, B first) and later that day made both concurrent. B has received far
+more data testing than A so far. That reflects the order of work, not a finding
+that B is the stronger idea. A and B make different commitments; a bound on one
+is not evidence for the other.
+
+Files frozen during the earlier one-at-a-time phase still say "B active". They
+are left unchanged because editing them would break their SHA-256 freezes.
+
+### Candidate A reference
 
 The recorded matter mapping is
 
@@ -73,8 +90,10 @@ The collision illustration does not evolve gravitational wells or generate entro
 
 | Resource | Purpose |
 |---|---|
+| [Dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md) | A and B side by side: claims, work done, uneven maturity and shared integrity rules |
 | [Candidate A functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md) | Definitions, units, conditional identity, counterexamples and recommendation |
-| [Collision specification](docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md) | Standard energy/entropy budget and recorded Candidate A selection |
+| [Candidate B model contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md) | Restricted Higgs-portal model, frozen preregistrations and public-data tests (sections 16–17) |
+| [Collision specification](docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md) | Standard energy/entropy budget and the A/B candidate definitions |
 | [Top-down theory/toolkit audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md) | Theory-to-code gaps and case-by-case data requirements |
 | [SPARC paper: PDF](paper/sparc_horizon_test.pdf) / [readable text](docs/SPARC_HORIZON_TEST_PAPER.md) | Six-page research draft; not submitted or peer reviewed |
 | [Fresh SPARC results](docs/SPARC_FRESH_RESULTS.md) | Executed fits, sensitivity and numerical checks |
@@ -95,6 +114,9 @@ The collision illustration does not evolve gravitational wells or generate entro
 | DESI BAO flat-ΛCDM baseline | 12 means, full covariance; χ² = 12.7405 for 10 nominal degrees of freedom | A baseline fit, not EMRF cosmology |
 | Pantheon+ flat-ΛCDM baseline | 1,590 rows, full STAT+SYS covariance; Ωm = 0.33158, χ² = 1402.919 for 1588 nominal degrees of freedom | Uncalibrated magnitude offset; **does not measure H₀** |
 | Candidate A definition checks | Radiation/vacuum counterexamples and specified regional-energy identities | Exact-background mathematical checks, **not observations** |
+| Candidate B ATLAS contour test | Restricted Higgs portal compatible with limit; kappa_lo = 0.97591 | Preregistered bound on the new coupling, not support for B |
+| Candidate B ATLAS rate likelihood | mu_hat = 1.054; kappa_lo = 0.97059 (asymptotic one-sided 95% CL) | Preregistered likelihood bound; weaker than the contour bound |
+| Candidate B CMS heavy-scalar comparison | Stronger coupling bound at 3 of 12 grid points; 3 points outside the theory tables | Width-matched comparison with published limits; no likelihood built from limits |
 
 SPARC grid intervals and objective differences remain conditional on the
 likelihood, nuisance constraints and selection. Unknown correlated errors and
@@ -217,14 +239,19 @@ are not independent scientific evidence. The
 [recovery audit](docs/ANTIGRAVITY_RECOVERY_AUDIT.md) states what was searched and
 what could not be established from the incomplete IDE archive.
 
-## Next scientific decision
+## Next scientific decisions
 
-Candidate A is selected; **the exact functional C and the meaning of M are not**.
-The current recommendation is a local observer energy-density reference inside GR,
-with tidal curvature kept separate. Regional energy needs an explicit boundary.
-Author review should precede any new implementation. A useful reformulation can
-succeed without predicting a new force; novelty and full equivalence need their
-own arguments.
+**Candidate A:** the program is selected; **the exact functional C and the
+meaning of M are not**. The current recommendation is a local observer
+energy-density reference inside GR, with tidal curvature kept separate. Regional
+energy needs an explicit boundary. Author review should precede any new
+implementation. A useful reformulation can succeed without predicting a new
+force; novelty and full equivalence need their own arguments.
+
+**Candidate B:** decide whether to deepen the restricted-model constraints
+(correlated STXS likelihood, interference, loop widths) or to connect the
+restricted model back to the collision energy and entropy budget. Each step
+needs a new frozen preregistration.
 
 ## Contributing and research integrity
 

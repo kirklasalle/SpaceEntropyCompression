@@ -15,5 +15,9 @@ inside general relativity is a consistency result, not a new derivation of
 matter or the full Einstein dynamics.
 
 Entropy is a thermodynamic state variable, not an extra spatial coordinate.
-Candidate A is the selected research direction; it remains a research program,
-not a confirmed replacement for general relativity or dark matter.
+Two candidate programs run concurrently. Candidate A re-describes existing
+geometry and energy organization inside general relativity; Candidate B adds a
+separately budgeted exchange sector, tested so far as a restricted
+extra-dimension Higgs portal. Both remain research programs, not confirmed
+replacements for general relativity or dark matter. B's public-data tests give
+bounds on its new coupling, not evidence for it.

@@ -3,8 +3,8 @@
 **Date:** 2026-10-13  
 **Direction:** Kirk LaSalle requested that Candidate B exploration begin and
 that the dimensionality of \(X\) receive greater emphasis.  
-**Status updated 2026-10-16:** Candidate B is selected and active. Candidate A
-also remains selected, but paused; only one is worked at a time. Kirk has
+**Status updated 2026-10-16:** Candidates A and B are both selected and now
+run concurrently. Kirk has
 approved a restricted quadratic Higgs-portal test, not established a physical
 event, zero entropy, or a validated prediction.
 
