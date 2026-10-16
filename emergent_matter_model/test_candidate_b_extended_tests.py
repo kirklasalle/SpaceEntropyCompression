@@ -29,7 +29,10 @@ PARENT = json.loads(PREP.PREREGISTRATION.read_text(encoding="utf-8"))
 EXTENDED = json.loads(RATE.PREREGISTRATION.read_text(encoding="utf-8"))
 CONSTANTS = PREP.constants_from_preregistration(PARENT)
 THEORY = CMS.load_theory(CONSTANTS)
-HAVE_ATLAS_DATA = RATE.ATLAS_ZIP.is_file()
+_ATLAS_ENTRY = next(entry for entry in PREP.load_json(PREP.CATALOG)["datasets"]
+                    if entry["id"] == PREP.DATASET_IDS[0])
+# The evaluator verifies every ATLAS holding, so a partial download must skip, not fail.
+HAVE_ATLAS_DATA = all((ROOT / holding["path"]).is_file() for holding in _ATLAS_ENTRY["holdings"])
 HAVE_CMS_DATA = CMS.CMS_ZIP.is_file()
 HAVE_HXSWG_DATA = EXTRACT.BSM_PAGE.is_file() and EXTRACT.BR_PAGE.is_file()
 
@@ -84,6 +87,11 @@ def test_theory_table_rows_and_spot_values():
 def test_theory_table_reproduces_from_pinned_pages():
     stored = json.loads(CMS.THEORY_INPUTS.read_text(encoding="utf-8"))
     assert EXTRACT.build_table() == stored
+
+
+def test_theory_table_serialization_reproduces_frozen_bytes_on_every_platform():
+    frozen = CMS.THEORY_INPUTS.read_bytes()
+    assert EXTRACT.serialize(json.loads(frozen.decode("utf-8"))) == frozen
 
 
 # --- test A: Higgs-rate likelihood ----------------------------------------------

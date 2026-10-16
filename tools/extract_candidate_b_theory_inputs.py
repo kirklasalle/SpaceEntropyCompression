@@ -153,9 +153,14 @@ def build_table() -> dict[str, Any]:
     }
 
 
+def serialize(table: dict[str, Any]) -> bytes:
+    """Frozen bytes of the table: indent-1 JSON with CRLF line endings on every platform."""
+    return (json.dumps(table, indent=1) + "\n").replace("\n", "\r\n").encode("utf-8")
+
+
 def main() -> None:
     table = build_table()
-    OUTPUT.write_text(json.dumps(table, indent=1) + "\n", encoding="utf-8")
+    OUTPUT.write_bytes(serialize(table))
     print(f"Saved {OUTPUT}: ggF {len(table['ggF'])}, VBF {len(table['VBF'])}, "
           f"width {len(table['sm_width'])} rows")
 

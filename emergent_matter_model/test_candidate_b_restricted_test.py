@@ -26,7 +26,10 @@ PREREG = json.loads(PREP.PREREGISTRATION.read_text(encoding="utf-8"))
 CONSTANTS = PREP.constants_from_preregistration(PREREG)
 CONTOUR_RESULT = ROOT / "results" / "candidate_b_atlas_contour_test.json"
 READINESS_RESULT = ROOT / "results" / "candidate_b_test_readiness.json"
-HAVE_ATLAS_DATA = PREP.FIGURE4.is_file()
+_ATLAS_ENTRY = next(entry for entry in PREP.load_json(PREP.CATALOG)["datasets"]
+                    if entry["id"] == PREP.DATASET_IDS[0])
+# The evaluator verifies every ATLAS holding, so a partial download must skip, not fail.
+HAVE_ATLAS_DATA = all((ROOT / holding["path"]).is_file() for holding in _ATLAS_ENTRY["holdings"])
 
 
 def _sha(path):
