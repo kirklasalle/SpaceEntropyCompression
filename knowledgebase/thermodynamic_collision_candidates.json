@@ -11,7 +11,7 @@
     "active_candidates": ["candidate-a", "candidate-b"],
     "work_policy": "dual_concurrent_programs",
     "program_document": "docs/EMRF_DUAL_CANDIDATE_PROGRAM.md",
-    "maturity_note": "B has three preregistered public-data tests; A has exact-background algebra checks only and no observational test until C and M are chosen. This reflects the order of work, not relative merit.",
+    "maturity_note": "B has three preregistered public-data tests (all bounds or compatibility results). A has one preregistered SPARC falsification test of an assistant-proposed operationalization (option 2: M = observed baryons, C = C_m, alpha = 1); the test was not blind and rejected option 2. Kirk's choice of C and M for A is still pending. This reflects the order of work, not relative merit.",
     "specific_functional_selected": false
   },
   "author_decision_history": [
@@ -71,7 +71,40 @@
       "M -> 8M and r -> 2r leaves Schwarzschild K unchanged",
       "Brown-York energy/c^2 differs from Misner-Sharp mass at finite radius"
     ],
-    "evidence_kind": "exact_background_algebra_not_observations"
+    "evidence_kind": "exact_background_algebra_not_observations",
+    "observational_test": {
+      "date": "2026-10-16",
+      "author_direction": "Kirk LaSalle asked to resolve the uneven testing of A and B ('Let's resolve this now'); he was unavailable to choose C and M and asked the assistant to choose pragmatically",
+      "operationalization": "option 2: C = C_m, M = observed baryons, alpha = 1, k = c^2 C0/(8 pi G); no free physics parameters",
+      "operationalization_status": "assistant_proposed_pending_author_confirmation",
+      "author_selected_specific_functional": false,
+      "options_not_tested": {
+        "option_1": "M = all gravitating energy; an exact GR identity with no observational test",
+        "option_3": "option 2 plus a free exponent alpha; a departure from GR"
+      },
+      "weak_field_prediction": "V_obs^2 = V_bar^2 at every radius (Poisson uniqueness)",
+      "preregistration": {
+        "path": "knowledgebase/candidate_a_sparc_baryonic_test_preregistration.json",
+        "sha256": "e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06",
+        "frozen_before_any_candidate_a_statistic_computed": true,
+        "blind": false,
+        "prior_knowledge_disclosed": "the SPARC mass discrepancy was known from the literature and from docs/SHOW_YOUR_WORK.md section 4, results/sparc_real_analysis.json and the SPARC Q3 holdout"
+      },
+      "data": "SPARC Rotmod_LTG.zip and SPARC_Lelli2016c.mrt, SHA-256 pinned in the data catalog (sparc-rotation-curves)",
+      "script": "tools/evaluate_candidate_a_sparc_baryonic.py",
+      "artifact": "results/candidate_a_sparc_baryonic_test.json",
+      "comparator": "nested reference adding a non-negative pseudo-isothermal unseen-mass term; standard phenomenology used as a yardstick, not a dark-matter claim",
+      "outcome": "rejected",
+      "secondary_q3_outcome": "rejected",
+      "primary_population": {"galaxies": 153, "points": 3168},
+      "delta_Q_cons": {"T1_certified_priors": 98216.4, "T2_free_upsilon": 100066.7},
+      "population_threshold": 388.18,
+      "galaxies_requiring_unseen_mass": {"T1_certified_priors": 124, "T2_free_upsilon": 111},
+      "median_outer_ratio_vobs2_over_va2_2": {"T1_certified_priors": 1.607, "T2_free_upsilon": 1.604},
+      "protocol_deviations": [],
+      "candidate_a_confirmed": false,
+      "interpretation": "Under both nuisance treatments the SPARC rotation curves require mass beyond the observed baryons, so option 2 is falsified for disc galaxies. This falsifies one assistant-proposed operationalization only. Option 1 is untestable and option 3 is untested. Calling the missing mass 'emergent matter' would be a relabelling unless Candidate A independently predicted its amount and distribution."
+    }
   },
   "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
   "policy": "Both A and B are selected research candidates, run concurrently as separate programs with separate preregistrations and artifacts. Evidence about one is not evidence for the other without a frozen comparison. Keep recovered intent, standard physics, restricted test hypotheses and empirical evidence separate. Selection is not physical validation.",

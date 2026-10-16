@@ -3,7 +3,10 @@
 **Direction selected by Kirk LaSalle:** Candidate A, geometry/energy
 re-description. **This document recommends definitions for review; Kirk has not
 yet selected a particular functional or approved a theorem.** No new physical
-mechanism, field solver, observational fit or heating channel is implemented.
+mechanism, field solver or heating channel is implemented. One preregistered
+observational test of an assistant-proposed operationalization (option 2,
+M = observed baryons) has been run on SPARC and rejected it; see
+[section 11](#11-preregistered-sparc-test-of-option-2).
 
 ## 1. Plain-language conclusion
 
@@ -369,3 +372,106 @@ Eighteen focused checks passed across the definition diagnostics, decision-ledge
 and recovered-graph suites. The new diagnostic/test files pass Ruff, and the
 diagnostic script passes a focused mypy check with explicit namespace-package
 resolution. These validate calculations and record integrity, not new physics.
+
+## 11. Preregistered SPARC test of option 2
+
+**Why this test exists.** On 2026-10-16 Kirk asked to resolve the uneven
+testing of Candidates A and B ("Let's resolve this now"). No observational test
+of A is possible until C and M are fixed, so he was offered three written
+operationalizations:
+
+| Option | C and M | Observational test? |
+|---|---|---|
+| 1 | C = C_m, M = all gravitating energy, alpha = 1 | None: an exact GR identity |
+| 2 | C = C_m, M = observed baryons, alpha = 1 | Yes: a parameter-free falsification test |
+| 3 | Option 2 with a free exponent alpha | Yes, but it departs from GR |
+
+Kirk was unavailable and asked the assistant to choose pragmatically. The
+assistant chose **option 2**, because it is the only option that gives A an
+observational test without adding a departure from GR. It is recorded as
+`assistant_proposed_pending_author_confirmation`, **not as Kirk's selection**.
+If Kirk chooses differently, this result stays attached to option 2 only.
+
+**Prediction.** In a weak, quasi-static field, Einstein's equation gives
+C_m = 8 pi G rho_dyn / c^2 = 2 laplacian(Phi_obs) / c^2. Option 2 sets
+rho_dyn = rho_bar, so laplacian(Phi_obs) = laplacian(Phi_bar). For an isolated
+galaxy, Poisson uniqueness then gives Phi_obs = Phi_bar, and every rotation
+curve must equal the Newtonian curve of its observed baryons:
+V_obs^2 = V_bar^2 at every radius. The Lambda term is about 1e-4 of the outer
+disc density and is neglected.
+
+**Preregistration.**
+[candidate_a_sparc_baryonic_test_preregistration.json](../knowledgebase/candidate_a_sparc_baryonic_test_preregistration.json),
+SHA-256 `e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06`,
+frozen and committed before any Candidate A statistic was computed. **The test
+is not blind.** The mass discrepancy in disc galaxies is decades old, the
+radial acceleration relation was established on this same SPARC sample, and
+this repository had already computed the same Newtonian baryons-only model
+under other nuisance treatments ([SHOW_YOUR_WORK.md](SHOW_YOUR_WORK.md)
+section 4, `results/sparc_real_analysis.json` and the SPARC Q3 holdout). The
+preregistration lists all of this.
+
+**Design.**
+
+- Data: SPARC `Rotmod_LTG.zip` and `SPARC_Lelli2016c.mrt`, pinned by SHA-256.
+- Primary population: the certified selection (Q <= 2, inclination >= 30
+  degrees, at least 3 points), 153 galaxies and 3,168 points. Secondary: Q = 3,
+  reported separately.
+- Nuisance parameters per galaxy, exactly as in the certified marginalized
+  pipeline: disc mass-to-light ratio (bulge = 1.4 x disc), distance factor and
+  inclination, each bounded and penalized as preregistered.
+- Option 2's prediction (A2) is compared with a nested reference (REF) that
+  may add a non-negative pseudo-isothermal unseen-mass term. REF is a standard
+  yardstick, not a dark-matter claim; with no halo it reduces to A2 exactly.
+- Two nuisance treatments: T1 uses the certified mass-to-light prior; T2 drops
+  it, letting the disc mass-to-light ratio range from 0.05 to 5, which favours A.
+- Statistic: Delta_Q = Q(A2) - Q(REF) summed over galaxies, divided by an
+  error-inflation factor lambda. The threshold is the 0.999 quantile of chi^2
+  with 2 N_galaxies degrees of freedom (nominal, not a calibrated significance).
+- Rule: **rejected** only if both T1 and T2 exceed the threshold.
+
+**Result: rejected.**
+
+| Primary population (153 galaxies) | T1 certified priors | T2 free mass-to-light |
+|---|---|---|
+| Delta_Q_cons | 98,216 | 100,067 |
+| Threshold | 388.2 | 388.2 |
+| Error inflation lambda | 2.80 | 2.73 |
+| Galaxies individually needing unseen mass | 124 (81%) | 111 (73%) |
+| Median outermost V_obs^2 / V_A2^2 (16th-84th percentile) | 1.61 (1.21-2.40) | 1.60 (1.21-2.27) |
+| Disc mass-to-light ratio at its upper bound | 3.9% | 7.2% |
+
+The Q = 3 secondary population (10 galaxies, 109 points) is also rejected under
+both treatments. The sensitivity runs (prior centre 0.4 and 0.6; no error
+inflation) all exceed the threshold, and they are reported, never the result.
+There were no protocol deviations. All 5,508 optimizer starts in the primary
+treatments converged.
+
+**What this means.**
+
+- **Option 2 is falsified for disc galaxies.** With C = C_m, alpha = 1 and
+  M = observed baryons, Candidate A predicts too little gravity. At the
+  outermost measured radius, the median galaxy's observed squared speed is
+  about 1.6 times what its baryons provide.
+- The outcome was expected, so this is a preregistered, reproducible record,
+  not a discovery.
+- **This does not test Candidate A as a whole.** Option 1 is untestable as an
+  exact GR identity, and option 3 has not been tested.
+- **Renaming the missing mass "emergent matter" would be relabelling** unless
+  Candidate A predicts its amount and distribution from the baryons and the
+  geometry before seeing the data. A law that did that would be a genuine
+  departure from GR and would need its own preregistration.
+- Kirk can confirm option 2, choose another option, or define C and M
+  differently.
+
+**Reproduce.**
+
+```powershell
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_a_sparc_baryonic.py
+```
+
+The tool refuses a modified preregistration or unpinned data, and writes
+[candidate_a_sparc_baryonic_test.json](../results/candidate_a_sparc_baryonic_test.json).
+`emergent_matter_model/test_candidate_a_sparc_test.py` checks the model algebra
+on synthetic galaxies, checks that the artifact is current, and re-evaluates
+galaxies from the pinned data when it is present.

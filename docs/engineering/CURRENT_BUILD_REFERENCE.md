@@ -23,7 +23,11 @@ tests a space-entropy-compression hypothesis about emergent matter and
 gravity against public observations. Its current scientific position is
 documented in [STATUS.md](../../STATUS.md) and the [model card](../../MODEL_CARD.md):
 
-* Candidate A (description within GR) is the selected research direction.
+* Candidates A (description within GR) and B (restricted extra-dimension
+  Higgs portal) are both selected and run concurrently; see the
+  [dual-candidate program](../EMRF_DUAL_CANDIDATE_PROGRAM.md). Neither is
+  confirmed. B has three preregistered coupling bounds; A's assistant-proposed
+  option 2 was rejected by a preregistered SPARC test.
 * Real-data analyses exist for SPARC rotation curves, Pantheon+ (full
   STAT+SYS covariance) and DESI DR1 BAO baselines.
 * Many "stress tests" are software checks of prescribed or synthetic inputs,
@@ -99,7 +103,9 @@ calls `POST /api/v1/simulate`).
 
 ### 3.5 Audit, integrity and release tools
 
-`tools/check_candidate_a_definitions.py`, `check_candidate_b_definitions.py`
+`tools/check_candidate_a_definitions.py`,
+`evaluate_candidate_a_sparc_baryonic.py` (preregistered SPARC falsification
+test of Candidate A option 2), `check_candidate_b_definitions.py`
 (Candidate B benchmark algebra), `prepare_candidate_b_test.py`
 (selected restricted B model and data-readiness checks),
 `evaluate_candidate_b_atlas_contour.py` (preregistered B comparison with the

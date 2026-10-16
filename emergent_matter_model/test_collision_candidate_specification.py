@@ -1,4 +1,5 @@
 """Check the review packet's provenance and gates, not candidate physics."""
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -130,6 +131,32 @@ def test_candidate_graph_nodes_and_edges_are_qualified():
     assert nodes["candidate:collision_geometry_reference"]["status"] == (
         "selected_active_functional_pending")
     assert review["new_mechanism_implemented"] is False
+
+
+def test_candidate_a_test_is_recorded_as_proposal_not_author_selection():
+    ledger = json.loads(
+        (ROOT / "knowledgebase" / "thermodynamic_collision_candidates.json").read_text())
+    record = ledger["functional_comparison"]["observational_test"]
+    assert record["operationalization_status"] == "assistant_proposed_pending_author_confirmation"
+    assert record["author_selected_specific_functional"] is False
+    assert record["preregistration"]["blind"] is False
+    assert record["candidate_a_confirmed"] is False
+    prereg = ROOT / record["preregistration"]["path"]
+    assert hashlib.sha256(prereg.read_bytes()).hexdigest() == record["preregistration"]["sha256"]
+    artifact = json.loads((ROOT / record["artifact"]).read_text(encoding="utf-8"))
+    assert record["outcome"] == artifact["outcome"]
+    assert record["secondary_q3_outcome"] == artifact["secondary_q3_outcome"]
+    assert record["protocol_deviations"] == artifact["protocol_deviations"]
+    assert "pending" in ledger["author_decision"]["maturity_note"]
+    graph = json.loads((ROOT / "knowledgebase" / "GRAPH_MEMORY.json").read_text(encoding="utf-8"))
+    nodes = {n["id"]: n for n in graph["nodes"]}
+    claim = nodes["claim:candidate_a_option2_baryonic_operationalization"]
+    assert claim["status"] == record["operationalization_status"]
+    assert claim["lifecycle_status"] == ("refuted" if record["outcome"] == "rejected"
+                                         else "tested")
+    assert nodes["result:candidate_a_sparc_baryonic_test"]["status"] == record["outcome"]
+    assert nodes["candidate:collision_geometry_reference"]["status"] == (
+        "selected_active_functional_pending")
 
 
 def test_dual_candidate_program_is_linked_and_makes_no_confirmation_claim():

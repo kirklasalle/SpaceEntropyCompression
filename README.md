@@ -49,15 +49,19 @@ that apply to both.
 |---|---|---|
 | Idea | C re-describes existing geometry and energy organization, inside GR; no new force or reservoir | A separately budgeted energy-exchange sector; tested as a restricted extra-dimension Higgs portal |
 | Origin | Kirk's recovered intention | AI-proposed ansatz; extra dimensions specified by Kirk; benchmark assistant-proposed and Kirk-approved |
-| Done so far | Exact-background mathematics and counterexamples | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
-| Outcome | No observational test yet: the precise C and M are not chosen | Compatible with limit: bounds on the new coupling, **not** evidence for B |
-| Next gate | Kirk selects C and M; find an observable that could differ from GR | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
+| Done so far | Exact-background mathematics and counterexamples; one preregistered SPARC falsification test of an assistant-proposed operationalization (option 2: M = observed baryons) | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
+| Outcome | Option 2 **rejected** in 153 SPARC galaxies: rotation curves need more than the observed baryons. The test was not blind. Kirk has not yet chosen C and M, so this falsifies one operationalization, not Candidate A | Compatible with limit: bounds on the new coupling, **not** evidence for B |
+| Next gate | Kirk confirms or replaces option 2; any surviving choice needs an observable that could differ from GR | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
 
 Kirk selected A on October 8, 2026, added B on October 16 (initially worked one
-at a time, B first) and later that day made both concurrent. B has received far
-more data testing than A so far. That reflects the order of work, not a finding
-that B is the stronger idea. A and B make different commitments; a bound on one
-is not evidence for the other.
+at a time, B first) and later that day made both concurrent. Both now have
+preregistered public-data tests, but of different kinds. B's restricted model
+contains the Standard Model limit, so its tests can only bound the new coupling.
+A's option 2 had no free physics parameters and could be falsified, and it was.
+Option 2 was chosen by the assistant while Kirk was unavailable and awaits his
+confirmation. None of this is a finding about which idea is stronger. A and B
+make different commitments; a result for one is not evidence for or against the
+other.
 
 Files frozen during the earlier one-at-a-time phase still say "B active". They
 are left unchanged because editing them would break their SHA-256 freezes.
@@ -91,7 +95,7 @@ The collision illustration does not evolve gravitational wells or generate entro
 | Resource | Purpose |
 |---|---|
 | [Dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md) | A and B side by side: claims, work done, uneven maturity and shared integrity rules |
-| [Candidate A functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md) | Definitions, units, conditional identity, counterexamples and recommendation |
+| [Candidate A functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md) | Definitions, units, conditional identity, counterexamples, recommendation and the option-2 SPARC test (section 11) |
 | [Candidate B model contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md) | Restricted Higgs-portal model, frozen preregistrations and public-data tests (sections 16–17) |
 | [Collision specification](docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md) | Standard energy/entropy budget and the A/B candidate definitions |
 | [Top-down theory/toolkit audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md) | Theory-to-code gaps and case-by-case data requirements |
@@ -114,6 +118,7 @@ The collision illustration does not evolve gravitational wells or generate entro
 | DESI BAO flat-ΛCDM baseline | 12 means, full covariance; χ² = 12.7405 for 10 nominal degrees of freedom | A baseline fit, not EMRF cosmology |
 | Pantheon+ flat-ΛCDM baseline | 1,590 rows, full STAT+SYS covariance; Ωm = 0.33158, χ² = 1402.919 for 1588 nominal degrees of freedom | Uncalibrated magnitude offset; **does not measure H₀** |
 | Candidate A definition checks | Radiation/vacuum counterexamples and specified regional-energy identities | Exact-background mathematical checks, **not observations** |
+| Candidate A option-2 SPARC test | Rejected: Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2; 124 and 111 of 153 galaxies individually need unseen mass | Preregistered, **not blind**; falsifies one assistant-proposed operationalization pending Kirk's confirmation, not Candidate A |
 | Candidate B ATLAS contour test | Restricted Higgs portal compatible with limit; kappa_lo = 0.97591 | Preregistered bound on the new coupling, not support for B |
 | Candidate B ATLAS rate likelihood | mu_hat = 1.054; kappa_lo = 0.97059 (asymptotic one-sided 95% CL) | Preregistered likelihood bound; weaker than the contour bound |
 | Candidate B CMS heavy-scalar comparison | Stronger coupling bound at 3 of 12 grid points; 3 points outside the theory tables | Width-matched comparison with published limits; no likelihood built from limits |
@@ -201,6 +206,8 @@ for this entry point. Covariance rows must stay aligned with the measurement tab
 ```powershell
 # No observational evidence is generated by these algebra checks
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\check_candidate_a_definitions.py
+# Preregistered, not-blind falsification test of Candidate A option 2 on pinned SPARC data
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_a_sparc_baryonic.py
 # Selected Candidate B benchmark algebra; stipulated probes, no likelihood
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\check_candidate_b_definitions.py
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\prepare_candidate_b_test.py
@@ -244,9 +251,15 @@ what could not be established from the incomplete IDE archive.
 **Candidate A:** the program is selected; **the exact functional C and the
 meaning of M are not**. The current recommendation is a local observer
 energy-density reference inside GR, with tidal curvature kept separate. Regional
-energy needs an explicit boundary. Author review should precede any new
-implementation. A useful reformulation can succeed without predicting a new
-force; novelty and full equivalence need their own arguments.
+energy needs an explicit boundary. With M = all gravitating energy, A is exactly
+GR and has no observational test. With M = observed baryons (option 2,
+assistant-proposed), it is now rejected on SPARC. Kirk's next decision is
+whether option 2 is what he means by A, in which case A in that form is
+falsified, or to choose a C and M that predicts something GR does not, such as
+the amount of missing mass. Any
+such choice needs its own preregistration. A useful reformulation can succeed
+without predicting a new force; novelty and full equivalence need their own
+arguments.
 
 **Candidate B:** decide whether to deepen the restricted-model constraints
 (correlated STXS likelihood, interference, loop widths) or to connect the

@@ -10,7 +10,8 @@ carried forward.
 | Test restricted Candidate B Higgs portal | First check done: compatible with limit | Exact physical Higgs mass, specified potential and widths; frozen preregistration; no hidden fit assumptions |
 | Extend B data tests | Done: rate likelihood compatible with limit; CMS stronger at 3 of 12 points | Width-matched CMS-HIG-24-002 comparison and ATLAS global-mu likelihood under a frozen second preregistration |
 | Deepen B constraints | Next if pursued | STXS likelihood with correlations, interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration |
-| Choose exact C and intended M | Awaiting author review | Explicit units, observer/boundary, independent normalization and domain |
+| Choose exact C and intended M | Awaiting author review; option 2 tested as an assistant proposal and rejected | Explicit units, observer/boundary, independent normalization and domain. Kirk confirms or replaces option 2 |
+| Test Candidate A against data | Option 2 SPARC test done: rejected (not blind) | Frozen preregistration; Delta_Q_cons above threshold in 153 galaxies. A surviving operationalization needs a new observable and preregistration |
 | Assess equivalence and matter mapping | Conditional identities/counterexamples documented | No inference of complete equivalence from fits or one scalar identity |
 | Recover original theory intentions | Completed with stated coverage limits | Source-hashed archive, qualified graph and attribution |
 | Run real SPARC comparison and influence checks | Completed within documented scope | Converged profiles, real inputs and visible systematic limits |

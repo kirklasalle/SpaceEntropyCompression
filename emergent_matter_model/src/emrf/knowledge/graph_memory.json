@@ -32,6 +32,14 @@
       "approval_scope": "research candidates and restricted tree-level Higgs-portal test; not empirical validation",
       "functional_comparison": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
       "recommended_functional_node": "definition:candidate_a_local_energy_reference",
+      "candidate_a_observational_test": {
+        "preregistration_node": "decision:candidate_a_sparc_baryonic_test_preregistration",
+        "operationalization_node": "claim:candidate_a_option2_baryonic_operationalization",
+        "result_node": "result:candidate_a_sparc_baryonic_test",
+        "operationalization_status": "assistant_proposed_pending_author_confirmation",
+        "outcome": "rejected",
+        "blind": false
+      },
       "specific_functional_approved": false,
       "new_mechanism_implemented": false,
       "empirically_validated": false,
@@ -232,10 +240,56 @@
       ]
     },
     {
+      "id": "decision:candidate_a_sparc_baryonic_test_preregistration",
+      "type": "Preregistration",
+      "name": "Frozen preregistration of the Candidate A option-2 SPARC baryonic-matter test",
+      "description": "Option 2 (C = C_m, M = observed baryons, alpha = 1; assistant-proposed, pending Kirk's confirmation) predicts V_obs^2 = V_bar^2 in the weak field. Populations, nuisance treatments T1/T2, nested pseudo-isothermal comparator, error inflation, thresholds and outcome rules fixed before any Candidate A statistic was computed. Not blind: the SPARC mass discrepancy was known. SHA-256 e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06.",
+      "status": "frozen_2026-10-16",
+      "filePath": "knowledgebase/candidate_a_sparc_baryonic_test_preregistration.json",
+      "evidence_status": "analysis_plan_not_evidence",
+      "use_for_empirical_confirmation": false,
+      "kind": "decision",
+      "evidence_class": "procedural"
+    },
+    {
+      "id": "claim:candidate_a_option2_baryonic_operationalization",
+      "type": "WorkingHypothesis",
+      "name": "Candidate A option 2: C = C_m sourced by observed baryons only",
+      "description": "Assistant-proposed operationalization of Candidate A, pending Kirk's confirmation: rho_bar = c^2 C_m/(8 pi G) with alpha = 1 and no free physics parameters, so disc-galaxy rotation curves equal the Newtonian curves of their observed baryons. Refuted on SPARC by the preregistered, not-blind test. Option 1 (M = all gravitating energy) is an untestable GR identity and option 3 (free alpha) is untested; neither is affected.",
+      "status": "assistant_proposed_pending_author_confirmation",
+      "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
+      "locator": "functional_comparison.observational_test",
+      "evidence_status": "refuted_by_preregistered_not_blind_test",
+      "use_for_empirical_confirmation": false,
+      "kind": "claim",
+      "evidence_class": "observational_comparison",
+      "lifecycle_status": "refuted",
+      "evidence_refs": [
+        "file:results/candidate_a_sparc_baryonic_test.json",
+        "sha256:e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06"
+      ]
+    },
+    {
+      "id": "result:candidate_a_sparc_baryonic_test",
+      "type": "PreregisteredFalsificationTest",
+      "name": "Candidate A option 2 versus SPARC rotation curves",
+      "description": "Outcome rejected. Primary population 153 galaxies, 3168 points: Delta_Q_cons = 98216 (T1, certified priors) and 100067 (T2, free Upsilon_disk) against the 0.999 threshold 388.2; 124 and 111 galaxies individually need unseen mass; median outermost V_obs^2/V_A2^2 = 1.61. Q = 3 secondary also rejected. No protocol deviations; every optimizer start counted. Falsifies option 2 only; not blind; not evidence for or against other Candidate A operationalizations.",
+      "status": "rejected",
+      "filePath": "results/candidate_a_sparc_baryonic_test.json",
+      "evidence_status": "preregistered_not_blind_falsification_of_one_operationalization",
+      "use_for_empirical_confirmation": false,
+      "kind": "result",
+      "evidence_class": "observational_comparison",
+      "evidence_refs": [
+        "file:results/candidate_a_sparc_baryonic_test.json",
+        "sha256:e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06"
+      ]
+    },
+    {
       "id": "candidate:collision_geometry_reference",
       "type": "ProposedCandidate",
       "name": "Candidate A: geometry/energy re-description",
-      "description": "Selected research candidate, run concurrently with B since 2026-10-16. A diagnostic C functional with standard collision dynamics; no new heat source. Precise F and equivalence remain to be specified; no observational test yet.",
+      "description": "Selected research candidate, run concurrently with B since 2026-10-16. A diagnostic C functional with standard collision dynamics; no new heat source. Kirk has not yet chosen the precise C and M. One assistant-proposed operationalization (option 2, M = observed baryons) was rejected by a preregistered, not-blind SPARC test; other operationalizations are untested.",
       "status": "selected_active_functional_pending",
       "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "locator": "section 4",
@@ -261,7 +315,7 @@
       "id": "candidate:collision_observable_gate",
       "type": "ProposedResearchGate",
       "name": "Density/temperature shock diagnostic and identifiability gate",
-      "description": "Both candidates are selected and run concurrently. A still needs a functional and observable mapping. B's restricted test has been compared with the ATLAS joint (kappa_V, kappa_F) contour, the ATLAS global-mu profile likelihood and width-matched CMS-HIG-24-002 limits; all give coupling bounds only. A correlated STXS likelihood and a resonance likelihood remain. Neither selection establishes new heating or empirical confirmation.",
+      "description": "Both candidates are selected and run concurrently. A's assistant-proposed option 2 (M = observed baryons) was rejected on SPARC; Kirk's choice of C and M and an observable for any surviving operationalization remain open. B's restricted test has been compared with the ATLAS joint (kappa_V, kappa_F) contour, the ATLAS global-mu profile likelihood and width-matched CMS-HIG-24-002 limits; all give coupling bounds only. A correlated STXS likelihood and a resonance likelihood remain. Neither selection establishes new heating or empirical confirmation.",
       "status": "candidate_b_contour_likelihood_and_cms_bounds_done_a_observable_pending",
       "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
       "evidence_status": "proposed_observable_not_a_completed_test",
@@ -1736,6 +1790,51 @@
       "confidence": 0.5,
       "evidence_class": "historical",
       "provenance": "candidate_b_parity_checks_2026-10-16"
+    },
+    {
+      "source": "decision:candidate_a_sparc_baryonic_test_preregistration",
+      "target": "result:candidate_a_sparc_baryonic_test",
+      "relation": "fixes_analysis_plan_for",
+      "evidence_status": "frozen_before_candidate_a_statistic_computed_not_blind",
+      "confidence": 0.5,
+      "evidence_class": "procedural",
+      "provenance": "candidate_a_sparc_test_2026-10-16"
+    },
+    {
+      "source": "dataset:sparc_rotation_curves",
+      "target": "result:candidate_a_sparc_baryonic_test",
+      "relation": "compared_in",
+      "evidence_status": "hash_pinned_public_rotation_curves",
+      "confidence": 0.5,
+      "evidence_class": "observational",
+      "provenance": "candidate_a_sparc_test_2026-10-16"
+    },
+    {
+      "source": "result:candidate_a_sparc_baryonic_test",
+      "target": "claim:candidate_a_option2_baryonic_operationalization",
+      "relation": "refutes",
+      "evidence_status": "preregistered_not_blind_falsification_of_one_operationalization",
+      "confidence": 0.5,
+      "evidence_class": "observational_comparison",
+      "provenance": "candidate_a_sparc_test_2026-10-16"
+    },
+    {
+      "source": "definition:candidate_a_local_energy_reference",
+      "target": "claim:candidate_a_option2_baryonic_operationalization",
+      "relation": "supplies_C_definition_for",
+      "evidence_status": "assistant_recommendation_not_author_selected",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "candidate_a_sparc_test_2026-10-16"
+    },
+    {
+      "source": "claim:candidate_a_option2_baryonic_operationalization",
+      "target": "candidate:collision_geometry_reference",
+      "relation": "proposes_operationalization_of",
+      "evidence_status": "assistant_proposed_pending_author_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "historical",
+      "provenance": "candidate_a_sparc_test_2026-10-16"
     },
     {
       "source": "definition:candidate_a_local_energy_reference",

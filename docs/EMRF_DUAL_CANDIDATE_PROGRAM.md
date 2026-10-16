@@ -34,7 +34,7 @@ SHA-256 freezes.
 | Idea | C re-describes existing geometry and energy organization, inside GR | A separately budgeted energy-exchange sector, in a restricted test via physical extra dimensions |
 | New force, reservoir or particle? | No | Yes (in the restricted test: a bulk scalar mixing with the Higgs) |
 | Origin | Kirk's recovered project intention; "why can't we find this inside of GR?" | AI-proposed generic ansatz; extra dimensions are Kirk's 2026-10-13 specification; the Higgs-portal benchmark is assistant-proposed and Kirk-approved |
-| Precise definition chosen? | **No.** The local observer energy reference C_m is an assistant recommendation awaiting Kirk's selection | Only for the restricted model: one circle, quadratic tree-level potential, exact Higgs-mass matching |
+| Precise definition chosen? | **No.** The local observer energy reference C_m is an assistant recommendation awaiting Kirk's selection. For one test, the assistant chose option 2 (M = observed baryons) while Kirk was unavailable; it awaits his confirmation | Only for the restricted model: one circle, quadratic tree-level potential, exact Higgs-mass matching |
 
 The two candidates make different commitments: A adds no new sector and B adds
 one. They are developed separately. A bound on B is not evidence for A, and a
@@ -49,10 +49,18 @@ specified and frozen in advance. No such comparison exists yet.
 |---|---|---|
 | [Functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md) | Exact-background mathematics | The Einstein-projection reference reproduces a scalar GR identity for alpha = 1 and fixed k. Radiation, vacuum and regional-energy counterexamples rule out treating Ricci or sqrt(K) as a universal local density |
 | `tools/check_candidate_a_definitions.py` | Algebra checks, not observations | Identities and counterexamples reproduced |
-| Observational test | **None yet** | A has no observable mapping or likelihood |
+| [SPARC test of option 2](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2) | Preregistered observational falsification test; **not blind** | **Rejected.** With C = C_m, alpha = 1 and M = observed baryons, A predicts that every rotation curve equals its baryonic Newtonian curve. In 153 SPARC galaxies, Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2 |
 
-The SPARC, DESI and Pantheon+ analyses elsewhere in EMRF are real-data work,
-but they are **not tests of Candidate A**. They test a phenomenological
+Option 2 is an assistant proposal pending Kirk's confirmation, so this
+falsifies **one operationalization of A, not Candidate A**. The outcome was
+expected: the SPARC mass discrepancy was known, and the preregistration says
+so. Option 1 (M = all gravitating energy) is an exact GR identity with no
+observational test; option 3 (free alpha) is untested. Calling the missing mass
+"emergent matter" would be relabelling unless A predicted its amount
+independently.
+
+The earlier SPARC, DESI and Pantheon+ analyses elsewhere in EMRF are real-data
+work, but they are **not tests of Candidate A**. They test a phenomenological
 acceleration law or standard-cosmology baselines.
 
 ### Candidate B
@@ -77,14 +85,20 @@ Candidate B in general, only coupling values within the restricted model.
 
 Being transparent means saying where the two programs differ in maturity:
 
-- **B has received far more data testing than A.** B has three preregistered
-  public-data comparisons; A has none. This reflects the order of work, not a
-  finding that B is the stronger idea.
-- **A's barrier is definitional.** No observational test of A is possible
-  until Kirk chooses the precise C functional and the meaning of M, and an
-  observable that could differ from standard GR is identified. A reformulation
-  that is exactly equivalent to GR can be valuable but would not be testable
-  against GR.
+- **Both programs now have preregistered public-data tests, but of different
+  kinds.** B has three, all on the restricted Higgs-portal model; each gives a
+  bound, because that model contains the Standard Model limit. A has one: a
+  falsification test of an assistant-proposed operationalization, which
+  rejected it. Neither count is a finding about which idea is stronger.
+- **A's barrier is still definitional.** Kirk has not yet chosen the precise C
+  functional and the meaning of M. Option 1 (all gravitating energy) is exactly
+  GR and so cannot be tested against GR. Option 2 (observed baryons) is now
+  falsified. A further test needs a choice that predicts something GR does not,
+  such as the amount of missing mass from the baryons and the geometry.
+- **A's test was not blind, and B's tests were not fully blind either.** A's
+  outcome was strongly expected from the literature and from earlier work in
+  this repository. B's likelihood test was preregistered knowing the ATLAS
+  headline signal strength. Both preregistrations disclose this.
 - **B's tests cover a narrow benchmark.** They say nothing yet about B's
   original collision-heating motivation, entropy closure or any geometry other
   than one circle.
@@ -118,7 +132,7 @@ Being transparent means saying where the two programs differ in maturity:
 
 | Candidate | Next step | What it could establish |
 |---|---|---|
-| A | Kirk selects C and M; identify an observable where A's mapping could differ from GR, or show exact equivalence | A testable prediction, or a documented reformulation of GR |
+| A | Kirk confirms or replaces option 2 and selects C and M. Any surviving operationalization needs an observable where it differs from GR, under a new frozen preregistration, or a demonstration of exact equivalence | A testable prediction, or a documented reformulation of GR |
 | B | Correlated STXS likelihood, interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration | Tighter or more robust bounds on the restricted coupling |
 | B (general) | Connect the restricted model back to the collision energy and entropy budget | Whether the broader candidate makes a distinct prediction |
 

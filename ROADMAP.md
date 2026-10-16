@@ -28,8 +28,14 @@ Review the [Candidate A functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_
 Choose the intended meaning of M and the precise C functional. Distinguish
 observer energy density, vacuum tides and regional energy. The current
 Einstein-projection reference is a recommendation, not an author-selected law.
-Then identify an observable where A's mapping could differ from GR, or show
-exact equivalence. A has no observational test until this is done.
+One operationalization (option 2: C = C_m, alpha = 1, M = observed baryons) was
+proposed by the assistant while Kirk was unavailable and tested on SPARC under
+a frozen preregistration; it was
+[rejected](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2).
+Kirk should confirm or replace option 2. Option 1 (M = all gravitating energy)
+is exactly GR and untestable against it; option 3 (free alpha) is untested.
+Any surviving choice needs an observable where A could differ from GR, under
+its own preregistration, or a demonstration of exact equivalence.
 
 ## 3. Establish what the mapping actually says
 

@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Candidate A: first preregistered observational test (option 2, rejected)
+- Kirk LaSalle asked on 2026-10-16 to resolve the unevenness, since B had
+  three preregistered public-data tests and A had none. He was unavailable to
+  choose C and M. The assistant therefore chose option 2 from the
+  [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md):
+  C = C_m, alpha = 1, M = observed baryons. It is recorded as
+  `assistant_proposed_pending_author_confirmation`, not as an author selection.
+- Option 2 has no free physics parameters. It predicts that every disk
+  galaxy's rotation curve equals its baryonic Newtonian curve.
+- Froze `knowledgebase/candidate_a_sparc_baryonic_test_preregistration.json`
+  (SHA-256 `e1298e2c…8e06`) before any outcome-relevant computation. The
+  preregistration states that the test is **not blind**: the SPARC mass
+  discrepancy was known.
+- Added `tools/evaluate_candidate_a_sparc_baryonic.py`
+  (`evaluate-candidate-a-sparc`) and
+  `emergent_matter_model/test_candidate_a_sparc_test.py`. Both were committed
+  before the real run.
+- Result, `results/candidate_a_sparc_baryonic_test.json`: **rejected**.
+  - 153 galaxies and 3,168 points.
+  - Delta_Q_cons = 98,216 (T1, certified priors) and 100,067 (T2, free
+    Upsilon_disk), against a threshold of 388.2.
+  - 124 (T1) and 111 (T2) galaxies individually need unseen mass.
+  - The Q = 3 secondary population and the Upsilon-centre sensitivity runs
+    also reject.
+- This falsifies **option 2 only, not Candidate A**. Option 1 (all
+  gravitating energy) is exactly GR and cannot be tested against it. Option 3
+  (free alpha) is untested.
+- Recorded in the ledger (`functional_comparison.observational_test`), both
+  graph copies (3 nodes, 5 edges), the functional comparison (section 11), the
+  dual-candidate program, README, STATUS, ROADMAP, TASKS, MODEL_CARD and the
+  build reference.
+- Published the earlier local-only commits (banner, dual-program documents,
+  B tests) through PR #36. Review fixes there:
+  - the B theory-input extractor now writes explicit CRLF bytes;
+  - the B tests skip unless every pinned ATLAS file is present.
 ### Dual-candidate program: A and B run concurrently
 - Kirk LaSalle stated on 2026-10-16 that Candidates A and B now run
   concurrently, and asked for honest, transparent documentation. This
