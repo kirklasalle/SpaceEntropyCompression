@@ -862,5 +862,10 @@ the restricted quadratic Higgs-portal test; see
 for exact mass matching, tree-level widths, the frozen preregistration and the
 first public-data outcome: conditional compatibility with the ATLAS observed
 95% (kappa_V, kappa_F) region and conditional mu4 bounds, with no likelihood
-evaluated. No collision
-simulation, data fit, likelihood, or empirical validation has been performed.
+evaluated in that first test. The
+[extended tests](CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison)
+then used a second frozen preregistration. The ATLAS global-mu profile
+likelihood gives a restricted-model bound, kappa_lo = 0.97059. A width-matched
+CMS-HIG-24-002 comparison is the stronger mu4 bound at 3 of 12 grid points.
+These are bounds on the restricted coupling only. No collision simulation,
+data fit, or empirical validation of Candidate B has been performed.

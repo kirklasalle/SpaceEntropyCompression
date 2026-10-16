@@ -149,8 +149,8 @@ def test_repository_graph_and_packaged_seed_are_valid_and_identical():
     assert schema.read_bytes() == packaged_schema.read_bytes()
     report = KnowledgeStore(repository_graph, schema).validate()
     assert report["valid"], report["errors"]
-    assert report["nodes"] == 101
-    assert report["edges"] == 118
+    assert report["nodes"] == 107
+    assert report["edges"] == 126
 
 
 def test_query_and_inheritance_resolution(store: KnowledgeStore):

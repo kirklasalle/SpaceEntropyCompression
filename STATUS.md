@@ -6,8 +6,9 @@ versions remain in Git history and the [correction archive](docs/archive/antigra
 | Area | Current state |
 |---|---|
 | Research direction | A and B selected by Kirk; one active at a time. B active, A retained but paused |
-| Candidate B first test | Restricted quadratic bulk-scalar Higgs portal with exact mass matching and lower-bound widths; preregistered ATLAS joint-contour check gives conditional compatibility and mu4 bounds, no likelihood evaluated |
-| Candidate B data gate | ATLAS Figure 4 contour and CMS-HIG-24-002 archive retrieved and SHA-256 pinned; correlated likelihood and width-matched resonance test not yet done |
+| Candidate B first test | Restricted quadratic bulk-scalar Higgs portal with exact mass matching and lower-bound widths; preregistered ATLAS joint-contour check gives conditional compatibility and mu4 bounds |
+| Candidate B extended tests | Second frozen preregistration. The ATLAS global-mu likelihood gives kappa_lo = 0.97059, compatible with limit. The width-matched CMS-HIG-24-002 comparison is the stronger mu4 bound at 3 of 12 grid points. Both are bounds, not support for B |
+| Candidate B data gate | ATLAS, CMS-HIG-24-002 and HXSWG inputs SHA-256 pinned; STXS likelihood, interference, loop widths and a direct-resonance likelihood not done |
 | Exact C definition | Recommended observer Einstein-curvature projection, not yet author-selected |
 | Matter/thermodynamics theorem | Not established; conditional GR identities are not origin-of-matter proofs |
 | Real-data analyses | SPARC four-law profiling/influence checks; DESI and full-covariance Pantheon+ baselines executed |
@@ -22,6 +23,7 @@ versions remain in Git history and the [correction archive](docs/archive/antigra
 
 - [Candidate A comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 - [Selected Candidate B test contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
+- [Candidate B extended tests](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison)
 - [Top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
 - [Fresh SPARC results](docs/SPARC_FRESH_RESULTS.md)
 - [Pantheon+ output](results/real_data_followup/pantheon_baseline.json)

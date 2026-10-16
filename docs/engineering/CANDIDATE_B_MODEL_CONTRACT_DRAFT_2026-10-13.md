@@ -887,7 +887,8 @@ p-value or one-parameter confidence interval has been evaluated.
 
 Deferred: the CMS-HIG-24-002 comparison for heavy scalars decaying to \(ZZ\),
 which must match production, width and topology. Also deferred: a correlated
-STXS likelihood, and loop and off-shell heavy-state widths.
+STXS likelihood, and loop and off-shell heavy-state widths. Section 17 takes
+up the CMS comparison and a Higgs-rate likelihood.
 
 ```powershell
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\prepare_candidate_b_test.py
@@ -899,3 +900,155 @@ The raw HEPData files are git-ignored. HEPData blocks scripted downloads, so
 they were retrieved through a browser session and checked against the
 catalog hashes. Without them, the reproduction test is skipped and the
 committed artifacts are still checked for consistency.
+
+## 17. Extended tests: Higgs-rate likelihood and CMS direct-resonance comparison
+
+**Date:** 2026-10-16. Kirk LaSalle asked to take B further with the two tests
+proposed after Section 16. Both apply to the restricted model of Section 16
+only, on the same grid.
+
+### 17.1 Preregistration and theory inputs
+
+The [extended preregistration](../../knowledgebase/candidate_b_extended_test_preregistration.json)
+inherits the parent model, grid and constants unchanged. It was frozen at
+SHA-256 `fc23f2e3…90a2` before the ATLAS likelihood scans or any CMS limit
+value, observed or expected, were read. It discloses that the ATLAS headline
+\(\mu=1.05\pm0.06\) was already known, so test A is not blind to its
+approximate outcome.
+
+The heavy-state prediction adds one assumption to the restricted model: each
+eigenstate \(a\) with Higgs component \(u_a\) is produced and decays like an
+SM-like Higgs of the same mass, scaled by \(u_a^2\). Its width also includes
+the tree-level two-scalar widths of Section 16:
+\[
+\sigma_{p,a}=u_a^2\sigma_p^{\rm SM}(M_a),\qquad
+\Gamma_a=u_a^2\Gamma^{\rm SM}(M_a)+\Gamma_{a\to SS},\qquad
+{\rm BR}_{ZZ,a}=\frac{u_a^2\Gamma^{\rm SM}(M_a){\rm BR}^{\rm SM}_{ZZ}(M_a)}{\Gamma_a}.
+\]
+The SM-like inputs are the LHC Higgs Cross Section Working Group ggF and VBF
+cross sections (Yellow Report 4) and the SM total width and \(ZZ\) branching
+ratio (Yellow Report 3 update). They were
+[extracted](../../tools/extract_candidate_b_theory_inputs.py) into the
+[pinned theory table](../../knowledgebase/candidate_b_theory_inputs.json),
+SHA-256 `bc2ec81c…7833`. The width table ends at 1 TeV. Heavier states use a
+tree-level width scaled for continuity at 1 TeV, and are labelled
+extrapolated and kept out of the primary result.
+
+### 17.2 Test A: global signal-strength profile likelihood
+
+The restricted model scales every 125 GeV production and decay rate by
+\(\mu=\kappa^2\le1\) with SM kinematics. That is exactly the global
+signal-strength hypothesis, so the ATLAS observed \(-2\ln\Lambda(\mu)\) scan
+with all systematics (HEPData ins2104706 v1, Aux. Figure 8) applies directly.
+The rule tests the family first: \(q_{\rm family}=L(1)-L(\hat\mu)\) for
+\(\hat\mu>1\), with a half-\(\chi^2\) null. It then takes the first crossing
+\(q(\mu)=2.706\) below \(\mu_{\rm ref}=\min(\hat\mu,1)\).
+
+**Outcome: compatible with limit.** \(\hat\mu=1.054\) and
+\(q_{\rm family}=0.752\). The lower limit is \(\mu_{\rm lo}=0.9420\), giving
+\(\kappa_{\rm lo}=0.97059\). For comparison, the unbounded one-sided limit is
+0.9544 and the two-sided limit is 0.9363. The
+[script](../../tools/evaluate_candidate_b_higgs_rate_likelihood.py) also
+applies the primary rule to scans with theory or systematic uncertainties
+fixed. These understate the uncertainty and are never the result. The
+statistical-only scan would be labelled incompatible
+(\(q_{\rm family}=3.12\)), which shows that the conclusion depends on the
+published systematic uncertainties. The bound is weaker than the
+Section 16 contour value 0.97591 at every grid point, so the contour remains
+the stronger Higgs-rate bound. It is an asymptotic one-sided 95% CL bound at
+fixed \((R,m_5,\Lambda)\), not a joint interval over the grid.
+
+### 17.3 Test B: width-matched CMS-HIG-24-002 comparison
+
+CMS-HIG-24-002 (HEPData ins3161000 v1) gives observed and expected 95% CL
+upper limits on \(\sigma\times{\rm BR}(X\to ZZ)\) for ggF and VBF separately.
+It covers 130 GeV to 3 TeV, with width hypotheses NWA, 1, 10 and 100 GeV.
+The rules were fixed before any limit value was read:
+
+- For each state, take the bracketing width hypotheses, and in each the
+  bracketing table masses. The primary limit is the largest observed limit
+  among these points, a conservative envelope.
+- A state is covered if \(130\le M\le3000\) GeV and \(\Gamma\le100\) GeV.
+  The primary result uses covered states with tabulated theory
+  (\(M\le1\) TeV).
+- \(R(\mu_4)\) is the largest ratio of predicted to excluded
+  \(\sigma\times{\rm BR}\) over states and production modes. Each mode is
+  compared alone. The scan has 100 steps up to \(\kappa=0.90\), and the first
+  exclusion is refined by bisection.
+
+| \(R^{-1}\) (GeV) | \(m_5\) (GeV) | contour \(\mu_4^{\max}\) | likelihood \(\mu_4^{\max}\) | CMS outcome | CMS \(\mu_4^{\rm excl}\) | combined bound | binding |
+|---|---|---|---|---|---|---|---|
+| 10 | 150 | 1.73 | 1.91 | no exclusion in scan | — | 1.73 | contour |
+| 10 | 300 | 10.3 | 11.5 | no exclusion in scan | — | 10.3 | contour |
+| 10 | 600 | 32.6 | 36.2 | no exclusion in scan | — | 32.6 | contour |
+| 10 | 1200 | 95.8 | 106 | not covered | — | 95.8 | contour |
+| 100 | 150 | 5.28 | 5.86 | exclusion within rate-allowed region | 5.02 | 5.02 | CMS |
+| 100 | 300 | 32.6 | 36.2 | exclusion above rate bounds | 45.7 | 32.6 | contour |
+| 100 | 600 | 103 | 114 | no exclusion in scan | — | 103 | contour |
+| 100 | 1200 | 303 | 336 | not covered | — | 303 | contour |
+| 1000 | 150 | 6.22 | 6.90 | exclusion within rate-allowed region | 4.91 | 4.91 | CMS |
+| 1000 | 300 | 67.2 | 74.5 | exclusion above rate bounds | 69.2 | 67.2 | contour |
+| 1000 | 600 | 292 | 324 | exclusion within rate-allowed region | 281 | 281 | CMS |
+| 1000 | 1200 | 956 | 1061 | not covered | — | 956 | contour |
+
+All values are in GeV. The combined bound is the smallest of the three. It is
+an intersection of separate 95% CL-type constraints, not a joint statistical
+combination.
+
+- **CMS stronger (3 points).** At \(m_5=150\) GeV the leading state is the
+  150.7 GeV level, with \(u^2=0.030\) and \({\rm BR}_{ZZ}=0.082\), produced by
+  ggF. At \((1000,600)\) it is the 611 GeV state, with \(\Gamma=6.4\) GeV and
+  \({\rm BR}_{ZZ}=0.21\).
+- **Above rate bounds (2 points).** At \((100,300)\) the onset is a step of the
+  envelope rule. The 321 GeV state crosses a CMS table mass, the bracketing
+  ggF limit drops from 0.075 to 0.050 pb, and \(R\) jumps from 0.91 to 1.36.
+- **Variants.**
+  - The mass-interpolation variant excludes earlier at every excluded point.
+  - At \((1000,300)\) the expected median would exclude from 55 GeV, below the
+    rate bound, so the observed limit there is weaker than expected.
+  - At \((1000,600)\) the expected median excludes only from 329 GeV.
+- **Not covered (\(m_5=1200\) GeV).** Every heavy state lies above the 1 TeV
+  tabulated theory range. The labelled extrapolated variant reaches at most
+  \(R=0.125\).
+- **Heuristic tower clusters.** A secondary comparison sums nearby narrow
+  states and treats them as one resonance of width 10 or 100 GeV. It exceeds
+  a limit below the rate bound at 7 points, including \(R^{-1}=10\) GeV with
+  \(m_5=150\) and 300 GeV. It is labelled heuristic and is not the result:
+  discrete narrow states are not one broad resonance, and interference is
+  neglected.
+
+### 17.4 Interpretation and limits
+
+\(\mu_4=0\) is the SM limit and is always allowed, so both tests bound the
+restricted coupling and cannot refute the restricted family. Neither is
+evidence for Candidate B, its extra dimension or its portal. The likelihood
+contract of Section 13 is now partly evaluated. The global-\(\mu\) profile
+likelihood has been used. The STXS likelihood with correlations has not, and
+no direct-resonance likelihood has been built: the CMS upper limits are
+compared state by state and are not converted into a likelihood.
+
+Caveats:
+
+- Interference with the \(gg\to ZZ\) continuum, the off-shell 125 GeV tail and
+  among nearby tower states is neglected.
+- Each production mode is compared alone.
+- Signal acceptance is assumed to match the CMS SM-like scalar hypothesis.
+- Heavy-state scalar widths are tree level.
+- Statistics are asymptotic.
+
+Still deferred: the STXS likelihood, loop and off-shell widths, interference,
+a joint ggF + VBF treatment, and a published direct-resonance statistical
+model. Any wider grid or added correction needs a new frozen preregistration.
+
+```powershell
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_b_higgs_rate_likelihood.py
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_b_cms_resonance.py
+& .\emergent_matter_model\.venv\Scripts\python.exe -m pytest emergent_matter_model\test_candidate_b_extended_tests.py -q
+```
+
+The CMS run takes about three and a half minutes, mostly for the
+\(R^{-1}=10\) GeV towers of about 300 states. The test file checks that the
+pinned theory table reproduces from the HXSWG pages without rewriting it. The
+HXSWG pages, the ATLAS archive and the CMS archive are git-ignored and pinned
+by SHA-256 in the data catalog. Without them, the reproduction tests are
+skipped.

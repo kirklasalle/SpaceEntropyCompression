@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "preregistration_id": "candidate-b-restricted-higgs-portal-extended-v1",
+  "date": "2026-10-16",
+  "parent_preregistration": {
+    "path": "knowledgebase/candidate_b_restricted_test_preregistration.json",
+    "sha256": "69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d",
+    "inherited": "bulk and brane potentials, portal, basis, cubic couplings, mass matching, constants, parameter grid and validity flags are identical to the parent and are not restated or changed here"
+  },
+  "author_direction": "Kirk LaSalle approved taking selected Candidate B further on 2026-10-16 with two tests: a width-matched CMS-HIG-24-002 heavy-scalar comparison and a correlated Higgs-rate likelihood.",
+  "registration_scope": "Local prospective numerical preregistration, frozen by SHA-256 before the ATLAS global signal-strength scan values (AuxFig1*.yaml) and before any CMS-HIG-24-002 limit values, observed or expected, were read into this workspace. It is not an external registry entry.",
+  "prior_knowledge_disclosure": [
+    "The ATLAS headline global signal strength mu = 1.05 +/- 0.06 (paper abstract) was known. The approximate location of the likelihood crossings is therefore predictable; test A is not blind to its approximate outcome. Its value is a fixed rule applied to the published profile likelihood.",
+    "The first Candidate B test outcome was known: compatible_with_limit with kappa_lo = 0.97591 from the ATLAS (kappa_V, kappa_F) observed 95% contour.",
+    "For CMS-HIG-24-002 only file names, table descriptions, qualifiers and independent-variable (mass and width) grids were inspected. No limit value was read. General awareness of typical LHC ZZ-resonance limit magnitudes exists.",
+    "A model-only survey at kappa = 0.976 and 0.90 on the parent grid found heavy-state total widths <= 31 GeV where the width table is tabulated and <= 55 GeV above it. This fixed the width hypotheses below; no data value was used.",
+    "The HXSWG theory tables were retrieved and extracted before this freeze. They are model inputs, not outcome data."
+  ],
+  "model_extension": {
+    "higgs_rates": "every production x decay rate of the 125 GeV state is kappa^2 times its SM value (mu = kappa^2 <= 1), with SM kinematics and no decays to undetected or new states",
+    "heavy_production": "sigma_p,a = u_a^2 sigma_p^SM-like(M_a) for p in {ggF, VBF}, u_a = U[0,a]; gluon fusion proceeds only through the SM quark loops because the model adds no coloured states",
+    "heavy_width": "Gamma_a = u_a^2 Gamma_SM_total(M_a) + Gamma_a->scalar pairs, the latter from the parent tree-level cubic tensor",
+    "heavy_zz_branching": "BR_ZZ,a = u_a^2 Gamma_SM_total(M_a) BR_ZZ^SM(M_a) / Gamma_a",
+    "states": "every eigenstate a >= 1 (all states except the matched 125 GeV state)"
+  },
+  "theory_inputs": {
+    "file": "knowledgebase/candidate_b_theory_inputs.json",
+    "sha256": "bc2ec81ca932d9d1364c9d8f23324bf46f00f51b8e0f5ea39dab64e01f5c7833",
+    "extraction_tool": "tools/extract_candidate_b_theory_inputs.py",
+    "dataset": "hxswg-sm-like-heavy-higgs-13tev",
+    "cross_sections": "HXSWG YR4 BSM 13 TeV page r30: ggF quark-loop induced NNLO+NNLL (sigma column, without the separate 1+delta_EW factor) and VBF approximate NNLO; tabulated 10-3000 GeV",
+    "widths": "HXSWG YR3 2013-update page r16: SM BR(ZZ) and total width, tabulated 80-1000 GeV",
+    "interpolation": "log sigma linear in M; BR_ZZ linear in M; log Gamma_SM_total linear in M",
+    "extrapolation_above_1000_GeV": "Gamma_SM_total(M) = k_tot Gamma_tree(M) and Gamma_SM_ZZ(M) = k_ZZ Gamma_tree_ZZ(M), with Gamma_tree the parent on-shell WW + ZZ + t tbar formula and k fixed by continuity at M = 1000 GeV. States using this are labelled extrapolated and reported separately from the primary result.",
+    "theory_low_variant": "sigma x (1 - sqrt(scale_down^2 + (PDF+alpha_s)^2)) x min(1, 1 + delta_EW where provided for ggF)"
+  },
+  "test_a_higgs_rate_likelihood": {
+    "data_product": "ATLAS Nature 607 (2022) 52, HEPData ins2104706 v1 original submission (pinned zip), AuxFig1.yaml 'Aux Figure 8 (Total)': observed -2 ln Lambda(mu) for the global signal strength, all systematic uncertainties included, sqrt(s) = 13 TeV",
+    "validity": "the restricted model predicts exactly the global-mu hypothesis (universal rate scaling, SM kinematics), so the published one-parameter profile likelihood applies with mu = kappa^2",
+    "interpolation": "L(mu) = -2 ln Lambda(mu) linear between scan points; no extrapolation beyond the scan",
+    "reference": "mu_hat = scan point with minimum L; reference point mu_ref = min(mu_hat, 1)",
+    "family_test": "q_family = L(1) - L(mu_hat) if mu_hat > 1, else 0; asymptotic test of H0: mu <= 1 with the 1/2 chi2_0 + 1/2 chi2_1 null distribution",
+    "primary_statistic": "q(mu) = L(mu) - L(mu_ref) for mu <= mu_ref",
+    "primary_limit": "mu_lo = the largest mu < mu_ref with q(mu) = 2.706 (first crossing below mu_ref); kappa_lo = sqrt(mu_lo); mu4_max(R, m5, Lambda) solves kappa(mu4) = kappa_lo on the parent grid. Referencing the physical boundary is never less conservative than the unbounded one-sided limit.",
+    "sensitivity": [
+      "unbounded one-sided: crossing of L(mu) - L(mu_hat) = 2.706 below mu_hat",
+      "two-sided 95%: crossing of L(mu) - L(mu_hat) = 3.841 below mu_hat",
+      "primary rule applied to AuxFig1_2 (background theory fixed), AuxFig1_3 (signal and background theory fixed) and AuxFig1_4 (statistical only); these understate uncertainty and are never the result",
+      "M_H = 125.2 GeV for the mu4_max translation"
+    ],
+    "outcome_rules": {
+      "incompatible": "q_family > 2.706: the whole restricted family (mu <= 1) is disfavoured at asymptotic 95% CL by the published likelihood",
+      "compatible_with_limit": "q_family <= 2.706 and mu_lo lies inside the scan: report mu_lo, kappa_lo and mu4_max per valid grid point",
+      "not_determinable": "q_family <= 2.706 but the crossing lies below the first scan point: report only that mu_lo is below that point; do not extrapolate",
+      "ambiguous_data": "wrong file, qualifier or description, non-finite values, or fewer than two scan points below mu_ref: stop and report"
+    }
+  },
+  "test_b_cms_direct_resonance": {
+    "data_product": "CMS-HIG-24-002, HEPData ins3161000 v1 original submission (pinned zip): 95% CL upper limits on sigma(pp -> X) x BR(X -> ZZ) in pb at 13 TeV, 138 fb^-1, separately for ggF and VBF production",
+    "tables": "Limits_{NWA,W1,W10,W100}_{ggH,VBFH}.yaml; 'Observed' for the result and 'Expected median' for sensitivity. The 2D mass-width scans and the VBF-fraction-profiled table are not used.",
+    "width_hypotheses_GeV": {"NWA": 0.0, "W1": 1.0, "W10": 10.0, "W100": 100.0},
+    "limit_rule": "for a state (M, Gamma) take the bracketing width hypotheses w_lo <= Gamma <= w_hi (a single hypothesis on an exact match) and, in each of those tables, the bracketing table masses m_lo <= M <= m_hi (a single mass on an exact match). The primary limit is the maximum observed limit over these at most four points (conservative envelope).",
+    "coverage": "a state is covered if 130 <= M <= 3000 GeV and Gamma <= 100 GeV in both production tables; uncovered states are listed, not compared",
+    "state_ratio": "r_a = max(sigma_ggF,a BR_ZZ,a / L_ggF(M_a, Gamma_a), sigma_VBF,a BR_ZZ,a / L_VBF(M_a, Gamma_a)); each production mode is compared alone, ignoring the other component",
+    "theory_categories": "tabulated: M_a <= 1000 GeV (all theory inputs tabulated); extrapolated: 1000 < M_a <= 3000 GeV. The primary result uses tabulated states only; the result including extrapolated states is reported separately.",
+    "mu4_scan": "for each valid parent grid point, mu4_k = k mu4(kappa = 0.90) / 100 for k = 1..100, with R(mu4) = max over covered states of r_a. Report every excluded scan point. mu4_excl_min is refined by 30 bisection steps between the last non-excluded point (or 0) and the first excluded point.",
+    "comparison_with_rate_bounds": "per grid point, state whether mu4_excl_min is below mu4_max from the first test (contour) and from test A (likelihood)",
+    "sensitivity": [
+      "expected median limits instead of observed",
+      "limit linearly interpolated in mass (log limit) instead of the mass envelope, keeping the width envelope",
+      "theory-low cross sections",
+      "including extrapolated states"
+    ],
+    "secondary_heuristic_tower_clusters": "for W in {10, 100} GeV and each covered state j, S_p,j = sum over states a with |M_a - M_j| <= W/2 and Gamma_a <= W of sigma_p,a BR_ZZ,a, compared with the W-table limit at M_j under the mass envelope. Report the smallest scanned mu4 at which any ratio exceeds 1. Labelled heuristic: a cluster of discrete narrow states is treated as one resonance of width W and interference is neglected.",
+    "outcome_rules_per_grid_point": {
+      "no_exclusion_in_scan": "R(mu4) <= 1 for every scanned mu4",
+      "exclusion_above_rate_bounds": "excluded scan points exist but mu4_excl_min >= the smaller Higgs-rate mu4_max",
+      "exclusion_within_rate_allowed_region": "mu4_excl_min < the smaller Higgs-rate mu4_max: the direct search is the stronger constraint at that point",
+      "not_covered": "no covered state at any scanned mu4"
+    },
+    "overall_scope": "mu4 = 0 is the SM limit and produces no heavy-state signal, so this test can only bound mu4; it cannot exclude the restricted family"
+  },
+  "combined_statement": "per grid point the reported bound is min(mu4_max from the Higgs-rate tests, mu4_excl_min from CMS). It is the intersection of separate 95% CL-type constraints, not a joint statistical combination.",
+  "caveats": [
+    "interference with the gg -> ZZ continuum, the off-shell 125 GeV tail and among nearby tower states is neglected",
+    "comparing each production mode alone ignores the other component; this is standard practice but not a rigorous bound",
+    "signal acceptance and shapes are assumed to match the CMS SM-like scalar hypothesis",
+    "heavy-state scalar widths are tree level; SM-like widths above 1 TeV are extrapolated",
+    "asymptotic likelihood statistics; no toy calibration"
+  ],
+  "forbidden": [
+    "editing this file, the theory-input table or the parent preregistration after the freeze",
+    "choosing among envelope, interpolation, width or variant rules after reading limit or likelihood values",
+    "adding width hypotheses, tables or grid points after reading values",
+    "combining CMS and ATLAS into a joint likelihood or quoting a joint p-value",
+    "treating compatibility, or a surviving parameter range, as confirmation of Candidate B"
+  ]
+}

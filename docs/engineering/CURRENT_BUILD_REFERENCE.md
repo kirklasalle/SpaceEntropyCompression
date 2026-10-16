@@ -103,7 +103,12 @@ calls `POST /api/v1/simulate`).
 (Candidate B benchmark algebra), `prepare_candidate_b_test.py`
 (selected restricted B model and data-readiness checks),
 `evaluate_candidate_b_atlas_contour.py` (preregistered B comparison with the
-ATLAS joint coupling contour), `check_compression_claims.py`,
+ATLAS joint coupling contour), `extract_candidate_b_theory_inputs.py`
+(pinned SM-like heavy-Higgs theory table),
+`evaluate_candidate_b_higgs_rate_likelihood.py` (B bound from the ATLAS
+global-mu profile likelihood), `evaluate_candidate_b_cms_resonance.py`
+(width-matched B comparison with CMS-HIG-24-002 ZZ limits),
+`check_compression_claims.py`,
 `show_your_work_audit.py`, `verify_antigravity_recovery.py`,
 `recover_antigravity_evidence.py`, `integrate_recovered_graph.py`,
 `build_real_data_report.py`, `build_sparc_paper.py`,

@@ -8,7 +8,8 @@ carried forward.
 |---|---|---|
 | Select research candidates and active work | Decided: A and B selected; B active | Work one candidate at a time; A retained but paused |
 | Test restricted Candidate B Higgs portal | First check done: compatible with limit | Exact physical Higgs mass, specified potential and widths; frozen preregistration; no hidden fit assumptions |
-| Extend B data tests | Next if pursued | Width-matched CMS-HIG-24-002 resonance comparison; correlated Higgs-rate likelihood with nuisances frozen before evaluation |
+| Extend B data tests | Done: rate likelihood compatible with limit; CMS stronger at 3 of 12 points | Width-matched CMS-HIG-24-002 comparison and ATLAS global-mu likelihood under a frozen second preregistration |
+| Deepen B constraints | Next if pursued | STXS likelihood with correlations, interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration |
 | Choose exact C and intended M | Awaiting author review | Explicit units, observer/boundary, independent normalization and domain |
 | Assess equivalence and matter mapping | Conditional identities/counterexamples documented | No inference of complete equivalence from fits or one scalar identity |
 | Recover original theory intentions | Completed with stated coverage limits | Source-hashed archive, qualified graph and attribution |

@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Candidate B extended tests: Higgs-rate likelihood and CMS direct resonance
+- Kirk LaSalle approved taking Candidate B further on 2026-10-16. A second
+  preregistration, `knowledgebase/candidate_b_extended_test_preregistration.json`
+  (SHA-256 `fc23f2e3…90a2`), was frozen before the ATLAS likelihood scans or any
+  CMS limit value were read. It inherits the restricted model and grid unchanged.
+- Added `tools/extract_candidate_b_theory_inputs.py`
+  (`extract-candidate-b-theory`). It extracts LHC Higgs Cross Section Working
+  Group SM-like heavy-Higgs cross sections and widths into the pinned
+  `knowledgebase/candidate_b_theory_inputs.json`. The HXSWG pages are
+  catalogued as `hxswg-sm-like-heavy-higgs-13tev`.
+- Test A, `tools/evaluate_candidate_b_higgs_rate_likelihood.py`
+  (`evaluate-candidate-b-rate-likelihood`), uses the published ATLAS
+  global-signal-strength profile likelihood. Outcome `compatible_with_limit`:
+  mu_hat = 1.054, kappa_lo = 0.97059 (asymptotic one-sided 95% CL). This is
+  weaker than the contour value 0.97591, so the contour stays the stronger
+  rate bound.
+- Test B, `tools/evaluate_candidate_b_cms_resonance.py`
+  (`evaluate-candidate-b-cms`), compares every heavy tower state with the
+  width-matched CMS-HIG-24-002 observed limits. Across the 12 grid points:
+  - 3 points: CMS is the stronger mu4 bound, at (R^-1, m5) = (100, 150),
+    (1000, 150) and (1000, 600) GeV.
+  - 2 points: CMS excludes only couplings already excluded by the rate bounds.
+  - 4 points: no exclusion in the scanned range.
+  - 3 points (m5 = 1200 GeV): not covered by tabulated theory.
+  No likelihood is built from the upper limits.
+- Artifacts are `results/candidate_b_higgs_rate_likelihood_test.json` and
+  `results/candidate_b_cms_resonance_test.json`. Tests are in
+  `emergent_matter_model/test_candidate_b_extended_tests.py`. The contract has
+  a new Section 17. Ledger, graph and catalog records are updated, and the
+  ledger's likelihood contract is marked partially evaluated.
+- Both tests bound the restricted coupling, since mu4 = 0 is always allowed.
+  They neither refute the restricted family nor support Candidate B.
+- Fixed line endings: `.gitattributes` now stores `knowledgebase/candidate_b_*.json`
+  byte-exact. Their SHA-256 freezes therefore also hold on Linux checkouts.
+
 ### Candidate B selected; first restricted real-data test
 - Kirk LaSalle selected Candidate B alongside Candidate A on 2026-10-16. Work
   proceeds on one candidate at a time, and B is active. Ledger, graph, status

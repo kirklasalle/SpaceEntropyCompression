@@ -11,9 +11,13 @@ No schedule or guaranteed discovery is implied.
 Follow the [restricted Higgs-portal test contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test).
 The tree-level potential, Higgs-mass matching, lower-bound widths, frozen
 preregistration and ATLAS joint-contour comparison are done; the outcome is
-conditional compatibility with mu4 bounds. Next, if pursued: the
-width-matched CMS-HIG-24-002 direct-resonance comparison and a correlated
-Higgs-rate likelihood.
+conditional compatibility with mu4 bounds. The
+[extended tests](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison)
+add the ATLAS global-mu profile likelihood and a width-matched
+CMS-HIG-24-002 direct-resonance comparison. CMS is the stronger bound at
+3 of 12 grid points. Next, if pursued: a correlated STXS likelihood,
+interference and loop widths, or a published resonance statistical model,
+each under a new frozen preregistration.
 Do not manufacture a likelihood from summary uncertainties or limit curves.
 An excluded restricted model is not exclusion of every possible Candidate B.
 

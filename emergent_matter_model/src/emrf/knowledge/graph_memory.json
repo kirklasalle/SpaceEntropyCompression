@@ -39,6 +39,10 @@
         "working_interaction_node": "definition:candidate_b_brane_higgs_portal",
         "diagnostic_node": "diagnostic:candidate_b_benchmark_checks",
         "restricted_test_node": "result:candidate_b_atlas_contour_test",
+        "extended_test_nodes": [
+          "result:candidate_b_higgs_rate_likelihood_test",
+          "result:candidate_b_cms_resonance_test"
+        ],
         "candidate_b_selected": true,
         "candidate_a_selection_changed": false
       }
@@ -114,6 +118,87 @@
       "evidence_refs": [
         "file:results/candidate_b_atlas_contour_test.json",
         "sha256:69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d"
+      ]
+    },
+    {
+      "id": "decision:candidate_b_extended_test_preregistration",
+      "type": "Preregistration",
+      "name": "Frozen preregistration of the extended Candidate B Higgs-rate likelihood and CMS direct-resonance tests",
+      "description": "Inherits the restricted model and grid; fixes the global-mu likelihood rule, CMS width-matching, envelope and coverage rules, SM-like theory inputs (SHA-256 bc2ec81ca932d9d1364c9d8f23324bf46f00f51b8e0f5ea39dab64e01f5c7833), variants and outcome labels before the likelihood scan or any CMS limit value was read. SHA-256 fc23f2e389a9b761bf8747fe125c44ae93beb191384a79b11eb4d517764890a2.",
+      "status": "frozen_2026-10-16",
+      "filePath": "knowledgebase/candidate_b_extended_test_preregistration.json",
+      "evidence_status": "analysis_plan_not_evidence",
+      "use_for_empirical_confirmation": false,
+      "kind": "decision",
+      "evidence_class": "procedural"
+    },
+    {
+      "id": "dataset:atlas_higgs_global_signal_strength_likelihood",
+      "type": "EmpiricalDataset",
+      "name": "ATLAS Run-2 Higgs combination, observed -2 ln Lambda(mu) global signal-strength scans",
+      "description": "AuxFig1*.yaml in the pinned HEPData ins2104706 v1 original submission (10.17182/hepdata.130266.v1): the total-uncertainty scan is the result; theory-fixed and statistical-only scans are sensitivity checks. Raw file git-ignored.",
+      "status": "retrieved_and_hash_pinned_2026-10-16",
+      "filePath": "data/external/candidate_b/raw/hepdata_ins2104706_v1_original.zip",
+      "identifiers": {"doi": "10.17182/hepdata.130266.v1"},
+      "evidence_status": "published_profile_likelihood_scan",
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "observational"
+    },
+    {
+      "id": "dataset:cms_hig_24_002_heavy_scalar_zz_limits",
+      "type": "EmpiricalDataset",
+      "name": "CMS-HIG-24-002 observed and expected 95% CL limits on pp -> X -> ZZ",
+      "description": "HEPData ins3161000 v1 original submission: eight tables, ggF and VBF with NWA, 1, 10 and 100 GeV width hypotheses, 130 GeV to 3 TeV, 13 TeV, 138 fb^-1. Upper limits, not a likelihood. Raw file git-ignored.",
+      "status": "retrieved_and_hash_pinned_2026-10-16",
+      "filePath": "data/external/candidate_b/raw/hepdata_ins3161000_v1_original.zip",
+      "evidence_status": "published_upper_limits_not_likelihood",
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "observational"
+    },
+    {
+      "id": "dataset:hxswg_sm_like_heavy_higgs_13tev",
+      "type": "TheoryReferenceTable",
+      "name": "LHC Higgs Cross Section Working Group SM-like heavy Higgs cross sections and widths at 13 TeV",
+      "description": "ggF and VBF cross sections with uncertainties (YR4 tables, 10 GeV to 3 TeV) and SM Higgs total width and ZZ branching ratio (YR3 update, 80 GeV to 1 TeV), extracted into knowledgebase/candidate_b_theory_inputs.json and pinned by SHA-256 bc2ec81ca932d9d1364c9d8f23324bf46f00f51b8e0f5ea39dab64e01f5c7833. The width table ends at 1 TeV, so the primary CMS comparison uses heavy states up to 1 TeV.",
+      "status": "extracted_and_hash_pinned_2026-10-16",
+      "filePath": "knowledgebase/candidate_b_theory_inputs.json",
+      "evidence_status": "published_theory_calculation_not_measurement",
+      "use_for_empirical_confirmation": false,
+      "kind": "dataset",
+      "evidence_class": "published"
+    },
+    {
+      "id": "result:candidate_b_higgs_rate_likelihood_test",
+      "type": "ConditionalLikelihoodBound",
+      "name": "Restricted Candidate B universal rate suppression versus the ATLAS global-mu profile likelihood",
+      "description": "Outcome compatible_with_limit: mu_hat = 1.054 and the asymptotic one-sided 95% CL lower limit mu_lo = 0.942 gives kappa_lo = 0.97059, weaker than the contour value 0.97591 at every grid point. A bound on mu4 at fixed (R, m5, Lambda), not a joint interval; mu4 = 0 is always allowed. Not evidence for Candidate B.",
+      "status": "compatible_with_limit",
+      "filePath": "results/candidate_b_higgs_rate_likelihood_test.json",
+      "evidence_status": "conditional_bound_not_confirmation",
+      "use_for_empirical_confirmation": false,
+      "kind": "result",
+      "evidence_class": "observational_comparison",
+      "evidence_refs": [
+        "file:results/candidate_b_higgs_rate_likelihood_test.json",
+        "sha256:fc23f2e389a9b761bf8747fe125c44ae93beb191384a79b11eb4d517764890a2"
+      ]
+    },
+    {
+      "id": "result:candidate_b_cms_resonance_test",
+      "type": "ConditionalUpperLimitComparison",
+      "name": "Restricted Candidate B heavy tower states versus CMS-HIG-24-002 width-matched ZZ limits",
+      "description": "Of 12 grid points the CMS search is the stronger mu4 bound at 3 ((100,150), (1000,150), (1000,600) GeV), excludes only rate-excluded couplings at 2, excludes nothing scanned at 4 and is not covered by tabulated theory at 3 (m5 = 1200 GeV). Per-state, per-production upper-limit comparison; interference neglected; no likelihood. Not evidence for Candidate B.",
+      "status": "bounds_on_restricted_coupling",
+      "filePath": "results/candidate_b_cms_resonance_test.json",
+      "evidence_status": "conditional_bound_not_confirmation",
+      "use_for_empirical_confirmation": false,
+      "kind": "result",
+      "evidence_class": "observational_comparison",
+      "evidence_refs": [
+        "file:results/candidate_b_cms_resonance_test.json",
+        "sha256:fc23f2e389a9b761bf8747fe125c44ae93beb191384a79b11eb4d517764890a2"
       ]
     },
     {
@@ -1569,6 +1654,78 @@
       "confidence": 0.5,
       "evidence_class": "observational_comparison",
       "provenance": "candidate_b_restricted_test_2026-10-16"
+    },
+    {
+      "source": "decision:candidate_b_extended_test_preregistration",
+      "target": "result:candidate_b_higgs_rate_likelihood_test",
+      "relation": "fixes_analysis_plan_for",
+      "evidence_status": "frozen_before_data_comparison",
+      "confidence": 0.5,
+      "evidence_class": "procedural",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "decision:candidate_b_extended_test_preregistration",
+      "target": "result:candidate_b_cms_resonance_test",
+      "relation": "fixes_analysis_plan_for",
+      "evidence_status": "frozen_before_data_comparison",
+      "confidence": 0.5,
+      "evidence_class": "procedural",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "dataset:atlas_higgs_global_signal_strength_likelihood",
+      "target": "result:candidate_b_higgs_rate_likelihood_test",
+      "relation": "compared_in",
+      "evidence_status": "published_profile_likelihood_scan",
+      "confidence": 0.5,
+      "evidence_class": "observational",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "dataset:cms_hig_24_002_heavy_scalar_zz_limits",
+      "target": "result:candidate_b_cms_resonance_test",
+      "relation": "compared_in",
+      "evidence_status": "published_upper_limits_not_likelihood",
+      "confidence": 0.5,
+      "evidence_class": "observational",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "dataset:hxswg_sm_like_heavy_higgs_13tev",
+      "target": "result:candidate_b_cms_resonance_test",
+      "relation": "supplies_theory_inputs_for",
+      "evidence_status": "published_theory_calculation_not_measurement",
+      "confidence": 0.5,
+      "evidence_class": "published",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "result:candidate_b_higgs_rate_likelihood_test",
+      "target": "definition:candidate_b_brane_higgs_portal",
+      "relation": "constrains_parameters_of",
+      "evidence_status": "conditional_bound_not_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "observational_comparison",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "result:candidate_b_cms_resonance_test",
+      "target": "definition:candidate_b_brane_higgs_portal",
+      "relation": "constrains_parameters_of",
+      "evidence_status": "conditional_bound_not_confirmation",
+      "confidence": 0.5,
+      "evidence_class": "observational_comparison",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
+    },
+    {
+      "source": "decision:candidate_b_restricted_test_preregistration",
+      "target": "decision:candidate_b_extended_test_preregistration",
+      "relation": "extended_by",
+      "evidence_status": "frozen_parent_inherited_unchanged",
+      "confidence": 0.5,
+      "evidence_class": "procedural",
+      "provenance": "candidate_b_extended_tests_2026-10-16"
     },
     {
       "source": "diagnostic:candidate_b_benchmark_checks",

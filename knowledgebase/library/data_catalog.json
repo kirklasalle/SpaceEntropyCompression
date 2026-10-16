@@ -387,7 +387,7 @@
       "citation": "CMS Collaboration, CMS-HIG-24-002",
       "license_terms_url": "https://www.hepdata.net/terms",
       "redistribution": "Public HEPData record; no table licence was confirmed in the submission. Cite CMS and HEPData. Raw files stay in git-ignored data/external.",
-      "acquisition": "Same browser-session method as atlas-higgs-couplings-2022, on 2026-10-16. Held for the deferred width-matched direct-resonance test; not used in the first Candidate B test.",
+      "acquisition": "Same browser-session method as atlas-higgs-couplings-2022, on 2026-10-16. Not used in the first Candidate B test; used in the extended width-matched direct-resonance comparison (tools/evaluate_candidate_b_cms_resonance.py), which reads all eight limit tables from the pinned zip.",
       "holdings": [
         {
           "path": "data/external/candidate_b/raw/hepdata_ins3161000_v1_original.zip",
@@ -400,6 +400,38 @@
         "local_hashes": true,
         "verified_at": "2026-10-16",
         "source": "Browser-side SHA-256 equals the local file hash"
+      }
+    },
+    {
+      "id": "hxswg-sm-like-heavy-higgs-13tev",
+      "title": "LHC Higgs Cross Section Working Group SM-like heavy Higgs cross sections (13 TeV) and SM Higgs widths",
+      "status": "existing_holding",
+      "priority": "medium",
+      "version": "BSMAt13TeV-r30-2023-11-13;BR2014-r16-2016-12-13",
+      "url": "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV",
+      "citation": "LHC Higgs Cross Section Working Group, CERN Yellow Report 4, CERN-2017-002-M, arXiv:1610.07922 (cross sections); CERN Yellow Report 3, CERN-2013-004, arXiv:1307.1347 (branching ratios and total width)",
+      "doi": "10.23731/CYRM-2017-002",
+      "license_terms_url": "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/LHCHWG",
+      "redistribution": "Public HXSWG reference tables; no explicit licence was found on the pages. Cite the Yellow Reports. Raw HTML stays in git-ignored data/external; only the extracted numerical columns are committed in knowledgebase/candidate_b_theory_inputs.json.",
+      "acquisition": "Fetched with curl on 2026-10-16 from the public current-revision TWiki views (revision-specific and raw views require CERN sign-in). The topic revision printed on each page is checked by tools/extract_candidate_b_theory_inputs.py. Page HTML contains session-dependent links, so a refetch can differ byte-wise even when the tables are unchanged.",
+      "holdings": [
+        {
+          "path": "data/external/candidate_b/raw/hxswg_bsm_at_13tev_r30.html",
+          "url": "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV",
+          "bytes": 618901,
+          "sha256": "d86e657178c5a33500be5de82fe57e9925ec8fbb02cb7db5995e553c101336cb"
+        },
+        {
+          "path": "data/external/candidate_b/raw/hxswg_br_yr3_2013update_r16.html",
+          "url": "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBR2014",
+          "bytes": 1762438,
+          "sha256": "52a06c2bb93078c595a51137521b155ef8c7216df662eb4b6639ae7108eecb7c"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-16",
+        "source": "Local SHA-256 at fetch; topic revisions r30 (2023-11-13) and r16 (2016-12-13) read from the page footers"
       }
     }
   ]
