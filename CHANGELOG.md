@@ -23,7 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `tools/evaluate_candidate_a_sparc_baryonic.py`
   (`evaluate-candidate-a-sparc`) and
   `emergent_matter_model/test_candidate_a_sparc_test.py`. Both were committed
-  before the real run.
+  before the real run. After review on PR #37, a failed preregistration,
+  cache or pinned-data check now writes an `incomplete` report and exits
+  nonzero instead of raising. The computation was unchanged, and rerunning
+  reproduced every statistic and the outcome exactly.
 - Result, `results/candidate_a_sparc_baryonic_test.json`: **rejected**.
   - 153 galaxies and 3,168 points.
   - Delta_Q_cons = 98,216 (T1, certified priors) and 100,067 (T2, free
