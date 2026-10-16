@@ -1,0 +1,293 @@
+{
+  "evidence_kind": "benchmark_algebra_and_toy_integration_not_observations",
+  "contract": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md",
+  "physical_model_implemented": false,
+  "candidate_b_selected": true,
+  "selection_basis": "Kirk's separate 2026-10-16 decision; not a result of these checks",
+  "candidate_a_selection_changed": false,
+  "parameters_selected_or_measured": false,
+  "likelihood_evaluated": false,
+  "observational_data_used": false,
+  "assumptions": [
+    "Local cell: fixed physical 3-volume, constant I_C, quadratic V_C, prescribed J(t)",
+    "Entropy production uses the contract's conditional local-equilibrium identity",
+    "Portal: Standard Model on a fixed flat 3+1 brane at y=0; real bulk scalar",
+    "Geometry benchmark: flat R^{3,1} x S^1_R, one extra spatial dimension",
+    "Natural units hbar=c=1; masses and inverse lengths in GeV",
+    "Probe v=246 GeV and unmixed m_h=125 GeV are rounded algebra inputs, not fits",
+    "R, m5, Lambda, mu_4 and kappa_min values are stipulated probes, not selections",
+    "Exchange toy: spatially homogeneous zero mode and Higgs, no gravity or widths"
+  ],
+  "local_cell": {
+    "units": {
+      "xi": "dimensionless",
+      "energy_density_u_C_V_C_u_th_u_drive_J": "kg^1 m^-1 s^-2",
+      "I_C": "kg^1 m^-1",
+      "Gamma_C": "kg^1 m^-1 s^-1",
+      "kinetic_I_C_xidot2": "kg^1 m^-1 s^-2",
+      "inertial_force_I_C_xiddot": "kg^1 m^-1 s^-2",
+      "damping_force_Gamma_C_xidot": "kg^1 m^-1 s^-2",
+      "Q_C_Gamma_C_xidot2": "kg^1 m^-1 s^-3",
+      "entropy_production_Q_C_over_T": "kg^1 m^-1 s^-3 K^-1"
+    },
+    "reduced_density_units": {
+      "3": {
+        "bulk_density": "kg^1 m^-1 s^-2",
+        "after_integrating_extra_lengths": "kg^1 m^-1 s^-2",
+        "observed_3d_density": "kg^1 m^-1 s^-2"
+      },
+      "4": {
+        "bulk_density": "kg^1 m^-2 s^-2",
+        "after_integrating_extra_lengths": "kg^1 m^-1 s^-2",
+        "observed_3d_density": "kg^1 m^-1 s^-2"
+      },
+      "5": {
+        "bulk_density": "kg^1 m^-3 s^-2",
+        "after_integrating_extra_lengths": "kg^1 m^-1 s^-2",
+        "observed_3d_density": "kg^1 m^-1 s^-2"
+      },
+      "6": {
+        "bulk_density": "kg^1 m^-4 s^-2",
+        "after_integrating_extra_lengths": "kg^1 m^-1 s^-2",
+        "observed_3d_density": "kg^1 m^-1 s^-2"
+      }
+    },
+    "integrations": {
+      "dissipative": {
+        "max_abs_ledger_drift_J_m3": 2.408351296168121e-13,
+        "relative_ledger_drift": 4.185980143966368e-14,
+        "final_u_th_J_m3": 2.6297952300902256,
+        "final_u_drive_J_m3": -3.1235796387311074,
+        "integrated_entropy_production_J_m3_K": 0.008765984100300632,
+        "min_entropy_production_rate": 0.0,
+        "max_entropy_production_rate": 0.0008588883794451019
+      },
+      "conservative_gamma_zero": {
+        "max_abs_ledger_drift_J_m3": 5.204170427930421e-14,
+        "relative_ledger_drift": 2.433103213496815e-14,
+        "final_u_th_J_m3": 0.0,
+        "final_u_drive_J_m3": -1.2146622767881072,
+        "integrated_entropy_production_J_m3_K": 0.0,
+        "min_entropy_production_rate": 0.0,
+        "max_entropy_production_rate": 0.0
+      },
+      "negative_gamma_counterexample": {
+        "max_abs_ledger_drift_J_m3": 1.9845236565174673e-14,
+        "relative_ledger_drift": 1.1816253697112747e-14,
+        "final_u_th_J_m3": -0.14996986836447643,
+        "final_u_drive_J_m3": -1.5230440500839109,
+        "integrated_entropy_production_J_m3_K": -0.0004998995612149217,
+        "min_entropy_production_rate": -0.00029349900180108637,
+        "max_entropy_production_rate": 0.0
+      }
+    },
+    "conclusion": "Paired ledgers conserve u_C+u_th+u_drive to integrator error; entropy production is nonnegative only when Gamma_C>=0 and T>0"
+  },
+  "portal_mass_dimensions": {
+    "by_spatial_dimension_D": {
+      "3": {
+        "bulk_lagrangian": "4",
+        "kinetic_term": "4",
+        "phi": "1",
+        "f_phi": "1",
+        "O_H": "2",
+        "mu": "1",
+        "g_xi": "2",
+        "mu_4_after_volume_reduction": "1",
+        "phi_zero_mode_4d": "1"
+      },
+      "4": {
+        "bulk_lagrangian": "5",
+        "kinetic_term": "5",
+        "phi": "3/2",
+        "f_phi": "3/2",
+        "O_H": "2",
+        "mu": "1/2",
+        "g_xi": "2",
+        "mu_4_after_volume_reduction": "1",
+        "phi_zero_mode_4d": "1"
+      },
+      "5": {
+        "bulk_lagrangian": "6",
+        "kinetic_term": "6",
+        "phi": "2",
+        "f_phi": "2",
+        "O_H": "2",
+        "mu": "0",
+        "g_xi": "2",
+        "mu_4_after_volume_reduction": "1",
+        "phi_zero_mode_4d": "1"
+      },
+      "6": {
+        "bulk_lagrangian": "7",
+        "kinetic_term": "7",
+        "phi": "5/2",
+        "f_phi": "5/2",
+        "O_H": "2",
+        "mu": "-1/2",
+        "g_xi": "2",
+        "mu_4_after_volume_reduction": "1",
+        "phi_zero_mode_4d": "1"
+      },
+      "9": {
+        "bulk_lagrangian": "10",
+        "kinetic_term": "10",
+        "phi": "4",
+        "f_phi": "4",
+        "O_H": "2",
+        "mu": "-2",
+        "g_xi": "2",
+        "mu_4_after_volume_reduction": "1",
+        "phi_zero_mode_4d": "1"
+      }
+    },
+    "conclusion": "[mu]=(5-D)/2 and [g_xi]=2 for every D; after volume reduction the 4D coupling mu_4 has mass dimension 1"
+  },
+  "circle_geometry": {
+    "mode_checks": {
+      "max_gram_deviation_from_identity": 4.440892098500626e-16,
+      "sine_modes_at_brane_max_abs": 0.0,
+      "cosine_to_zero_mode_brane_ratio": [
+        1.4142135623730951,
+        1.4142135623730951,
+        1.4142135623730951,
+        1.4142135623730951,
+        1.4142135623730951
+      ],
+      "reduced_coupling_factor_times_sqrt_2piR": 1.0
+    },
+    "projection": {
+      "same_projected_point": true,
+      "same_bulk_point": false,
+      "sine_profile_off_brane_value": 1.0,
+      "sine_profile_brane_overlap_energy": 0.0,
+      "cosine_profile_brane_overlap_energy": 123.125,
+      "overlap_signs_for_h_minus_and_plus": [
+        -1.0,
+        1.0
+      ]
+    },
+    "conclusion": "Equal 3D projection is not bulk coincidence; sine modes and off-brane support do not enter the y=0 brane coupling"
+  },
+  "kk_benchmark": {
+    "R_GeV_inverse": 0.001,
+    "m5_GeV": 400.0,
+    "Lambda_GeV": 5000.0,
+    "N_Lambda": 4,
+    "unmixed_masses_GeV": [
+      400.0,
+      1077.0329614269008,
+      2039.607805437114,
+      3026.5491900843112,
+      4019.950248448356
+    ],
+    "stability_bound_mu4_GeV": 171.319721365916,
+    "min_eigenvalue_at_0.99_bound_GeV2": 290.3329378398305,
+    "min_eigenvalue_at_1.01_bound_GeV2": -292.5305240559817,
+    "low_energy_operator": {
+      "matrix_elimination": 0.12909808976138543,
+      "closed_form_finite": 0.12909808976138545
+    },
+    "weak_mixing": {
+      "mu4_GeV": 8.5659860682958,
+      "ratio": 0.014595550287797519,
+      "perturbative_kappa_v": 0.9998897838220683,
+      "exact": {
+        "min_eigenvalue_GeV2": 15582.828488864312,
+        "higgs_like_kappa_v": 0.9998898462553603,
+        "higgs_like_eigenmass_GeV": 124.8311999816725,
+        "kappa_squared_sum_rule": 0.9999999999999998,
+        "largest_two_kappa_squared": [
+          0.0002128567805787996,
+          0.999779704644568
+        ]
+      }
+    },
+    "kappa_min_probe": {
+      "kappa_min_stipulated": 0.99,
+      "mu4_envelope_GeV": 82.2044133254789,
+      "weak_mixing_ratio_at_envelope": 0.14006777958834846,
+      "perturbative_kappa_at_envelope": 0.99,
+      "exact_at_envelope": {
+        "min_eigenvalue_GeV2": 11815.77673973986,
+        "higgs_like_kappa_v": 0.9904854679875967,
+        "higgs_like_eigenmass_GeV": 108.70039898611164,
+        "kappa_squared_sum_rule": 1.0,
+        "largest_two_kappa_squared": [
+          0.018254663808520973,
+          0.9810614622946086
+        ]
+      }
+    },
+    "cms_4l_window_preselected_levels": [
+      0,
+      1,
+      2
+    ]
+  },
+  "infinite_tower_limit": {
+    "R_GeV_inverse": 0.02,
+    "m5_GeV": 100.0,
+    "N_Lambda": 19999,
+    "finite_S_stab": 0.0006282829120570089,
+    "closed_form_S_stab": 0.0006283229130568921,
+    "relative_difference": 6.366312456853661e-05,
+    "mu4_bound_GeV": 20.271386644082643,
+    "mu5_bound_GeV_half": 7.186019464099786,
+    "mu5_from_mu4_GeV_half": 7.186019464099785,
+    "mu4_bound_as_m5_to_zero": [
+      0.5077961625108842,
+      0.005081300478671979,
+      5.081300812974697e-05
+    ]
+  },
+  "near_degeneracy": {
+    "m5_GeV": 126.0,
+    "mu4_GeV": 1.0,
+    "weak_mixing_ratio": 0.9800796812749004,
+    "perturbative_formula_refused": true,
+    "perturbative_kappa_if_forced": 0.7141843670275259,
+    "exact": {
+      "min_eigenvalue_GeV2": 15474.211277588765,
+      "higgs_like_kappa_v": 0.8528447369689873,
+      "higgs_like_eigenmass_GeV": 124.3953828628248,
+      "kappa_squared_sum_rule": 0.9999999999999998,
+      "largest_two_kappa_squared": [
+        0.27265572412262246,
+        0.7273441453757011
+      ]
+    }
+  },
+  "paired_exchange": {
+    "m5_GeV": 400.0,
+    "mu4_GeV": 60.975609756097555,
+    "phi_initial_GeV": 5.0,
+    "initial_total_energy_GeV4": 2000000.0,
+    "max_brane_ledger_error_GeV4": 0.00034206431882921606,
+    "max_scalar_ledger_error_GeV4": 0.02163685243431246,
+    "max_total_drift_GeV4": 0.021967725828289986,
+    "relative_total_drift": 1.0983862914144992e-08,
+    "max_energy_delivered_to_brane_GeV4": 82264.92368397755,
+    "min_energy_delivered_to_brane_GeV4": 0.0,
+    "exchange_direction_reversals": 511,
+    "time_reversal_return_error_GeV": 5.440963679603783e-08,
+    "bounded_below_for_zero_mode_truncation": true,
+    "unstable_coupling_bounded_below": false
+  },
+  "conclusions": [
+    "The fixed-volume local-cell equations are unit-consistent and conserve their paired ledgers; the entropy sign is an assumption-dependent identity",
+    "A D-volume density becomes a 3D density only after integrating a declared extra-dimensional measure; changing units alone is not a reduction",
+    "Portal mass dimensions are consistent for every D; g_xi always has dimension 2",
+    "Projected 3D coincidence does not imply bulk coincidence or brane coupling",
+    "The Schur stability envelope is exact for the truncated tree-level mass matrix",
+    "The finite KK sum converges to the coth closed form; the bound vanishes as m5->0",
+    "Integrating out the tower reproduces the mu_4^2 S_stab O_H^2 / 2 operator",
+    "Perturbative kappa_V matches exact diagonalization only in the weak-mixing domain; near degeneracy it is refused and states share the Higgs component",
+    "Mixing shifts the Higgs-like eigenmass away from the unmixed m_h parameter, so matching the observed 125 GeV state requires solving for that parameter",
+    "The portal exchange is paired and reversible: it supplies no Gamma_C, no entropy production and no energy origin",
+    "None of these results selects Candidate B, a parameter value or a coupling limit"
+  ],
+  "source_sha256": {
+    "tools\\check_candidate_b_definitions.py": "3a1ab7c993217ada3bb97bf3cd92a97c6b7e0656ff9c090d5b0369cec5042944"
+  }
+}

@@ -7,7 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-No changes yet.
+### Candidate B selected; first restricted real-data test
+- Kirk LaSalle selected Candidate B alongside Candidate A on 2026-10-16. Work
+  proceeds on one candidate at a time, and B is active. Ledger, graph, status
+  and roadmap records reflect the dual selection.
+- Closed the four open items for the restricted quadratic tree-level brane
+  Higgs-portal model only. These are the bulk potential with exact mass
+  matching; tree-level heavy-state widths as a lower bound; a parameter grid
+  frozen in `knowledgebase/candidate_b_restricted_test_preregistration.json`
+  before any data comparison; and the ATLAS Run-2 Figure 4 (kappa_V, kappa_F)
+  observed contour from HEPData, SHA-256 pinned in the data catalog. A CMS
+  heavy scalar to ZZ dataset is catalogued for a later direct-resonance test.
+- Added `tools/prepare_candidate_b_test.py` (`prepare-candidate-b`) and
+  `tools/evaluate_candidate_b_atlas_contour.py` (`evaluate-candidate-b-atlas`).
+  Their artifacts are `results/candidate_b_test_readiness.json` and
+  `results/candidate_b_atlas_contour_test.json`. Tests are in
+  `emergent_matter_model/test_candidate_b_restricted_test.py`. The contract
+  now has a Section 16.
+- Outcome: `compatible_with_limit`. The diagonal kappa_V = kappa_F = k lies
+  inside the observed 95% joint region for 0.9759 <= k <= 1. This gives
+  conditional bounds on mu4 from 1.73 to 956 GeV across the grid. The model
+  contains the SM limit, so these data cannot refute it. No likelihood or
+  one-parameter interval was evaluated, and this is not evidence for
+  Candidate B.
+
+### Candidate B verification parity
+- Brought the unselected Candidate B exploration to the same verification level
+  as Candidate A. Added `tools/check_candidate_b_definitions.py` (also available
+  as the `check-candidate-b` command) and its hashed artifact
+  `results/candidate_b_definition_checks.json`. Also added focused tests, ledger
+  and graph records, and a decision-ready outcome in the draft contract.
+- The checks cover local-cell ledgers, portal dimensions, one-circle KK
+  stability and mixing envelopes, the CMS window, and paired portal exchange.
+  They use stipulated benchmark probes. They do not select Candidate B or any
+  parameter values, evaluate a likelihood, run a collision simulation, or test
+  data. Candidate A remains the selected direction.
 
 ## [1.0.0] - 2026-10-11: Formalized scientific software platform
 

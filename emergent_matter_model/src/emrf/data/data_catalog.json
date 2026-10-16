@@ -343,6 +343,64 @@
         "verified_at": "2026-10-09",
         "source": "Official NIST CODATA 2022 complete ASCII table"
       }
+    },
+    {
+      "id": "atlas-higgs-couplings-2022",
+      "title": "ATLAS Run-2 combined Higgs coupling measurements (Nature 2022), HEPData record",
+      "status": "existing_holding",
+      "priority": "high",
+      "version": "hepdata-130266-v1",
+      "url": "https://www.hepdata.net/record/ins2104706?version=1",
+      "data_doi": "10.17182/hepdata.130266.v1",
+      "citation": "ATLAS Collaboration (2022), Nature 607, 52-59, arXiv:2207.00092",
+      "doi": "10.1038/s41586-022-04893-w",
+      "license_terms_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "redistribution": "HEPData reports the tables under CC0; cite the ATLAS paper and HEPData record. Raw files stay in git-ignored data/external.",
+      "acquisition": "HEPData blocks command-line clients with a Cloudflare check. On 2026-10-16 the files were fetched in a browser session; the browser computed SHA-256 before forwarding bytes unchanged to a localhost receiver.",
+      "holdings": [
+        {
+          "path": "data/external/candidate_b/raw/hepdata_130266_v1_figure4.yaml",
+          "url": "https://www.hepdata.net/download/table/ins2104706/Figure%204/1/yaml",
+          "bytes": 8916,
+          "sha256": "d5396af5d9f099733c1685a159a41184ecaa8c167450329d0b7e73284dfb4bb3"
+        },
+        {
+          "path": "data/external/candidate_b/raw/hepdata_ins2104706_v1_original.zip",
+          "url": "https://www.hepdata.net/download/submission/ins2104706/1/original",
+          "bytes": 5775999,
+          "sha256": "7237c3e7195df686d03f4abfd1b1969ec38f41059a9b38e2d8aed44a6b858d6e"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-16",
+        "source": "Browser-side SHA-256 equals the local file hash; Fig4.yaml inside the original submission is byte-identical to the table download"
+      }
+    },
+    {
+      "id": "cms-hig-24-002-heavy-scalar-zz",
+      "title": "CMS search for heavy scalar resonances decaying to ZZ to four leptons, HEPData record",
+      "status": "existing_holding",
+      "priority": "medium",
+      "version": "hepdata-ins3161000-v1",
+      "url": "https://www.hepdata.net/record/ins3161000",
+      "citation": "CMS Collaboration, CMS-HIG-24-002",
+      "license_terms_url": "https://www.hepdata.net/terms",
+      "redistribution": "Public HEPData record; no table licence was confirmed in the submission. Cite CMS and HEPData. Raw files stay in git-ignored data/external.",
+      "acquisition": "Same browser-session method as atlas-higgs-couplings-2022, on 2026-10-16. Held for the deferred width-matched direct-resonance test; not used in the first Candidate B test.",
+      "holdings": [
+        {
+          "path": "data/external/candidate_b/raw/hepdata_ins3161000_v1_original.zip",
+          "url": "https://www.hepdata.net/download/submission/ins3161000/1/original",
+          "bytes": 1142425,
+          "sha256": "9a3f9a6d59dcb35ced2fcc29dd5b5f5dc76784ca5cc11776631de3a0fbd471c6"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-16",
+        "source": "Browser-side SHA-256 equals the local file hash"
+      }
     }
   ]
 }

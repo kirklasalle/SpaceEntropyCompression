@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "artifact": "candidate_b_test_readiness",
+  "source": "tools/prepare_candidate_b_test.py",
+  "source_sha256": "4b9e69c092d9244b5e8e0ea2b062438a1ed5d5b9de931f65faf36b29f36ec5c2",
+  "preregistration_sha256": "69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d",
+  "protocol_sha256": "467dee7c7cea9238bb019201a7cb9f8c4c3f917ed457a49d1c19ab5fcb290362",
+  "research_selection": {
+    "selected_candidates": [
+      "candidate-a",
+      "candidate-b"
+    ],
+    "active_candidate": "candidate-b"
+  },
+  "vev_GeV": 246.21964023926205,
+  "model_self_checks": {
+    "probe": "kappa = 0.9 at every preregistered grid point; not a data value",
+    "rows": [
+      {
+        "inverse_radius_GeV": 10.0,
+        "m5_GeV": 150.0,
+        "levels": 299,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 1.5489831639570184e-12,
+        "kappa_error": 3.519406988061746e-14,
+        "higgs_sum_rule_error": 6.661338147750939e-16
+      },
+      {
+        "inverse_radius_GeV": 10.0,
+        "m5_GeV": 300.0,
+        "levels": 298,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 2.8421709430404007e-13,
+        "kappa_error": 1.4432899320127035e-15,
+        "higgs_sum_rule_error": 4.440892098500626e-16
+      },
+      {
+        "inverse_radius_GeV": 10.0,
+        "m5_GeV": 600.0,
+        "levels": 293,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 3.268496584496461e-13,
+        "kappa_error": 5.551115123125783e-16,
+        "higgs_sum_rule_error": 1.1102230246251565e-15
+      },
+      {
+        "inverse_radius_GeV": 10.0,
+        "m5_GeV": 1200.0,
+        "levels": 274,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 4.305888978706207e-12,
+        "kappa_error": 3.3306690738754696e-16,
+        "higgs_sum_rule_error": 3.3306690738754696e-16
+      },
+      {
+        "inverse_radius_GeV": 100.0,
+        "m5_GeV": 150.0,
+        "levels": 29,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 5.258016244624741e-13,
+        "kappa_error": 7.327471962526033e-15,
+        "higgs_sum_rule_error": 6.661338147750939e-16
+      },
+      {
+        "inverse_radius_GeV": 100.0,
+        "m5_GeV": 300.0,
+        "levels": 29,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 1.6484591469634324e-12,
+        "kappa_error": 3.219646771412954e-15,
+        "higgs_sum_rule_error": 4.440892098500626e-16
+      },
+      {
+        "inverse_radius_GeV": 100.0,
+        "m5_GeV": 600.0,
+        "levels": 29,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 5.400124791776761e-13,
+        "kappa_error": 2.220446049250313e-16,
+        "higgs_sum_rule_error": 3.3306690738754696e-16
+      },
+      {
+        "inverse_radius_GeV": 100.0,
+        "m5_GeV": 1200.0,
+        "levels": 27,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 2.0179413695586845e-12,
+        "kappa_error": 4.440892098500626e-16,
+        "higgs_sum_rule_error": 0.0
+      },
+      {
+        "inverse_radius_GeV": 1000.0,
+        "m5_GeV": 150.0,
+        "levels": 2,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 4.263256414560601e-13,
+        "kappa_error": 1.1324274851176597e-14,
+        "higgs_sum_rule_error": 1.1102230246251565e-16
+      },
+      {
+        "inverse_radius_GeV": 1000.0,
+        "m5_GeV": 300.0,
+        "levels": 2,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 5.684341886080802e-14,
+        "kappa_error": 1.1102230246251565e-16,
+        "higgs_sum_rule_error": 0.0
+      },
+      {
+        "inverse_radius_GeV": 1000.0,
+        "m5_GeV": 600.0,
+        "levels": 2,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 3.126388037344441e-13,
+        "kappa_error": 1.1102230246251565e-16,
+        "higgs_sum_rule_error": 2.220446049250313e-16
+      },
+      {
+        "inverse_radius_GeV": 1000.0,
+        "m5_GeV": 1200.0,
+        "levels": 2,
+        "probe_kappa": 0.9,
+        "lightest_mass_error_GeV": 3.836930773104541e-13,
+        "kappa_error": 0.0,
+        "higgs_sum_rule_error": 2.220446049250313e-16
+      }
+    ],
+    "max_lightest_mass_error_GeV": 4.305888978706207e-12,
+    "max_kappa_error": 3.519406988061746e-14,
+    "max_sum_rule_error": 1.1102230246251565e-15
+  },
+  "data_holdings": [
+    {
+      "dataset": "atlas-higgs-couplings-2022",
+      "path": "data/external/candidate_b/raw/hepdata_130266_v1_figure4.yaml",
+      "present": true,
+      "sha256_matches": true,
+      "bytes_match": true
+    },
+    {
+      "dataset": "atlas-higgs-couplings-2022",
+      "path": "data/external/candidate_b/raw/hepdata_ins2104706_v1_original.zip",
+      "present": true,
+      "sha256_matches": true,
+      "bytes_match": true
+    },
+    {
+      "dataset": "cms-hig-24-002-heavy-scalar-zz",
+      "path": "data/external/candidate_b/raw/hepdata_ins3161000_v1_original.zip",
+      "present": true,
+      "sha256_matches": true,
+      "bytes_match": true
+    }
+  ],
+  "comparison_performed": false,
+  "evidence_kind": "model algebra and public-data qualification, not a test outcome",
+  "atlas_figure4": {
+    "headers": [
+      "$\\kappa_{V}$",
+      "$\\kappa_{F}$"
+    ],
+    "qualifiers": {
+      "Exclusion contour": "observed",
+      "SQRT(S)": "13000",
+      "LUMINOSITY": "139"
+    },
+    "vertex_count": 209,
+    "contours": {
+      "closed_loops": [
+        {
+          "vertices": 81,
+          "area": 0.009795254424000255,
+          "self_intersections": 0,
+          "kappa_V_range": [
+            0.989225,
+            1.08205
+          ],
+          "kappa_F_range": [
+            0.879319,
+            1.02949
+          ]
+        },
+        {
+          "vertices": 127,
+          "area": 0.02591494745300027,
+          "self_intersections": 0,
+          "kappa_V_range": [
+            0.961249,
+            1.1118
+          ],
+          "kappa_F_range": [
+            0.835319,
+            1.07974
+          ]
+        }
+      ],
+      "unlooped_points": [
+        [
+          1.035,
+          0.9524
+        ]
+      ],
+      "identified": true,
+      "inner_loop_index": 0,
+      "outer_loop_index": 1,
+      "rule": "a 95% region from the same likelihood contains the 68% region, so the outer nested loop is the observed 95% contour",
+      "area_ratio_outer_to_inner": 2.645663535752953,
+      "gaussian_two_parameter_area_ratio": 2.60973298262252,
+      "unlooped_points_inside_both": [
+        true
+      ],
+      "unlooped_point_use": "unlabeled, consistent with a best-fit marker; not used"
+    }
+  },
+  "ready_for_comparison": true
+}

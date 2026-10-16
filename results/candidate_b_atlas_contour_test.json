@@ -1,0 +1,1015 @@
+{
+  "schema_version": 1,
+  "artifact": "candidate_b_atlas_contour_test",
+  "source": "tools/evaluate_candidate_b_atlas_contour.py",
+  "source_sha256": "15ae588c8ba3f19a5913bad5abf7dc521e534328e4c3e74298b1b389acf28b02",
+  "model_source_sha256": "4b9e69c092d9244b5e8e0ea2b062438a1ed5d5b9de931f65faf36b29f36ec5c2",
+  "preregistration_sha256": "69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d",
+  "protocol_sha256": "467dee7c7cea9238bb019201a7cb9f8c4c3f917ed457a49d1c19ab5fcb290362",
+  "data": {
+    "table_doi": "10.17182/hepdata.130266.v1/t4",
+    "holdings": [
+      {
+        "dataset": "atlas-higgs-couplings-2022",
+        "path": "data/external/candidate_b/raw/hepdata_130266_v1_figure4.yaml",
+        "present": true,
+        "sha256_matches": true,
+        "bytes_match": true
+      },
+      {
+        "dataset": "atlas-higgs-couplings-2022",
+        "path": "data/external/candidate_b/raw/hepdata_ins2104706_v1_original.zip",
+        "present": true,
+        "sha256_matches": true,
+        "bytes_match": true
+      }
+    ],
+    "qualifiers": {
+      "Exclusion contour": "observed",
+      "SQRT(S)": "13000",
+      "LUMINOSITY": "139"
+    }
+  },
+  "contour_identification": {
+    "unlooped_points": [
+      [
+        1.035,
+        0.9524
+      ]
+    ],
+    "identified": true,
+    "inner_loop_index": 0,
+    "outer_loop_index": 1,
+    "rule": "a 95% region from the same likelihood contains the 68% region, so the outer nested loop is the observed 95% contour",
+    "area_ratio_outer_to_inner": 2.645663535752953,
+    "gaussian_two_parameter_area_ratio": 2.60973298262252,
+    "unlooped_points_inside_both": [
+      true
+    ],
+    "unlooped_point_use": "unlabeled, consistent with a best-fit marker; not used"
+  },
+  "contour_loops": [
+    {
+      "vertices": 81,
+      "area": 0.009795254424000255,
+      "self_intersections": 0,
+      "kappa_V_range": [
+        0.989225,
+        1.08205
+      ],
+      "kappa_F_range": [
+        0.879319,
+        1.02949
+      ]
+    },
+    {
+      "vertices": 127,
+      "area": 0.02591494745300027,
+      "self_intersections": 0,
+      "kappa_V_range": [
+        0.961249,
+        1.1118
+      ],
+      "kappa_F_range": [
+        0.835319,
+        1.07974
+      ]
+    }
+  ],
+  "diagonal": {
+    "crossings": [
+      0.9759126381461676,
+      1.0781082191780822
+    ],
+    "crossing_edge_lengths": [
+      0.004629643614793897,
+      0.0009488630038102694
+    ],
+    "inside_intervals": [
+      [
+        0.9759126381461676,
+        1.0
+      ]
+    ],
+    "sm_point_inside": true
+  },
+  "evidence_kind": "conditional compatibility with a published joint 95% region",
+  "likelihood_evaluated": false,
+  "one_parameter_interval_claimed": false,
+  "candidate_b_confirmed": false,
+  "outcome": "compatible_with_limit",
+  "kappa_lo": 0.9759126381461676,
+  "kappa_inside_intervals": [
+    [
+      0.9759126381461676,
+      1.0
+    ]
+  ],
+  "contour_resolution_at_crossing": 0.004629643614793897,
+  "interpretation": "The restricted hypothesis's universal suppression line enters the published observed 95% joint region. Parameter points with kappa < kappa_lo lie outside that region under its assumptions; mu4_max translates this boundary for each preregistered grid point. This is not a B-specific confidence interval.",
+  "grid": [
+    {
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 150.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 299,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          1.7253343034363129
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 1.7253343034363129,
+      "mu5_max_GeV_half": 1.3676129084610382,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.024969081329978614,
+      "unmixed_higgs_mass_GeV": 127.75110523865968,
+      "brane_quartic_lambda0": 0.13460275586730236,
+      "lightest_additional_mass_GeV": 150.0471475480916,
+      "heaviest_mass_GeV": 2993.7601841737815,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 150.0471475480916,
+          "higgs_fraction": 0.0010472382016150819,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0,
+            "ZZ": 0.0,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.0,
+          "lower_bound_width_over_mass": 0.0
+        },
+        {
+          "mass_GeV": 150.48243376495802,
+          "higgs_fraction": 0.005138433684856731,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0,
+            "ZZ": 0.0,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.0,
+          "lower_bound_width_over_mass": 0.0
+        },
+        {
+          "mass_GeV": 151.49370779517497,
+          "higgs_fraction": 0.006690372193343327,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0,
+            "ZZ": 0.0,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.0,
+          "lower_bound_width_over_mass": 0.0
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 186.06376146131785,
+        "ratio": 5.021481756694802e-06
+      }
+    },
+    {
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 300.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 298,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          10.316351375082373
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 10.316351375082373,
+      "mu5_max_GeV_half": 8.177415403311855,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.14929849594947028,
+      "unmixed_higgs_mass_GeV": 150.49922401382278,
+      "brane_quartic_lambda0": 0.18680699779055707,
+      "lightest_additional_mass_GeV": 300.03416288805073,
+      "heaviest_mass_GeV": 2995.062844483245,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 300.03416288805073,
+          "higgs_fraction": 5.709947276302884e-05,
+          "two_scalar_width_GeV": 0.00023011159643878174,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.000331088230367199,
+            "ZZ": 0.00014726362566931417,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.000708463452475295,
+          "lower_bound_width_over_mass": 2.3612759482313956e-06
+        },
+        {
+          "mass_GeV": 300.3103356853184,
+          "higgs_fraction": 0.00044660335532284727,
+          "two_scalar_width_GeV": 0.001806858206442843,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0025987320254362376,
+            "ZZ": 0.0011561055594224792,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.005561695791301559,
+          "lower_bound_width_over_mass": 1.8519828092528285e-05
+        },
+        {
+          "mass_GeV": 300.87470760885907,
+          "higgs_fraction": 0.0009770971379939547,
+          "two_scalar_width_GeV": 0.003984603312265187,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.005726555169765622,
+            "ZZ": 0.0025485959218447805,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.01225975440387559,
+          "lower_bound_width_over_mass": 4.074704218678769e-05
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 313.4741003169047,
+        "ratio": 9.740932635913322e-05
+      }
+    },
+    {
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 600.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 293,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          32.61678708483904
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 32.61678708483904,
+      "mu5_max_GeV_half": 25.85420052270915,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.4720309610849886,
+      "unmixed_higgs_mass_GeV": 214.09849534707595,
+      "brane_quartic_lambda0": 0.37805226973766115,
+      "lightest_additional_mass_GeV": 600.0189473049539,
+      "heaviest_mass_GeV": 2990.8049952776146,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 600.0189473049539,
+          "higgs_fraction": 6.778001175483797e-06,
+          "two_scalar_width_GeV": 0.00023400422914006354,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0004314912966121661,
+            "ZZ": 0.00020919702018760896,
+            "ttbar": 0.0001305258532464188
+          },
+          "computed_width_lower_bound_GeV": 0.0010052183991862574,
+          "lower_bound_width_over_mass": 1.675311094260103e-06
+        },
+        {
+          "mass_GeV": 600.1707131997408,
+          "higgs_fraction": 5.869757547865491e-05,
+          "two_scalar_width_GeV": 0.0020279615271166914,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.003739759246286226,
+            "ZZ": 0.0018131503560515128,
+            "ttbar": 0.001131065539655436
+          },
+          "computed_width_lower_bound_GeV": 0.008711936669109865,
+          "lower_bound_width_over_mass": 1.4515764394205743e-05
+        },
+        {
+          "mass_GeV": 600.4751716976132,
+          "higgs_fraction": 0.00015153494908590016,
+          "two_scalar_width_GeV": 0.00524311065416206,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.009670396980199173,
+            "ZZ": 0.0046886514156188495,
+            "ttbar": 0.0029236603348317494
+          },
+          "computed_width_lower_bound_GeV": 0.022525819384811834,
+          "lower_bound_width_over_mass": 3.751332352531533e-05
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 629.6511901335026,
+        "ratio": 0.0002667483533301005
+      }
+    },
+    {
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 1200.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 274,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          95.81503624518066
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 95.81503624518066,
+      "mu5_max_GeV_half": 75.94926973432678,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 1.3866376086511722,
+      "unmixed_higgs_mass_GeV": 351.9965844414977,
+      "brane_quartic_lambda0": 1.0218838093056122,
+      "lightest_additional_mass_GeV": 1200.009949377388,
+      "heaviest_mass_GeV": 2991.2753432685813,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": false,
+        "brane_quartic_convention": false,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 1200.009949377388,
+          "higgs_fraction": 8.486279722438929e-07,
+          "two_scalar_width_GeV": 0.0002228410425585938,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.000468456361518259,
+            "ZZ": 0.00023242417443020973,
+            "ttbar": 5.245903313166549e-05
+          },
+          "computed_width_lower_bound_GeV": 0.000976180611638728,
+          "lower_bound_width_over_mass": 8.134770983733998e-07
+        },
+        {
+          "mass_GeV": 1200.0895544986715,
+          "higgs_fraction": 7.563593365882967e-06,
+          "two_scalar_width_GeV": 0.0019865124707062758,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.004176071707107535,
+            "ZZ": 0.0020719560961374264,
+            "ttbar": 0.000467592690734589
+          },
+          "computed_width_lower_bound_GeV": 0.008702132964685826,
+          "lower_bound_width_over_mass": 7.251236319877042e-06
+        },
+        {
+          "mass_GeV": 1200.2488174033135,
+          "higgs_fraction": 2.0609830721229485e-05,
+          "two_scalar_width_GeV": 0.005415120901122557,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.01138387697268595,
+            "ZZ": 0.005648117013413104,
+            "ttbar": 0.001274345485151883
+          },
+          "computed_width_lower_bound_GeV": 0.023721460372373496,
+          "lower_bound_width_over_mass": 1.976378566545381e-05
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 1259.0301738282312,
+        "ratio": 0.0005241028589969138
+      }
+    },
+    {
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 150.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 29,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          5.276882601708971
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 5.276882601708971,
+      "mu5_max_GeV_half": 1.3227183131352103,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.024149421910977884,
+      "unmixed_higgs_mass_GeV": 127.6080869492118,
+      "brane_quartic_lambda0": 0.13430154704036226,
+      "lightest_additional_mass_GeV": 150.80058711435618,
+      "heaviest_mass_GeV": 2903.8767882190405,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 150.80058711435618,
+          "higgs_fraction": 0.033170631430463705,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0,
+            "ZZ": 0.0,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.0,
+          "lower_bound_width_over_mass": 0.0
+        },
+        {
+          "mass_GeV": 180.84424992863347,
+          "higgs_fraction": 0.012248919078338773,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.007387191997607304,
+            "ZZ": 0.0,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.007387191997607304,
+          "lower_bound_width_over_mass": 4.084836537806709e-05
+        },
+        {
+          "mass_GeV": 250.14580082934287,
+          "higgs_fraction": 0.0015725159510159245,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.004424820148376223,
+            "ZZ": 0.0018805971248918869,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.00630541727326811,
+          "lower_bound_width_over_mass": 2.5206968305535775e-05
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 180.84424992863347,
+        "ratio": 4.084836537806709e-05
+      }
+    },
+    {
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 300.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 29,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          32.623329962689965
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 32.623329962689965,
+      "mu5_max_GeV_half": 8.177456129709537,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.14929923950836016,
+      "unmixed_higgs_mass_GeV": 150.4826947540459,
+      "brane_quartic_lambda0": 0.18676596619255306,
+      "lightest_additional_mass_GeV": 301.19330923004225,
+      "heaviest_mass_GeV": 2915.4785582846725,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 301.19330923004225,
+          "higgs_fraction": 0.007814355092669522,
+          "two_scalar_width_GeV": 0.032009123026135206,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.04598375346847996,
+            "ZZ": 0.020469556374205458,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.09846243286882062,
+          "lower_bound_width_over_mass": 0.0003269077693675394
+        },
+        {
+          "mass_GeV": 318.6808035224823,
+          "higgs_fraction": 0.018223894866869313,
+          "two_scalar_width_GeV": 0.09305035547577992,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.13272098850726116,
+            "ZZ": 0.05975383080572016,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.28552517478876127,
+          "lower_bound_width_over_mass": 0.0008959597554441903
+        },
+        {
+          "mass_GeV": 362.19023094940934,
+          "higgs_fraction": 0.010679222280886386,
+          "two_scalar_width_GeV": 0.08376897103834195,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.1241653625478694,
+            "ZZ": 0.0571597136988127,
+            "ttbar": 0.0063221020088661045
+          },
+          "computed_width_lower_bound_GeV": 0.27141614929389013,
+          "lower_bound_width_over_mass": 0.0007493745719823169
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 318.6808035224823,
+        "ratio": 0.0008959597554441903
+      }
+    },
+    {
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 600.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 29,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          103.14078610901612
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 103.14078610901612,
+      "mu5_max_GeV_half": 25.853561072852813,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.47201928638129825,
+      "unmixed_higgs_mass_GeV": 214.14608753231872,
+      "brane_quartic_lambda0": 0.37822036371133677,
+      "lightest_additional_mass_GeV": 600.9910272311796,
+      "heaviest_mass_GeV": 2961.4435702010387,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 600.9910272311796,
+          "higgs_fraction": 0.0021097395922283937,
+          "two_scalar_width_GeV": 0.07317842912657133,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.13500785432372883,
+            "ZZ": 0.06546142445819386,
+            "ttbar": 0.04079126373627311
+          },
+          "computed_width_lower_bound_GeV": 0.31443897164476714,
+          "lower_bound_width_over_mass": 0.000523200775714433
+        },
+        {
+          "mass_GeV": 611.0716437597239,
+          "higgs_fraction": 0.008491888086063881,
+          "two_scalar_width_GeV": 0.3090623116402178,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.5732284812644748,
+            "ZZ": 0.27821968382435813,
+            "ttbar": 0.1709907734723493
+          },
+          "computed_width_lower_bound_GeV": 1.3315012502014,
+          "lower_bound_width_over_mass": 0.0021789609513036944
+        },
+        {
+          "mass_GeV": 635.2088217123879,
+          "higgs_fraction": 0.00916378342586417,
+          "two_scalar_width_GeV": 0.3730813817494157,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.7002034941245637,
+            "ZZ": 0.3405972826714942,
+            "ttbar": 0.20194397767834776
+          },
+          "computed_width_lower_bound_GeV": 1.6158261362238213,
+          "lower_bound_width_over_mass": 0.0025437715614022765
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 635.2088217123879,
+        "ratio": 0.0025437715614022765
+      }
+    },
+    {
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 1200.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 27,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          302.9706879250692
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 302.9706879250692,
+      "mu5_max_GeV_half": 75.94348927373835,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 1.386532072362604,
+      "unmixed_higgs_mass_GeV": 352.06570300266037,
+      "brane_quartic_lambda0": 1.0222851658886782,
+      "lightest_additional_mass_GeV": 1200.6928020004523,
+      "heaviest_mass_GeV": 2954.8785550908797,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": false,
+        "brane_quartic_convention": false,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 1200.6928020004523,
+          "higgs_fraction": 0.0004581613781369389,
+          "two_scalar_width_GeV": 0.12051128228838134,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.2533522373795013,
+            "ZZ": 0.12570157422929068,
+            "ttbar": 0.028342312066566358
+          },
+          "computed_width_lower_bound_GeV": 0.5279074059637396,
+          "lower_bound_width_over_mass": 0.0004396690019996812
+        },
+        {
+          "mass_GeV": 1206.609891333229,
+          "higgs_fraction": 0.0027466364981084852,
+          "two_scalar_width_GeV": 0.733045900661152,
+          "sm_like_tree_widths_GeV": {
+            "WW": 1.5417948186699961,
+            "ZZ": 0.7650245210605044,
+            "ttbar": 0.17097270124445715
+          },
+          "computed_width_lower_bound_GeV": 3.2108379416361097,
+          "lower_bound_width_over_mass": 0.0026610406268825905
+        },
+        {
+          "mass_GeV": 1219.5316792813987,
+          "higgs_fraction": 0.0043419043038050555,
+          "two_scalar_width_GeV": 1.1959389347464329,
+          "sm_like_tree_widths_GeV": {
+            "WW": 2.517838717637277,
+            "ZZ": 1.2495299249691152,
+            "ttbar": 0.2739394252646199
+          },
+          "computed_width_lower_bound_GeV": 5.237247002617446,
+          "lower_bound_width_over_mass": 0.004294473929290185
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 1267.8391156473203,
+        "ratio": 0.005110118152066139
+      }
+    },
+    {
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 150.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 2,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          6.221168992076648
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 6.221168992076648,
+      "mu5_max_GeV_half": 0.49313057778634906,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.009003291374971311,
+      "unmixed_higgs_mass_GeV": 126.47428821319323,
+      "brane_quartic_lambda0": 0.13192560890359184,
+      "lightest_additional_mass_GeV": 151.13703681560375,
+      "heaviest_mass_GeV": 2005.6174040084318,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 151.13703681560375,
+          "higgs_fraction": 0.04758959821472542,
+          "two_scalar_width_GeV": 0.0,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0,
+            "ZZ": 0.0,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.0,
+          "lower_bound_width_over_mass": 0.0
+        },
+        {
+          "mass_GeV": 1011.1897261741306,
+          "higgs_fraction": 4.632151848000841e-06,
+          "two_scalar_width_GeV": 0.0008091934158695931,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0015132354718283972,
+            "ZZ": 0.0007484254744727634,
+            "ttbar": 0.00022808251885234992
+          },
+          "computed_width_lower_bound_GeV": 0.003298936881023104,
+          "lower_bound_width_over_mass": 3.2624311695736266e-06
+        },
+        {
+          "mass_GeV": 2005.6174040084318,
+          "higgs_fraction": 2.923400027975893e-07,
+          "two_scalar_width_GeV": 0.00039001852397517955,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.0007665368614831933,
+            "ZZ": 0.0003822088517873804,
+            "ttbar": 3.286395672212444e-05
+          },
+          "computed_width_lower_bound_GeV": 0.0015716281939678776,
+          "lower_bound_width_over_mass": 7.836131611277494e-07
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 1011.1897261741306,
+        "ratio": 3.2624311695736266e-06
+      }
+    },
+    {
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 300.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 2,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          67.16251994679521
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 67.16251994679521,
+      "mu5_max_GeV_half": 5.323740973622834,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.09719776738559138,
+      "unmixed_higgs_mass_GeV": 141.31084042564774,
+      "brane_quartic_lambda0": 0.16469316591626265,
+      "lightest_additional_mass_GeV": 306.0652403676805,
+      "heaviest_mass_GeV": 2022.4080653766175,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": true
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 306.0652403676805,
+          "higgs_fraction": 0.047084428399922655,
+          "two_scalar_width_GeV": 0.20599072055906226,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.2945209538958138,
+            "ZZ": 0.13154176679251542,
+            "ttbar": 0.0
+          },
+          "computed_width_lower_bound_GeV": 0.6320534412473915,
+          "lower_bound_width_over_mass": 0.0020650938358374076
+        },
+        {
+          "mass_GeV": 1044.2753139187414,
+          "higgs_fraction": 0.00047707679543427086,
+          "two_scalar_width_GeV": 0.09197670444698773,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.17206213977012672,
+            "ZZ": 0.08515731944410494,
+            "ttbar": 0.02455923639072334
+          },
+          "computed_width_lower_bound_GeV": 0.37375540005194274,
+          "lower_bound_width_over_mass": 0.0003579088723733116
+        },
+        {
+          "mass_GeV": 2022.4080653766175,
+          "higgs_fraction": 3.301751123003952e-05,
+          "two_scalar_width_GeV": 0.045232863998201665,
+          "sm_like_tree_widths_GeV": {
+            "WW": 0.08878107855879092,
+            "ZZ": 0.04426984418406503,
+            "ttbar": 0.003745633580331713
+          },
+          "computed_width_lower_bound_GeV": 0.18202942032138936,
+          "lower_bound_width_over_mass": 9.000627689224105e-05
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 306.0652403676805,
+        "ratio": 0.0020650938358374076
+      }
+    },
+    {
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 600.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 2,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          292.3312032627419
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 292.3312032627419,
+      "mu5_max_GeV_half": 23.172084756664727,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 0.42306245085489597,
+      "unmixed_higgs_mass_GeV": 201.95313641679337,
+      "brane_quartic_lambda0": 0.33637663690788644,
+      "lightest_additional_mass_GeV": 612.3065811798012,
+      "heaviest_mass_GeV": 2088.6359787512442,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": true,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": false
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 612.3065811798012,
+          "higgs_fraction": 0.04117485595449745,
+          "two_scalar_width_GeV": 1.5073347044449792,
+          "sm_like_tree_widths_GeV": {
+            "WW": 2.797481118470514,
+            "ZZ": 1.3579348571223466,
+            "ttbar": 0.8331167590394759
+          },
+          "computed_width_lower_bound_GeV": 6.495867439077316,
+          "lower_bound_width_over_mass": 0.01060884798357219
+        },
+        {
+          "mass_GeV": 1169.5374983805855,
+          "higgs_fraction": 0.005863959464622265,
+          "two_scalar_width_GeV": 1.567726764531488,
+          "sm_like_tree_widths_GeV": {
+            "WW": 2.992359507852313,
+            "ZZ": 1.4840507400727079,
+            "ttbar": 0.35076360461665657
+          },
+          "computed_width_lower_bound_GeV": 6.394900617073166,
+          "lower_bound_width_over_mass": 0.005467888482351309
+        },
+        {
+          "mass_GeV": 2088.6359787512442,
+          "higgs_fraction": 0.0005557072874677038,
+          "two_scalar_width_GeV": 0.8422065094150669,
+          "sm_like_tree_widths_GeV": {
+            "WW": 1.646875990992939,
+            "ZZ": 0.821338666826903,
+            "ttbar": 0.06528892476610586
+          },
+          "computed_width_lower_bound_GeV": 3.3757100920010146,
+          "lower_bound_width_over_mass": 0.0016162271101062271
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 612.3065811798012,
+        "ratio": 0.01060884798357219
+      }
+    },
+    {
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 1200.0,
+      "cutoff_GeV": 3000.0,
+      "levels": 2,
+      "mu4_ranges_GeV": [
+        [
+          0.0,
+          956.4088465412898
+        ]
+      ],
+      "valid": true,
+      "mu4_max_GeV": 956.4088465412898,
+      "mu5_max_GeV_half": 75.81122578337944,
+      "brane_coefficient_mu5_over_sqrt_cutoff": 1.384117282455806,
+      "unmixed_higgs_mass_GeV": 347.52552768184506,
+      "brane_quartic_lambda0": 0.9960887666733413,
+      "lightest_additional_mass_GeV": 1215.3127105927122,
+      "heaviest_mass_GeV": 2336.8711588074448,
+      "flags": {
+        "eigenmasses_below_cutoff": true,
+        "isolated_from_125": true,
+        "brane_coefficient_convention": false,
+        "brane_quartic_convention": true,
+        "lightest_additional_narrow_lower_bound": false
+      },
+      "lightest_additional_states": [
+        {
+          "mass_GeV": 1215.3127105927122,
+          "higgs_fraction": 0.024000119821527256,
+          "two_scalar_width_GeV": 6.543124086650275,
+          "sm_like_tree_widths_GeV": {
+            "WW": 13.771055658971347,
+            "ZZ": 6.83381761763179,
+            "ttbar": 1.5076066521470968
+          },
+          "computed_width_lower_bound_GeV": 28.655604015400506,
+          "lower_bound_width_over_mass": 0.023578790681309563
+        },
+        {
+          "mass_GeV": 1577.077894999575,
+          "higgs_fraction": 0.019646580958920884,
+          "two_scalar_width_GeV": 12.174538664281762,
+          "sm_like_tree_widths_GeV": {
+            "WW": 24.89797948513215,
+            "ZZ": 12.393378284751813,
+            "ttbar": 1.6878523293338505
+          },
+          "computed_width_lower_bound_GeV": 51.15374876349958,
+          "lower_bound_width_over_mass": 0.03243577817284248
+        },
+        {
+          "mass_GeV": 2336.8711588074448,
+          "higgs_fraction": 0.003947821926139333,
+          "two_scalar_width_GeV": 8.337983118043981,
+          "sm_like_tree_widths_GeV": {
+            "WW": 16.415894109800725,
+            "ZZ": 8.191226327837823,
+            "ttbar": 0.5233492100083071
+          },
+          "computed_width_lower_bound_GeV": 33.468452765690834,
+          "lower_bound_width_over_mass": 0.014321907581233747
+        }
+      ],
+      "largest_lower_bound_width_over_mass": {
+        "mass_GeV": 1577.077894999575,
+        "ratio": 0.03243577817284248
+      }
+    }
+  ],
+  "higgs_mass_sensitivity": [
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 150.0,
+      "relative_change_mu4_max": -0.0030148881764698876
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 300.0,
+      "relative_change_mu4_max": -0.000277817867745056
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 600.0,
+      "relative_change_mu4_max": -6.015376366330649e-05
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 10.0,
+      "m5_GeV": 1200.0,
+      "relative_change_mu4_max": -1.4865177616951719e-05
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 150.0,
+      "relative_change_mu4_max": -0.003301788332479183
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 300.0,
+      "relative_change_mu4_max": -0.0002778229376960706
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 600.0,
+      "relative_change_mu4_max": -6.015094220912509e-05
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 100.0,
+      "m5_GeV": 1200.0,
+      "relative_change_mu4_max": -1.48634032024475e-05
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 150.0,
+      "relative_change_mu4_max": -0.004017403131875263
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 300.0,
+      "relative_change_mu4_max": -0.0003667829020100877
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 600.0,
+      "relative_change_mu4_max": -7.232140077750859e-05
+    },
+    {
+      "M_H_GeV": 125.2,
+      "inverse_radius_GeV": 1000.0,
+      "m5_GeV": 1200.0,
+      "relative_change_mu4_max": -1.5243674762910331e-05
+    }
+  ],
+  "max_abs_relative_change_mu4_max": 0.004017403131875263
+}
