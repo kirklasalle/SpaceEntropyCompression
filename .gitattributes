@@ -5,3 +5,4 @@ paper/*.bib -text whitespace=cr-at-eol
 results/** -text whitespace=cr-at-eol
 knowledgebase/candidate_b_*.json -text whitespace=cr-at-eol
 docs/archive/antigravity_recovery/** -text -whitespace
+knowledgebase/candidate_a_*.json -text whitespace=cr-at-eol

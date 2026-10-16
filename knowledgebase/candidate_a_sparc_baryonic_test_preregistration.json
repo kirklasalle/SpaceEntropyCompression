@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "preregistration_id": "candidate-a-option2-sparc-baryonic-v1",
+  "date": "2026-10-16",
+  "candidate": "candidate-a",
+  "author_direction": "On 2026-10-16 Kirk LaSalle asked to resolve the uneven testing of Candidates A and B now ('Let's resolve this now'). He was asked to choose the precise C and M for Candidate A among three written options (1: M = all gravitating energy, an exact GR identity; 2: M = observed baryons with C = C_m, alpha = 1, a parameter-free falsification test; 3: option 2 plus a free exponent). He was unavailable and asked the assistant to choose pragmatically.",
+  "operationalization_status": "assistant_proposed_pending_author_confirmation",
+  "operationalization_note": "Option 2 was chosen by the assistant because it is the only option that gives Candidate A an observational test without adding a departure from GR. It is not recorded as an author selection. If Kirk later selects a different meaning of C or M, this test remains the result for option 2 only and is not relabelled.",
+  "registration_scope": "Local prospective numerical preregistration, frozen by SHA-256 before any computation with the decision statistic, nuisance treatments, comparator and thresholds defined here. It is not an external registry entry and it is not blind (see prior_knowledge_disclosure).",
+  "prior_knowledge_disclosure": [
+    "Disc-galaxy rotation curves are known from decades of literature to exceed the Newtonian prediction of their observed baryons at large radii; McGaugh, Lelli and Schombert (2016) established the radial acceleration relation on this same SPARC sample. The direction of the outcome is therefore strongly expected.",
+    "This repository already computed the same mathematical model as option 2 under other nuisance treatments: docs/SHOW_YOUR_WORK.md section 4 reports 'Newtonian baryons only' chi2 = 605,258 against chi2 = 7,804 for baryons plus an isothermal halo on all 175 SPARC galaxies (Upsilon_disk fitted in [0.1, 2.0], no distance or inclination nuisance), and results/sparc_real_analysis.json reports a Newtonian baryons-only chi2 = 364,990 for the Q <= 2, inclination >= 30 degree sample with the Upsilon prior.",
+    "The SPARC Q <= 2 and Q = 3 samples were profiled for acceleration laws in results/real_data_v1/sparc_profile_validation.json and results/real_data_v1/sparc_q3_holdout_v1.json. Every galaxy used here has been examined before.",
+    "No computation using the T1/T2 nested-comparator statistic, the error-inflation rule or the thresholds below has been run before this freeze.",
+    "The value of this test is therefore not discovery. It is the formal application of a fixed rule to Candidate A's declared operationalization, with nuisance freedom deliberately chosen to favour Candidate A."
+  ],
+  "operationalization": {
+    "C": "C_m = (G_mu_nu + Lambda g_mu_nu) n^mu n^nu for the static observer n of each galaxy",
+    "M": "observed baryonic mass density rho_bar (stars and helium-corrected gas)",
+    "relation": "rho_bar = k (C_m / C0)^alpha with alpha = 1 and k = c^2 C0 / (8 pi G), i.e. rho_bar = c^2 C_m / (8 pi G)",
+    "free_physics_parameters": 0,
+    "tidal_curvature": "sqrt(K) is kept as a separate geometric diagnostic and is not a matter source",
+    "weak_field_reduction": [
+      "For a weak, quasi-static field with |Phi| << c^2, speeds << c and pressure << rho c^2, Einstein's equation gives C_m = 8 pi G rho_dyn / c^2 = 2 laplacian(Phi_obs) / c^2, where Phi_obs is the potential traced by the observed dynamics.",
+      "Option 2 therefore states laplacian(Phi_obs) = 4 pi G rho_bar = laplacian(Phi_bar) everywhere. For an isolated galaxy with Phi -> 0 at infinity, Poisson uniqueness gives Phi_obs = Phi_bar.",
+      "The midplane circular speed then satisfies V_obs(R)^2 = V_bar(R)^2 at every radius, with V_bar^2 = V_gas|V_gas| + Upsilon_disk V_disk|V_disk| + Upsilon_bulge V_bul|V_bul| from the SPARC mass models.",
+      "The cosmological-constant term is negligible: |Lambda c^2| is about 1e-35 s^-2, about 1e-4 of 4 pi G rho in the outer discs of SPARC galaxies, and C_m removes the vacuum term by construction."
+    ]
+  },
+  "data": {
+    "dataset_id": "sparc-rotation-curves",
+    "citation": "Lelli, McGaugh & Schombert (2016), AJ 152, 157, doi:10.3847/0004-6256/152/6/157",
+    "holdings": [
+      {
+        "path": "data/external/sparc/Rotmod_LTG.zip",
+        "bytes": 110737,
+        "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588",
+        "url": "https://astroweb.case.edu/SPARC/Rotmod_LTG.zip"
+      },
+      {
+        "path": "data/external/sparc/SPARC_Lelli2016c.mrt",
+        "bytes": 28259,
+        "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243",
+        "url": "https://astroweb.case.edu/SPARC/SPARC_Lelli2016c.mrt"
+      }
+    ],
+    "loader": "emergent_matter_model.sparc_real_analysis.load_sparc after emergent_matter_model.fetch_real_data.fetch_sparc verifies the download manifest"
+  },
+  "population": {
+    "primary": "SPARC quality flag Q <= 2, catalogue inclination >= 30 degrees, at least 3 points after the point filter (the certified load_sparc defaults)",
+    "primary_expected_counts": "the certified pipeline reports 153 galaxies and 3168 points for this selection; any difference is reported as a deviation",
+    "secondary": "Q = 3 with the same inclination and point rules; reported separately and never changes the primary outcome",
+    "point_filter": "radius > 0 and observed velocity > 0",
+    "error_treatment": "observed velocity uncertainty floored at 1 km/s, as in the certified pipeline",
+    "exclusions": "No galaxy satisfying the rules may be removed after any outcome is computed."
+  },
+  "model": {
+    "nuisance_parameters": "x = (log10 Upsilon_disk, f_D, i) per galaxy, Upsilon_bulge = 1.4 Upsilon_disk",
+    "nuisance_bounds": "log10 Upsilon_disk in [-1.3, 0.7]; f_D in [max(1 - 5 sigma_fD, 0.3), 1 + 5 sigma_fD]; i in [max(i0 - 5 sigma_i, 10), min(i0 + 5 sigma_i, 90)] degrees; sigma_fD = max(e_D / D, 0.02); sigma_i = max(e_i, 1 degree)",
+    "a2_prediction": "V_A2 = sqrt(max(V_bar^2, 0.01 km^2 s^-2) * f_D) * sin(i) / sin(i0), identical to the certified pipeline residual with nu = 1",
+    "residual": "(V_obs - V_pred) / V_err for every point",
+    "reference_comparator": "REF adds a non-negative pseudo-isothermal unseen-mass term: V_REF = sqrt(max(V_bar^2, 0.01) * f_D + s * (1 - (r_c / R) arctan(R / r_c))) * sin(i) / sin(i0), with s in [0, 250000] (km/s)^2 and log10(r_c / kpc) in [-2, 2], R the catalogue radius. s = 0 recovers A2 exactly. The term can only add positive circular-speed support, so any improvement over A2 measures a need for unseen mass. REF is standard phenomenology used as a yardstick, not a claim about dark matter."
+  },
+  "treatments": {
+    "T1_certified_priors": "Q = chi2 + ((log10 Upsilon_disk - log10 0.5) / 0.1)^2 + ((f_D - 1) / sigma_fD)^2 + ((i - i0) / sigma_i)^2",
+    "T2_generous_to_A": "as T1 without the Upsilon_disk term, so Upsilon_disk is free from 0.05 to 5.0, far beyond usual maximum-disk values"
+  },
+  "fitting": {
+    "optimizer": "scipy.optimize.least_squares, method trf, 3-point finite-difference Jacobian, ftol = xtol = 1e-10, gtol = 1e-9, max_nfev = 2000",
+    "a2_starts": "log10 Upsilon_disk in {log10 0.5, log10 0.5 - 0.3, log10 0.5 + 0.3, 0.69} crossed with (f_D, i) in {(1, i0), (1 + 2 sigma_fD, i0 + 2 sigma_i)}, clipped to the bounds",
+    "ref_starts": "the best A2 nuisance values with s in {0.25, 1} x max(V_obs)^2 and log10 r_c in {log10 0.5, log10 2, log10 8}; plus each A2 Upsilon start at nominal (f_D, i) with s = max(V_obs)^2 and r_c = 2 kpc",
+    "nesting": "Q_REF is the minimum of every converged REF start and Q_A2 (the s = 0 point), so Q_A2 - Q_REF >= 0 by construction",
+    "convergence": "a start counts only if least_squares reports success with a finite cost; every galaxy, model and treatment cell needs at least one counted start"
+  },
+  "statistics": {
+    "per_galaxy": "Delta_Q_i = Q_i(A2) - Q_i(REF)",
+    "error_inflation": "lambda = max(1, chi2_data(REF) summed over the population / max(N_points - 5 N_galaxies, 1)), computed separately per treatment; Delta_Q_i_cons = Delta_Q_i / lambda",
+    "population_statistic": "Delta_Q_cons = sum_i Delta_Q_i_cons",
+    "population_threshold": "the 0.999 quantile of chi2 with 2 N_galaxies degrees of freedom",
+    "galaxy_threshold": "the 0.999 quantile of chi2 with 2 degrees of freedom (13.8155)",
+    "calibration_caveat": "Thresholds are nominal. Under A2 the comparator sits on a boundary (s = 0) with r_c unidentified, radial covariance is unknown and the objective includes priors, so these are not calibrated significances."
+  },
+  "outcome_rules": {
+    "rejected": "Delta_Q_cons exceeds the population threshold under both T1 and T2 for the primary population: the SPARC rotation curves require mass beyond observed baryons even with nuisance freedom favouring A, so Candidate A in its option 2 operationalization is falsified for disc galaxies",
+    "not_rejected": "Delta_Q_cons does not exceed the population threshold under T1 or under T2",
+    "incomplete": "a data hash mismatch, a cell without a counted start, or any non-finite value; stop and report"
+  },
+  "reported_descriptives": [
+    "galaxy and point counts per population",
+    "lambda, Delta_Q_cons and thresholds per treatment",
+    "number and fraction of galaxies with Delta_Q_i_cons above the galaxy threshold and best REF s > 0",
+    "median and 16th/84th percentiles of the outermost-point ratio V_obs^2 / V_A2^2 at the A2 optimum per treatment",
+    "fraction of galaxies whose T2 Upsilon_disk optimum lies at the upper bound",
+    "optimizer start counts (attempted, counted, failed)"
+  ],
+  "sensitivity_never_the_result": [
+    "T1 with Upsilon_disk prior centre 0.4 and 0.6",
+    "Delta_Q without error inflation"
+  ],
+  "interpretation_limits": [
+    "A rejection falsifies only option 2 (M = observed baryons, C = C_m, alpha = 1). Option 1 (M = all gravitating energy) is an exact GR identity and cannot be tested this way.",
+    "Calling the missing mass 'emergent matter' would be a relabelling unless Candidate A independently predicted its amount and distribution before seeing these data.",
+    "SPARC mass models assume disc thickness and circular orbits; non-circular motions, asymmetric drift and warps are not modelled.",
+    "A non-rejection would not confirm Candidate A; it would only mean this rule did not exclude it."
+  ],
+  "outputs": {
+    "tool": "tools/evaluate_candidate_a_sparc_baryonic.py",
+    "artifact": "results/candidate_a_sparc_baryonic_test.json"
+  }
+}
