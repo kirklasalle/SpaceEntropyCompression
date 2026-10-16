@@ -46,7 +46,9 @@ def test_direction_approval_does_not_claim_implementation_or_validation():
     assert interaction["geometry_benchmark"]["extra_spatial_dimensions"] == 1
     assert interaction["geometry_benchmark"]["radius_selected_or_measured"] is False
     limit = interaction["independent_constraint"]
-    assert "no likelihood-based numerical Candidate B coupling limit" in limit["numerical_status"]
+    assert "restricted-model likelihood-based bound only" in limit["numerical_status"]
+    assert ("no likelihood-based numerical coupling limit is claimed for the general Candidate B"
+            in limit["numerical_status"])
     assert "kappa_min" in limit["mixing_envelope"]
     assert "R>0" in limit["validity_domain"]
     assert "O_H^2" in limit["low_energy_operator"]
@@ -56,7 +58,9 @@ def test_direction_approval_does_not_claim_implementation_or_validation():
     assert "130 GeV to 3 TeV" in domain["direct_resonance_example"]
     likelihood = limit["likelihood_contract"]
     assert set(likelihood["sources"]) <= sources
-    assert likelihood["evaluated"] is False
+    assert likelihood["evaluated"] == "partial"
+    assert set(likelihood["channel_status"]) == set(likelihood["channels"])
+    assert likelihood["channel_status"][likelihood["channels"][1]].startswith("not evaluated")
     assert "95% upper-limit curves" in likelihood["forbidden_shortcut"]
     assert limit["full_kk_tower_constrained"] is False
     assert limit["new_data_test_or_simulation_run"] is True
@@ -73,6 +77,29 @@ def test_direction_approval_does_not_claim_implementation_or_validation():
     assert result["outcome"] == test["outcome"]
     assert round(result["kappa_lo"], 5) == test["kappa_lo"]
     assert result["preregistration_sha256"] == test["preregistration"]["sha256"]
+    extended = parallel["selected_extended_tests"]
+    assert extended["preregistration"]["frozen_before_likelihood_scan_or_cms_limit_values_read"]
+    assert extended["preregistration"]["parent_sha256"] == test["preregistration"]["sha256"]
+    assert extended["candidate_b_confirmed"] is False
+    for path in (extended["preregistration"]["path"], extended["theory_inputs"]["path"],
+                 *extended["scripts"], *extended["artifacts"]):
+        assert (ROOT / path).is_file()
+    rate = json.loads((ROOT / extended["artifacts"][0]).read_text(encoding="utf-8"))
+    cms = json.loads((ROOT / extended["artifacts"][1]).read_text(encoding="utf-8"))
+    for artifact in (rate, cms):
+        assert artifact["preregistration_sha256"] == extended["preregistration"]["sha256"]
+        assert artifact["candidate_b_confirmed"] is False
+    assert cms["theory_inputs_sha256"] == extended["theory_inputs"]["sha256"]
+    test_a = extended["test_a_higgs_rate_likelihood"]
+    assert rate["outcome"] == test_a["outcome"]
+    assert round(rate["kappa_lo"], 5) == test_a["kappa_lo"]
+    assert rate["likelihood_evaluated"] is test_a["likelihood_evaluated"] is True
+    test_b = extended["test_b_cms_direct_resonance"]
+    assert cms["summary"]["outcomes"] == test_b["outcomes"]
+    assert cms["likelihood_evaluated"] is test_b["likelihood_evaluated"] is False
+    binding = {(row["inverse_radius_GeV"], row["m5_GeV"]) for row in cms["grid"]
+               if row["combined_binding_constraint"] == "cms_direct"}
+    assert binding == {(p["inverse_radius_GeV"], p["m5_GeV"]) for p in test_b["cms_binding_points"]}
     identity = next(c for c in ledger["claims"] if c["id"] == "candidate-b-conditional-identity")
     assert identity["classification"] == "derived_conditionally"
     assert len(identity["assumptions"]) >= 6

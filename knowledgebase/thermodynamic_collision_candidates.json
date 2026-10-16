@@ -183,6 +183,14 @@
         "statement": "Proceed with the restricted Higgs-portal test (recommended)",
         "approved_scope": "One-circle quadratic bulk scalar at tree level, extra scalars heavier than the observed Higgs, exact physical Higgs mass matching and universal Higgs-rate suppression; derive heavy two-scalar decays rather than assuming zero.",
         "remaining_open": "Public statistical-product qualification, numerical inference preregistration, complete heavy widths and empirical outcome."
+      },
+      {
+        "author": "Kirk LaSalle",
+        "date": "2026-10-16",
+        "subject": "extended Candidate B tests",
+        "statement": "Yes, let's take B further as you suggest.",
+        "approved_scope": "A correlated Higgs-rate likelihood and a width-matched CMS-HIG-24-002 heavy-scalar ZZ comparison for the restricted model on the preregistered grid.",
+        "remaining_open": "STXS likelihood, loop and off-shell widths, interference, a direct-resonance likelihood, and any evidence for Candidate B itself."
       }
     ],
     "worked_interaction": {
@@ -219,7 +227,7 @@
         "source": "atlas_higgs_couplings",
         "observable": "published Run-2 Higgs vector-boson coupling modifier",
         "method": "cutoff-dependent perturbative KK mixing envelope parameterized by a future model-specific lower coupling modifier kappa_min",
-        "numerical_status": "no likelihood-based numerical Candidate B coupling limit claimed; earlier approximate one-sigma single-mode translation withdrawn; the conditional mu_4 compatibility bounds in selected_restricted_test come from a published joint 95% region, not a likelihood",
+        "numerical_status": "restricted-model likelihood-based bound only: the published ATLAS global-mu profile likelihood gives kappa_lo = 0.97059 (asymptotic one-sided 95% CL) and per-grid-point mu4_max in selected_extended_tests; no likelihood-based numerical coupling limit is claimed for the general Candidate B; earlier approximate one-sigma single-mode translation withdrawn; the conditional mu_4 compatibility bounds in selected_restricted_test come from a published joint 95% region, not a likelihood",
         "internal_stability_envelope": "mu_4^2 < m_h^2/[v^2 S_stab(R,m5,Lambda)]",
         "mixing_envelope": "mu_4^2 <= (kappa_min^-2-1)/[v^2 S_mix(R,m5,Lambda)] away from Higgs-KK degeneracies",
         "validity_domain": "R>0, m5>0, Lambda>=max(m5,mh), and max_n |v mu_n/(mh^2-m_n^2)| << 1",
@@ -238,11 +246,15 @@
           "prediction": "exact finite KK mass-matrix diagonalization, Higgs-component sum rule, production rates, partial widths, new widths, and resolved or joint spectral templates",
           "channels": ["published 125 GeV Higgs rate/STXS likelihood", "topology-matched direct scalar resonance likelihood"],
           "forbidden_shortcut": "do not convert published uncertainties or 95% upper-limit curves into an ad hoc likelihood",
-          "evaluated": false
+          "evaluated": "partial",
+          "channel_status": {
+            "published 125 GeV Higgs rate/STXS likelihood": "global signal-strength profile likelihood evaluated for the restricted model (ATLAS -2 ln Lambda(mu) scan, all systematics); STXS likelihood with correlations not evaluated",
+            "topology-matched direct scalar resonance likelihood": "not evaluated; the CMS-HIG-24-002 95% upper limits are used only as per-state, per-production upper-limit comparisons and are not converted into a likelihood"
+          }
         },
         "full_kk_tower_constrained": false,
         "new_data_test_or_simulation_run": true,
-        "new_data_test_scope": "one preregistered compatibility check of the restricted hypothesis against the published ATLAS observed 95% (kappa_V, kappa_F) contour; see selected_restricted_test"
+        "new_data_test_scope": "three preregistered tests of the restricted hypothesis: a compatibility check against the published ATLAS observed 95% (kappa_V, kappa_F) contour (selected_restricted_test), and an ATLAS global-mu profile-likelihood bound plus a width-matched CMS-HIG-24-002 heavy-scalar ZZ upper-limit comparison (selected_extended_tests)"
       },
       "unresolved": [
         "whether the flat one-circle geometry and brane localization describe nature",
@@ -295,9 +307,83 @@
         "CMS-HIG-24-002 width-matched direct heavy-scalar ZZ resonance comparison",
         "full STXS likelihood with correlations",
         "loop and off-shell heavy-state widths"
+      ],
+      "deferred_followed_up_in": "selected_extended_tests"
+    },
+    "selected_extended_tests": {
+      "date": "2026-10-16",
+      "author_direction": "Kirk LaSalle: take selected Candidate B further with a width-matched CMS-HIG-24-002 comparison and a correlated Higgs-rate likelihood (2026-10-16)",
+      "document_section": "docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison",
+      "preregistration": {
+        "path": "knowledgebase/candidate_b_extended_test_preregistration.json",
+        "sha256": "fc23f2e389a9b761bf8747fe125c44ae93beb191384a79b11eb4d517764890a2",
+        "parent_sha256": "69458ad7edd1c1e7362e04b553f318d5942922a5cc109d4bc524253eb7167f6d",
+        "frozen_before_likelihood_scan_or_cms_limit_values_read": true,
+        "prior_knowledge_disclosed": "the ATLAS headline mu = 1.05 +/- 0.06 was known, so test A is not blind to its approximate outcome"
+      },
+      "theory_inputs": {
+        "path": "knowledgebase/candidate_b_theory_inputs.json",
+        "sha256": "bc2ec81ca932d9d1364c9d8f23324bf46f00f51b8e0f5ea39dab64e01f5c7833",
+        "source": "LHC Higgs Cross Section Working Group SM-like heavy Higgs cross sections and widths at 13 TeV",
+        "tabulated_max_GeV": 1000
+      },
+      "scripts": [
+        "tools/extract_candidate_b_theory_inputs.py",
+        "tools/evaluate_candidate_b_higgs_rate_likelihood.py",
+        "tools/evaluate_candidate_b_cms_resonance.py"
+      ],
+      "artifacts": [
+        "results/candidate_b_higgs_rate_likelihood_test.json",
+        "results/candidate_b_cms_resonance_test.json"
+      ],
+      "test_a_higgs_rate_likelihood": {
+        "data_product": "ATLAS Nature 607 (2022) 52, HEPData ins2104706 v1, observed -2 ln Lambda(mu) for the global signal strength with all systematics",
+        "outcome": "compatible_with_limit",
+        "mu_hat": 1.054,
+        "mu_lo": 0.94204,
+        "kappa_lo": 0.97059,
+        "kappa_lo_contour_first_test": 0.97591,
+        "likelihood_evaluated": true,
+        "one_parameter_interval_claimed": true,
+        "interval_kind": "asymptotic one-sided 95% CL lower limit on mu = kappa^2 at fixed (R, m5, Lambda); not a joint interval over the grid",
+        "comparison_with_contour": "weaker than the first-test contour bound at every grid point, so the contour remains the stronger Higgs-rate bound"
+      },
+      "test_b_cms_direct_resonance": {
+        "data_product": "CMS-HIG-24-002, HEPData ins3161000 v1, observed and expected 95% CL upper limits on sigma x BR(X -> ZZ) for ggF and VBF with NWA, 1, 10 and 100 GeV width hypotheses",
+        "outcomes": {
+          "exclusion_within_rate_allowed_region": 3,
+          "exclusion_above_rate_bounds": 2,
+          "no_exclusion_in_scan": 4,
+          "not_covered": 3
+        },
+        "cms_binding_points": [
+          {"inverse_radius_GeV": 100, "m5_GeV": 150, "mu4_excl_min_GeV": 5.018, "rate_mu4_max_GeV": 5.277},
+          {"inverse_radius_GeV": 1000, "m5_GeV": 150, "mu4_excl_min_GeV": 4.912, "rate_mu4_max_GeV": 6.221},
+          {"inverse_radius_GeV": 1000, "m5_GeV": 600, "mu4_excl_min_GeV": 281.1, "rate_mu4_max_GeV": 292.3}
+        ],
+        "not_covered_reason": "at m5 = 1200 GeV every heavy state lies above the 1 TeV tabulated theory range; the labelled extrapolated variant excludes nothing",
+        "heuristic_tower_clusters": "a heuristic comparison of summed nearby tower states exceeds a CMS limit below the Higgs-rate bound at 7 grid points, including R^-1 = 10 GeV; it is labelled heuristic and is not the result",
+        "likelihood_evaluated": false
+      },
+      "combined_statement": "per grid point the reported bound is min(contour, likelihood, CMS); an intersection of separate 95% CL-type constraints, not a joint statistical combination",
+      "combined_mu4_bound_GeV_range_over_grid": [1.725, 956.4],
+      "caveats": [
+        "interference with the gg -> ZZ continuum, the off-shell 125 GeV tail and among nearby tower states is neglected",
+        "each production mode is compared alone",
+        "signal acceptance and shapes are assumed to match the CMS SM-like scalar hypothesis",
+        "heavy-state scalar widths are tree level; SM-like widths above 1 TeV are extrapolated",
+        "asymptotic likelihood statistics; no toy calibration"
+      ],
+      "candidate_b_confirmed": false,
+      "interpretation": "mu4 = 0 is the SM limit and is always allowed, so both tests bound the restricted coupling and cannot refute the restricted family. The CMS search is the stronger bound at 3 of 12 grid points. Neither result is evidence for Candidate B.",
+      "deferred": [
+        "full STXS likelihood with correlations",
+        "loop and off-shell heavy-state widths",
+        "signal-background interference and joint ggF + VBF treatment",
+        "a direct-resonance likelihood from a published statistical model"
       ]
     },
-    "next_gate": "if pursued, run the CMS-HIG-24-002 width-matched direct-resonance comparison for the preregistered grid and qualify a correlated Higgs-rate likelihood before any one-parameter interval; do not convert the contour bound into a likelihood"
+    "next_gate": "if pursued, qualify a published STXS likelihood with correlations or a published direct-resonance statistical model before any joint interval; widen the preregistered grid or add loop and interference corrections only through a new frozen preregistration; do not convert upper-limit curves into a likelihood"
   },
   "sources": [
     {

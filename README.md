@@ -184,6 +184,9 @@ for this entry point. Covariance rows must stay aligned with the measurement tab
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\prepare_candidate_b_test.py
 # Preregistered conditional compatibility check; needs the pinned HEPData files
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_b_atlas_contour.py
+# Extended B tests: ATLAS global-mu likelihood bound and CMS-HIG-24-002 comparison
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_b_higgs_rate_likelihood.py
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_b_cms_resonance.py
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\check_compression_claims.py
 
 # Verify preserved archive copies and graph references without private IDE access

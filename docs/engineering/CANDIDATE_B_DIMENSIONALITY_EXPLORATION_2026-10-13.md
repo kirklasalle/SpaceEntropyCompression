@@ -120,7 +120,9 @@ the entropy becomes zero.
 
 The original exploration first required definitions and controlled mathematical
 examples. Those checks now support a restricted Higgs-rate test, which has been
-run against the public ATLAS joint coupling contour (contract section 16).
+run against the public ATLAS joint coupling contour (contract section 16). A
+global-mu likelihood bound and a width-matched CMS heavy-scalar comparison
+followed (contract section 17).
 The broader thermodynamic or cluster application still needs the definitions below.
 
 | Input | Required declaration | Why it is needed |

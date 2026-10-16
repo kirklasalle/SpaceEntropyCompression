@@ -237,6 +237,11 @@ collision simulation, or data test has been run. The later October 16 author
 decision selects both candidates and makes B active. The
 [restricted first test and public-data gate](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
 supersede the earlier unselected status without changing the historical checks.
+The
+[extended tests](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison)
+add a bound from the ATLAS global-mu profile likelihood and a width-matched
+CMS-HIG-24-002 comparison. Both apply to the restricted model only and bound
+its coupling without supporting Candidate B.
 
 ### 5.1 Restricted local example
 

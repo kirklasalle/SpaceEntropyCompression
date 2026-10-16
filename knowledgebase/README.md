@@ -23,6 +23,9 @@
   The restricted B Higgs-portal test is approved, not empirically validated; see the
   [dimensionality exploration](../docs/engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
   and [draft model contract](../docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md).
+  The B tests are pinned by two frozen preregistrations and a theory-input
+  table in this folder (`candidate_b_*.json`). Do not edit them; `.gitattributes`
+  keeps their bytes, and so their SHA-256 freezes, identical on every platform.
   Neither selection nor a proposal is observational confirmation.
 
 - [Antigravity recovery audit](../docs/ANTIGRAVITY_RECOVERY_AUDIT.md): search
