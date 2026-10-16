@@ -14,7 +14,11 @@
 - [Candidate A functional comparison](../docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md):
   precise definitions, normalization, vacuum/radiation counterexamples and a
   recommended local energy reference awaiting author selection. These are
-  mathematical diagnostics, not new observational results.
+  mathematical diagnostics, not new observational results. Section 11 records
+  the one observational test of A: option 2 (M = observed baryons), proposed by
+  the assistant while Kirk was unavailable, was rejected on SPARC under the
+  frozen `candidate_a_sparc_baryonic_test_preregistration.json`. That test was
+  not blind and falsifies option 2 only.
 
 - [Collision candidate specification](../docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md)
   and [candidate ledger](thermodynamic_collision_candidates.json): Kirk selected

@@ -20,4 +20,6 @@ geometry and energy organization inside general relativity; Candidate B adds a
 separately budgeted exchange sector, tested so far as a restricted
 extra-dimension Higgs portal. Both remain research programs, not confirmed
 replacements for general relativity or dark matter. B's public-data tests give
-bounds on its new coupling, not evidence for it.
+bounds on its new coupling, not evidence for it. A's one data test, of an
+assistant-proposed operationalization (M = observed baryons), rejected that
+operationalization on SPARC; Kirk's choice of C and M is still pending.
