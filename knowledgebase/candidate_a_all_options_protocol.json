@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "protocol_id": "candidate-a-all-options-gates-v1",
+  "date": "2026-10-16",
+  "author_direction": {
+    "author": "Kirk LaSalle",
+    "statement": "Candidate A, all options 1, 2, and 3 can be tested. Run the gamut.",
+    "clarification": "full_density",
+    "scope": "Authorize investigation of all three operationalizations, with the full density-law route for option 3. This is not selection of a single final theory or approval of an observational result."
+  },
+  "registration_scope": "Prospective local numerical protocol for new consistency and solver checks and reproduction of the old observational test. NOT a new blind observational preregistration. Frozen before running the new diagnostic suite.",
+  "prior_knowledge": [
+    "The option-2 SPARC result and every galaxy in it are already known.",
+    "The GR projection identity, its unique exponent alpha=1, and the nonlinearity of powers are known algebra.",
+    "Before this freeze the official SPARC website and CDS J/AJ/136/2782 ReadMe were inspected, Leroy tables were downloaded, and completeness was counted. All 11 overlaps with the certified SPARC primary sample have at least one missing density component. No option-3 prediction or fit was computed.",
+    "The new tables are projected surface densities, not direct three-dimensional densities; neither source supplies a complete vertical reconstruction."
+  ],
+  "option_1": {
+    "definition": "C_m=(G_mu_nu+Lambda*g_mu_nu)n^mu n^nu, M=T_mu_nu n^mu n^nu/c^2, alpha=1, k=c^2*C0/(8*pi*G). M excludes local gravitational field energy; Lambda remains on the geometric side.",
+    "tests": "Dust, radiation and vacuum-energy fluid with p/epsilon in {0,1/3,-1}, observer beta in {0,0.3,0.9}, epsilon in {1e-10,1,1e10} J/m^3 and C0 in {1e-50,1e-20,1e-5} m^-2. Check the projected tensor equation, unit normalization, and mapping at rtol=1e-12. Check Schwarzschild exterior and Lambda vacuum separately through existing diagnostics.",
+    "limits": "Conditional consistency tests, not an empirical discrimination from GR and not proof of full tensor dynamical equivalence."
+  },
+  "option_2": {
+    "protocol": "knowledgebase/candidate_a_sparc_baryonic_test_preregistration.json",
+    "protocol_sha256": "e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06",
+    "action": "Rerun every old primary, Q3 and sensitivity treatment without modifying the old protocol, evaluator or artifact. Compare all scientific result fields, including per-galaxy output, to the old artifact at rtol=1e-8 and atol=1e-8 for floats; integers and labels exactly. Exclude only revision and environment from the comparison.",
+    "interpretation": "Authorization to investigate option 2 is now explicit. Preserve its original assistant-proposed status as historical provenance, not the current authorization state. Reproduction is not another independent observational test."
+  },
+  "option_3": {
+    "relation": "rho_bar = rho0*(C_m/C0)^alpha; rho0=c^2*C0/(8*pi*G)>0, alpha>0",
+    "weak_field_source": "rho_eff = rho0*(rho_bar/rho0)^(1/alpha); laplacian(Phi)=4*pi*G*rho_eff; Phi->0 at infinity for integrable isolated sources",
+    "circular_velocity": "V_c^2(R)=R*dPhi(R,z=0)/dR, computed from the full source density, not a power of V_bar or acceleration",
+    "density_order": "Add stellar, atomic-gas and molecular-gas volume densities before the nonlinear map. Gas columns from Leroy already include helium; never apply a second helium factor.",
+    "normalization": "rho0 is a physical density scale when alpha != 1, not an arbitrary unit conversion. It is unidentifiable when alpha=1. No empirical value or fitted range is selected by this diagnostic protocol.",
+    "gr_gate": "With ordinary GR sourced ONLY by the same baryons, rho_eff=rho_bar over varying positive density requires alpha=1. A nonunit exponent therefore needs an additional effective stress-energy source or modified dynamics; the scalar density relation alone does not supply a covariant conserved theory.",
+    "tests": [
+      "alpha in {0.25,0.5,1,2,4}, rho_bar/rho0 in {0,0.01,0.1,1,10,100}: inversion, alpha=1 nesting, vacuum limit, crossing of rho_eff-rho_bar about rho0, and non-additivity for alpha != 1",
+      "Finite-thickness axisymmetric Poisson solver using analytic azimuthal elliptic-integral kernel and positive-z Gauss-Legendre quadrature, reflected about the midplane. No force softening or spherical substitution.",
+      "Analytic Miyamoto-Nagai density/potential benchmark: mass=1, radial scale=1, height=0.2, G=1; radii={0.5,1,2,4}; integrate R' and z from zero to infinity via rational coordinate maps; split radial quadrature at each field radius.",
+      "Solver benchmark at quadrature orders 64 and 128 per radial segment and vertical integral; maximum relative V_c^2 error <0.005 against the analytic potential, and coarse/fine disagreement <0.005. These are software thresholds, not statistical evidence.",
+      "Full-density nonlinear shape check on a separate positive double-exponential disc rho_bar=exp(-R)*exp(-abs(z)/0.2) at alpha in {0.5,1,2}, rho0=1 and radii={0.5,1,2,4}: order 64 versus 128 agreement <0.005. This source remains integrable for every tested exponent. Values are mathematical examples, not galaxies."
+    ],
+    "data_gate": {
+      "sources": ["SPARC 2016", "Leroy et al. 2008 CDS J/AJ/136/2782"],
+      "audit": "Every overlap of Leroy table4/table7 with the certified SPARC primary sample, normalized by removing spaces from galaxy identifiers. Report counts of missing, nonpositive-radius, negative, and upper-limit-flagged components using documented fixed-width fields.",
+      "requirements_before_fit": [
+        "Explicit, justified 3-D stellar, HI, H2 and bulge reconstruction including scale heights, distance/inclination alignment, unresolved inner source and outer boundary or extrapolation",
+        "Treatment of missing measurements, censored gas limits, stellar mass-to-light and CO conversion uncertainties, without zero-filling missing values",
+        "A declared covariant completion or an explicit restriction to a phenomenological weak-field source law",
+        "A new frozen observational protocol specifying global versus local alpha and rho0, bounds, nuisance treatments, sample selection, numerical tolerances, comparator, decision statistic and calibration limits"
+      ],
+      "failure_outcome": "blocked_pending_density_reconstruction_and_observational_protocol; do not fit, compute a p-value, or label option 3 empirically rejected or supported"
+    }
+  },
+  "new_data": {
+    "base_url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/",
+    "citation": "Leroy et al. (2008), AJ 136, 2782-2845; doi:10.1088/0004-6256/136/6/2782",
+    "directory": "data/external/candidate_a/leroy2008",
+    "redistribution": "Keep downloaded source tables in the ignored external-data cache; cite the source. No open-source data licence is asserted.",
+    "holdings": [
+      {"name": "ReadMe", "bytes": 7668, "sha256": "4a009dade546a513c3c382648aa542c9c6862cb08fd77015ca0974c171949239"},
+      {"name": "table4.dat", "bytes": 1863, "sha256": "938104d0289f93f9fed0843028555e92f63a61889d623ee5b5f132e9d6ea1f44"},
+      {"name": "table7.dat", "bytes": 56111, "sha256": "43165045c50d534ff7789dda05627328c23ba71c708ded9cf87cf0773fe02d99"}
+    ]
+  },
+  "reporting": {
+    "script": "tools/evaluate_candidate_a_all_options.py",
+    "artifact": "results/candidate_a_all_options.json",
+    "input_or_numerical_failure": "incomplete with an explicit reason and nonzero exit status; no success-shaped fallback",
+    "scientific_gate_failure": "Report the failed gate, preserve completed checks, and exit nonzero. A passed software check never overrides a missing physical or data assumption.",
+    "frozen_files": "Never rewrite earlier preregistrations or result artifacts to make authorization, reproducibility or scientific outcomes appear different."
+  }
+}
