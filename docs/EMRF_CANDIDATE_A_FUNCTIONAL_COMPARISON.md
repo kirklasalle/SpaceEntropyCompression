@@ -470,8 +470,18 @@ treatments converged.
 & .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_a_sparc_baryonic.py
 ```
 
-The tool refuses a modified preregistration or unpinned data, and writes
+If the preregistration, the SPARC cache or the pinned data fail verification,
+the tool writes an `incomplete` report and exits nonzero. Otherwise it writes
 [candidate_a_sparc_baryonic_test.json](../results/candidate_a_sparc_baryonic_test.json).
+
+The first run used the evaluator committed before any statistic was computed.
+Code review on PR #37 then moved the input checks inside the
+incomplete-report path; the computation did not change. Rerunning the revised
+evaluator reproduced every statistic, per-galaxy value and outcome exactly.
+Only the artifact's `revision` and `source_sha256` fields changed. Its
+`revision` names the PR #37 branch commit, because GitHub's rebase merge
+rewrites commit hashes.
+
 `emergent_matter_model/test_candidate_a_sparc_test.py` checks the model algebra
 on synthetic galaxies, checks that the artifact is current, and re-evaluates
 galaxies from the pinned data when it is present.

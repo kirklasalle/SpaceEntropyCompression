@@ -7,7 +7,7 @@
  "evidence_class": "preregistered observational falsification test; not blind",
  "preregistration": "knowledgebase/candidate_a_sparc_baryonic_test_preregistration.json",
  "preregistration_sha256": "e1298e2c223882e12b0f05329e2c289f0875cd3eee2258747adedfe482d08e06",
- "source_sha256": "e5f8957d8c4af2e772221ca1a225f5eddc1e888aeb08e5aca623b4394f1061d8",
+ "source_sha256": "86497d41a2411bfa1de5144ad07f0757024af74e6340db92ab477809ff2cc1c4",
  "dependency_sha256": {
   "emergent_matter_model/sparc_real_analysis.py": "064b0a2dd0504fa5048b5def96c6617285ee8b3d5beb72c57df4fac818f1bbcf",
   "emergent_matter_model/sparc_marginalized_a0.py": "a7bbcac7291d473954d6fc1748dbffa9130be317777ac9bb8161776227721740",
@@ -30,7 +30,7 @@
   "numpy": "2.2.6",
   "scipy": "1.15.3"
  },
- "revision": "70754b87c5bb6c28df3c3ff82b1f9729294df982",
+ "revision": "571172855b56e6eb506b9738e6be71446bd51bd4",
  "implementation_notes": [
   "x_scale is not specified by the preregistration; it was fixed before running to the natural parameter scales (0.1 dex, sigma_fD, sigma_i, max(V_obs)^2, 0.5 dex).",
   "The halo radius uses the catalogue radius; the free r_c absorbs distance rescaling."
