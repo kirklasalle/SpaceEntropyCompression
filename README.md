@@ -49,17 +49,21 @@ that apply to both.
 |---|---|---|
 | Idea | C re-describes existing geometry and energy organization, inside GR; no new force or reservoir | A separately budgeted energy-exchange sector; tested as a restricted extra-dimension Higgs portal |
 | Origin | Kirk's recovered intention | AI-proposed ansatz; extra dimensions specified by Kirk; benchmark assistant-proposed and Kirk-approved |
-| Done so far | Exact-background mathematics and counterexamples; one preregistered SPARC falsification test of an assistant-proposed operationalization (option 2: M = observed baryons) | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
-| Outcome | Option 2 **rejected** in 153 SPARC galaxies: rotation curves need more than the observed baryons. The test was not blind. Kirk has not yet chosen C and M, so this falsifies one operationalization, not Candidate A | Compatible with limit: bounds on the new coupling, **not** evidence for B |
-| Next gate | Kirk confirms or replaces option 2; any surviving choice needs an observable that could differ from GR | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
+| Done so far | Kirk authorized testing options 1, 2 and 3. GR consistency sweep; reproduction of the preregistered option-2 SPARC test; full-density option-3 solver benchmarks and public-data coverage audit | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
+| Outcome | Option 1 passes conditional GR checks, not independent confirmation. Option 2 remains **rejected** in 153 SPARC galaxies (not blind). Option 3 passes numerical benchmarks but has **no observational fit or verdict** | Compatible with limit: bounds on the new coupling, **not** evidence for B |
+| Next gate | Option 3: justified three-dimensional baryon reconstruction, missing-gas treatment, physical scope and a new frozen observational protocol | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
 
 Kirk selected A on October 8, 2026, added B on October 16 (initially worked one
 at a time, B first) and later that day made both concurrent. Both now have
 preregistered public-data tests, but of different kinds. B's restricted model
 contains the Standard Model limit, so its tests can only bound the new coupling.
 A's option 2 had no free physics parameters and could be falsified, and it was.
-Option 2 was chosen by the assistant while Kirk was unavailable and awaits his
-confirmation. None of this is a finding about which idea is stronger. A and B
+Option 2 was originally chosen by the assistant while Kirk was unavailable;
+he subsequently authorized investigation of **all three options**, choosing
+the full-density route for option 3. This is not selection or confirmation of
+one final theory. The [all-option results](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates)
+include an explicit data-reconstruction blocker, not three completed
+observational tests. None of this is a finding about which idea is stronger. A and B
 make different commitments; a result for one is not evidence for or against the
 other.
 
@@ -118,7 +122,8 @@ The collision illustration does not evolve gravitational wells or generate entro
 | DESI BAO flat-ΛCDM baseline | 12 means, full covariance; χ² = 12.7405 for 10 nominal degrees of freedom | A baseline fit, not EMRF cosmology |
 | Pantheon+ flat-ΛCDM baseline | 1,590 rows, full STAT+SYS covariance; Ωm = 0.33158, χ² = 1402.919 for 1588 nominal degrees of freedom | Uncalibrated magnitude offset; **does not measure H₀** |
 | Candidate A definition checks | Radiation/vacuum counterexamples and specified regional-energy identities | Exact-background mathematical checks, **not observations** |
-| Candidate A option-2 SPARC test | Rejected: Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2; 124 and 111 of 153 galaxies individually need unseen mass | Preregistered, **not blind**; falsifies one assistant-proposed operationalization pending Kirk's confirmation, not Candidate A |
+| Candidate A option-2 SPARC test | Rejected: Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2; 124 and 111 of 153 galaxies individually need unseen mass | Preregistered, **not blind**; originally assistant-proposed, now authorized for investigation; rejects option 2 only |
+| Candidate A all-option gates | 81 GR identity checks pass; 6,621 option-2 result fields reproduced; full-density solver relative error 1.66e-6; all 11 density-data overlaps have missing components | Consistency, reproduction and data-readiness checks; **no option-3 observational fit** |
 | Candidate B ATLAS contour test | Restricted Higgs portal compatible with limit; kappa_lo = 0.97591 | Preregistered bound on the new coupling, not support for B |
 | Candidate B ATLAS rate likelihood | mu_hat = 1.054; kappa_lo = 0.97059 (asymptotic one-sided 95% CL) | Preregistered likelihood bound; weaker than the contour bound |
 | Candidate B CMS heavy-scalar comparison | Stronger coupling bound at 3 of 12 grid points; 3 points outside the theory tables | Width-matched comparison with published limits; no likelihood built from limits |
@@ -248,16 +253,15 @@ what could not be established from the incomplete IDE archive.
 
 ## Next scientific decisions
 
-**Candidate A:** the program is selected; **the exact functional C and the
-meaning of M are not**. The current recommendation is a local observer
-energy-density reference inside GR, with tidal curvature kept separate. Regional
-energy needs an explicit boundary. With M = all gravitating energy, A is exactly
-GR and has no observational test. With M = observed baryons (option 2,
-assistant-proposed), it is now rejected on SPARC. Kirk's next decision is
-whether option 2 is what he means by A, in which case A in that form is
-falsified, or to choose a C and M that predicts something GR does not, such as
-the amount of missing mass. Any
-such choice needs its own preregistration. A useful reformulation can succeed
+**Candidate A:** Kirk authorized investigation of all three C_m options, not
+selection of a single final theory. Option 1 is a conditional GR identity;
+option 2 is rejected on SPARC. For option 3, the full-density mapping and
+axisymmetric Poisson solver are implemented and benchmarked. The downloaded
+Leroy profiles do not yet provide the complete three-dimensional source model:
+missing/censored gas, vertical structure, boundaries and uncertainties need
+explicit treatment. A nonunit exponent also needs a declared effective-source
+or modified-dynamics interpretation. Freeze those choices, parameter bounds
+and a decision rule before any observational fit. A useful reformulation can succeed
 without predicting a new force; novelty and full equivalence need their own
 arguments.
 

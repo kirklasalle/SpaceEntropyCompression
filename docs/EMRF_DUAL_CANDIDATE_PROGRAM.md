@@ -18,6 +18,7 @@ supports A or B over standard physics.**
 | 2026-10-08 | "I'm for candidate A." A selected; B kept as an unselected proposal | Historical |
 | 2026-10-16 | A and B both selected; "one at a time", with B worked first | Historical |
 | 2026-10-16 (evening) | "We are now running dual experiment concurrently with candidate A and B" | **Current** |
+| 2026-10-16 (later) | "Candidate A, all options 1, 2, and 3 can be tested. Run the gamut." Full-density route selected for option 3 | **Current A investigation scope**, not selection of one final law |
 
 The earlier decisions are kept in the
 [candidate ledger](../knowledgebase/thermodynamic_collision_candidates.json)
@@ -34,7 +35,7 @@ SHA-256 freezes.
 | Idea | C re-describes existing geometry and energy organization, inside GR | A separately budgeted energy-exchange sector, in a restricted test via physical extra dimensions |
 | New force, reservoir or particle? | No | Yes (in the restricted test: a bulk scalar mixing with the Higgs) |
 | Origin | Kirk's recovered project intention; "why can't we find this inside of GR?" | AI-proposed generic ansatz; extra dimensions are Kirk's 2026-10-13 specification; the Higgs-portal benchmark is assistant-proposed and Kirk-approved |
-| Precise definition chosen? | **No.** The local observer energy reference C_m is an assistant recommendation awaiting Kirk's selection. For one test, the assistant chose option 2 (M = observed baryons) while Kirk was unavailable; it awaits his confirmation | Only for the restricted model: one circle, quadratic tree-level potential, exact Higgs-mass matching |
+| Precise definition chosen? | All three C_m options authorized for investigation, not one final law. Option 2 has a frozen observational definition; option 3 still needs a complete source reconstruction and observational protocol | Only for the restricted model: one circle, quadratic tree-level potential, exact Higgs-mass matching |
 
 The two candidates make different commitments: A adds no new sector and B adds
 one. They are developed separately. A bound on B is not evidence for A, and a
@@ -50,12 +51,15 @@ specified and frozen in advance. No such comparison exists yet.
 | [Functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md) | Exact-background mathematics | The Einstein-projection reference reproduces a scalar GR identity for alpha = 1 and fixed k. Radiation, vacuum and regional-energy counterexamples rule out treating Ricci or sqrt(K) as a universal local density |
 | `tools/check_candidate_a_definitions.py` | Algebra checks, not observations | Identities and counterexamples reproduced |
 | [SPARC test of option 2](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2) | Preregistered observational falsification test; **not blind** | **Rejected.** With C = C_m, alpha = 1 and M = observed baryons, A predicts that every rotation curve equals its baryonic Newtonian curve. In 153 SPARC galaxies, Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2 |
+| [All-option gates](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates) | GR consistency, full-density numerical benchmarks, reproduction and public-data audit | Option 1: 81 checks pass. Option 2: 6,621 fields reproduce. Option 3: solver benchmark passes, but **no observational fit**; density reconstruction and an observational protocol remain open |
 
-Option 2 is an assistant proposal pending Kirk's confirmation, so this
-falsifies **one operationalization of A, not Candidate A**. The outcome was
+Option 2 was originally assistant-proposed; Kirk has now authorized
+investigation of all three options. The rejection still falsifies **one
+operationalization of A, not Candidate A**. The outcome was
 expected: the SPARC mass discrepancy was known, and the preregistration says
 so. Option 1 (M = all gravitating energy) is an exact GR identity with no
-observational test; option 3 (free alpha) is untested. Calling the missing mass
+independent observational discrimination from GR; option 3 (free alpha) has
+mathematical and solver checks, not an observational verdict. Calling the missing mass
 "emergent matter" would be relabelling unless A predicted its amount
 independently.
 
@@ -90,11 +94,13 @@ Being transparent means saying where the two programs differ in maturity:
   bound, because that model contains the Standard Model limit. A has one: a
   falsification test of an assistant-proposed operationalization, which
   rejected it. Neither count is a finding about which idea is stronger.
-- **A's barrier is still definitional.** Kirk has not yet chosen the precise C
-  functional and the meaning of M. Option 1 (all gravitating energy) is exactly
-  GR and so cannot be tested against GR. Option 2 (observed baryons) is now
-  falsified. A further test needs a choice that predicts something GR does not,
-  such as the amount of missing mass from the baryons and the geometry.
+- **A's remaining barrier is a complete prediction and source reconstruction,
+  not permission to investigate.** Kirk authorized all three options.
+  Option 1 passes conditional GR checks; option 2 is rejected. Option 3's
+  nonunit exponent changes the baryonic source and needs declared physical
+  scope, three-dimensional density modeling and a frozen observational protocol.
+  All 11 overlaps of the newly downloaded Leroy profiles with the certified
+  SPARC sample have missing components somewhere; no values were zero-filled.
 - **A's test was not blind, and B's tests were not fully blind either.** A's
   outcome was strongly expected from the literature and from earlier work in
   this repository. B's likelihood test was preregistered knowing the ATLAS
@@ -132,7 +138,7 @@ Being transparent means saying where the two programs differ in maturity:
 
 | Candidate | Next step | What it could establish |
 |---|---|---|
-| A | Kirk confirms or replaces option 2 and selects C and M. Any surviving operationalization needs an observable where it differs from GR, under a new frozen preregistration, or a demonstration of exact equivalence | A testable prediction, or a documented reformulation of GR |
+| A | Reconstruct option-3 volume densities, treat missing/censored data and geometry, declare physical scope and freeze an observational protocol. Keep options 1 and 2 as consistency and rejected observational baselines | A qualified full-density observational test, not another software benchmark |
 | B | Correlated STXS likelihood, interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration | Tighter or more robust bounds on the restricted coupling |
 | B (general) | Connect the restricted model back to the collision energy and entropy budget | Whether the broader candidate makes a distinct prediction |
 

@@ -22,20 +22,24 @@ each under a new frozen preregistration.
 Do not manufacture a likelihood from summary uncertainties or limit curves.
 An excluded restricted model is not exclusion of every possible Candidate B.
 
-## 2. Define Candidate A precisely enough to test
+## 2. Test all three Candidate A options without conflating evidence
 
 Review the [Candidate A functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
-Choose the intended meaning of M and the precise C functional. Distinguish
-observer energy density, vacuum tides and regional energy. The current
-Einstein-projection reference is a recommendation, not an author-selected law.
-One operationalization (option 2: C = C_m, alpha = 1, M = observed baryons) was
-proposed by the assistant while Kirk was unavailable and tested on SPARC under
-a frozen preregistration; it was
-[rejected](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2).
-Kirk should confirm or replace option 2. Option 1 (M = all gravitating energy)
-is exactly GR and untestable against it; option 3 (free alpha) is untested.
-Any surviving choice needs an observable where A could differ from GR, under
-its own preregistration, or a demonstration of exact equivalence.
+Kirk authorized investigation of options 1, 2 and 3 and chose the full-density
+route for option 3. The [all-option gates](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates)
+have run: option 1 passes GR consistency checks, option 2's SPARC rejection
+reproduces, and option 3's density mapping and Poisson solver pass numerical
+benchmarks. These are not three independent observational tests.
+
+Next for option 3: reconstruct three-dimensional stellar, HI, H2 and bulge
+densities using the acquired Leroy profiles and their underlying observations;
+treat missing and censored values, vertical structure, inner/outer boundaries,
+distance/inclination and conversion uncertainties explicitly. Do not set
+missing gas to zero or substitute a spherical mass profile. Specify whether
+the model is only a weak-field effective-source ansatz or has a covariant
+completion. Then freeze global/local parameter choices, ranges, nuisance
+treatments, comparator and decision rule before fitting. No observational
+parameter range or likelihood is yet authorized by the diagnostic protocol.
 
 ## 3. Establish what the mapping actually says
 

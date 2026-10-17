@@ -1,12 +1,13 @@
 # Candidate A: defining C without adding new physics
 
 **Direction selected by Kirk LaSalle:** Candidate A, geometry/energy
-re-description. **This document recommends definitions for review; Kirk has not
-yet selected a particular functional or approved a theorem.** No new physical
-mechanism, field solver or heating channel is implemented. One preregistered
-observational test of an assistant-proposed operationalization (option 2,
-M = observed baryons) has been run on SPARC and rejected it; see
-[section 11](#11-preregistered-sparc-test-of-option-2).
+re-description. **Kirk has now authorized investigation of options 1, 2 and 3,
+with the full-density route for option 3; he has not selected a single final
+law or approved a theorem.** No new covariant theory or heating channel is
+implemented. The option-2 SPARC rejection is preserved; see
+[section 11](#11-preregistered-sparc-test-of-option-2). A benchmarked
+axisymmetric density-to-gravity solver and the current data-reconstruction
+gate are recorded in [section 12](#12-all-three-options-authorized-full-density-gates).
 
 ## 1. Plain-language conclusion
 
@@ -384,13 +385,15 @@ operationalizations:
 |---|---|---|
 | 1 | C = C_m, M = all gravitating energy, alpha = 1 | None: an exact GR identity |
 | 2 | C = C_m, M = observed baryons, alpha = 1 | Yes: a parameter-free falsification test |
-| 3 | Option 2 with a free exponent alpha | Yes, but it departs from GR |
+| 3 | Option 2 with a free exponent alpha | Requires a physical density scale, spatial source model and completion; see section 12 |
 
 Kirk was unavailable and asked the assistant to choose pragmatically. The
 assistant chose **option 2**, because it is the only option that gives A an
 observational test without adding a departure from GR. It is recorded as
-`assistant_proposed_pending_author_confirmation`, **not as Kirk's selection**.
-If Kirk chooses differently, this result stays attached to option 2 only.
+`assistant_proposed_pending_author_confirmation`, **not as Kirk's selection at
+that time**. That frozen provenance is not rewritten. Kirk subsequently
+authorized investigation of all three options (section 12); this result stays
+attached to option 2 only.
 
 **Prediction.** In a weak, quasi-static field, Einstein's equation gives
 C_m = 8 pi G rho_dyn / c^2 = 2 laplacian(Phi_obs) / c^2. Option 2 sets
@@ -455,14 +458,15 @@ treatments converged.
   about 1.6 times what its baryons provide.
 - The outcome was expected, so this is a preregistered, reproducible record,
   not a discovery.
-- **This does not test Candidate A as a whole.** Option 1 is untestable as an
-  exact GR identity, and option 3 has not been tested.
+- **This does not test Candidate A as a whole.** Option 1 cannot independently
+  discriminate against GR. Option 3 now has mathematical and solver checks
+  (section 12), but still no observational fit.
 - **Renaming the missing mass "emergent matter" would be relabelling** unless
   Candidate A predicts its amount and distribution from the baryons and the
   geometry before seeing the data. A law that did that would be a genuine
   departure from GR and would need its own preregistration.
-- Kirk can confirm option 2, choose another option, or define C and M
-  differently.
+- Kirk's later authorization to investigate all three options does not undo
+  this result or select one of them as the final theory.
 
 **Reproduce.**
 
@@ -485,3 +489,162 @@ rewrites commit hashes.
 `emergent_matter_model/test_candidate_a_sparc_test.py` checks the model algebra
 on synthetic galaxies, checks that the artifact is current, and re-evaluates
 galaxies from the pinned data when it is present.
+
+## 12. All three options authorized: full-density gates
+
+On October 16, 2026, Kirk directed: **"Candidate A, all options 1, 2, and 3
+can be tested. Run the gamut."** When offered a full-density route or an
+exploratory spherical approximation, he chose **full-density**. This removes
+the authorization barrier to investigating each option; it does not approve a
+unique final theory, arbitrary missing-data assumptions or a physical result.
+
+The [all-option protocol](../knowledgebase/candidate_a_all_options_protocol.json)
+was frozen at commit `1c4efe3`, before the new numerical diagnostics:
+SHA-256 `99bb1ab4be277a9683bbf9c2391196cf27f6e7b548f940abec992ed274fb3847`.
+It is a prospective **diagnostic and reproduction protocol**, not a new blind
+observational preregistration. The old SPARC result and an initial audit of the
+new density tables were already known and disclosed.
+
+### 12.1 Option 1: testable consistency, not independent evidence over GR
+
+The executed sweep spans three energy densities, dust/radiation/vacuum-energy
+fluid equations of state, three observer speeds and three normalization
+scales: **81 checks**, maximum relative identity error **1.33e-15**.
+The calculation constructs Ricci and Einstein tensors in an orthonormal frame,
+checks the observer normalization, and compares the projected curvature with
+the observer's stress-energy density. Schwarzschild and Lambda-vacuum checks
+also preserve the distinction between material density and nonzero curvature.
+
+**Outcome: consistency checks passed.** These use stipulated exact
+backgrounds. They neither independently confirm A against GR nor establish
+equivalence of the full equations. "All gravitating energy" here means the
+non-gravitational stress-energy in T measured by the specified observer; it
+does not introduce a universal local gravitational-field energy density.
+
+### 12.2 Option 2: complete reproduction of the existing data test
+
+The evaluator reran the primary T1/T2, Q=3 and prior-centre sensitivity
+treatments. **All 6,621 compared result fields reproduced**, including
+per-galaxy quantities, not just headline totals. Floating-point tolerances
+were fixed at rtol=1e-8 and atol=1e-8; integers and labels match exactly.
+Only revision and software-environment metadata are excluded from comparison.
+
+**Outcome: rejected, unchanged.** Primary Delta_Q_cons is 98,216 (T1) and
+100,067 (T2), compared with 388.2. Reproduction is not a second independent
+observational test. The original protocol, source and result bytes remain
+unchanged, including their historical assistant-proposed attribution.
+
+### 12.3 Option 3: derive the full-density prediction before fitting
+
+The earlier shorthand "option 2 with a free exponent" did **not** specify a
+complete observational model. With the same normalization as options 1/2, set
+
+$$\rho_0=\frac{c^2 C_0}{8\pi G}>0,\qquad
+\rho_{\rm bar}=\rho_0(C_m/C_0)^\alpha,\qquad \alpha>0.$$
+
+In the weak, static, pressure-negligible limit this gives
+
+$$\rho_{\rm eff}=\rho_0(\rho_{\rm bar}/\rho_0)^{1/\alpha},\qquad
+\nabla^2\Phi=4\pi G\rho_{\rm eff},\qquad
+V_c^2(R)=R\,\partial_R\Phi(R,0).$$
+
+The positive-exponent domain admits a continuous zero-density vacuum limit.
+Alpha=0 cannot be inverted; negative alpha is singular as the baryonic density
+approaches zero. The density scale rho0 is physically consequential for a
+nonunit exponent and is unidentifiable at alpha=1. A dimensionful density must
+not simply be raised to an exponent without this normalization.
+
+Important restrictions tested or exposed by this form:
+
+- Sum the **volume densities** of stars, HI and H2 before mapping. A power of
+  their separate Newtonian speed contributions is not this model.
+- Alpha=1 recovers the baryons-only source exactly. If ordinary GR is still
+  sourced only by those same baryons, a universal relation at varying
+  densities requires alpha=1. Nonunit alpha needs an effective additional
+  stress-energy source or modified dynamics; this scalar equation does not
+  itself provide a covariant conserved completion.
+- For alpha>1 the source is enhanced below rho0 and suppressed above it;
+  alpha<1 reverses this. Thus the difference rho_eff-rho_bar is not a
+  universally nonnegative "extra matter" component.
+- A local power law with alpha>0 leaves a truly baryon-free region source-free.
+  For a finite isolated source the asymptotic field remains Keplerian; this
+  does not by itself exclude approximately flat curves over a finite observed
+  radial range.
+
+The new solver evaluates the **finite-thickness axisymmetric volume source**:
+the azimuthal Newtonian kernel is integrated analytically using complete
+elliptic integrals; radial and vertical Gauss-Legendre quadrature extends to
+infinity. It assumes reflection symmetry about the midplane. No spherical
+replacement, force softening, or clipping of an outward radial force is used.
+
+For the stipulated Miyamoto-Nagai analytic density/potential benchmark, the
+maximum relative squared-speed error at order 128 is **1.66e-6**
+(**0.000166%**), below the frozen 0.5% gate. Doubling order 64 to 128 changes
+the result by at most 5.01e-6. Separate nonlinear double-exponential-disc
+benchmarks at alpha=0.5, 1 and 2 also converge below that gate.
+These are **mathematical/software benchmarks, not observed galaxies**.
+Accuracy for a future reconstructed source must be checked separately.
+
+### 12.4 Public density data: retrieved, but not silently made complete
+
+New inputs were retrieved from the primary
+[CDS Leroy et al. (2008) archive](https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/ReadMe):
+table4 (galaxy properties), table7 (radial profiles) and the byte-format ReadMe.
+All three are SHA-256 pinned in the protocol and
+[data catalog](../knowledgebase/library/data_catalog.json), with raw inputs
+kept in the ignored external-data cache. The source is Leroy et al. (2008),
+AJ 136, 2782-2845, doi:10.1088/0004-6256/136/6/2782.
+
+Table7 supplies projected HI, H2 and stellar surface densities. The gas
+columns **already include helium**. Blank fields are missing, not zero;
+the archive also documents upper-limit flags. The existing
+[SPARC products](https://astroweb.case.edu/SPARC/) instead give component
+rotation speeds and stellar surface brightness, not a complete three-dimensional
+baryonic source.
+
+| Certified SPARC overlap | Profile rows | Missing HI rows | Missing H2 rows |
+|---|---:|---:|---:|
+| DDO154 | 7 | 0 | 7 |
+| IC2574 | 46 | 0 | 46 |
+| NGC2403 | 57 | 0 | 57 |
+| NGC2841 | 25 | 5 | 16 |
+| NGC2976 | 26 | 8 | 26 |
+| NGC3198 | 23 | 0 | 13 |
+| NGC3521 | 30 | 0 | 11 |
+| NGC5055 | 43 | 0 | 20 |
+| NGC6946 | 41 | 0 | 14 |
+| NGC7331 | 33 | 0 | 17 |
+| NGC7793 | 38 | 0 | 38 |
+
+None of these 11 overlaps has every component tabulated at every profile
+radius; vertical densities are not supplied. This does **not** mean modeling
+them is impossible. It means the current tables do not justify an automatic,
+assumption-free full-density fit. Missing/censored gas, vertical scale heights,
+bulge deprojection, inner/outer boundaries, distances, inclinations and
+mass-to-light/CO conversion uncertainties need explicit modeling.
+
+**Option 3 has no observational fit, rejection, support or parameter bound in
+this run.** Next: reconstruct and qualify those sources using the underlying
+HI/CO/photometry observations and justified nuisance assumptions; declare the
+weak-field-only or covariant scope; then freeze an observational parameter
+domain, sample, comparator, statistic and uncertainty treatment before fitting.
+The diagnostic exponent examples are not a preregistered empirical search range.
+
+### 12.5 Reproduce and interpret the exit status
+
+```powershell
+& .\emergent_matter_model\.venv\Scripts\python.exe tools\evaluate_candidate_a_all_options.py --fetch-density-data
+```
+
+The same entry point is registered as `evaluate-candidate-a-all-options`.
+The [artifact](../results/candidate_a_all_options.json) records each option,
+source/data hashes and the reconstruction requirements. **Exit 2** means
+completed diagnostic/reproduction checks with the option-3 observational gate
+still blocked. **Exit 1** means input or numerical failure with an explicit
+reason. Neither is a claim that all requested observational work is finished.
+
+Validation of this checkpoint: **147 focused tests passed** across both
+candidate programs, the CLI, ledger and graph. The new evaluator passes Ruff
+and a focused mypy check (existing untyped imports excluded); generated
+references and the strict documentation build pass. This is not a new
+whole-repository test count or physical validation.

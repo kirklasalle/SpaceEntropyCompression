@@ -15,7 +15,16 @@ The subsequent [Candidate A functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_C
 now supplies precise local-curvature, observer-energy and regional-energy options.
 It recommends an observer-projected Einstein-curvature reference for
 energy-equivalent density, with tidal curvature kept separate. This is a
-recommendation for review, not an author-selected functional or proof of emergence.
+recommendation, not proof of emergence or a uniquely selected final law.
+
+**Later October 16 authorization:** Kirk requested investigation of all three
+C_m options and chose the full-density route for option 3. The
+[all-option gates](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates)
+now report passing GR consistency checks, reproduction of option 2's SPARC
+rejection, and a benchmarked option-3 volume-density solver. There is no
+option-3 observational fit: source reconstruction, physical scope and an
+observational protocol remain open. The original collision-specific review
+below is retained; the new solver is not a collision or entropy-evolution model.
 
 For Candidate A, continue with C as a description of existing geometry/energy organization,
 without introducing a separate C energy reservoir, new heat source or force.
