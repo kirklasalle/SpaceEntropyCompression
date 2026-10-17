@@ -1,0 +1,584 @@
+{
+  "schema_version": 1,
+  "protocol_id": "candidate-a-all-options-gates-v1",
+  "protocol_sha256": "99bb1ab4be277a9683bbf9c2391196cf27f6e7b548f940abec992ed274fb3847",
+  "candidate_a_confirmed": false,
+  "environment": {
+    "python": "3.10.0",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3"
+  },
+  "revision": "e769d10740f4109f64b2889813075e029fe87fe4",
+  "source_sha256": {
+    "tools/evaluate_candidate_a_all_options.py": "5294629b0613120a6b6d9221f99ccbe3267e0a75f8b802004953675589052f4c",
+    "tools/evaluate_candidate_a_sparc_baryonic.py": "86497d41a2411bfa1de5144ad07f0757024af74e6340db92ab477809ff2cc1c4",
+    "tools/check_candidate_a_definitions.py": "b734832782f108ec550fa72bd8cc9b2e93cb4008a658bae8c53520a7ab128707",
+    "emergent_matter_model/physics_baseline.py": "af1c33049676a257b5ae965dbb3d3b117a725d2d6f112723bcd1f60ed2094549",
+    "emergent_matter_model/sparc_real_analysis.py": "064b0a2dd0504fa5048b5def96c6617285ee8b3d5beb72c57df4fac818f1bbcf",
+    "emergent_matter_model/sparc_marginalized_a0.py": "a7bbcac7291d473954d6fc1748dbffa9130be317777ac9bb8161776227721740",
+    "emergent_matter_model/fetch_real_data.py": "42881e9ea966216a64347f5c2aebb8f74c9b85c71fdf9c98398279381f6ba4bd"
+  },
+  "data": [
+    {
+      "name": "ReadMe",
+      "bytes": 7668,
+      "sha256": "4a009dade546a513c3c382648aa542c9c6862cb08fd77015ca0974c171949239",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/ReadMe"
+    },
+    {
+      "name": "table4.dat",
+      "bytes": 1863,
+      "sha256": "938104d0289f93f9fed0843028555e92f63a61889d623ee5b5f132e9d6ea1f44",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/table4.dat"
+    },
+    {
+      "name": "table7.dat",
+      "bytes": 56111,
+      "sha256": "43165045c50d534ff7789dda05627328c23ba71c708ded9cf87cf0773fe02d99",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/table7.dat"
+    }
+  ],
+  "sparc_data": [
+    {
+      "file": "data/external/sparc/Rotmod_LTG.zip",
+      "bytes": 110737,
+      "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588"
+    },
+    {
+      "file": "data/external/sparc/SPARC_Lelli2016c.mrt",
+      "bytes": 28259,
+      "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243"
+    }
+  ],
+  "option_1": {
+    "outcome": "consistency_checks_passed",
+    "evidence_class": "conditional_GR_algebra_not_empirical_discrimination",
+    "fluid_observer_normalization_cases": 81,
+    "max_relative_identity_error": 1.3322676295501878e-15,
+    "vacuum_and_regional_checks": 4,
+    "independent_observational_confirmation": false
+  },
+  "option_3": {
+    "mathematical_outcome": "density_mapping_and_solver_checks_passed",
+    "evidence_class": "stipulated_full_density_benchmarks_not_observations",
+    "density_mappings": [
+      {
+        "alpha": 0.25,
+        "rho_bar_over_rho0": [
+          0.0,
+          0.01,
+          0.1,
+          1.0,
+          10.0,
+          100.0
+        ],
+        "rho_eff_over_rho0": [
+          0.0,
+          1.0000000000000018e-08,
+          0.00010000000000000009,
+          1.0,
+          10000.00000000001,
+          100000000.00000018
+        ],
+        "component_mapping_is_additive": false,
+        "effective_excess_changes_sign": true
+      },
+      {
+        "alpha": 0.5,
+        "rho_bar_over_rho0": [
+          0.0,
+          0.01,
+          0.1,
+          1.0,
+          10.0,
+          100.0
+        ],
+        "rho_eff_over_rho0": [
+          0.0,
+          0.00010000000000000009,
+          0.010000000000000004,
+          1.0,
+          100.00000000000004,
+          10000.00000000001
+        ],
+        "component_mapping_is_additive": false,
+        "effective_excess_changes_sign": true
+      },
+      {
+        "alpha": 1.0,
+        "rho_bar_over_rho0": [
+          0.0,
+          0.01,
+          0.1,
+          1.0,
+          10.0,
+          100.0
+        ],
+        "rho_eff_over_rho0": [
+          0.0,
+          0.01,
+          0.1,
+          1.0,
+          10.0,
+          100.0
+        ],
+        "component_mapping_is_additive": true,
+        "effective_excess_changes_sign": false
+      },
+      {
+        "alpha": 2.0,
+        "rho_bar_over_rho0": [
+          0.0,
+          0.01,
+          0.1,
+          1.0,
+          10.0,
+          100.0
+        ],
+        "rho_eff_over_rho0": [
+          0.0,
+          0.10000000000000002,
+          0.316227766016838,
+          1.0,
+          3.1622776601683795,
+          10.000000000000002
+        ],
+        "component_mapping_is_additive": false,
+        "effective_excess_changes_sign": true
+      },
+      {
+        "alpha": 4.0,
+        "rho_bar_over_rho0": [
+          0.0,
+          0.01,
+          0.1,
+          1.0,
+          10.0,
+          100.0
+        ],
+        "rho_eff_over_rho0": [
+          0.0,
+          0.316227766016838,
+          0.5623413251903491,
+          1.0,
+          1.778279410038923,
+          3.1622776601683795
+        ],
+        "component_mapping_is_additive": false,
+        "effective_excess_changes_sign": true
+      }
+    ],
+    "poisson_benchmark": {
+      "radii": [
+        0.5,
+        1.0,
+        2.0,
+        4.0
+      ],
+      "analytic_v2": [
+        0.1137915339098771,
+        0.2623706556001967,
+        0.3152547521002001,
+        0.21968492780301635
+      ],
+      "numerical_v2": [
+        0.11379134500948418,
+        0.2623706556223901,
+        0.3152547533957788,
+        0.2196849277774062
+      ],
+      "relative_errors": {
+        "coarse_vs_analytic": 6.665297310304297e-06,
+        "fine_vs_analytic": 1.6600566530300398e-06,
+        "coarse_vs_fine": 5.0052489662943955e-06
+      },
+      "required_max_relative_error": 0.005
+    },
+    "nonlinear_disc_benchmarks": [
+      {
+        "alpha": 0.5,
+        "v2": [
+          0.13846867108129166,
+          0.2119253920906244,
+          0.17722485276149677,
+          0.08578359372370918
+        ],
+        "coarse_vs_fine_relative_error": 4.2241448172664064e-06
+      },
+      {
+        "alpha": 1.0,
+        "v2": [
+          0.24282871971180625,
+          0.5538756509905628,
+          0.8477014384053272,
+          0.7088990481261929
+        ],
+        "coarse_vs_fine_relative_error": 1.051583587008409e-05
+      },
+      {
+        "alpha": 2.0,
+        "v2": [
+          0.3357744479635263,
+          0.9713165129133792,
+          2.21550243382992,
+          3.390804401588686
+        ],
+        "coarse_vs_fine_relative_error": 8.154502770918448e-06
+      }
+    ],
+    "gr_identity_gate": "only_alpha_1_is_the_same_baryons_only_GR_source",
+    "observational_fit_performed": false,
+    "data_readiness": {
+      "galaxies_in_catalog": 23,
+      "overlap_galaxies": 11,
+      "galaxies_with_complete_tabulated_components": 0,
+      "profiles": [
+        {
+          "galaxy": "DDO154",
+          "radial_rows": 7,
+          "rows_missing_any_component": 7,
+          "missing": {
+            "HI": 0,
+            "H2": 7,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 0,
+            "stars": 0
+          }
+        },
+        {
+          "galaxy": "IC2574",
+          "radial_rows": 46,
+          "rows_missing_any_component": 46,
+          "missing": {
+            "HI": 0,
+            "H2": 46,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 5,
+            "stars": 0
+          }
+        },
+        {
+          "galaxy": "NGC2403",
+          "radial_rows": 57,
+          "rows_missing_any_component": 57,
+          "missing": {
+            "HI": 0,
+            "H2": 57,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 0,
+            "stars": 1
+          }
+        },
+        {
+          "galaxy": "NGC2841",
+          "radial_rows": 25,
+          "rows_missing_any_component": 16,
+          "missing": {
+            "HI": 5,
+            "H2": 16,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 5,
+            "stars": 1
+          }
+        },
+        {
+          "galaxy": "NGC2976",
+          "radial_rows": 26,
+          "rows_missing_any_component": 26,
+          "missing": {
+            "HI": 8,
+            "H2": 26,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 10,
+            "stars": 0
+          }
+        },
+        {
+          "galaxy": "NGC3198",
+          "radial_rows": 23,
+          "rows_missing_any_component": 13,
+          "missing": {
+            "HI": 0,
+            "H2": 13,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 0,
+            "stars": 1
+          }
+        },
+        {
+          "galaxy": "NGC3521",
+          "radial_rows": 30,
+          "rows_missing_any_component": 11,
+          "missing": {
+            "HI": 0,
+            "H2": 11,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 1,
+            "stars": 1
+          }
+        },
+        {
+          "galaxy": "NGC5055",
+          "radial_rows": 43,
+          "rows_missing_any_component": 20,
+          "missing": {
+            "HI": 0,
+            "H2": 20,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 0,
+            "stars": 1
+          }
+        },
+        {
+          "galaxy": "NGC6946",
+          "radial_rows": 41,
+          "rows_missing_any_component": 14,
+          "missing": {
+            "HI": 0,
+            "H2": 14,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 4,
+            "stars": 4
+          }
+        },
+        {
+          "galaxy": "NGC7331",
+          "radial_rows": 33,
+          "rows_missing_any_component": 17,
+          "missing": {
+            "HI": 0,
+            "H2": 17,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 0,
+            "stars": 1
+          }
+        },
+        {
+          "galaxy": "NGC7793",
+          "radial_rows": 38,
+          "rows_missing_any_component": 38,
+          "missing": {
+            "HI": 0,
+            "H2": 38,
+            "stars": 0
+          },
+          "negative_component_values": 0,
+          "nonpositive_or_missing_radii": 0,
+          "upper_limit_flags": {
+            "HI": 3,
+            "stars": 0
+          }
+        }
+      ],
+      "vertical_volume_profiles_supplied": false,
+      "missing_measurements_replaced_with_zero": false,
+      "gas_includes_helium": true,
+      "outcome": "blocked_pending_density_reconstruction_and_observational_protocol"
+    },
+    "requirements_before_fit": [
+      "Explicit, justified 3-D stellar, HI, H2 and bulge reconstruction including scale heights, distance/inclination alignment, unresolved inner source and outer boundary or extrapolation",
+      "Treatment of missing measurements, censored gas limits, stellar mass-to-light and CO conversion uncertainties, without zero-filling missing values",
+      "A declared covariant completion or an explicit restriction to a phenomenological weak-field source law",
+      "A new frozen observational protocol specifying global versus local alpha and rho0, bounds, nuisance treatments, sample selection, numerical tolerances, comparator, decision statistic and calibration limits"
+    ]
+  },
+  "option_2": {
+    "outcome": "rejected",
+    "reproduction": "passed",
+    "compared_leaves": 6621,
+    "float_tolerance": {
+      "rtol": 1e-08,
+      "atol": 1e-08
+    },
+    "original_artifact": "results/candidate_a_sparc_baryonic_test.json",
+    "original_artifact_sha256": "1fb7ce0f2589c41468d5cd8f4ffbe24e880aaa160099beb7dd6d63a6bd904529",
+    "populations": {
+      "primary": {
+        "T1": {
+          "treatment": "T1",
+          "upsilon_prior_centre": 0.5,
+          "galaxies": 153,
+          "points": 3168,
+          "sum_Q_A2": 282381.3555855177,
+          "sum_Q_REF": 7085.188389778421,
+          "chi2_data_A2": 276152.76502983994,
+          "chi2_data_REF": 6735.503186972093,
+          "inflation_dof": 2403,
+          "inflation_lambda": 2.8029559662805217,
+          "delta_Q": 275296.16719573934,
+          "delta_Q_cons": 98216.37246804594,
+          "population_threshold": 388.1781961430719,
+          "galaxy_threshold": 13.815510557964274,
+          "exceeds_population_threshold": true,
+          "uninflated_exceeds_population_threshold": true,
+          "galaxies_requiring_unseen_mass": 124,
+          "fraction_requiring_unseen_mass": 0.8104575163398693,
+          "outer_ratio_vobs2_over_va2_2": {
+            "p16": 1.2098687822047864,
+            "median": 1.6068632115500627,
+            "p84": 2.400091697696358
+          },
+          "fraction_upsilon_disk_at_upper_bound": 0.0392156862745098,
+          "optimizer_starts": {
+            "a2_attempted": 1224,
+            "a2_counted": 1224,
+            "ref_attempted": 1530,
+            "ref_counted": 1530,
+            "a2_failed": 0,
+            "ref_failed": 0
+          }
+        },
+        "T2": {
+          "treatment": "T2",
+          "upsilon_prior_centre": null,
+          "galaxies": 153,
+          "points": 3168,
+          "sum_Q_A2": 279396.4325808808,
+          "sum_Q_REF": 6643.997533054279,
+          "chi2_data_A2": 276279.780444585,
+          "chi2_data_REF": 6549.873848893644,
+          "inflation_dof": 2403,
+          "inflation_lambda": 2.7257069699931935,
+          "delta_Q": 272752.43504782656,
+          "delta_Q_cons": 100066.67556362732,
+          "population_threshold": 388.1781961430719,
+          "galaxy_threshold": 13.815510557964274,
+          "exceeds_population_threshold": true,
+          "uninflated_exceeds_population_threshold": true,
+          "galaxies_requiring_unseen_mass": 111,
+          "fraction_requiring_unseen_mass": 0.7254901960784313,
+          "outer_ratio_vobs2_over_va2_2": {
+            "p16": 1.2131817882969356,
+            "median": 1.6043671467588285,
+            "p84": 2.271718626152579
+          },
+          "fraction_upsilon_disk_at_upper_bound": 0.0718954248366013,
+          "optimizer_starts": {
+            "a2_attempted": 1224,
+            "a2_counted": 1224,
+            "ref_attempted": 1530,
+            "ref_counted": 1530,
+            "a2_failed": 0,
+            "ref_failed": 0
+          }
+        }
+      },
+      "secondary_q3": {
+        "T1": {
+          "treatment": "T1",
+          "upsilon_prior_centre": 0.5,
+          "galaxies": 10,
+          "points": 109,
+          "sum_Q_A2": 1514.2141850683815,
+          "sum_Q_REF": 103.62265156053243,
+          "chi2_data_A2": 1302.0237983922375,
+          "chi2_data_REF": 70.073876811228,
+          "inflation_dof": 59,
+          "inflation_lambda": 1.1876928273089493,
+          "delta_Q": 1410.5915335078491,
+          "delta_Q_cons": 1187.6736990185748,
+          "population_threshold": 45.31474661812586,
+          "galaxy_threshold": 13.815510557964274,
+          "exceeds_population_threshold": true,
+          "uninflated_exceeds_population_threshold": true,
+          "galaxies_requiring_unseen_mass": 6,
+          "fraction_requiring_unseen_mass": 0.6,
+          "outer_ratio_vobs2_over_va2_2": {
+            "p16": 0.9422506264557445,
+            "median": 1.5486708360455506,
+            "p84": 2.15443060580196
+          },
+          "fraction_upsilon_disk_at_upper_bound": 0.0,
+          "optimizer_starts": {
+            "a2_attempted": 80,
+            "a2_counted": 80,
+            "ref_attempted": 100,
+            "ref_counted": 100,
+            "a2_failed": 0,
+            "ref_failed": 0
+          }
+        },
+        "T2": {
+          "treatment": "T2",
+          "upsilon_prior_centre": null,
+          "galaxies": 10,
+          "points": 109,
+          "sum_Q_A2": 1307.6108418761498,
+          "sum_Q_REF": 51.93302890342565,
+          "chi2_data_A2": 1242.7991254213769,
+          "chi2_data_REF": 49.5001602227474,
+          "inflation_dof": 59,
+          "inflation_lambda": 1.0,
+          "delta_Q": 1255.6778129727243,
+          "delta_Q_cons": 1255.6778129727243,
+          "population_threshold": 45.31474661812586,
+          "galaxy_threshold": 13.815510557964274,
+          "exceeds_population_threshold": true,
+          "uninflated_exceeds_population_threshold": true,
+          "galaxies_requiring_unseen_mass": 5,
+          "fraction_requiring_unseen_mass": 0.5,
+          "outer_ratio_vobs2_over_va2_2": {
+            "p16": 1.0001030299187084,
+            "median": 1.383789499018477,
+            "p84": 2.107519385795462
+          },
+          "fraction_upsilon_disk_at_upper_bound": 0.0,
+          "optimizer_starts": {
+            "a2_attempted": 80,
+            "a2_counted": 80,
+            "ref_attempted": 100,
+            "ref_counted": 100,
+            "a2_failed": 0,
+            "ref_failed": 0
+          }
+        }
+      }
+    },
+    "secondary_q3_outcome": "rejected",
+    "protocol_deviations": [],
+    "new_independent_observational_test": false,
+    "current_authorization": "author_requested_testing_of_all_three_options",
+    "historical_artifact_status": "assistant_proposed_pending_author_confirmation"
+  },
+  "outcome": "partial_option3_observational_test_blocked"
+}

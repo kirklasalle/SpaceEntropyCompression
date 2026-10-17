@@ -157,6 +157,8 @@ COMMANDS: tuple[Command, ...] = (
             "Candidate A definition checks"),
     Command("evaluate-candidate-a-sparc", _T + "evaluate_candidate_a_sparc_baryonic.py", "audit",
             "Preregistered Candidate A option-2 SPARC baryonic-matter falsification test"),
+    Command("evaluate-candidate-a-all-options", _T + "evaluate_candidate_a_all_options.py", "audit",
+            "Candidate A density gates and SPARC reproduction (exit 2 if blocked)", network=True),
     Command("check-candidate-b", _T + "check_candidate_b_definitions.py", "audit",
             "Candidate B benchmark checks"),
     Command("prepare-candidate-b", _T + "prepare_candidate_b_test.py", "audit",

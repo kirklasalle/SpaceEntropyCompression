@@ -6,12 +6,14 @@ versions remain in Git history and the [correction archive](docs/archive/antigra
 | Area | Current state |
 |---|---|
 | Research direction | A and B selected by Kirk and run concurrently as a [dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md); neither is paused or confirmed |
-| Candidate A | Exact-background definition checks; C and M not yet author-selected |
-| Candidate A SPARC test | Frozen preregistration of option 2 (C = C_m, alpha = 1, M = observed baryons), assistant-proposed while Kirk was unavailable and pending his confirmation. **Rejected**: Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against 388.2 in 153 galaxies. Not blind; falsifies option 2 only, not Candidate A |
+| Candidate A | Kirk authorized testing all three C_m options, choosing the full-density route for option 3; not selection of one final theory |
+| Candidate A option 1 | 81 fluid/observer/normalization checks plus vacuum checks pass; conditional GR consistency, not independent empirical confirmation |
+| Candidate A SPARC test | Frozen option-2 test remains **rejected**: Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against 388.2 in 153 galaxies. All 6,621 result fields reproduced within frozen tolerances. Original assistant-proposed provenance preserved; testing is now author-authorized. Not blind; option 2 only |
+| Candidate A option 3 | Full-density mapping and finite-thickness axisymmetric solver benchmarked (relative error 1.66e-6). Public Leroy profiles acquired and pinned; 11 SPARC overlaps, none complete across all tabulated components. **Observational fit blocked**, not rejected or supported |
 | Candidate B first test | Restricted quadratic bulk-scalar Higgs portal with exact mass matching and lower-bound widths; preregistered ATLAS joint-contour check gives conditional compatibility and mu4 bounds |
 | Candidate B extended tests | Second frozen preregistration. The ATLAS global-mu likelihood gives kappa_lo = 0.97059, compatible with limit. The width-matched CMS-HIG-24-002 comparison is the stronger mu4 bound at 3 of 12 grid points. Both are bounds, not support for B |
 | Candidate B data gate | ATLAS, CMS-HIG-24-002 and HXSWG inputs SHA-256 pinned; STXS likelihood, interference, loop widths and a direct-resonance likelihood not done |
-| Exact C definition | Recommended observer Einstein-curvature projection, not yet author-selected |
+| Exact C definition | Observer Einstein-curvature projection authorized for investigation under all three options; no unique final law selected |
 | Matter/thermodynamics theorem | Not established; conditional GR identities are not origin-of-matter proofs |
 | Real-data analyses | SPARC four-law profiling/influence checks; DESI and full-covariance Pantheon+ baselines executed |
 | Ten regimes / three horizons | Evidence matrix completed; missing predictions/data likelihoods remain not yet testable |
@@ -26,6 +28,7 @@ versions remain in Git history and the [correction archive](docs/archive/antigra
 - [Dual-candidate program (A and B)](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md)
 - [Candidate A comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 - [Candidate A option-2 SPARC test](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2)
+- [Candidate A all-option gates](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates)
 - [Selected Candidate B test contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#16-selected-research-program-and-first-test)
 - [Candidate B extended tests](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison)
 - [Top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
