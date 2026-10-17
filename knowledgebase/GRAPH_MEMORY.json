@@ -33,12 +33,19 @@
       "functional_comparison": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md",
       "recommended_functional_node": "definition:candidate_a_local_energy_reference",
       "candidate_a_observational_test": {
+        "status_scope": "historical first-test provenance; current authorization in candidate_a_all_options",
         "preregistration_node": "decision:candidate_a_sparc_baryonic_test_preregistration",
         "operationalization_node": "claim:candidate_a_option2_baryonic_operationalization",
         "result_node": "result:candidate_a_sparc_baryonic_test",
         "operationalization_status": "assistant_proposed_pending_author_confirmation",
         "outcome": "rejected",
         "blind": false
+      },
+      "candidate_a_all_options": {
+        "authorization": "author_requested_testing_of_all_three_options",
+        "option_3_route": "full_density",
+        "result_node": "result:candidate_a_all_options",
+        "outcome": "partial_option3_observational_test_blocked"
       },
       "specific_functional_approved": false,
       "new_mechanism_implemented": false,
@@ -255,8 +262,9 @@
       "id": "claim:candidate_a_option2_baryonic_operationalization",
       "type": "WorkingHypothesis",
       "name": "Candidate A option 2: C = C_m sourced by observed baryons only",
-      "description": "Assistant-proposed operationalization of Candidate A, pending Kirk's confirmation: rho_bar = c^2 C_m/(8 pi G) with alpha = 1 and no free physics parameters, so disc-galaxy rotation curves equal the Newtonian curves of their observed baryons. Refuted on SPARC by the preregistered, not-blind test. Option 1 (M = all gravitating energy) is an untestable GR identity and option 3 (free alpha) is untested; neither is affected.",
-      "status": "assistant_proposed_pending_author_confirmation",
+      "description": "Originally assistant-proposed; now authorized for investigation alongside options 1 and 3. rho_bar = c^2 C_m/(8 pi G), alpha=1, no free physics parameters. The preregistered, not-blind SPARC rejection reproduces. Option 1 passes conditional GR checks, and option 3 has solver checks but no observational fit; neither receives an empirical verdict from this result.",
+      "status": "author_authorized_investigation_option2_rejected",
+      "original_status": "assistant_proposed_pending_author_confirmation",
       "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
       "locator": "functional_comparison.observational_test",
       "evidence_status": "refuted_by_preregistered_not_blind_test",
@@ -286,10 +294,27 @@
       ]
     },
     {
+      "id": "result:candidate_a_all_options",
+      "type": "DiagnosticAndReadinessReport",
+      "name": "Candidate A all-option consistency, reproduction and full-density gates",
+      "description": "Kirk authorized investigation of all three options and chose the full-density route. Option 1: 81 conditional GR checks pass. Option 2: 6621 result fields reproduce; rejection unchanged. Option 3: volume-density mapping and axisymmetric Poisson solver benchmarked, but no observational fit. All 11 Leroy/SPARC overlaps have missing components somewhere; source reconstruction, physical scope and an observational protocol remain open.",
+      "status": "partial_option3_observational_test_blocked",
+      "filePath": "results/candidate_a_all_options.json",
+      "evidence_status": "mathematical_checks_reproduction_and_data_readiness_not_new_observational_confirmation",
+      "use_for_empirical_confirmation": false,
+      "kind": "result",
+      "evidence_class": "procedural",
+      "evidence_refs": [
+        "file:results/candidate_a_all_options.json",
+        "file:knowledgebase/candidate_a_all_options_protocol.json",
+        "sha256:99bb1ab4be277a9683bbf9c2391196cf27f6e7b548f940abec992ed274fb3847"
+      ]
+    },
+    {
       "id": "candidate:collision_geometry_reference",
       "type": "ProposedCandidate",
       "name": "Candidate A: geometry/energy re-description",
-      "description": "Selected research candidate, run concurrently with B since 2026-10-16. A diagnostic C functional with standard collision dynamics; no new heat source. Kirk has not yet chosen the precise C and M. One assistant-proposed operationalization (option 2, M = observed baryons) was rejected by a preregistered, not-blind SPARC test; other operationalizations are untested.",
+      "description": "Selected research candidate, concurrent with B. Kirk authorized all three C_m options for investigation, not one final theory. Option 1 passes conditional GR checks; option 2's not-blind SPARC rejection reproduces. Option 3's full-density solver is benchmarked but its observational fit is blocked by source reconstruction and protocol requirements. No new covariant theory or heat source is implemented.",
       "status": "selected_active_functional_pending",
       "filePath": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",
       "locator": "section 4",
@@ -315,7 +340,7 @@
       "id": "candidate:collision_observable_gate",
       "type": "ProposedResearchGate",
       "name": "Density/temperature shock diagnostic and identifiability gate",
-      "description": "Both candidates are selected and run concurrently. A's assistant-proposed option 2 (M = observed baryons) was rejected on SPARC; Kirk's choice of C and M and an observable for any surviving operationalization remain open. B's restricted test has been compared with the ATLAS joint (kappa_V, kappa_F) contour, the ATLAS global-mu profile likelihood and width-matched CMS-HIG-24-002 limits; all give coupling bounds only. A correlated STXS likelihood and a resonance likelihood remain. Neither selection establishes new heating or empirical confirmation.",
+      "description": "Both candidates run concurrently. All three A options are authorized for investigation: conditional GR checks pass, the option-2 SPARC rejection reproduces, and option 3 needs source reconstruction and an observational protocol after full-density solver checks. B's ATLAS contour/rate and CMS-HIG-24-002 comparisons give coupling bounds only. Correlated STXS and resonance likelihoods remain. Neither program establishes new heating or empirical confirmation.",
       "status": "candidate_b_contour_likelihood_and_cms_bounds_done_a_observable_pending",
       "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
       "evidence_status": "proposed_observable_not_a_completed_test",
@@ -1790,6 +1815,15 @@
       "confidence": 0.5,
       "evidence_class": "historical",
       "provenance": "candidate_b_parity_checks_2026-10-16"
+    },
+    {
+      "source": "result:candidate_a_all_options",
+      "target": "candidate:collision_geometry_reference",
+      "relation": "constrains_interpretation_of",
+      "evidence_status": "partial_program_with_explicit_observational_gate",
+      "confidence": 0.5,
+      "evidence_class": "procedural",
+      "provenance": "candidate_a_all_options_2026-10-16"
     },
     {
       "source": "decision:candidate_a_sparc_baryonic_test_preregistration",

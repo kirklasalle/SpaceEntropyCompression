@@ -27,7 +27,10 @@ documented in [STATUS.md](../../STATUS.md) and the [model card](../../MODEL_CARD
   Higgs portal) are both selected and run concurrently; see the
   [dual-candidate program](../EMRF_DUAL_CANDIDATE_PROGRAM.md). Neither is
   confirmed. B has three preregistered coupling bounds; A's assistant-proposed
-  option 2 was rejected by a preregistered SPARC test.
+  option 2 was rejected by a preregistered SPARC test. Kirk subsequently
+  authorized investigation of all three A options: GR checks pass, the
+  option-2 result reproduces, and option 3's full-density solver is benchmarked
+  but its observational fit is blocked pending density reconstruction.
 * Real-data analyses exist for SPARC rotation curves, Pantheon+ (full
   STAT+SYS covariance) and DESI DR1 BAO baselines.
 * Many "stress tests" are software checks of prescribed or synthetic inputs,
@@ -105,7 +108,10 @@ calls `POST /api/v1/simulate`).
 
 `tools/check_candidate_a_definitions.py`,
 `evaluate_candidate_a_sparc_baryonic.py` (preregistered SPARC falsification
-test of Candidate A option 2), `check_candidate_b_definitions.py`
+test of Candidate A option 2), `evaluate_candidate_a_all_options.py`
+(GR consistency, option-2 reproduction and full-density option-3 gates;
+exit 2 explicitly means the observational gate remains blocked),
+`check_candidate_b_definitions.py`
 (Candidate B benchmark algebra), `prepare_candidate_b_test.py`
 (selected restricted B model and data-readiness checks),
 `evaluate_candidate_b_atlas_contour.py` (preregistered B comparison with the

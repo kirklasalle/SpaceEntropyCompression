@@ -147,16 +147,37 @@ def test_candidate_a_test_is_recorded_as_proposal_not_author_selection():
     assert record["outcome"] == artifact["outcome"]
     assert record["secondary_q3_outcome"] == artifact["secondary_q3_outcome"]
     assert record["protocol_deviations"] == artifact["protocol_deviations"]
-    assert "pending" in ledger["author_decision"]["maturity_note"]
     graph = json.loads((ROOT / "knowledgebase" / "GRAPH_MEMORY.json").read_text(encoding="utf-8"))
     nodes = {n["id"]: n for n in graph["nodes"]}
     claim = nodes["claim:candidate_a_option2_baryonic_operationalization"]
-    assert claim["status"] == record["operationalization_status"]
+    assert claim["original_status"] == record["operationalization_status"]
+    assert claim["status"] == "author_authorized_investigation_option2_rejected"
     assert claim["lifecycle_status"] == ("refuted" if record["outcome"] == "rejected"
                                          else "tested")
     assert nodes["result:candidate_a_sparc_baryonic_test"]["status"] == record["outcome"]
     assert nodes["candidate:collision_geometry_reference"]["status"] == (
         "selected_active_functional_pending")
+
+
+def test_candidate_a_all_options_authorized_without_claiming_all_data_tests_complete():
+    ledger = json.loads(
+        (ROOT / "knowledgebase" / "thermodynamic_collision_candidates.json").read_text())
+    current = ledger["functional_comparison"]["all_options_program"]
+    assert current["authorization"] == "author_requested_testing_of_all_three_options"
+    assert current["author_clarification"] == "full_density"
+    assert current["single_final_law_selected"] is False
+    assert current["candidate_a_confirmed"] is False
+    assert hashlib.sha256((ROOT / current["protocol"]).read_bytes()).hexdigest() == (
+        current["protocol_sha256"])
+    artifact = json.loads((ROOT / current["artifact"]).read_text())
+    assert current["outcome"] == artifact["outcome"]
+    assert artifact["option_3"]["observational_fit_performed"] is False
+    graph = json.loads((ROOT / "knowledgebase" / "GRAPH_MEMORY.json").read_text(encoding="utf-8"))
+    review = graph["meta"]["collision_candidate_review"]["candidate_a_all_options"]
+    node = next(n for n in graph["nodes"] if n["id"] == review["result_node"])
+    assert review["authorization"] == current["authorization"]
+    assert node["status"] == current["outcome"]
+    assert node["use_for_empirical_confirmation"] is False
 
 
 def test_dual_candidate_program_is_linked_and_makes_no_confirmation_claim():

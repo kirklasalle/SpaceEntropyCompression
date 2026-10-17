@@ -21,6 +21,7 @@ of matter emergence, gravity unification or entropy generation.
 | Conditional model comparison | Fresh SPARC four-law profiles and influence checks | Comparative fit behavior with nuisance/systematic caveats |
 | Preregistered coupling bound | Candidate B restricted Higgs portal against ATLAS and CMS public results | Compatibility with an upper bound on the new coupling; never support for B |
 | Preregistered falsification | Candidate A option 2 (M = observed baryons) against SPARC rotation curves | Rejection of that operationalization only; not blind; not a test of A's other options |
+| Full-density numerical benchmark | Candidate A option-3 source mapping and axisymmetric Poisson solver | Agreement with an analytic potential and quadrature convergence; no observational fit or verdict |
 | Proposed interpretation | Candidates A and B; A's recommended C definition | Selected research programs, not a selected unique functional, equivalence proof or validated sector |
 | Historical illustration | Bullet maps, CMB templates, synthetic catalogs and old dashboard | Demonstration only; no observational verdict |
 | Historical recovery | Archived drafts, code, logs, audio and screenshots | Provenance of statements/development, not confirmation of the statements |
@@ -42,7 +43,15 @@ One operationalization, option 2 (C = C_m, alpha = 1, M = observed baryons),
 was proposed by the assistant while Kirk was unavailable. It was tested on
 SPARC under a frozen preregistration and **rejected**: rotation curves need
 more mass than the observed baryons in 153 galaxies. The test was not blind.
-It falsifies option 2 only; Kirk's choice of C and M is pending.
+It falsifies option 2 only. Kirk subsequently authorized investigation of all
+three options, with the full-density route for option 3, not selection of a
+single final theory. Option 1 passes 81 GR consistency checks and option 2's
+6,621 result fields reproduce. The option-3 volume-density solver passes
+analytic benchmarks, but no observational fit was performed: the downloaded
+Leroy surface-density profiles need a justified 3-D reconstruction and
+missing/censored-data treatment. A nonunit exponent is not the same
+baryons-only GR source; a physical completion or explicit phenomenological
+restriction and a new observational protocol remain necessary.
 See the [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
 Tidal curvature, local material density, thermal entropy and regional mass
 must not be substituted for one another.

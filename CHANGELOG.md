@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Candidate A: all three options authorized; full-density gates executed
+- Kirk requested testing options 1, 2 and 3 and chose the full-density route
+  for option 3. This authorizes investigation, not a final law or validation.
+- Froze the [all-option protocol](knowledgebase/candidate_a_all_options_protocol.json)
+  before the new numerical diagnostics; SHA-256 `99bb1ab4...74fb3847`.
+  Earlier preregistrations and result artifacts remain unchanged.
+- Option 1: 81 observer/fluid/normalization checks and vacuum checks pass.
+  Option 2: all 6,621 result fields reproduce within declared tolerances;
+  the SPARC outcome remains rejected. Neither is a new independent data test.
+- Implemented an option-3 full-volume-density map and a finite-thickness
+  axisymmetric Poisson solver, with no speed-power or spherical substitute.
+  Analytic benchmark relative error is 1.66e-6; nonlinear-disc convergence
+  checks also pass. Nonunit alpha changes the baryonic GR source.
+- Retrieved and hash-pinned Leroy et al. (2008) surface-density tables.
+  All 11 certified SPARC overlaps have missing density components somewhere
+  in the profiles, and vertical volume densities are not supplied.
+  **No option-3 observational fit or verdict**: reconstruction, physical
+  scope, nuisance treatment and an observational preregistration remain open.
+- The [all-option artifact](results/candidate_a_all_options.json) explicitly
+  reports partial completion. The CLI exits 2 for the scientific gate and 1
+  for input/numerical failures, rather than presenting either as success.
+- Validation: 147 focused A/B, CLI, ledger and graph tests pass; the new
+  evaluator passes lint and focused type checks; strict documentation builds.
+
 ### Candidate A: first preregistered observational test (option 2, rejected)
 - Kirk LaSalle asked on 2026-10-16 to resolve the unevenness, since B had
   three preregistered public-data tests and A had none. He was unavailable to

@@ -36,6 +36,44 @@
       }
     },
     {
+      "id": "leroy-2008-density-profiles",
+      "title": "Leroy 2008 stellar, HI and H2 surface-density profiles (incomplete 3-D sources)",
+      "status": "existing_holding",
+      "priority": "high",
+      "version": "CDS 2011-06-18",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/",
+      "citation": "Leroy et al. (2008), AJ 136, 2782-2845",
+      "doi": "10.1088/0004-6256/136/6/2782",
+      "license_terms_url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/ReadMe",
+      "redistribution": "Public scientific tables, no explicit open-source data licence asserted; raw downloads remain in the ignored cache. Cite the source paper.",
+      "acquisition": "tools/evaluate_candidate_a_all_options.py --fetch-density-data; verify pinned bytes; missing components and vertical geometry must be modeled before any fit",
+      "holdings": [
+        {
+          "path": "data/external/candidate_a/leroy2008/ReadMe",
+          "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/ReadMe",
+          "bytes": 7668,
+          "sha256": "4a009dade546a513c3c382648aa542c9c6862cb08fd77015ca0974c171949239"
+        },
+        {
+          "path": "data/external/candidate_a/leroy2008/table4.dat",
+          "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/table4.dat",
+          "bytes": 1863,
+          "sha256": "938104d0289f93f9fed0843028555e92f63a61889d623ee5b5f132e9d6ea1f44"
+        },
+        {
+          "path": "data/external/candidate_a/leroy2008/table7.dat",
+          "url": "https://cdsarc.cds.unistra.fr/ftp/J/AJ/136/2782/table7.dat",
+          "bytes": 56111,
+          "sha256": "43165045c50d534ff7789dda05627328c23ba71c708ded9cf87cf0773fe02d99"
+        }
+      ],
+      "verified": {
+        "local_hashes": true,
+        "verified_at": "2026-10-16",
+        "source": "results/candidate_a_all_options.json"
+      }
+    },
+    {
       "id": "pantheon-plus-shoes",
       "title": "Pantheon+ and Pantheon+SH0ES supernova compilation",
       "status": "existing_holding",

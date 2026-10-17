@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "candidates_a_b_dual_concurrent",
   "author_approved": true,
-  "approval_scope": "Candidates A and B selected for research and run concurrently as separate programs. Restricted tree-level Higgs-portal test approved, not physical validation or selection of measured parameters.",
+  "approval_scope": "Candidates A and B selected for research and run concurrently as separate programs. All three Candidate A options authorized for investigation, full-density route for option 3. Restricted tree-level Higgs-portal test approved, not physical validation or selection of measured parameters.",
   "author_decision": {
     "author": "Kirk LaSalle",
     "date": "2026-10-16",
@@ -11,7 +11,7 @@
     "active_candidates": ["candidate-a", "candidate-b"],
     "work_policy": "dual_concurrent_programs",
     "program_document": "docs/EMRF_DUAL_CANDIDATE_PROGRAM.md",
-    "maturity_note": "B has three preregistered public-data tests (all bounds or compatibility results). A has one preregistered SPARC falsification test of an assistant-proposed operationalization (option 2: M = observed baryons, C = C_m, alpha = 1); the test was not blind and rejected option 2. Kirk's choice of C and M for A is still pending. This reflects the order of work, not relative merit.",
+    "maturity_note": "B has three preregistered public-data bounds. Kirk now authorizes all three A options for investigation, not a single final law. Option 1 passes conditional GR checks; option 2's not-blind SPARC rejection reproduces; option 3 passes full-density solver checks but has no observational fit pending density reconstruction and an observational protocol.",
     "specific_functional_selected": false
   },
   "author_decision_history": [
@@ -73,6 +73,7 @@
     ],
     "evidence_kind": "exact_background_algebra_not_observations",
     "observational_test": {
+      "record_scope": "Historical first-test record; current authorization and follow-up outcomes are in all_options_program. Frozen provenance remains unchanged.",
       "date": "2026-10-16",
       "author_direction": "Kirk LaSalle asked to resolve the uneven testing of A and B ('Let's resolve this now'); he was unavailable to choose C and M and asked the assistant to choose pragmatically",
       "operationalization": "option 2: C = C_m, M = observed baryons, alpha = 1, k = c^2 C0/(8 pi G); no free physics parameters",
@@ -103,7 +104,26 @@
       "median_outer_ratio_vobs2_over_va2_2": {"T1_certified_priors": 1.607, "T2_free_upsilon": 1.604},
       "protocol_deviations": [],
       "candidate_a_confirmed": false,
-      "interpretation": "Under both nuisance treatments the SPARC rotation curves require mass beyond the observed baryons, so option 2 is falsified for disc galaxies. This falsifies one assistant-proposed operationalization only. Option 1 is untestable and option 3 is untested. Calling the missing mass 'emergent matter' would be a relabelling unless Candidate A independently predicted its amount and distribution."
+      "interpretation": "Under both nuisance treatments the SPARC rotation curves require mass beyond the observed baryons, so option 2 is falsified for disc galaxies. This falsifies one operationalization only. Option 1 cannot independently discriminate against GR. Option 3's later mathematical checks and observational blocker are recorded in all_options_program. Calling the missing mass 'emergent matter' would be relabelling without an independent prediction."
+    },
+    "all_options_program": {
+      "date": "2026-10-16",
+      "author_statement": "Candidate A, all options 1, 2, and 3 can be tested. Run the gamut.",
+      "author_clarification": "full_density",
+      "authorization": "author_requested_testing_of_all_three_options",
+      "single_final_law_selected": false,
+      "protocol": "knowledgebase/candidate_a_all_options_protocol.json",
+      "protocol_sha256": "99bb1ab4be277a9683bbf9c2391196cf27f6e7b548f940abec992ed274fb3847",
+      "document": "docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates",
+      "script": "tools/evaluate_candidate_a_all_options.py",
+      "artifact": "results/candidate_a_all_options.json",
+      "outcome": "partial_option3_observational_test_blocked",
+      "option_1": "81 observer/fluid/normalization cases and vacuum checks pass; conditional GR consistency only",
+      "option_2": "Existing not-blind SPARC rejection reproduced over 6621 result fields; original frozen protocol and artifact unchanged",
+      "option_3": "Full-density mapping and finite-thickness axisymmetric solver benchmarked; no observational fit or verdict",
+      "new_data": "leroy-2008-density-profiles; 11 certified SPARC overlaps, none complete across every tabulated component; no vertical volume profiles supplied",
+      "next_gate": "Justified 3-D source reconstruction, missing/censored data and nuisance treatment, declared physical scope and a frozen observational domain/comparator/decision rule",
+      "candidate_a_confirmed": false
     }
   },
   "specification": "docs/EMRF_COLLISION_CANDIDATE_SPECIFICATION.md",

@@ -21,6 +21,17 @@ def test_protocol_is_frozen_and_authorized_for_all_options():
     assert "never" in protocol["option_3"]["density_order"].lower()
 
 
+def test_density_catalog_is_mirrored_and_matches_frozen_inputs():
+    source = ROOT / "knowledgebase" / "library" / "data_catalog.json"
+    packaged = ROOT / "emergent_matter_model" / "src" / "emrf" / "data" / "data_catalog.json"
+    assert source.read_bytes() == packaged.read_bytes()
+    catalog = json.loads(source.read_text())
+    entry = next(row for row in catalog["datasets"] if row["id"] == "leroy-2008-density-profiles")
+    expected = tool.verify_protocol()["new_data"]["holdings"]
+    assert [(Path(h["path"]).name, h["bytes"], h["sha256"]) for h in entry["holdings"]] == [
+        (h["name"], h["bytes"], h["sha256"]) for h in expected]
+
+
 def test_modified_protocol_stops_before_fetch(tmp_path, monkeypatch):
     modified = tmp_path / "protocol.json"
     modified.write_bytes(tool.PROTOCOL.read_bytes() + b" ")
