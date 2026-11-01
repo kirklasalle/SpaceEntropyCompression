@@ -15,7 +15,7 @@ scipy>=1.12,<2
 pytest>=9.0.3,<10
 gunicorn>=21.2,<23
 httpx>=0.27,<0.29
-uvicorn>=0.30,<0.41
+uvicorn>=0.54.0,<0.55
 
 # Config
 pyyaml>=6.0,<7
