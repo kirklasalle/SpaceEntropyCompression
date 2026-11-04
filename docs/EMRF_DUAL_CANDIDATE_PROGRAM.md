@@ -1,6 +1,6 @@
 # EMRF dual-candidate program: Candidates A and B
 
-**Updated:** October 16, 2026.
+**Updated:** November 3, 2026 (engineering status; candidate evidence unchanged).
 **Principal investigator:** Kirk LaSalle.
 
 EMRF now runs two research programs concurrently: Candidate A and Candidate B.
@@ -151,3 +151,16 @@ Being transparent means saying where the two programs differ in maturity:
   and [dimensionality exploration](engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
 - Both: [collision candidate specification](EMRF_COLLISION_CANDIDATE_SPECIFICATION.md),
   [status](../STATUS.md), [roadmap](../ROADMAP.md) and [tasks](../TASKS.md)
+
+## 8. Engineering checkpoint (2026-11-03)
+
+The non-golden software suite passes (633 passed, 1 skipped, 1 deselected) in
+the local Python 3.12.10 environment. Hypothesis 6.169.0 is outside the
+development constraint `<6.169`; use the project constraints for an exact CI
+environment. These software results do not change either candidate's
+scientific status. The only configured MCP is the project-local IDS server,
+but it currently resolves `.mcp` rather than the repository and has no usable
+project catalog; agents must not substitute a non-local server.
+
+See the [engineering and documentation audit](site/development/project-audit-2026-11-03.md)
+for the complete validation record, documentation findings and next gates.

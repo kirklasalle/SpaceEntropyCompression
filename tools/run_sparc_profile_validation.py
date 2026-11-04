@@ -118,7 +118,7 @@ def fit_one(mg, nu, a0, centre, warm=None, diagnostics=None,
               nominal + np.array([.3, .05, 2.])]
     scale = [.1, mg.sig_fd, mg.sig_i]
     if len(mg.bounds) == 4:
-        starts = [np.r_[x, np.log10(b)] for x, b in zip(starts, (.7, .2, 2.0))]
+        starts = [np.r_[x, np.log10(b)] for x, b in zip(starts, (.7, .2, 2.0), strict=True)]
         scale.append(.3)
     bounds_options = [np.array(mg.bounds).T.copy()]
     # Signed gas components can create distinct minima on either side of the floor.

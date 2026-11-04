@@ -63,17 +63,17 @@ is a **phenomenological scaling ansatz**, not a first-principles theory. The pro
 
 | Document | Location | Status | Quality |
 |----------|----------|--------|---------|
-| Research Paper Draft | [docs/EMRF_Comprehensive_Research_Audit_and_Paper_Draft.md](file:///d:/Projects/theory/SpaceEntropyCompression/docs/EMRF_Comprehensive_Research_Audit_and_Paper_Draft.md) | ✅ Comprehensive | Excellent — 576 lines, well-structured |
-| Prior Audit Report | [docs/EMRF_Audit_and_Project_State_Report_2026-09-30.md](file:///d:/Projects/theory/SpaceEntropyCompression/docs/EMRF_Audit_and_Project_State_Report_2026-09-30.md) | ✅ Complete | Excellent — honest, detailed |
-| Hypothesis Extension | [docs/hypotheses/EMRF_Hypothesis_Extension_Energy_Electromagnetism_Matter_Gravity.md](file:///d:/Projects/theory/SpaceEntropyCompression/docs/hypotheses/EMRF_Hypothesis_Extension_Energy_Electromagnetism_Matter_Gravity.md) | ✅ Complete | Good — properly caveated |
-| PRD | [emergent_matter_model/PRD.md](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/PRD.md) | ✅ Complete | Good — needs timeline dates |
-| Developer Guide | [emergent_matter_model/DEVELOPER_GUIDE.md](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/DEVELOPER_GUIDE.md) | ⚠️ Partial | Outdated environment instructions |
-| User Guide | [emergent_matter_model/USER_GUIDE.md](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/USER_GUIDE.md) | ⚠️ Partial | Functional but thin |
-| API Examples | [emergent_matter_model/API_EXAMPLES.md](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/API_EXAMPLES.md) | ⚠️ Issues | Hardcoded Python path |
-| OpenAPI Spec | [emergent_matter_model/openapi.yaml](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/openapi.yaml) | ✅ Complete | Well-structured |
-| Origin Discussion | [docs/GPT Discussion - the start of it all.txt](file:///d:/Projects/theory/SpaceEntropyCompression/docs/GPT%20Discussion%20-%20the%20start%20of%20it%20all-%20copay-paste.txt) | ✅ Archived | Valuable historical record |
-| Prime Directive | [AGENTIC_PRIME_DIRECTIVE.md](file:///d:/Projects/theory/SpaceEntropyCompression/AGENTIC_PRIME_DIRECTIVE.md) | ✅ Complete | Governance framework |
-| Sacred Covenant | [AGENTIC_SACRED_COVENANT.md](file:///d:/Projects/theory/SpaceEntropyCompression/AGENTIC_SACRED_COVENANT.md) | ✅ Complete | Partnership framework |
+| Research Paper Draft | [docs/EMRF_Comprehensive_Research_Audit_and_Paper_Draft.md](EMRF_Comprehensive_Research_Audit_and_Paper_Draft.md) | ✅ Comprehensive | Excellent — 576 lines, well-structured |
+| Prior Audit Report | [docs/EMRF_Audit_and_Project_State_Report_2026-09-30.md](EMRF_Audit_and_Project_State_Report_2026-09-30.md) | ✅ Complete | Excellent — honest, detailed |
+| Hypothesis Extension | [docs/hypotheses/EMRF_Hypothesis_Extension_Energy_Electromagnetism_Matter_Gravity.md](hypotheses/EMRF_Hypothesis_Extension_Energy_Electromagnetism_Matter_Gravity.md) | ✅ Complete | Good — properly caveated |
+| PRD | [emergent_matter_model/PRD.md](../emergent_matter_model/PRD.md) | ✅ Complete | Good — needs timeline dates |
+| Developer Guide | [emergent_matter_model/DEVELOPER_GUIDE.md](../emergent_matter_model/DEVELOPER_GUIDE.md) | ⚠️ Partial | Outdated environment instructions |
+| User Guide | [emergent_matter_model/USER_GUIDE.md](../emergent_matter_model/USER_GUIDE.md) | ⚠️ Partial | Functional but thin |
+| API Examples | [emergent_matter_model/API_EXAMPLES.md](../emergent_matter_model/API_EXAMPLES.md) | ⚠️ Issues | Hardcoded Python path |
+| OpenAPI Spec | [emergent_matter_model/openapi.yaml](../emergent_matter_model/openapi.yaml) | ✅ Complete | Well-structured |
+| Origin Discussion | [docs/GPT Discussion - the start of it all.txt](GPT%20Discussion%20-%20the%20start%20of%20it%20all-%20copay-paste.txt) | ✅ Archived | Valuable historical record |
+| Prime Directive | [AGENTIC_PRIME_DIRECTIVE.md](../AGENTIC_PRIME_DIRECTIVE.md) | ✅ Complete | Governance framework |
+| Sacred Covenant | [AGENTIC_SACRED_COVENANT.md](../AGENTIC_SACRED_COVENANT.md) | ✅ Complete | Partnership framework |
 
 ### 2.2 Documentation Gaps
 
@@ -91,8 +91,8 @@ is a **phenomenological scaling ansatz**, not a first-principles theory. The pro
 
 ### 2.3 Documentation Issues
 
-1. **"Kretschner" → "Kretschmann"** misspelling throughout ([compare_schwarzschild.py L4](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/compare_schwarzschild.py#L4), PRD L106)
-2. **Hardcoded paths** in [API_EXAMPLES.md](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/API_EXAMPLES.md) (`G:\Program Files\Python314\python.exe`)
+1. **"Kretschner" → "Kretschmann"** misspelling throughout ([compare_schwarzschild.py L4](../emergent_matter_model/compare_schwarzschild.py#L4), PRD L106)
+2. **Hardcoded paths** in [API_EXAMPLES.md](../emergent_matter_model/API_EXAMPLES.md) (`G:\Program Files\Python314\python.exe`)
 3. **License copyright** is blank — should read "Copyright (c) 2026 Kirk LaSalle"
 4. **Reference matrix CSV** exists but not linked from main documents
 5. **No LaTeX-ready manuscript** — current paper is Markdown only
@@ -152,14 +152,14 @@ graph TD
 
 | File | Lines | Quality | Issues |
 |------|-------|---------|--------|
-| [model.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/model.py) | 303 | ★★★★☆ | Clean, well-documented, type-hinted |
-| [server.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/server.py) | 126 | ★★★★☆ | Good validation, proper error handling |
-| [test_model.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/test_model.py) | 270 | ★★★★★ | Comprehensive: 20+ tests, edge cases |
-| [test_server_api.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/test_server_api.py) | 131 | ★★★★☆ | Good coverage of error paths |
-| [compare_schwarzschild.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/compare_schwarzschild.py) | 97 | ★★★☆☆ | Good concept, but "Kretschner" typo; slope check is heuristic |
-| [visualize.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/visualize.py) | 69 | ★★★☆☆ | Functional but basic |
-| [viz3d.py](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/viz3d.py) | 85 | ★★★☆☆ | Docstring placement non-standard (after import) |
-| [pyproject.toml](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/pyproject.toml) | 54 | ★★★★☆ | Well-structured, proper dev deps |
+| [model.py](../emergent_matter_model/model.py) | 303 | ★★★★☆ | Clean, well-documented, type-hinted |
+| [server.py](../emergent_matter_model/server.py) | 126 | ★★★★☆ | Good validation, proper error handling |
+| [test_model.py](../emergent_matter_model/test_model.py) | 270 | ★★★★★ | Comprehensive: 20+ tests, edge cases |
+| [test_server_api.py](../emergent_matter_model/test_server_api.py) | 131 | ★★★★☆ | Good coverage of error paths |
+| [compare_schwarzschild.py](../emergent_matter_model/compare_schwarzschild.py) | 97 | ★★★☆☆ | Good concept, but "Kretschner" typo; slope check is heuristic |
+| [visualize.py](../emergent_matter_model/visualize.py) | 69 | ★★★☆☆ | Functional but basic |
+| [viz3d.py](../emergent_matter_model/viz3d.py) | 85 | ★★★☆☆ | Docstring placement non-standard (after import) |
+| [pyproject.toml](../emergent_matter_model/pyproject.toml) | 54 | ★★★★☆ | Well-structured, proper dev deps |
 
 ### 3.3 Codebase Findings
 

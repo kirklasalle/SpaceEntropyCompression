@@ -224,7 +224,7 @@ The regime list and claimed results are taken from [`README.md`](../README.md) (
 
 ### Regime 6: JWST/ALMA high-redshift disks (claimed ΔBIC = −100.08)
 
-* **Data problems** ([`jwst_kinematics_sample.csv`](../data/jwst/jwst_kinematics_sample.csv)):
+* **Data problems** (the historical path `data/jwst/jwst_kinematics_sample.csv` is absent from this checkout; the cited sample cannot be reproduced from the current tree):
   * GN-z11 is at z = 10.6. A "GN-z11-companion" at z = 3.15 isn't a real association.
   * REBELS-12 is at z = 7.35, not 5.18.
   * GS-9422 (Cameron et al. 2024) is a nebular-continuum spectrum; there's no published rotation velocity.

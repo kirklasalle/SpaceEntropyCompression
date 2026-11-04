@@ -37,6 +37,7 @@ nav:
       - Recovery objectives: development/recovery.md
       - Performance baselines: development/performance.md
       - Supported versions: development/versions.md
+      - Project audit (2026-11-03): development/project-audit-2026-11-03.md
       - ADRs: development/adrs.md
   - Support: support.md
 markdown_extensions:

@@ -3,10 +3,12 @@
 
 > **INTEGRITY NOTICE (2026-10-07).** The benchmark tables in §§ 6–10 of this document (S-star ΔBIC = +70.743, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, "425 observational data points") were computed from data files later shown to be **synthetic**. Those files now live in [`data/synthetic/`](../data/synthetic/README.md). The results **must not be cited**. The real-data replacement for the SPARC regime is [`emergent_matter_model/sparc_real_analysis.py`](../emergent_matter_model/sparc_real_analysis.py), summarized in [`action_principle_derivation.md`](action_principle_derivation.md) §4.3. The full audit is in [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md). The methodology sections (§§ 1–5) remain useful as a plan.
 
+> **Current repository check (2026-11-03).** The legacy path `data/jwst/jwst_kinematics_sample.csv` is absent from this checkout and has no current data-catalog entry. Row-level claims below cannot be reproduced from this tree; re-acquire and hash-pin primary data before relying on them. Current candidate status is in [STATUS.md](../STATUS.md) and the [dual-candidate program](../docs/EMRF_DUAL_CANDIDATE_PROGRAM.md).
+
 **Project:** Emergent Matter Research Framework (EMRF)  
 **Authors:** Kirk LaSalle & Antigravity  
 **Date:** 2026-10-05  
-**Location:** `d:/Projects/theory/SpaceEntropyCompression/knowledgebase/empirical_validation_pipeline.md`  
+**Location:** `knowledgebase/empirical_validation_pipeline.md` (historical plan)<br>
 
 ---
 
@@ -204,7 +206,9 @@ $$V_{\text{flat}}(z) = V_{\text{flat}}(0) \cdot [E(z)]^{1/4}$$
 ($+32\%$ velocity boost at $z=2$, $+59\%$ boost at $z=4$).
 
 ### 9.2 Empirical Evaluation (10 Galaxies, $z = 1.52 - 6.80$)
-Ingested from JWST NIRSpec and ALMA kinematics catalogs (`data/jwst/jwst_kinematics_sample.csv`):
+The historical plan referred to JWST NIRSpec and ALMA kinematics in
+`data/jwst/jwst_kinematics_sample.csv`; that file is absent from the current
+checkout, so the former ingestion claim is not reproducible here:
 - **Static $a_0$ model:** $\chi^2 = 101.32$ (BIC: 103.61)
 - **EMRF Evolving $a_0(z)$ model:** $\chi^2 = 1.20$ (BIC: 3.53)
 - **Bayesian Model Comparison:** $\mathbf{\Delta\text{BIC} = -100.08 \ll -10.0}$ (Decisive evidence favoring evolving horizon acceleration floor)
@@ -228,5 +232,3 @@ The combination of the Sagittarius A* S-star cluster, the SPARC database, and JW
    - The evolving $a_0(z)$ model naturally explains early mature disk rotation velocities ($\Delta\text{BIC} = -100.08$) without invoking speculative feedback mechanisms or unobserved early halo concentration.
 
 All 425 data points, models, and figures are verified across 99 automated tests in the continuous integration suite.
-
-

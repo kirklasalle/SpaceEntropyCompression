@@ -1,0 +1,4 @@
+[submodule ".mcp"]
+	path = .mcp
+	url = https://github.com/kirklasalle/.mcp.git
+	branch = main

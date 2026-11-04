@@ -235,7 +235,7 @@ def make_plot(results: dict) -> None:
     items = list(results["rar_subsets"].items())
     y = np.arange(len(items))[::-1]
     fig, ax = plt.subplots(figsize=(9.5, 0.6 * len(items) + 1.8))
-    for yi, (key, r) in zip(y, items):
+    for yi, (key, r) in zip(y, items, strict=True):
         col = "tab:green" if key == "gas_dominated" else ("tab:purple" if "deep" in key or "gas_points" in key
                                                           else "tab:blue")
         ax.errorbar(r["a0"] * 1e10, yi, xerr=r["sigma_total"] * 1e10, fmt="o", color=col, capsize=3)

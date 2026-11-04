@@ -1,6 +1,6 @@
 # EMRF active research tasks
 
-Research selection updated October 16, 2026: A and B run concurrently. Earlier task lists marked several assumptions or
+Research selection updated October 16, 2026; engineering audit updated November 3, 2026. A and B run concurrently. Earlier task lists marked several assumptions or
 synthetic exercises as completed physical validation; those statuses are not
 carried forward.
 
@@ -17,6 +17,9 @@ carried forward.
 | Fit Candidate A option 3 | Blocked pending source reconstruction and observational protocol | Explicit 3-D geometry, missing/censored gas and uncertainties, physical scope, parameter domain, comparator and decision rule frozen before fitting |
 | Assess equivalence and matter mapping | Conditional identities/counterexamples documented | No inference of complete equivalence from fits or one scalar identity |
 | Recover original theory intentions | Completed with stated coverage limits | Source-hashed archive, qualified graph and attribution |
+| Complete engineering/documentation audit | Completed November 3, 2026 | 633 non-golden tests pass in the CI-constrained environment; current evidence, link corrections, MCP pack status and remaining lint debt are recorded in the [audit](docs/site/development/project-audit-2026-11-03.md) |
+| Repair project-local IDS catalog | Completed November 3, 2026 | The launched IDS entrypoint resolves this repository through `MCP_WORKSPACE_ROOT` and returns real `docs/` hits; its knowledge graph is not yet populated for Candidate A. Do not substitute a non-local MCP |
+| Integrate the project-local MCP server pack | Integrated, not certified | Nine local servers; 9/9 smoke targets pass, 21 of 63 listed tools are individually exercised, and the `.mcp` CI matrix passes on Ubuntu/Windows with Python 3.11/3.12 (run 41829273692). See the [audit](docs/site/development/project-audit-2026-11-03.md#project-local-mcp-server-pack) |
 | Run real SPARC comparison and influence checks | Completed within documented scope | Converged profiles, real inputs and visible systematic limits |
 | Fit real Pantheon+/DESI baselines | Completed within documented scope | Covariance-aware likelihood; no attribution to new EMRF cosmology |
 | Complete every empirical regime | Blocked, not passed | A defined prediction and usable data likelihood for each case |
@@ -26,4 +29,5 @@ carried forward.
 
 References: [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md),
 [top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md),
-[reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md).
+[reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md), and the
+[engineering audit](docs/site/development/project-audit-2026-11-03.md).

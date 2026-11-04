@@ -1,6 +1,6 @@
 # EMRF current status
 
-Research selection updated October 16, 2026: A and B now run concurrently. This replaces the old all-green dashboard; historical
+Research selection updated October 16, 2026; engineering audit updated November 3, 2026. A and B run concurrently. This replaces the old all-green dashboard; historical
 versions remain in Git history and the [correction archive](docs/archive/antigravity_recovery/README.md).
 
 | Area | Current state |
@@ -19,7 +19,8 @@ versions remain in Git history and the [correction archive](docs/archive/antigra
 | Ten regimes / three horizons | Evidence matrix completed; missing predictions/data likelihoods remain not yet testable |
 | Collision module | Static synthetic illustration, reports NOT TESTED; no moving-well/entropy evolution |
 | Recovered history | 47 copy/reference/extract records hash-verified; qualified graph and original meanings preserved |
-| Software tests | **594 non-golden tests passed locally**, October 16, 2026; 3 property-based tests failed from a `hypothesis` library internal error. Software correctness, not physical confirmation |
+| Software tests | **633 passed, 1 skipped, 1 deselected** in the non-golden suite, November 3, 2026; Python 3.12.10 with Hypothesis 6.169.0 (outside the `<6.169` development constraint). Software checks, not physical confirmation |
+| Engineering checks | Focused correctness lint, CI-selected Ruff rules, strict MkDocs build, generated-reference check, JavaFX tests, release metadata, knowledge graph, CLI doctor, dependency consistency and performance checks passed. The full default Ruff profile still reports pre-existing repository-wide style/import debt; see the [audit](docs/site/development/project-audit-2026-11-03.md) |
 | Paper | [Six-page SPARC PDF](paper/sparc_horizon_test.pdf), compiled research draft; no submission |
 | Publication | Current `main` documentation; no new tag or Zenodo deposit implied |
 
@@ -36,6 +37,7 @@ versions remain in Git history and the [correction archive](docs/archive/antigra
 - [Pantheon+ output](results/real_data_followup/pantheon_baseline.json)
 - [Regime assessment](docs/REAL_DATA_REGIME_AUDIT.md)
 - [Reproducibility](docs/REAL_DATA_REPRODUCIBILITY.md)
+- [Engineering and documentation audit](docs/site/development/project-audit-2026-11-03.md)
 
 ## Known limits
 

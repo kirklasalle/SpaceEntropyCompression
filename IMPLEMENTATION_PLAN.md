@@ -84,13 +84,13 @@ This Implementation Plan operationalizes the findings of the **2026-10-05 Master
 - **Action:** Retain `.venv` as canonical; remove legacy broken `venv/` (Python 3.14).
 
 #### Deliverable 0.2: Script Modernization & Headless CI
-- **File:** [`emergent_matter_model/compare_schwarzschild.py`](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/compare_schwarzschild.py)
+- **File:** [`emergent_matter_model/compare_schwarzschild.py`](emergent_matter_model/compare_schwarzschild.py)
   - Add `--headless` / `--no-plot` and `--save-plot <path>` arguments so execution does not block on `plt.show()`.
-- **File:** [`emergent_matter_model/ci_local.ps1`](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/ci_local.ps1)
+- **File:** [`emergent_matter_model/ci_local.ps1`](emergent_matter_model/ci_local.ps1)
   - Parameterize `JAVA_HOME` with fallback auto-detection (`$env:JAVA_HOME`, `G:\Program Files\Java\jdk-25.0.2`, `where.exe java`).
 
 #### Deliverable 0.3: Architectural Terminology Alignment
-- **File:** [`emergent_matter_model/model.py`](file:///d:/Projects/theory/SpaceEntropyCompression/emergent_matter_model/model.py)
+- **File:** [`emergent_matter_model/model.py`](emergent_matter_model/model.py)
   - Update class docstrings, parameter descriptions, and property aliases to reflect $X = (x, y, z, d_0, d_1, d_2, \dots)$ spatial/dimensional coordinates and $S(X,t)$ as thermodynamic state coupling.
   - Maintain 100% backward compatibility for existing callers and tests.
 

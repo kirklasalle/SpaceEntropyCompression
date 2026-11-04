@@ -163,7 +163,7 @@ def profile_scaled(sample, ratio: float) -> dict:
 
 def required_ratio(scan: list[dict], target: float) -> float | None:
     """Linear interpolation of the ratio at which the fitted a0 crosses the target."""
-    for lo, hi in zip(scan, scan[1:]):
+    for lo, hi in zip(scan, scan[1:], strict=False):
         if (lo["a0"] - target) * (hi["a0"] - target) <= 0 and lo["a0"] != hi["a0"]:
             return lo["ratio"] + (target - lo["a0"]) * (hi["ratio"] - lo["ratio"]) / (hi["a0"] - lo["a0"])
     return None
