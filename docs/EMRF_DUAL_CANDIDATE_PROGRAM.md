@@ -158,9 +158,12 @@ The non-golden software suite passes (633 passed, 1 skipped, 1 deselected) in
 the local Python 3.12.10 environment. Hypothesis 6.169.0 is outside the
 development constraint `<6.169`; use the project constraints for an exact CI
 environment. These software results do not change either candidate's
-scientific status. The only configured MCP is the project-local IDS server,
-but it currently resolves `.mcp` rather than the repository and has no usable
-project catalog; agents must not substitute a non-local server.
+scientific status. The workspace profile now declares nine project-local MCP
+servers, using `python` from `PATH` and forward-slash workspace-relative paths.
+IDS documentation search resolves the project root and returns documentation
+hits. Its knowledge graph is not yet populated for Candidate A, so graph
+queries do not provide Candidate A lineage; agents must not substitute a
+non-local server.
 
 See the [engineering and documentation audit](site/development/project-audit-2026-11-03.md)
 for the complete validation record, documentation findings and next gates.

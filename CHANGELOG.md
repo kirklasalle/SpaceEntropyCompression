@@ -11,8 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Registered the project-local `.mcp` repository as a submodule, pointed the
   workspace `.vscode/mcp.json` profile only at its nine servers (IDS, EDS, IPA,
   VRGC, DPA, web search, Library of Congress, science data and a read-only
-  Goliath), and added workspace Copilot instructions requiring consultation of
-  the three named governance documents; no non-local MCP server was invoked.
+  Goliath) with a platform-neutral `python` command and forward-slash paths,
+  and added workspace Copilot instructions requiring consultation of the three
+  named governance documents; no non-local MCP server was invoked.
 - Hardened parallel-array zip sites in non-frozen code with explicit length
   checking and marked the intentional adjacent-pair scan as non-strict.
   Hash-pinned historical source files remain unchanged.
