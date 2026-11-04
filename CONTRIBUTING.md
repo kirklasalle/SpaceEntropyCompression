@@ -70,7 +70,10 @@ workspace `.vscode/mcp.json` profile, which launch the `.mcp` submodule
 (initialize it with `git submodule update --init`). Do not substitute a global
 or another project's MCP server if a local server is unavailable or its catalog
 is empty; report the limitation. The permission model and verification scope
-are in `.mcp/docs/SPACE_ENTROPY_COMPRESSION.md`.
+are in `.mcp/docs/SPACE_ENTROPY_COMPRESSION.md`. The shared profile uses
+`python` from the VS Code process `PATH` and forward-slash workspace paths;
+ensure a tested Python 3.11 or 3.12 environment is available there (the
+project's devcontainer provides Python 3.12).
 
 ---
 

@@ -1,122 +1,113 @@
 {
   "servers": {
     "project-ids": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\ids\\server_ai_enhanced.py"
+        "${workspaceFolder}/.mcp/ids/server_ai_enhanced.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache"
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache"
       }
     },
     "project-eds": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\eds\\server_enhanced.py"
+        "${workspaceFolder}/.mcp/eds/server_enhanced.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache"
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache"
       }
     },
     "project-ipa": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\ipa\\server_ultimate.py"
+        "${workspaceFolder}/.mcp/ipa/server_ultimate.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache"
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache"
       }
     },
     "project-vrgc": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\vrgc\\server_enhanced.py"
+        "${workspaceFolder}/.mcp/vrgc/server_enhanced.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache",
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache",
         "MCP_ALLOW_MUTATIONS": "0"
       }
     },
     "project-dpa": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\dpa\\server.py"
+        "${workspaceFolder}/.mcp/dpa/server.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache",
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache",
         "MCP_ALLOW_MUTATIONS": "0"
       }
     },
     "project-web-search": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\web-search\\server.py"
+        "${workspaceFolder}/.mcp/web-search/server.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache"
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache"
       }
     },
     "project-loc": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\loc\\server.py"
+        "${workspaceFolder}/.mcp/loc/server.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache"
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache"
       }
     },
     "science-data": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\science_data\\server.py"
+        "${workspaceFolder}/.mcp/science_data/server.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache"
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache"
       }
     },
     "project-goliath": {
-      "command": "py",
+      "command": "python",
       "args": [
-        "-3.12",
-        "${workspaceFolder}\\.mcp\\goliath\\server.py"
+        "${workspaceFolder}/.mcp/goliath/server.py"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONUNBUFFERED": "1",
         "MCP_WORKSPACE_ROOT": "${workspaceFolder}",
-        "MCP_CACHE_DIR": "${workspaceFolder}\\.mcp\\.cache",
+        "MCP_CACHE_DIR": "${workspaceFolder}/.mcp/.cache",
         "MCP_ALLOW_MUTATIONS": "0"
       }
     }

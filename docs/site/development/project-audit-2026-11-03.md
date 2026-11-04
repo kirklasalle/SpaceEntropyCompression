@@ -50,9 +50,11 @@ non-local MCP was invoked in either pass.
 ### Agent instructions and MCP boundary
 
 - The workspace `.vscode/mcp.json` declares nine project-local servers, all
-  launched with the Python 3.12 launcher from `.mcp/` using workspace-relative
-  paths, with `MCP_WORKSPACE_ROOT` set to the repository. The file is
-  currently gitignored together with the rest of `.vscode/`.
+  launched with `python` from `PATH` and forward-slash workspace-relative
+  paths; `MCP_WORKSPACE_ROOT` is set to the repository. `.gitignore` allows
+  only this profile from `.vscode/` to be tracked. The Linux profile paths are
+  portable, but its full nine-server launch has not been exercised in the
+  devcontainer.
 - `.github/copilot-instructions.md` requires workspace agents to consult
   `AGENTIC_PRIME_DIRECTIVE.md`, `AGENTIC_SACRED_COVENANT.md`, and
   `Permanent_Active_Directives.txt`. It also limits MCP use to workspace
