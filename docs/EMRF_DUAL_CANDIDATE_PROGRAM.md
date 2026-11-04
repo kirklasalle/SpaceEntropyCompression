@@ -1,6 +1,6 @@
 # EMRF dual-candidate program: Candidates A and B
 
-**Updated:** November 3, 2026 (engineering status; candidate evidence unchanged).
+**Updated:** November 4, 2026 (preparation-only audits; candidate evidence unchanged).
 **Principal investigator:** Kirk LaSalle.
 
 EMRF now runs two research programs concurrently: Candidate A and Candidate B.
@@ -53,6 +53,14 @@ specified and frozen in advance. No such comparison exists yet.
 | [SPARC test of option 2](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2) | Preregistered observational falsification test; **not blind** | **Rejected.** With C = C_m, alpha = 1 and M = observed baryons, A predicts that every rotation curve equals its baryonic Newtonian curve. In 153 SPARC galaxies, Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2 |
 | [All-option gates](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates) | GR consistency, full-density numerical benchmarks, reproduction and public-data audit | Option 1: 81 checks pass. Option 2: 6,621 fields reproduce. Option 3: solver benchmark passes, but **no observational fit**; density reconstruction and an observational protocol remain open |
 
+The November 4 [option-3 source audit](EMRF_CANDIDATE_A_OPTION3_SOURCE_AUDIT_2026-11-04.md)
+reverified the pinned inputs and found zero complete profiles among the 11
+Leroy/SPARC overlaps. Kirk approved a literature-constrained axisymmetric
+parametric-profile family. Its source, censoring and test rules are now frozen
+in the [option-3 protocol](../knowledgebase/candidate_a_option3_reconstruction_protocol.json)
+(SHA-256 `CD9687DD…16270518`). No source reconstruction, fit, or new
+observational result has been produced.
+
 Option 2 was originally assistant-proposed; Kirk has now authorized
 investigation of all three options. The rejection still falsifies **one
 operationalization of A, not Candidate A**. The outcome was
@@ -84,6 +92,22 @@ an upper bound on it. These are **bounds, not detections**: a model that
 reduces to the Standard Model when its new coupling vanishes cannot be
 supported by data that agree with the Standard Model. The tests do not exclude
 Candidate B in general, only coupling values within the restricted model.
+
+The November 4 [STXS feasibility review](engineering/CANDIDATE_B_STXS_FEASIBILITY_DRAFT_2026-11-04.md)
+qualified the already-pinned 36-bin measurement vector and its 36 × 36
+correlation matrix. ATLAS's Gaussian-approximation appendix supports its SMEFT
+fits generally, but does not validate Candidate B's exact bounded universal
+rescaling direction. Figure 7 central values were inadvertently exposed
+before any new protocol was frozen; no statistic, fit, or bound was computed.
+The STXS work is now non-blind and cannot be called prospectively preregistered.
+The Gaussian approximation's direction-specific validity gate remains unmet.
+That gate is moot for the restricted model: B predicts exactly the global-`mu`
+hypothesis, and ATLAS's official global-`mu` profile likelihood from the same
+dataset is already the basis of the rate-likelihood test above. An STXS fit
+along that direction would add no independent constraint, so the
+restricted-model STXS line is closed without any computation. STXS remains
+relevant only to a future non-universal variant under a new contract and
+protocol.
 
 ## 4. Where the work is uneven
 
@@ -138,8 +162,8 @@ Being transparent means saying where the two programs differ in maturity:
 
 | Candidate | Next step | What it could establish |
 |---|---|---|
-| A | Reconstruct option-3 volume densities, treat missing/censored data and geometry, declare physical scope and freeze an observational protocol. Keep options 1 and 2 as consistency and rejected observational baselines | A qualified full-density observational test, not another software benchmark |
-| B | Correlated STXS likelihood, interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration | Tighter or more robust bounds on the restricted coupling |
+| A | Implement the frozen option-3 reconstruction, pass validation gates V1–V3b without observed velocities, report V4–V5, then run the frozen fit. Keep options 1 and 2 as consistency and rejected observational baselines | A qualified full-density observational test of one operationalization, not another software benchmark |
+| B | Interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration. STXS is closed for the restricted model (redundant with the global-`mu` likelihood) | Tighter or more robust bounds on the restricted coupling |
 | B (general) | Connect the restricted model back to the collision energy and entropy budget | Whether the broader candidate makes a distinct prediction |
 
 ## 7. Where the records live
@@ -148,7 +172,8 @@ Being transparent means saying where the two programs differ in maturity:
 - Graph: [GRAPH_MEMORY.json](../knowledgebase/GRAPH_MEMORY.json)
 - Candidate A: [functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md)
 - Candidate B: [model contract](engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md)
-  and [dimensionality exploration](engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md)
+  and [dimensionality exploration](engineering/CANDIDATE_B_DIMENSIONALITY_EXPLORATION_2026-10-13.md);
+  [STXS feasibility draft](engineering/CANDIDATE_B_STXS_FEASIBILITY_DRAFT_2026-11-04.md)
 - Both: [collision candidate specification](EMRF_COLLISION_CANDIDATE_SPECIFICATION.md),
   [status](../STATUS.md), [roadmap](../ROADMAP.md) and [tasks](../TASKS.md)
 
@@ -167,3 +192,12 @@ non-local server.
 
 See the [engineering and documentation audit](site/development/project-audit-2026-11-03.md)
 for the complete validation record, documentation findings and next gates.
+
+The November 4 preparation work adds an option-3 source audit and a Candidate B
+STXS feasibility review. These are not new fits. The
+[reconstruction specification](EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+sets literature-grounded source rules, and the approved option-3 test is
+frozen before any computation with observed velocities. The test is
+non-blind. B
+remains limited to its existing preregistered bounds. Its restricted-model STXS
+line is closed as redundant with the global-`mu` likelihood already used.

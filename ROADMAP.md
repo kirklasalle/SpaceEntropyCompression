@@ -63,6 +63,15 @@ legacy labels and validating likelihoods, numerical stability, provenance and
 missing-data behavior. Maintain regression tests without equating them with
 empirical confirmations.
 
+Future development (noted 2026-11-04, not started): design and build an
+"EMRF farm" volunteer-compute client, in the spirit of SETI@home, so that
+frozen-protocol computations can be distributed across contributed CPUs and
+GPUs. This needs its own application design, including work-unit definition,
+result validation and redundancy, provenance and protocol-hash pinning,
+numerical reproducibility across hardware, and contributor security. Distributed
+results must be traceable to the exact frozen protocol and code revision and
+are computational outputs, not empirical confirmations.
+
 ## 6. Independent review and publication
 
 Seek domain/statistical review of a bounded, reproducible claim. Preserve
