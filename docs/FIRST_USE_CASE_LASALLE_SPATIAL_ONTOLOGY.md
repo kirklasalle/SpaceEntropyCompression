@@ -182,4 +182,4 @@ All analytical models, numerical solvers, and plotting scripts are deterministic
 - `emergent_matter_model/jwst_highz_early_galaxies.py`
 - `emergent_matter_model/test_three_horizons.py` (**178/178 tests passing in 5.51s**).
 
-Community governance, ethical stewardship, and The Grand Covenant are maintained separately in [`docs/COMMUNITY_ETHICS.md`](file:///d:/Projects/SpaceEntropyCompression/docs/COMMUNITY_ETHICS.md).
+Community governance, ethical stewardship, and The Grand Covenant are maintained separately in [`docs/COMMUNITY_ETHICS.md`](COMMUNITY_ETHICS.md).

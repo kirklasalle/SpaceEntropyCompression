@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Engineering and documentation audit (2026-11-03)
+- Registered the project-local `.mcp` repository as a submodule, pointed the
+  workspace `.vscode/mcp.json` profile only at its nine servers (IDS, EDS, IPA,
+  VRGC, DPA, web search, Library of Congress, science data and a read-only
+  Goliath), and added workspace Copilot instructions requiring consultation of
+  the three named governance documents; no non-local MCP server was invoked.
+- Hardened parallel-array zip sites in non-frozen code with explicit length
+  checking and marked the intentional adjacent-pair scan as non-strict.
+  Hash-pinned historical source files remain unchanged.
+- Updated current evidence and test summaries, qualified unreproducible
+  historical JWST references, and replaced machine-specific knowledgebase
+  links with repository-relative links.
+- Recorded the MCP pack's verification scope (9/9 smoke targets; 21 of 63
+  listed tools individually exercised), its limitations and the remaining
+  documentation/lint debt in the [project audit](docs/site/development/project-audit-2026-11-03.md).
+  The earlier IDS root-resolution limitation is resolved: the launched IDS
+  entrypoint now resolves this repository. The `.mcp` CI matrix passed on
+  Ubuntu and Windows with Python 3.11 and 3.12 after a Windows UTF-8 test
+  harness failure in the first run was fixed (run `41829273692`).
+
 ### Candidate A: all three options authorized; full-density gates executed
 - Kirk requested testing options 1, 2 and 3 and chose the full-density route
   for option 3. This authorizes investigation, not a final law or validation.

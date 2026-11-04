@@ -74,9 +74,10 @@ The directory tree and version descriptions below are historical.
 
 > **Integrity notice (2026-10-07).** This document predates the independent audit in [`docs/SHOW_YOUR_WORK.md`](../docs/SHOW_YOUR_WORK.md). Empirical results quoted here (for example S-star ΔBIC = +70.743 or +141.3, SPARC ΔBIC = −52,490.1, JWST ΔBIC = −100.08, wide-binary ΔBIC = −60.26, CMB χ²ᵥ = 0.924, "28,700+ observational constraints") were computed from synthetic data files (now quarantined in [`data/synthetic/`](../data/synthetic/README.md)) or from code whose answer was built in, so they **must not be cited**. "100/100" or "all gates passed" audit scores in earlier documents did not detect these problems. Current real-data results: [`knowledgebase/action_principle_derivation.md`](action_principle_derivation.md) §4.3.
 
+> **Current status (2026-11-03).** Use the current entry points at the top of this file, [STATUS.md](../STATUS.md), [MODEL_CARD.md](../MODEL_CARD.md), the [dual-candidate program](../docs/EMRF_DUAL_CANDIDATE_PROGRAM.md), and the [project audit](../docs/site/development/project-audit-2026-11-03.md). Everything below this notice is legacy context and is not a current catalog of files or scientific conclusions. The historical JWST sample path is absent from this checkout.
 
 **Project:** Emergent Matter Research Framework (EMRF) / Space-Entropy Compression  
-**Repository:** `d:/Projects/theory/SpaceEntropyCompression`  
+**Repository:** [kirklasalle/SpaceEntropyCompression](https://github.com/kirklasalle/SpaceEntropyCompression)<br>
 **Authors:** Kirk LaSalle & Antigravity  
 **Version:** 1.6.0 (October 2026)  
 
@@ -88,8 +89,11 @@ The EMRF Knowledgebase is an integrated theoretical, computational, and empirica
 
 It couples **machine-readable graph memory** (`GRAPH_MEMORY.json`) with **deep-dive reference manuals**:
 
+The following legacy tree is illustrative only; it is not an inventory of
+files present in this checkout.
+
 ```
-d:/Projects/theory/SpaceEntropyCompression/
+<repository-root>/
 ├── data/
 │   ├── astrometry/                      # Sgr A* S-star cluster observations (201 data points)
 │   │   ├── s2_gravity_vlti.csv          # ESO VLT/GRAVITY observations for star S2 (2002–2022)
@@ -104,8 +108,7 @@ d:/Projects/theory/SpaceEntropyCompression/
 │   │   ├── ngc2403.csv, ngc2903.csv     # Intermediate spirals with extended HI
 │   │   ├── ngc3198.csv, ngc6503.csv     # Canonical rotation curve benchmarks
 │   │   └── ngc2841.csv, ngc7331.csv, ugc2885.csv # Massive spirals and giants
-│   └── jwst/                            # JWST & ALMA high-redshift kinematics (10 data points)
-│       └── jwst_kinematics_sample.csv   # Curated sample from z=1.52 to z=6.80
+│   └── jwst/                            # Historical directory; cited sample is absent from this checkout
 ├── notebooks/
 │   └── emrf_two_regime_validation.ipynb # Interactive Jupyter validation & horizon dashboard
 ├── paper/                               # Academic publication & dissemination package
@@ -149,21 +152,21 @@ d:/Projects/theory/SpaceEntropyCompression/
 
 | Document | Primary Domain | Key Topics Covered |
 |:---|:---|:---|
-| [theoretical_framework.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/theoretical_framework.md) | Physics & Math | Manifold $\mathcal{M}^D$, Metric signatures, Clausius & Boltzmann entropy, Curvature invariants, Lagrangian formulation, Jacobson/Verlinde comparisons. |
-| [action_principle_derivation.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/action_principle_derivation.md) | Variational Theory | Full action on $\mathcal{M}^{D,1}$, proof of Branch A collapse under intense Kretschmann curvature ($K \propto r^{-6}$), and proof of de Sitter horizon entropy acceleration floor in galaxy outskirts. |
-| [jwst_high_redshift_predictions.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/jwst_high_redshift_predictions.md) | Cosmology | Derivation of $a_0(z) = c H(z) / 2\pi$, BTFR velocity scaling $+32\%$ at $z=2$ and $+59\%$ at $z=4$, and JWST testability. |
-| [solar_system_screening_and_cassini_bounds.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/solar_system_screening_and_cassini_bounds.md) | Precision Astrophysics | Cassini Saturn bound ($3.2 \times 10^{-14}\text{ m/s}^2$), LLR, Mercury perihelion, and EMRF geometric screening proof. |
-| [gravitational_lensing_and_geodesic_deflection.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/gravitational_lensing_and_geodesic_deflection.md) | Relativistic Optics | Null geodesic equations in compressed space, unit relativistic slip $\eta = 1$, and SLACS HST strong lens benchmarks. |
-| [bullet_cluster_entropy_separation.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/bullet_cluster_entropy_separation.md) | Cluster Astrophysics | 1E 0657-56 2D collision simulation, shock-heated thermal entropy disruption of compression, and centroid shift ($\sim 180\text{ kpc}$). |
-| [gw170817_gravitational_wave_speed.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/gw170817_gravitational_wave_speed.md) | Relativistic Gravitation | Multi-messenger speed of gravity bound ($|c_{gw} - c|/c \le 10^{-15}$), conformal metric lightcone invariance, and falsification of Horndeski/TeVeS. |
-| [wide_binary_gaia_external_field_effect.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/wide_binary_gaia_external_field_effect.md) | Stellar Dynamics | Gaia DR3 26,615 wide binaries, Galactic External Field Effect ($g_{\text{ext}} \approx 1.2 \times 10^{-10}\text{ m/s}^2$), velocity boost cap ($\gamma \approx 1.25-1.35$), and $\Delta\text{BIC} = -60.26$. |
-| [hamiltonian_stability_and_ghost_absence.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/hamiltonian_stability_and_ghost_absence.md) | Field Theory | Quadratic perturbation action, Ostrogradsky ghost freedom ($\le 2$nd order EOM), kinetic positivity ($A > 0$), and subluminal sound speed ($0.95c \le c_s \le c$). |
-| [equivalence_principle_and_microscope_bounds.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/equivalence_principle_and_microscope_bounds.md) | Experimental Relativity | Weak Equivalence Principle (WEP), MICROSCOPE satellite bound ($|\eta| \le 10^{-15}$), LLR, and universal stress-energy trace coupling. |
-| [software_architecture.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/software_architecture.md) | Software Engineering | NumPy vectorization, `EmergentMatterModel`, `physics_baseline.py`, fitting engines, 5 lethal stress test engines, WSGI, 145 tests. |
-| [empirical_validation_pipeline.md](file:///d:/Projects/theory/SpaceEntropyCompression/knowledgebase/empirical_validation_pipeline.md) | Astrophysics | Multi-regime empirical crucible: Sgr A* + SPARC + JWST + Solar System + SLACS + Bullet Cluster + Gaia Wide Binaries + GW170817 + MICROSCOPE (27,000+ observational constraints). |
-| [MODEL_CARD.md](file:///d:/Projects/theory/SpaceEntropyCompression/MODEL_CARD.md) | Model Governance | Classification of every model component as validated, baseline, candidate, phenomenological, or demo. |
-| [RELEASE_DRAFT_v0.7.0.md](file:///d:/Projects/theory/SpaceEntropyCompression/RELEASE_DRAFT_v0.7.0.md) | Dissemination | Turnkey release notes, Zenodo DOI steps, arXiv walkthrough, and PRD cover letter draft. |
-| [interactive_visualizer.html](file:///d:/Projects/theory/SpaceEntropyCompression/tools/interactive_visualizer.html) | Interactive WebGL | Real-time 3D spatial metric warping, photon beam ray tracing, Bullet Cluster entropy separation, universal RAR scatter, GW170817 light cones, Gaia wide binaries with EFE, Hamiltonian stability, and adversarial blind challenge. |
+| [theoretical_framework.md](theoretical_framework.md) | Physics & Math | Historical ontology and proposed formulations; consult current candidate contracts for status. |
+| [action_principle_derivation.md](action_principle_derivation.md) | Variational Theory | Historical theoretical development; not a current derivation or empirical confirmation. |
+| [jwst_high_redshift_predictions.md](jwst_high_redshift_predictions.md) | Cosmology | Historical predictions; no current JWST sample is cataloged in this checkout. |
+| [solar_system_screening_and_cassini_bounds.md](solar_system_screening_and_cassini_bounds.md) | Precision Astrophysics | Historical proposed constraints; not a current completed test. |
+| [gravitational_lensing_and_geodesic_deflection.md](gravitational_lensing_and_geodesic_deflection.md) | Relativistic Optics | Historical proposed model; use current evidence documents for executed results. |
+| [bullet_cluster_entropy_separation.md](bullet_cluster_entropy_separation.md) | Cluster Astrophysics | Historical proposal and illustration; the collision module remains not tested. |
+| [gw170817_gravitational_wave_speed.md](gw170817_gravitational_wave_speed.md) | Relativistic Gravitation | Historical proposal; assigning a parameter to the observed value is not an independent test. |
+| [wide_binary_gaia_external_field_effect.md](wide_binary_gaia_external_field_effect.md) | Stellar Dynamics | Historical analysis; consult current real-data reports for qualified results. |
+| [hamiltonian_stability_and_ghost_absence.md](hamiltonian_stability_and_ghost_absence.md) | Field Theory | Historical analysis; no general covariant completion is established. |
+| [equivalence_principle_and_microscope_bounds.md](equivalence_principle_and_microscope_bounds.md) | Experimental Relativity | Historical analysis; not a current independent test of the candidates. |
+| [software_architecture.md](software_architecture.md) | Software Engineering | Historical architecture notes; current interfaces and test commands are documented in the root guides. |
+| [empirical_validation_pipeline.md](empirical_validation_pipeline.md) | Astrophysics | Historical plan; synthetic benchmark results are withdrawn and the cited JWST sample is absent. |
+| [MODEL_CARD.md](../MODEL_CARD.md) | Model Governance | Current evidence classes and limitations. |
+| [RELEASE_DRAFT_v0.7.0.md](../RELEASE_DRAFT_v0.7.0.md) | Dissemination | Historical release draft; not current release instructions. |
+| [interactive_visualizer.html](../tools/interactive_visualizer.html) | Interactive WebGL | Historical illustration; not an observational result. |
 
 ---
 

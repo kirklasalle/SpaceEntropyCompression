@@ -2,7 +2,7 @@
 
 - **Principal investigator:** Kirk LaSalle
 - **Repository:** https://github.com/kirklasalle/SpaceEntropyCompression
-- **Scope:** current `main` research revision, October 16, 2026
+- **Scope:** current `main` research revision; engineering audit November 3, 2026
 **License:** [MIT](emergent_matter_model/LICENSE)
 
 ## Intended use
@@ -91,13 +91,18 @@ equivalent to measurement-table ingestion.
 
 ## Validation and limitations
 
-On October 16, 2026, 594 non-golden software tests passed locally; 3 property-based
-tests failed from an internal error in the installed `hypothesis` library
-(`'TreeNode' object has no attribute 'is_exhausted'`), not from EMRF code.
-Tests include synthetic fixtures, API behavior, document structure and
-graph/provenance checks. They do not constitute 594 physical tests. The current
-compiled paper is a research draft, not accepted
-or peer-reviewed work. Consult [status](STATUS.md), [top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
+On November 3, 2026, the non-golden suite passed with 633 passed, 1 skipped
+and 1 deselected using Python 3.12.10 and Hypothesis 6.169.0. That Hypothesis
+version is outside the development constraint `<6.169`; use the pinned CI
+constraints for an exact certified environment. CI-selected Ruff checks,
+strict documentation build, generated-reference checks, JavaFX tests and
+documented engineering checks passed. The default whole-repository Ruff
+profile still reports legacy lint debt, and no whole-repository type-check
+is claimed. Tests include synthetic fixtures, API behavior, document
+structure and graph/provenance checks. They are software checks, not physical
+tests. The current compiled paper is a research draft, not accepted or
+peer-reviewed work. See the [engineering audit](docs/site/development/project-audit-2026-11-03.md),
+[status](STATUS.md), [top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
 and [reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md).
 
 No new IBM Quantum experiment, external submission or new archival DOI is

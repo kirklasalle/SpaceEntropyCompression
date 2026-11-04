@@ -219,7 +219,7 @@ def main():
         if len(rows) != len(means):
             raise ValueError("Local DESI transcription row count differs")
         residuals = []
-        for row, official in zip(rows, means):
+        for row, official in zip(rows, means, strict=True):
             if (abs(float(row["z_eff"]) - float(official[0])) > 1e-6
                     or row["observable"].replace("rd", "rs") != official[2]):
                 raise ValueError("DESI observable identity differs")

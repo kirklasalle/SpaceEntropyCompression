@@ -1,6 +1,7 @@
 # EMRF research roadmap
 
-Current selection (October 16, 2026): A and B, as selected by Kirk LaSalle.
+Current selection (October 16, 2026); engineering audit (November 3, 2026):
+A and B, as selected by Kirk LaSalle.
 **Both run concurrently** as a [dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md);
 each keeps its own ledger entries, preregistrations and artifacts.
 This replaces the
@@ -69,4 +70,5 @@ negative results and historical corrections. Any release/tag/DOI must identify
 the exact revision and avoid inheriting the unsupported claims of old releases.
 
 Current results and blockers: [STATUS.md](STATUS.md), [TASKS.md](TASKS.md),
-[regime report](docs/REAL_DATA_REGIME_AUDIT.md).
+[regime report](docs/REAL_DATA_REGIME_AUDIT.md), and the
+[engineering and documentation audit](docs/site/development/project-audit-2026-11-03.md).

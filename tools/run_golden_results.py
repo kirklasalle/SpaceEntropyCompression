@@ -249,7 +249,7 @@ def compare_values(
         if len(expected) != len(actual):
             return [f"{path}: expected {len(expected)} items, got {len(actual)}"]
         errors = []
-        for index, (expected_item, actual_item) in enumerate(zip(expected, actual)):
+        for index, (expected_item, actual_item) in enumerate(zip(expected, actual, strict=True)):
             errors.extend(
                 compare_values(
                     expected_item,

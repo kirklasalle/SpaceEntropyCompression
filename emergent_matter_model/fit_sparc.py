@@ -154,10 +154,12 @@ def evaluate_sparc_galaxy(
     v_bar = np.array([compute_baryonic_velocity(p, upsilon_disk, upsilon_bulge) for p in points])
 
     # 2. RAR velocities
-    v_rar = np.array([compute_rar_velocity(vb, r, a_entropy) for vb, r in zip(v_bar, r_arr)])
+    v_rar = np.array([compute_rar_velocity(vb, r, a_entropy) for vb, r in zip(v_bar, r_arr, strict=True)])
 
     # 3. EMRF entropic velocities
-    v_emrf = np.array([compute_emrf_entropic_velocity(vb, r, a_entropy) for vb, r in zip(v_bar, r_arr)])
+    v_emrf = np.array(
+        [compute_emrf_entropic_velocity(vb, r, a_entropy) for vb, r in zip(v_bar, r_arr, strict=True)]
+    )
 
     # Residuals & Chi2
     res_newton = (v_obs - v_bar) / v_err
@@ -336,7 +338,7 @@ def fit_sparc_points(
     covariance = np.linalg.inv(information)
     standard_errors = np.sqrt(np.diag(covariance))
     best_u_d, best_a_ent = unpack(result.x)
-    errors = dict(zip(parameter_names, map(float, standard_errors)))
+    errors = dict(zip(parameter_names, map(float, standard_errors), strict=True))
     if "a_entropy_over_a0_critical" in errors:
         errors["a_entropy"] = errors["a_entropy_over_a0_critical"] * A0_CRITICAL
     opt_chi2 = float(result.fun @ result.fun)

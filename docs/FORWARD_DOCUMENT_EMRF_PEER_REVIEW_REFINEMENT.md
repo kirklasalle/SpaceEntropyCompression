@@ -9,10 +9,10 @@
 **Date:** October 6, 2026  
 **Status:** **PENDING USER APPROVAL**  
 **Source Materials:**  
-- Audio Dossier 1: [`Preparing_EMRF_Physics_for_Peer_Review.m4a`](file:///d:/Projects/SpaceEntropyCompression/docs/audio/Preparing_EMRF_Physics_for_Peer_Review.m4a)  
-  *Transcript:* [`TRANSCRIPT_Preparing_EMRF_Physics_for_Peer_Review.md`](file:///d:/Projects/SpaceEntropyCompression/docs/audio/TRANSCRIPT_Preparing_EMRF_Physics_for_Peer_Review.md)
-- Audio Dossier 2: [`Refining_the_Emergent_Matter_Research_Framework.m4a`](file:///d:/Projects/SpaceEntropyCompression/docs/audio/Refining_the_Emergent_Matter_Research_Framework.m4a)  
-  *Transcript:* [`TRANSCRIPT_Refining_the_Emergent_Matter_Research_Framework.md`](file:///d:/Projects/SpaceEntropyCompression/docs/audio/TRANSCRIPT_Refining_the_Emergent_Matter_Research_Framework.md)
+- Audio Dossier 1: [`Preparing_EMRF_Physics_for_Peer_Review.m4a`](audio/Preparing_EMRF_Physics_for_Peer_Review.m4a)
+  *Transcript:* [`TRANSCRIPT_Preparing_EMRF_Physics_for_Peer_Review.md`](audio/TRANSCRIPT_Preparing_EMRF_Physics_for_Peer_Review.md)
+- Audio Dossier 2: [`Refining_the_Emergent_Matter_Research_Framework.m4a`](audio/Refining_the_Emergent_Matter_Research_Framework.m4a)
+  *Transcript:* [`TRANSCRIPT_Refining_the_Emergent_Matter_Research_Framework.md`](audio/TRANSCRIPT_Refining_the_Emergent_Matter_Research_Framework.md)
 
 ---
 
@@ -64,7 +64,7 @@ graph TD
 
 ### Pillar 1: Separation of Concerns (Moral Decoupling)
 - **Problem:** When a reviewer for *Physical Review D* encounters vows of planetary stewardship alongside tensor equations, academic immersion breaks. The reviewer suspects the physics is driven by an ideological agenda rather than clinical empiricism.
-- **Solution:** Fully preserve Kirk LaSalle's philosophical and biocentric vision by moving all covenant vows into a dedicated, prominent repository file: [`COMMUNITY_ETHICS.md`](file:///d:/Projects/SpaceEntropyCompression/docs/COMMUNITY_ETHICS.md). Technical papers (`main.tex`, `use_case_lasalle_ontology.tex`) and journal cover letters will strictly adhere to clinical, emotionally detached scientific prose.
+- **Solution:** Fully preserve Kirk LaSalle's philosophical and biocentric vision by moving all covenant vows into a dedicated, prominent repository file: [`COMMUNITY_ETHICS.md`](COMMUNITY_ETHICS.md). Technical papers (`main.tex`, `use_case_lasalle_ontology.tex`) and journal cover letters will strictly adhere to clinical, emotionally detached scientific prose.
 
 ### Pillar 2: Objective Verification Over Vanity Scoring
 - **Problem:** Self-certifying a score of "100.0 / 100.0" and invoking "Anti-Deceit Vetos" certified by the author's AI agent Antigravity sounds defensive and invites reviewers to search for hidden flaws.
@@ -92,14 +92,14 @@ graph TD
 
 ## 3. Detailed File Modification Plan
 
-### File 1: Create [`docs/COMMUNITY_ETHICS.md`](file:///d:/Projects/SpaceEntropyCompression/docs/COMMUNITY_ETHICS.md) (NEW)
+### File 1: Create [`docs/COMMUNITY_ETHICS.md`](COMMUNITY_ETHICS.md) (NEW)
 * **Purpose:** Establish the permanent, dedicated home for The Grand Covenant, the Biosphere and Life Protection Covenant, and Kirk LaSalle's philosophical dedication to humanity and Earth.
 * **Contents:**
   - Full text of The Grand Covenant (Articles I–IV).
   - Open-Source Scientific Stewardship & Life Preservation Pledge.
   - Clear statement decoupling ethical community governance from clinical peer-reviewed physics submissions.
 
-### File 2: Refactor [`paper/use_case_lasalle_ontology.tex`](file:///d:/Projects/SpaceEntropyCompression/paper/use_case_lasalle_ontology.tex)
+### File 2: Refactor [`paper/use_case_lasalle_ontology.tex`](../paper/use_case_lasalle_ontology.tex)
 * **Key Changes:**
   1. **Section 1 (Introduction):** Front-load the **Four Layers of Scientific Language** table and diagram at the outset to establish the methodological vocabulary.
   2. **Terminology Upgrade:** Replace colloquial "compression" with **Geometric Energy Organization (GEO)** $C(X,t)$ across all formal derivations. Define $C_{\text{sat}} = 1/\ell_P^2$ as the *holographic saturation limit* rather than "physical compression saturation".
@@ -112,26 +112,26 @@ graph TD
      - Replace "Level 5 Gold Standard certification under Grand Due Diligence Audit (CQSI 100/100)" with: *"In accordance with modern continuous integration standards, all analytical models and numerical solvers are deterministically verified (172/172 automated unit tests passing in 5.95 seconds)."*
      - Remove the moral stewardship vow from `\section*{Acknowledgments}`, replacing it with academic acknowledgments and a clean citation to `COMMUNITY_ETHICS.md` in the public repository.
 
-### File 3: Refactor [`paper/main.tex`](file:///d:/Projects/SpaceEntropyCompression/paper/main.tex) (Sgr A* Paper)
+### File 3: Refactor [`paper/main.tex`](../paper/main.tex) (Sgr A* Paper)
 * **Key Changes:**
   1. **Abstract & Introduction:** Replace **"Branch A: Geometric Collapse"** with **"Branch A: Macroscopic Correspondence Proof"**.
   2. Frame the result neutrally and triumphantly: *"Across the complete nuclear cluster, the simultaneous joint fit decisively yields $\Delta\text{BIC}_{\text{joint}} = +70.743 \gg 10.0$. This result formally establishes Branch A (Macroscopic Correspondence), proving that EMRF analytically derives the exact Schwarzschild metric in the strong-field limit without invoking ad-hoc parameters or fifth forces."*
   3. Update terminology to Geometric Energy Organization (GEO) where the compression functional $C(X,t)$ is introduced.
 
-### File 4: Refactor [`paper/COVER_LETTER.md`](file:///d:/Projects/SpaceEntropyCompression/paper/COVER_LETTER.md)
+### File 4: Refactor [`paper/COVER_LETTER.md`](../paper/COVER_LETTER.md)
 * **Key Changes:**
   1. Remove all references to "Geometric Collapse" and replace with "Macroscopic Correspondence Proof".
   2. Highlight the headline empirical victories: JADES-GS-z14-0 collapse to 55.7 Myr, exact Bekenstein-Hawking area derivation, and Sgr A* 5-star joint concordance.
   3. Emphasize the automated continuous integration verification (159 tests passing in 5.08s, 0 red-flag deviations, 100% synthetic adversarial rejection).
 
-### File 5: Enhance [`emergent_matter_model/quantum_vibrational_compression.py`](file:///d:/Projects/SpaceEntropyCompression/emergent_matter_model/quantum_vibrational_compression.py)
+### File 5: Enhance [`emergent_matter_model/quantum_vibrational_compression.py`](../emergent_matter_model/quantum_vibrational_compression.py)
 * **Key Changes:**
   1. Update module docstring to introduce the **Confining Potential and Entropic Stability Locking Mechanism**.
   2. Add numerical evaluation of the non-linear confining potential $V(\psi, S)$ and the dispersion balance condition.
   3. Implement an explicit stability audit method: `verify_soliton_thermodynamic_stability(mass_kg)` confirming that spatial dispersion is bounded by the entropic gradient at $r > \lambdabar_C$.
   4. Ensure 100% backward compatibility with all existing test suites.
 
-### File 6: Refactor Audit Documentation ([`docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md`](file:///d:/Projects/SpaceEntropyCompression/docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md), Cases 001 & 002)
+### File 6: Refactor Audit Documentation ([`docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md`](GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md), Cases 001 & 002)
 * **Key Changes:**
   1. Rebrand the title from "Grand Due Diligence Audit" to **"EMRF Methodological Verification & Continuous Integration Specification"**.
   2. Reframe the CQSI 100/100 and "Level 5 Gold Standard" into **Empirical Verification Gates (V1–V7)**:
@@ -145,7 +145,7 @@ graph TD
   3. Remove defensive terminology ("Hardcoded Deceit Veto", "Vanity Veto"); reframe as standard software integrity constraints ("Zero-Tolerance Arbitrary Parameter Insertion", "Zero-Tolerance Synthetic Leakage").
 
 ### File 7: Synchronize High-Level Project Documentation
-* **Files:** [`README.md`](file:///d:/Projects/SpaceEntropyCompression/README.md), [`STATUS.md`](file:///d:/Projects/SpaceEntropyCompression/STATUS.md), [`CHANGELOG.md`](file:///d:/Projects/SpaceEntropyCompression/CHANGELOG.md)
+* **Files:** [`README.md`](../README.md), [`STATUS.md`](../STATUS.md), [`CHANGELOG.md`](../CHANGELOG.md)
 * **Key Changes:**
   - Update status badges and summaries to reflect the Methodological Verification Suite and decoupled community governance.
   - Link directly to `COMMUNITY_ETHICS.md` and the updated academic preprints.

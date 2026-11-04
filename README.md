@@ -16,7 +16,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
 [![EMRF 1.0.0 DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23304395.svg)](https://doi.org/10.5281/zenodo.23304395)
 
-**Author and principal investigator: Kirk LaSalle.** Current documentation: October 16, 2026.
+**Author and principal investigator: Kirk LaSalle.** Current documentation: November 3, 2026.
 The CI badge and version-specific archive certify software and release provenance,
 not physical confirmation of the EMRF hypotheses.
 
@@ -24,6 +24,10 @@ not physical confirmation of the EMRF hypotheses.
 > — **Kirk LaSalle, Principal Investigator**
 
 ## Read this first
+
+The [engineering and documentation audit](docs/site/development/project-audit-2026-11-03.md)
+records the current validation results, documentation findings, and next
+research gates.
 
 EMRF contains useful software, real-data re-analyses and proposed mathematical
 descriptions. **It does not currently establish a new theory of gravity, an

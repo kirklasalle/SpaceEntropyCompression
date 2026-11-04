@@ -58,9 +58,23 @@ selection and covariance. Tests of generated inputs are software checks only.
 Do not add a new physical mechanism or silently choose C on the author's behalf.
 Preserve historical source copies and qualify graph entries by evidence type.
 
+## 4. Workspace agent instructions
+
+VS Code Copilot workspace agents must consult
+[`AGENTIC_PRIME_DIRECTIVE.md`](AGENTIC_PRIME_DIRECTIVE.md),
+[`AGENTIC_SACRED_COVENANT.md`](AGENTIC_SACRED_COVENANT.md), and
+[`Permanent_Active_Directives.txt`](Permanent_Active_Directives.txt), as
+required by [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
+For MCP integrations, use only the project-local servers declared in the
+workspace `.vscode/mcp.json` profile, which launch the `.mcp` submodule
+(initialize it with `git submodule update --init`). Do not substitute a global
+or another project's MCP server if a local server is unavailable or its catalog
+is empty; report the limitation. The permission model and verification scope
+are in `.mcp/docs/SPACE_ENTROPY_COMPRESSION.md`.
+
 ---
 
-## 4. Pull Request Workflow
+## 5. Pull Request Workflow
 
 1. **Fork and Branch:** Create a feature branch from `main`:
    ```bash
@@ -82,7 +96,7 @@ tutorial in the documentation site.
 
 ---
 
-## 5. Release Governance
+## 6. Release Governance
 
 Only a protected, fully green `main` commit may be tagged. Release metadata,
 the changelog, package version, CFF, CodeMeta, and Zenodo deposit metadata must
@@ -98,7 +112,7 @@ service confirms the deposit. See the
 
 ---
 
-## 6. Contact & Discussion
+## 7. Contact & Discussion
 
 - **Lead Investigator:** Kirk LaSalle
 - **Repository Issues:** [GitHub Issues](https://github.com/kirklasalle/SpaceEntropyCompression/issues)

@@ -45,7 +45,10 @@ def generate_adversarial_challenges() -> List[SyntheticChallengeDataset]:
     # 1. Genuine physical galaxy (exponential disk)
     v_baryon_real = 140.0 * np.sqrt(r / (r + 3.0)) * np.exp(-r / 30.0)
     # EMRF physical ground truth with standard noise
-    v_phys_pred = np.array([compute_emrf_entropic_velocity(vb, rad) for vb, rad in zip(v_baryon_real, r)])
+    v_phys_pred = np.array([
+        compute_emrf_entropic_velocity(vb, rad)
+        for vb, rad in zip(v_baryon_real, r, strict=True)
+    ])
     rng = np.random.default_rng(42)
     v_obs_real = v_phys_pred + rng.normal(0.0, 3.0, size=len(r))
 
@@ -107,7 +110,7 @@ def evaluate_dataset_fit(dataset: SyntheticChallengeDataset) -> dict:
 
     v_pred = np.array([
         compute_emrf_entropic_velocity(vb, r)
-        for vb, r in zip(dataset.v_baryon_kms, dataset.radii_kpc)
+        for vb, r in zip(dataset.v_baryon_kms, dataset.radii_kpc, strict=True)
     ])
 
     residuals = dataset.v_obs_kms - v_pred

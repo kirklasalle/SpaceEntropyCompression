@@ -150,7 +150,7 @@ def plot_fig10_wide_binaries_efe(output_path: Path):
     ax2.set_title("Hypothesis Testing Against Gaia DR3 Benchmark", fontsize=12, fontweight="bold")
     ax2.grid(True, axis="y", alpha=0.3)
 
-    for bar, val in zip(bars, chi2_vals):
+    for bar, val in zip(bars, chi2_vals, strict=True):
         y = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width() / 2.0, y + 1.5, f"$\\chi^2 = {val:.1f}$", ha="center", va="bottom", fontsize=10, fontweight="bold")
 
@@ -164,7 +164,7 @@ def plot_fig11_adversarial_challenge(output_path: Path):
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     challenges = generate_adversarial_challenges()
 
-    for idx, (ax, ds) in enumerate(zip(axes.flatten(), challenges)):
+    for idx, (ax, ds) in enumerate(zip(axes.flatten(), challenges, strict=True)):
         fit = evaluate_dataset_fit(ds)
         # Observed points
         ax.errorbar(ds.radii_kpc, ds.v_obs_kms, yerr=ds.v_err_kms, fmt="ko", markersize=5, capsize=3, label="Data Points")
@@ -173,7 +173,10 @@ def plot_fig11_adversarial_challenge(output_path: Path):
 
         # EMRF model fit
         from fit_sparc import compute_emrf_entropic_velocity
-        v_pred = np.array([compute_emrf_entropic_velocity(vb, r) for vb, r in zip(ds.v_baryon_kms, ds.radii_kpc)])
+        v_pred = np.array([
+            compute_emrf_entropic_velocity(vb, r)
+            for vb, r in zip(ds.v_baryon_kms, ds.radii_kpc, strict=True)
+        ])
         line_col = "#06d6a0" if fit["accepted"] else "#ef233c"
         ax.plot(ds.radii_kpc, v_pred, color=line_col, lw=2.2, label=f"EMRF Fit ($\\chi^2_{{\\mathrm{{red}}}} = {fit['reduced_chi2']:.1f}$)")
 

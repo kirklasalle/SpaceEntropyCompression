@@ -169,7 +169,7 @@ The codebase is built according to world-class scientific software engineering p
 
 ## 5. THE GRAND DUE DILIGENCE AUDIT SCORECARD (CASE 001: EMRF)
 
-The framework was officially evaluated against the **Grand Due Diligence Audit Template** ([`docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md`](file:///D:/Projects/SpaceEntropyCompression/docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)):
+The framework was officially evaluated against the **Grand Due Diligence Audit Template** ([`docs/GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md`](GRAND_DUE_DILIGENCE_AUDIT_TEMPLATE.md)):
 
 ```
 ╔════════════════════════════════════════════════════════════════════════════════════════╗
