@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "protocol_id": "candidate-a-option3-reconstruction-v1",
+  "date": "2026-11-04",
+  "candidate": "A",
+  "option": 3,
+  "status": "frozen_before_any_option3_computation_using_observed_rotation_velocities",
+  "author_direction": [
+    "Kirk LaSalle approved the literature-constrained axisymmetric parametric-profile family for option 3.",
+    "Kirk LaSalle approved: global alpha and global rho0; alpha in [0.5, 2.0]; log10(rho0 / Msun pc^-3) in [-4, 2]; option-2 comparator primary with nested alpha = 1 secondary; per-galaxy f_* in [0.5, 2]; the censoring robustness rule;     10-galaxy primary sample with the 6 CO-profile galaxies as pre-specified secondary.",
+        "After an independent pre-freeze review, Kirk LaSalle approved: the full 775-point global grid; the chi2 threshold with 2 N_galaxies degrees of freedom as in option 2; and the disambiguations of inclination, distance, starts, outcome logic, nested clamping, independent secondary refit,         synthetic-profile edges, single application of f_CO, and solver scales.",
+        "Kirk LaSalle directed GPU computation (NVIDIA GeForce GTX 1050 Ti) so that the full multistart schedule is run at every grid point; a GPU backend is admissible only through gate V3b."
+      ],
+  "parent_protocol": {
+    "path": "knowledgebase/candidate_a_all_options_protocol.json",
+    "sha256": "99bb1ab4be277a9683bbf9c2391196cf27f6e7b548f940abec992ed274fb3847",
+    "unchanged_definition": "rho_eff = rho0 (rho_bar / rho0)^(1/alpha) applied after summing stellar, HI and H2 volume densities; nabla^2 Phi = 4 pi G rho_eff; V_c^2 = R dPhi/dR at z = 0 from the full source; no second helium factor"
+  },
+  "specification_document": "docs/EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md (explanatory; this JSON is authoritative where they differ)",
+  "registration_scope": "Non-blind, post-data-exposure protocol. It is frozen before any option-3 computation that uses observed rotation velocities, not before the data were seen.",
+  "prior_knowledge_disclosure": [
+    "The SPARC rotation curves of these galaxies were analysed in the option-2 test, which rejected option 2.",
+    "An exploratory density-table extract on 2026-11-04 printed Leroy Table 4 vflat rotation-curve fit parameters for the 11 overlap galaxies; no statistic was computed.",
+    "Bacchini et al. (2019) per-galaxy gas thicknesses, derived with rotation-curve-fitted halos, were seen and are deliberately not used."
+  ],
+  "data": {
+    "leroy2008": {
+      "directory": "data/external/candidate_a/leroy2008",
+      "citation": "Leroy et al. (2008), AJ 136, 2782; doi:10.1088/0004-6256/136/6/2782",
+      "holdings": [
+        {"name": "ReadMe", "bytes": 7668, "sha256": "4a009dade546a513c3c382648aa542c9c6862cb08fd77015ca0974c171949239"},
+        {"name": "table4.dat", "bytes": 1863, "sha256": "938104d0289f93f9fed0843028555e92f63a61889d623ee5b5f132e9d6ea1f44"},
+        {"name": "table7.dat", "bytes": 56111, "sha256": "43165045c50d534ff7789dda05627328c23ba71c708ded9cf87cf0773fe02d99"}
+      ]
+    },
+    "sparc": {
+      "citation": "Lelli, McGaugh & Schombert (2016), AJ 152, 157",
+      "holdings": [
+        {"path": "data/external/sparc/Rotmod_LTG.zip", "bytes": 110737, "sha256": "0a80cc90714828cc28b7dd57923576714d209f2490328c087c4a4ad607faf588"},
+        {"path": "data/external/sparc/SPARC_Lelli2016c.mrt", "bytes": 28259, "sha256": "5aa0501f6b0d881fa579030e315e7b5b6ef561a5bd3a07472f9929c7e5728243"}
+      ],
+      "loader": "the certified load_sparc primary selection used by candidate-a-option2-sparc-baryonic-v1"
+    }
+  },
+  "population": {
+    "primary": ["DDO154", "IC2574", "NGC2403", "NGC2841", "NGC2976", "NGC3198", "NGC3521", "NGC5055", "NGC6946", "NGC7331"],
+    "secondary_co_profiles": ["NGC2841", "NGC3198", "NGC3521", "NGC5055", "NGC6946", "NGC7331"],
+    "excluded": {"NGC7793": "no molecular-gas information of any kind; no bound is available"},
+    "points": "SPARC primary-selection points of these galaxies whose catalogue radius lies within the distance-aligned Leroy coverage [R_min, R_max]",
+    "secondary_rule": "the secondary sample is always reported and never changes the primary outcome; disagreement is reported as censoring sensitivity",
+    "exclusions": "No galaxy or point satisfying these rules may be removed after any outcome is computed."
+  },
+  "source_reconstruction": {
+    "geometry": "Catalogue radius R = r D_SPARC / D_Leroy; face-on Sigma scaled by cos(i_SPARC) / cos(i_Leroy) once and held fixed during fitting",
+    "inclination_nuisance": "the fitted i enters only through the velocity projection sin(i) / sin(i0); it does not rescale any surface density, as in option 2",
+    "distance_nuisance": "during fitting the source is rebuilt at distance f_D D_SPARC: every source radius, l*, lCO and the stellar z0 scale by f_D, gas thicknesses stay fixed in pc, surface densities are unchanged, and V_c^2 is evaluated at the physical field radii f_D R; no additional sqrt(f_D) factor is applied",
+    "radial": {
+      "interpolation": "ln Sigma linear in R between ring centres for positive values; linear in Sigma across a zero end-point",
+      "inner": "Sigma constant from the innermost ring centre to R = 0",
+      "outer": "Sigma held at the outermost ring value from the outermost ring centre to the truncation radius R_max + Delta R / 2, Delta R the outermost ring spacing; zero beyond"
+    },
+    "stellar_disc": {
+      "vertical": "rho = Sigma_* / (2 z0) sech^2(z / z0), z0 = 2 h_z, h_z = h_R / q, radially constant",
+      "flattening": "log10 q = 0.367 log10(h_R / kpc) + 0.708 + delta_q, h_R = Leroy l* after distance alignment (Bershady et al. 2010, eq. 1)",
+      "delta_q_prior_sd_dex": 0.095,
+      "bulge": "all stellar mass treated as disc in the primary analysis"
+    },
+    "gas": {
+      "vertical": "Gaussian, sigma_z = HWHM / sqrt(2 ln 2), radially constant",
+      "HI_HWHM_pc": 202,
+      "H2_HWHM_pc": 64,
+      "source": "Marasco et al. 2017, A&A 607, A106, Milky Way inside the solar circle"
+    },
+    "conversion": {
+      "helium": "none applied; Leroy profiles include the 1.36 factor",
+      "stellar_mass_to_light": "Sigma_* multiplied by per-galaxy f_* = Upsilon_K / 0.5",
+      "f_CO_envelope": [0.7, 1.3],
+      "f_CO_application": "f_CO multiplies every CO-derived H2 quantity exactly once: measured SigmaH2, the bound U, the no-CO-map global mass and the 5 sigma limit mass; no other factor of 1.3 appears"
+    },
+    "censoring_and_missing": {
+      "flag_semantics": "a present value with error 1.0 is a measurement with rms 1.0; a blank SigmaHI with error 1.0 is below Leroy's working sensitivity of 1 Msun pc^-2",
+      "HI_below_sensitivity": "interval [0, 1.0] Msun pc^-2",
+      "H2_unmeasured_in_CO_profile_galaxies": "interval [0, f_CO U], U = smallest detected SigmaH2 in that galaxy's profile",
+      "H2_no_CO_map_global_value": "NGC2403, NGC2976: interval from 0 to an exponential profile with scale lCO whose mass inside the truncation radius is f_CO x 1.36 x 10^logMH2 Msun",
+      "H2_global_upper_limit": "DDO154, IC2574: interval from 0 to an exponential profile with scale l* whose mass inside the truncation radius is f_CO x 1.36 x 10^logMH2 Msun, logMH2 the 5 sigma limit",
+      "synthetic_profile_radii": "synthetic exponential H2 profiles use the galaxy's HI-and-stellar ring coverage and truncation radius",
+      "never": "no missing value is replaced by zero except as the labelled low end of an interval"
+    },
+    "envelopes": {
+      "low": "every interval at its low end and f_CO = 0.7",
+      "high": "every interval at its high end and f_CO = 1.3",
+      "note": "endpoint evaluation is the pre-specified rule; the nonlinear map does not guarantee the statistic is monotone between the ends"
+    }
+  },
+  "validation_gates_before_reading_observed_velocities": {
+    "V1_projection": "integral rho_c dz reproduces each component Sigma at every ring centre for both envelopes and every sensitivity variant; relative error < 1e-3",
+    "V2_helium": "no helium factor applied after loading; asserted by test",
+    "V3_solver": "existing Miyamoto-Nagai benchmark and order 64 versus 128 convergence pass; for every galaxy, both envelopes, nominal nuisances, alpha in {0.5, 1, 2} and log10 rho0 in {-4, -1, 2}, max over retained field radii of |V64^2 - V128^2| / max(|V128^2|, 0.01 km^2 s^-2) < 0.005",
+    "V3b_backend": "if a GPU implementation is used, it must reproduce the CPU axisymmetric_v2 reference on every V3 case with max |V_gpu^2 - V_cpu^2| / max(|V_cpu^2|, 0.01 km^2 s^-2) < 1e-10, in float64",
+    "V4_descriptive": "alpha = 1 reconstructed V_bar compared with SPARC Vgas, Vdisk, Vbul model components; descriptive only",
+    "V5_sensitivity": "model-only V_c changes across the sensitivity variants at the V3 grid points, reported before any fit",
+    "failure": "failure of V1, V2, V3 or V3b blocks the fit; outcome incomplete"
+  },
+  "model": {
+    "global_parameters": {"alpha": [0.5, 2.0], "log10_rho0_Msun_pc3": [-4.0, 2.0]},
+    "per_galaxy_nuisances": "x = (log10 f_*, delta_q, f_D, i)",
+    "numerics": "all arithmetic in float64; an effective density that underflows the float64 range is set to zero; overflow or any non-finite value is an error",
+    "nuisance_bounds": "log10 f_* in [log10 0.5, log10 2]; delta_q in [-0.38, 0.38] dex; f_D and i bounds as in candidate-a-option2-sparc-baryonic-v1",
+    "a3_prediction": "V_A3 = sqrt(max(V_c^2(R; alpha, rho0, x), 0.01 km^2 s^-2)) sin(i) / sin(i0), V_c^2 from axisymmetric_v2 at quadrature order 64 on the rebuilt source, lengths in pc, r_scale = f_D l* in pc, z_scale = 300 pc, G = 4.30091e-3 pc (km/s)^2 / Msun; a negative V_c^2 is an outward force and is floored only inside the square root, as in option 2",
+    "residual": "(V_obs - V_pred) / V_err, V_err floored at 1 km/s",
+    "reference_comparator_primary": "REF = alpha = 1 reconstructed baryons plus the option-2 non-negative pseudo-isothermal term s (1 - (r_c / R)     arctan(R / r_c)), s in [0, 250000] (km/s)^2, log10(r_c / kpc) in [-2, 2], R the catalogue radius as in option 2, added to the alpha = 1 V_c^2 before the sin(i) / sin(i0) projection, with the same per-galaxy nuisances and priors",
+        "nested_comparator_secondary": "N = alpha = 1 reconstructed baryons only, same nuisances; Delta Q_nested = Q_N - Q_A3, with Q_A3 := min(Q_A3, Q_N) so that Delta Q_nested >= 0"
+  },
+  "treatments": {
+    "T1": "Q = chi2 + (log10 f_* / 0.1)^2 + (delta_q / 0.095)^2 + ((f_D - 1) / sigma_fD)^2 + ((i - i0) / sigma_i)^2",
+    "T2_generous_to_A": "as T1 without the f_* term"
+  },
+  "fitting": {
+    "global_grid": "alpha from 0.5 to 2.0 in steps of 0.05 (31 values, including 1.0); log10 rho0 from -4 to 2 in steps of 0.25 (25 values)",
+    "profile": "at each grid point minimise each galaxy's Q over its nuisances independently; Q_A3 = min over the grid of the summed Q",
+    "refinement": "none; the joint optimum is the grid point with the smallest summed Q (ties resolved by the smallest |alpha - 1|, then the smallest log10 rho0)",
+    "optimizer": "scipy.optimize.least_squares, method trf, 3-point finite differences, ftol = xtol = 1e-10, gtol = 1e-9, max_nfev = 2000",
+    "nuisance_starts": "log10 f_* in {0, log10 0.5, log10 2} crossed with delta_q in {0, -0.19, 0.19} crossed with (f_D, i) in {(1, i0), (1 + 2 sigma_fD, i0 + 2 sigma_i)}, clipped to the bounds, at every grid point; plus the galaxy's best nuisances at the preceding log10 rho0 grid point of the same alpha row (none for the first point of a row)",
+    "ref_starts": "the best alpha = 1 nuisances with s in {0.25, 1} x max(V_obs)^2 and log10 r_c in {log10 0.5, log10 2, log10 8}; plus each f_* start at nominal (delta_q, f_D, i) = (0, 1, i0) with s = max(V_obs)^2 and r_c = 2 kpc",
+    "nesting": "Q_REF is the minimum of every converged REF start and Q_N (the s = 0 point)",
+    "convergence": "a start counts only if least_squares reports success with a finite cost; every galaxy, grid point, model, treatment and envelope cell needs at least one counted start",
+    "secondary_sample": "the secondary sample is analysed by an independent complete refit of the global grid, nuisances, comparators and statistics on its own galaxies",
+    "boundary_annotation": "a best-fit alpha or rho0 on a domain edge is reported as a boundary result"
+  },
+  "statistics": {
+    "per_galaxy": "Delta_Q_i = Q_i(A3 at the joint optimum) - Q_i(REF)",
+    "error_inflation": "lambda = max(1, chi2_data(REF) summed over the population / max(N_points - 6 N_galaxies, 1)), separately per treatment and envelope; 6 = four nuisances plus the two REF halo parameters per galaxy",
+    "population_statistic": "Delta_Q_cons = sum_i Delta_Q_i / lambda",
+    "population_threshold": "0.999 quantile of chi2 with 2 N_galaxies degrees of freedom, as in option 2; the parameter-count difference is 2 N_galaxies - 2, so this choice is slightly lenient toward A3",
+    "calibration_caveat": "Thresholds are nominal, as in option 2. A3 and REF are non-nested, the comparator has boundary parameters, radial covariance is unknown, and the objective includes priors; these are not calibrated significances."
+  },
+  "outcome_rules": {
+    "definition": "for the primary sample and envelope e in {low, high}, E_e is true when Delta_Q_cons exceeds the population threshold under both T1 and T2",
+    "rejected": "E_low and E_high",
+    "not_rejected": "not E_low and not E_high",
+    "not_determinable_censoring": "exactly one of E_low and E_high",
+    "incomplete": "a data hash mismatch, a failed V1, V2, V3 or V3b gate, a cell without a counted start, or any non-finite value; stop and report"
+  },
+  "reported_descriptives": [
+    "best (alpha, rho0) per treatment and envelope, with boundary annotation",
+    "per-galaxy Delta_Q_i and best nuisances",
+    "Delta_Q_nested for the secondary nested comparator",
+    "the same statistics for the secondary CO-profile sample"
+  ],
+  "sensitivity_never_the_result": [
+    "delta_q fixed at +0.19 and -0.19 dex",
+    "HI and H2 HWHM at their 1 sigma ends (174/230 pc and 52/76 pc)",
+    "hydrostatic flaring gas thickness sigma_z,g(R) = sigma_g / sqrt(4 pi G rho_bar(R, 0)) iterated to self-consistency, sigma_HI = 8.9 and sigma_H2 = 4.4 km/s",
+    "inward exponential stellar continuation with scale l*",
+    "outer exponential tails using each component's mean log-slope over its last three positive rings",
+    "spherical inner bulge: excess of Sigma_* above an exponential disc of scale l* normalised at R = 2 l*, deprojected by Abel inversion",
+    "Leroy distance and inclination geometry",
+    "T1 with the f_* prior centred at Upsilon_K = 0.4 and 0.6",
+    "Delta_Q without error inflation"
+  ],
+  "interpretation_limits": [
+    "A rejection falsifies only this option-3 operationalization with this reconstruction family, not Candidate A in general.",
+    "A non-rejection would not confirm Candidate A; nonunit alpha still fails the GR gate without an additional source or modified dynamics.",
+    "The reconstruction is a literature-constrained model assumption, not a measured three-dimensional density.",
+    "The test is non-blind; see prior_knowledge_disclosure.",
+    "Non-circular motions, warps and asymmetric drift are not modelled."
+  ]
+}

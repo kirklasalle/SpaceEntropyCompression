@@ -54,8 +54,8 @@ that apply to both.
 | Idea | C re-describes existing geometry and energy organization, inside GR; no new force or reservoir | A separately budgeted energy-exchange sector; tested as a restricted extra-dimension Higgs portal |
 | Origin | Kirk's recovered intention | AI-proposed ansatz; extra dimensions specified by Kirk; benchmark assistant-proposed and Kirk-approved |
 | Done so far | Kirk authorized testing options 1, 2 and 3. GR consistency sweep; reproduction of the preregistered option-2 SPARC test; full-density option-3 solver benchmarks and public-data coverage audit | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
-| Outcome | Option 1 passes conditional GR checks, not independent confirmation. Option 2 remains **rejected** in 153 SPARC galaxies (not blind). Option 3 passes numerical benchmarks but has **no observational fit or verdict** | Compatible with limit: bounds on the new coupling, **not** evidence for B |
-| Next gate | Option 3: justified three-dimensional baryon reconstruction, missing-gas treatment, physical scope and a new frozen observational protocol | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
+| Outcome | Option 1 passes conditional GR checks, not independent confirmation. Option 2 remains **rejected** in 153 SPARC galaxies (not blind). Frozen-v1 option-3 convergence exceeds its threshold; amendment 1 passes V3/V3b for model-only validation. **Fit blocked; no observational verdict** | Compatible with limit: bounds on the new coupling, **not** evidence for B |
+| Next gate | Under amendment 1, V3/V3b pass and V4 is reported; an independent spherical-projection check passes at max relative error 6.18e-4 with no warnings. V1 remains incomplete (11 non-decaying outer tails); V5 remains incomplete (outer-tail and spherical-bulge source failures). Resolve invalid variants under a separately approved source protocol before fitting. See the [sensitivity report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md) and [GPU runbook](docs/site/development/gpu-compute.md) | Restricted STXS closed as redundant with global-mu; interference, loop widths or a qualified resonance likelihood need a new frozen protocol |
 
 Kirk selected A on October 8, 2026, added B on October 16 (initially worked one
 at a time, B first) and later that day made both concurrent. Both now have
@@ -261,18 +261,29 @@ what could not be established from the incomplete IDE archive.
 selection of a single final theory. Option 1 is a conditional GR identity;
 option 2 is rejected on SPARC. For option 3, the full-density mapping and
 axisymmetric Poisson solver are implemented and benchmarked. The downloaded
-Leroy profiles do not yet provide the complete three-dimensional source model:
-missing/censored gas, vertical structure, boundaries and uncertainties need
-explicit treatment. A nonunit exponent also needs a declared effective-source
-or modified-dynamics interpretation. Freeze those choices, parameter bounds
-and a decision rule before any observational fit. A useful reformulation can succeed
+Leroy profiles require modeled three-dimensional structure. The November 4
+[specification](docs/EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+and frozen protocol now define the source assumptions and test; numerical validation must pass
+before fitting. Frozen-v1 convergence exceeds its threshold (2.27% versus
+0.5%). Kirk approved a separately versioned segmented amendment; its full
+model-only rerun passes V3/V3b and reports V4. The independent spherical
+projection recheck passes, but V1 and V5 remain incomplete because some frozen
+sensitivity sources are invalid for parts of the sample. CPU/GPU agreement
+alone is insufficient. See the
+[experiment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md)
+and [GPU resource and validation limits](docs/site/development/gpu-compute.md).
+A nonunit exponent still needs physical completion.
+A useful reformulation can succeed
 without predicting a new force; novelty and full equivalence need their own
 arguments.
 
 **Candidate B:** decide whether to deepen the restricted-model constraints
-(correlated STXS likelihood, interference, loop widths) or to connect the
+(interference, loop widths, a qualified resonance likelihood) or to connect the
 restricted model back to the collision energy and entropy budget. Each step
 needs a new frozen preregistration.
+
+The restricted STXS direction is closed as redundant with the global-mu
+likelihood already used; no STXS fit or additional bound was computed.
 
 ## Contributing and research integrity
 

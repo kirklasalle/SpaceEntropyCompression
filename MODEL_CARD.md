@@ -47,11 +47,25 @@ It falsifies option 2 only. Kirk subsequently authorized investigation of all
 three options, with the full-density route for option 3, not selection of a
 single final theory. Option 1 passes 81 GR consistency checks and option 2's
 6,621 result fields reproduce. The option-3 volume-density solver passes
-analytic benchmarks, but no observational fit was performed: the downloaded
-Leroy surface-density profiles need a justified 3-D reconstruction and
-missing/censored-data treatment. A nonunit exponent is not the same
-baryons-only GR source; a physical completion or explicit phenomenological
-restriction and a new observational protocol remain necessary.
+analytic benchmarks, but no observational fit was performed. The November 4
+[reconstruction specification](docs/EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+and [frozen protocol](knowledgebase/candidate_a_option3_reconstruction_protocol.json)
+define the 3-D source assumptions, missing-data envelopes and non-blind test.
+The primary-source 180-case model-only sweep under frozen v1 passes CPU/GPU
+agreement but its conservative quadrature-convergence check reaches 2.27%,
+above the 0.5% threshold. Kirk approved a separately versioned segmented
+quadrature amendment; its full model-only run passes V3/V3b and reports V4 on
+20 cases. V1 remains incomplete because 11 outer-tail source cases have
+non-decaying profiles; V5 is incomplete because the outer-tail and
+spherical-bulge sensitivities fail for parts of the sample. An independent
+closed-form spherical projection recheck passes all 20 galaxy/envelope cases
+at `6.18e-4` maximum relative error with no integration warnings. This does
+not resolve the invalid source variants, so the fit remains blocked. See the
+[experiment and amendment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md).
+A nonunit exponent is not
+the same baryons-only GR source; a physical completion remains unresolved.
+The [GPU resource](docs/site/development/gpu-compute.md) is a computational
+backend, not observational evidence or permission to bypass a failed gate.
 See the [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
 Tidal curvature, local material density, thermal entropy and regional mass
 must not be substituted for one another.
@@ -62,6 +76,10 @@ tree-level Higgs portal. Three preregistered comparisons with ATLAS and CMS
 public results allow the new coupling to vanish and bound it from above. See
 the [model contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md),
 sections 16–17.
+
+The November 4 restricted-model STXS feasibility line is closed without a fit:
+the universal-rescaling direction duplicates the official global-mu likelihood
+already used. It is not an independent extra constraint.
 
 ## Data and statistical constraints
 

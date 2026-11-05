@@ -36,6 +36,7 @@ nav:
       - Release engineering: development/releases.md
       - Recovery objectives: development/recovery.md
       - Performance baselines: development/performance.md
+      - GPU computation: development/gpu-compute.md
       - Supported versions: development/versions.md
       - Project audit (2026-11-03): development/project-audit-2026-11-03.md
       - ADRs: development/adrs.md
