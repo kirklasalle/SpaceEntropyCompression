@@ -131,6 +131,9 @@ dev = [
 verification = [
     "camb==1.6.0",
 ]
+gpu = [
+    "cupy-cuda12x[ctk]==14.2.0",
+]
 server = [
     "gunicorn>=21.2,<23",
     "uvicorn>=0.30,<0.41",

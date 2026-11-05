@@ -6,9 +6,11 @@
 [`candidate_a_option3_reconstruction_protocol.json`](../knowledgebase/candidate_a_option3_reconstruction_protocol.json)
 (SHA-256 `CD9687DDAC497025E709FCCC0C6BAF3D40AE5BCE92166B8C23FEFEEC16270518`).
 The JSON is authoritative where the two differ. The approved decisions are
-recorded in [§9](#9-approved-decisions-and-frozen-protocol). No reconstruction,
-fit, or observational statistic has been computed. This is a model-assumption
-document, not a measurement.
+recorded in [§9](#9-approved-decisions-and-frozen-protocol). The primary
+reconstruction has now been implemented and checked without observed
+velocities; the conservative V3 convergence check fails, so no fit or
+observational statistic has been computed. See the [validation addendum](#11-implementation-and-validation-addendum).
+This is a model-assumption document, not a measurement.
 
 ## 1. Scope
 
@@ -54,19 +56,23 @@ Any option-3 protocol must be labelled non-blind and post-data-exposure.
 **Distance and inclination alignment.** Radii scale as
 `R = r * D_SPARC / D_Leroy`. Surface densities in `Msun pc^-2` are
 distance-independent. Face-on surface densities are rescaled for inclination
-as `Sigma * cos(i_SPARC) / cos(i_Leroy)`. In the fit, the option-2 distance and
-inclination nuisances apply to the aligned source. Sensitivity: retain Leroy's
-geometry.
+as `Sigma * cos(i_SPARC) / cos(i_Leroy)` once. The fitted inclination affects
+only the velocity projection, not the source density. The distance nuisance
+scales all source and field radii and stellar height, leaving gas thicknesses
+fixed in pc; do not apply another square-root distance factor. Sensitivity:
+retain Leroy's geometry.
 
 ## 4. Radial representation
 
 - Between ring centres, interpolate `ln Sigma` linearly in `R` for each
-  component with positive values.
+  component with positive values; interpolate linearly in `Sigma` across a
+  zero endpoint.
 - Inside the innermost ring centre, the primary model keeps `Sigma` constant to
   `R = 0`. Sensitivity: inward exponential continuation with scale length
   `l*` for stars.
 - Beyond the outermost ring centre, the primary model truncates each component
-  at `R_max + Delta R / 2`, where `Delta R` is the galaxy's outer ring spacing.
+  at `R_max + Delta R / 2`, where `Delta R` is the galaxy's outer ring spacing;
+  hold the last ring value constant up to that cutoff.
   Sensitivity: an exponential tail using that component's mean log-slope over
   its last three positive rings.
 - Any observational statistic is evaluated only at SPARC radii inside the
@@ -145,8 +151,10 @@ priors are inference-relevant and cannot be treated as negligible nuisances.
 - **Stellar mass-to-light.** Leroy uses `Upsilon_K = 0.5 Msun/Lsun,K` with a
   fixed `I_3.6 = 0.55 I_K`; their Bell et al. (2003) colour estimate gives a
   sample mean range of 0.48–0.60. A per-galaxy multiplicative factor
-  `f_* = Upsilon / 0.5` is a nuisance; its bounds are a decision item in §9.
-- **Helium.** No factor is applied. Tests must assert this.
+  `f_* = Upsilon / 0.5` is a nuisance with approved bounds [0.5, 2] in §9.
+- **Helium.** No second factor is applied to measured gas profiles. The
+  explicitly stated global-mass upper envelopes in §7 include 1.36; tests
+  distinguish these from already-corrected measured profiles.
 
 ## 7. Missing and censored data rules
 
@@ -191,9 +199,10 @@ interval applies.
 **Gate D2 resolved conservatively.** Equation A2 (`SigmaH2 = 4.4 cos i I_CO`)
 includes the 1.36 helium factor in the profiles. However, the paper does not
 state the helium convention for the Table 4 global masses of the galaxies
-without CO maps. The upper ends above therefore include the 1.36 factor. Under
-the robustness rule, this conservatism can only make a result
-`not_determinable_censoring`; it cannot favour either model.
+without CO maps. The upper ends above therefore include the 1.36 factor.
+This is an assumed envelope, not proof of conservative statistical coverage.
+Agreement at both ends does not establish monotonicity of the statistic inside
+the interval or guarantee that widening it cannot favour either model.
 
 The six galaxies with CO profiles (NGC 2841, 3198, 3521, 5055, 6946, 7331) are
 all HERACLES targets (Leroy Table 2).
@@ -212,7 +221,7 @@ These gates use no observed rotation velocity.
 | Gate | Check | Threshold |
 |---|---|---|
 | V1 projection | `integral rho_c dz` reproduces each component's tabulated `Sigma` at every ring centre, for every envelope end and sensitivity variant | Relative error < 1e-3 |
-| V2 helium | No helium factor is applied after loading | Exact |
+| V2 helium | No second helium factor on measured gas profiles; the global-mass envelope exceptions are explicit | Exact |
 | V3 solver | Existing Miyamoto–Nagai benchmark and order-64/128 convergence pass; for every galaxy and envelope at `alpha` in {0.5, 1, 2} and `log10 rho0` in {−4, −1, 2}, `max |V64² − V128²| / max(|V128²|, 0.01 km² s⁻²)` over retained radii | < 0.005 |
 | V3b backend | A GPU implementation reproduces the CPU `axisymmetric_v2` reference on every V3 case, in float64 | < 1e-10 |
 | V4 Newtonian descriptive | At `alpha = 1`, compare reconstructed `V_bar` with SPARC tabulated `Vgas`/`Vdisk`/`Vbul` model components (not `V_obs`) | Descriptive only, not a gate |
@@ -252,6 +261,10 @@ distance, starts, outcome logic, nested clamping, secondary refit,
 synthetic-profile edges, `f_CO` application and solver scales. All were
 resolved as listed above before hashing.
 
+The full-grid and full-multistart prescriptions remain frozen. No runtime
+commitment follows from them: the scratch GPU timing was not a complete fit
+benchmark. See the resource record below.
+
 ## 10. References
 
 - Bershady M. A. et al. 2010, ApJ 716, 234 (arXiv:1004.5043): disc oblateness
@@ -266,3 +279,98 @@ resolved as listed above before hashing.
   H2 scale heights and dispersions.
 - Bacchini C. et al. 2019, A&A 622, A64 (arXiv:1810.03616): context and the
   `q = 10` stellar convention only; per-galaxy thicknesses not used.
+
+## 11. Implementation and validation addendum
+
+The [model-only runner](../tools/validate_candidate_a_option3.py) and optional
+[GPU backend](../tools/candidate_a_option3_gpu.py) implement primary sources.
+The [resource runbook](site/development/gpu-compute.md) gives hardware,
+dependencies, memory limits, commands, timing caveats and failure handling.
+
+The [corrected validation artifact](../results/candidate_a_option3_validation_2026-11-04_r2.json)
+records 180 galaxy/envelope/parameter cases. Primary projection checks are
+below `2.75e-9`; V2 passes within primary scope. CPU/GPU agreement is below
+`1.28e-15` at both quadrature orders. However, the conservative V3 check reaches
+`0.0226783304`, above the frozen `0.005` threshold, with 120 cases exceeding it.
+The check uses every positive-radius row inside the density coverage, not
+the unevaluated velocity-dependent fit subset.
+
+**Outcome at this checkpoint: incomplete; fit blocked.** At that time, full V1
+required sensitivity variants that had not yet been validated, and V4/V5 had
+not been run. The later amendment-1 sensitivity run is reported in §12 below.
+This is not a rejection of option 3 or evidence for either candidate.
+The [initial implementation failure](../results/candidate_a_option3_validation_2026-11-04.json)
+is retained separately; the corrected run does not overwrite it.
+
+Any revised numerical prescription must be approved and versioned separately.
+The frozen JSON and its hash above remain unchanged. The earlier implication
+that a synthetic order-64 benchmark established sufficient accuracy, or a
+15--25-hour fit duration, is withdrawn; neither was measured on this workload.
+
+## 12. Amendment-1 sensitivity validation update (2026-11-05)
+
+The full model-only run is recorded in
+[`candidate_a_option3_sensitivity_validation_2026-11-04.json`](../results/candidate_a_option3_sensitivity_validation_2026-11-04.json),
+SHA-256 `b3d502f5b9be54260979e990b82a6dc398a4bc2b1800370eb4a99b4cf3be4654`.
+It verifies amendment 1 SHA-256
+`d71702204520526730b78f2df0298db272cd1b210572f83e5a6d02aac2898c3c`, the
+unchanged parent-protocol hash, all recorded source hashes, and the absence of
+observed-velocity parsing or an observational fit. The run covered the 12
+frozen source variants, 10 primary galaxies, and low/high envelopes.
+
+- **V1: incomplete.** The primary and ten other successfully constructed
+  variants met the reported projection threshold. The outer-exponential-tail
+  variant could not be built for 11 of 20 galaxy/envelope sources because at
+  least one component's mean terminal log-slope was nonnegative; its infinite
+  tail would have non-finite mass. The largest reported projection error was
+  `6.1755e-4` versus `< 1e-3`. SciPy warnings from the spherical-profile
+  improper integral were independently checked with a closed-form
+  line-of-sight integral of the piecewise-linear spherical-density interpolant:
+  all 20 galaxy/envelope cases pass at maximum relative error
+  `6.175843e-4`, with zero integration warnings. The
+  [projection recheck artifact](../results/candidate_a_option3_projection_recheck_2026-11-05_r2.json)
+  records the method and hashes. V1 nevertheless remains incomplete because
+  the outer-tail variant cannot be constructed for 11 cases.
+- **V2: passed** for the measured-gas conversion and synthetic-envelope checks.
+- **V3: passed** at `2.790382718485572e-4` versus `< 0.005` over 180 cases.
+- **V3b: passed** at `2.076880311640573e-15` versus `< 1e-10` at both orders
+  over the same primary-source cases.
+- **V4: reported model-only** for 20 galaxy/envelope cases. It compares
+  reconstructed baryonic component speeds with the tabulated Newtonian
+  component sum; it does not parse observed velocities or form a fit statistic.
+  The largest absolute `delta Vbar^2` was `100977.8781 km^2/s^2`; the largest
+  relative discrepancy was `0.941354`.
+- **V5: incomplete.** Ten of 12 variants produced all 180 fixed-grid
+  summaries. The outer-tail variant lacked 11 source pairs. The
+  spherical-inner-bulge variant produced 36/180 cases; its Abel-deprojected
+  stellar profile makes total baryonic density negative for IC 2574, NGC 2403,
+  NGC 2841, NGC 2976, NGC 3198, NGC 3521, NGC 5055 and NGC 6946. These
+  densities were rejected, not clipped.
+
+The V5 values below are maximum absolute and relative changes in model-only
+`Vc` over the nine-point grid and each variant's available galaxy/envelope
+cases. Partial-variant maxima are descriptive only and do not establish a
+complete sensitivity result.
+
+| Variant | Cases | Max `|delta Vc|` (km/s) | Max relative `delta Vc` | Status |
+|---|---:|---:|---:|---|
+| Primary | 180/180 | 0 | 0 | Reported |
+| `delta_q_minus_0.19` | 180/180 | 4935.54 | 0.286784 | Reported |
+| `delta_q_plus_0.19` | 180/180 | 6319.19 | 0.373387 | Reported |
+| `gas_hwhm_minus_1sigma` | 180/180 | 816.18 | 0.068598 | Reported |
+| `gas_hwhm_plus_1sigma` | 180/180 | 597.12 | 0.054708 | Reported |
+| `hydrostatic_gas_flaring` | 180/180 | 44930.03 | 2.491136 | Reported |
+| `inward_stellar_exponential` | 180/180 | 153.78 | 0.053185 | Reported |
+| `outer_exponential_tails` | 81/180 | 211.70 | 0.161918 | Incomplete |
+| `spherical_inner_bulge` | 36/180 | 1725.31 | 0.098374 | Incomplete |
+| `leroy_geometry` | 180/180 | 4101.67 | 1.389690 | Reported |
+| `t1_upsilon_k_0.4` | 180/180 | 3632.80 | 0.200690 | Reported |
+| `t1_upsilon_k_0.6` | 180/180 | 3632.69 | 0.200663 | Reported |
+
+The total validation run took `5893.1996` seconds; this is not a fit-runtime
+estimate. The artifact records `fit_permitted: false`,
+`observed_velocities_parsed: false` and
+`observational_fit_performed: false`. **The fit remains blocked.** Do not alter
+the frozen protocol, truncate non-decaying tails, or clip negative
+deprojections. Any replacement source assumptions require a separately
+approved, versioned protocol and a new model-only validation.

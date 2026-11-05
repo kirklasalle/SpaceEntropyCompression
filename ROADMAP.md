@@ -1,6 +1,7 @@
 # EMRF research roadmap
 
-Current selection (October 16, 2026); engineering audit (November 3, 2026):
+Current selection (October 16, 2026); engineering audit (November 3, 2026);
+amended model-only validation artifact generated November 5 UTC:
 A and B, as selected by Kirk LaSalle.
 **Both run concurrently** as a [dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md);
 each keeps its own ledger entries, preregistrations and artifacts.
@@ -17,8 +18,9 @@ conditional compatibility with mu4 bounds. The
 [extended tests](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md#17-extended-tests-higgs-rate-likelihood-and-cms-direct-resonance-comparison)
 add the ATLAS global-mu profile likelihood and a width-matched
 CMS-HIG-24-002 direct-resonance comparison. CMS is the stronger bound at
-3 of 12 grid points. Next, if pursued: a correlated STXS likelihood,
-interference and loop widths, or a published resonance statistical model,
+3 of 12 grid points. The restricted-model STXS line is now closed without
+computation: it duplicates the already-used global-mu likelihood direction.
+Next, if pursued: interference and loop widths, or a published resonance statistical model,
 each under a new frozen preregistration.
 Do not manufacture a likelihood from summary uncertainties or limit curves.
 An excluded restricted model is not exclusion of every possible Candidate B.
@@ -32,15 +34,22 @@ have run: option 1 passes GR consistency checks, option 2's SPARC rejection
 reproduces, and option 3's density mapping and Poisson solver pass numerical
 benchmarks. These are not three independent observational tests.
 
-Next for option 3: reconstruct three-dimensional stellar, HI, H2 and bulge
-densities using the acquired Leroy profiles and their underlying observations;
-treat missing and censored values, vertical structure, inner/outer boundaries,
-distance/inclination and conversion uncertainties explicitly. Do not set
-missing gas to zero or substitute a spherical mass profile. Specify whether
-the model is only a weak-field effective-source ansatz or has a covariant
-completion. Then freeze global/local parameter choices, ranges, nuisance
-treatments, comparator and decision rule before fitting. No observational
-parameter range or likelihood is yet authorized by the diagnostic protocol.
+The November 4 [reconstruction specification](docs/EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+and [frozen protocol](knowledgebase/candidate_a_option3_reconstruction_protocol.json)
+define the operational source and test. The amendment-1 model-only run now
+reports V1, V3/V3b, V4 and V5: V3/V3b pass, V4 is reported, but V1 and V5 are
+incomplete because some tail and spherical-bulge sources are invalid. The
+independent spherical-projection recheck passes all 20 cases; resolve the
+invalid source assumptions under an explicitly approved protocol change before
+any fit. Preserve missing-data intervals and the physical-completion caveat. The
+[GPU runbook](docs/site/development/gpu-compute.md) documents the GTX 1050 Ti,
+optional dependencies and resource/accuracy limits.
+A failed numerical gate blocks the fit; acceleration does not relax the gate.
+Frozen-v1's first primary-source check exceeds its convergence threshold
+(2.27% versus 0.5%). Kirk approved a separately versioned segmented amendment;
+its full model-only run passes V3/V3b and reports V4, while V1/V5 are
+incomplete. No fit is authorized. See the
+[experiment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md).
 
 ## 3. Establish what the mapping actually says
 

@@ -648,3 +648,27 @@ candidate programs, the CLI, ledger and graph. The new evaluator passes Ruff
 and a focused mypy check (existing untyped imports excluded); generated
 references and the strict documentation build pass. This is not a new
 whole-repository test count or physical validation.
+
+### 12.6 November 4 reconstruction follow-up
+
+The diagnostic run above remains unchanged. The later
+[source specification](EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+and [option-3 protocol](../knowledgebase/candidate_a_option3_reconstruction_protocol.json)
+are now frozen at commit `8437889`, with a non-blind/post-data disclosure.
+The primary reconstruction's conservative order-64/128 convergence check now
+exceeds the threshold (2.27% versus 0.5%), despite CPU/GPU agreement below
+1.28e-15. Full sensitivity validation remains incomplete. The fit is blocked;
+this is not a new observational result.
+See the [GPU runbook](site/development/gpu-compute.md) for the optional GTX
+1050 Ti backend, memory limits and the distinction between backend agreement
+and solver convergence.
+
+A separate [segmented quadrature experiment](EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md)
+records sub-threshold experimental V3 and V3b agreement on 180 primary-source
+cases. It was run before amendment approval and does not retroactively clear
+frozen v1. Kirk approved amendment 1 for prospective model-only validation;
+the hash-verified amended rerun passes V3/V3b and V4 has been reported for 20
+model-only cases. V1 remains incomplete because 11 outer-tail source cases are
+non-decaying; V5 reports 10/12 variants, with outer-tail and spherical-bulge
+failures. An independent closed-form spherical projection check passes all
+20 cases without warnings. No fit or observational verdict follows.

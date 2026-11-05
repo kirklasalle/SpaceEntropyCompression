@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-05T22:53:32.423260+00:00",
+  "evidence_class": "model_only_projection_method_recheck_not_observational_inference",
+  "parent_validation_artifact": "results/candidate_a_option3_sensitivity_validation_2026-11-04.json",
+  "parent_validation_artifact_sha256": "b3d502f5b9be54260979e990b82a6dc398a4bc2b1800370eb4a99b4cf3be4654",
+  "protocol_sha256": "cd9687ddac497025e709fccc0c6baf3d40ae5bce92166b8c23fefeec16270518",
+  "amendment_sha256": "d71702204520526730b78f2df0298db272cd1b210572f83e5a6d02aac2898c3c",
+  "amendment_protocol_id": "candidate-a-option3-reconstruction-v1-amendment-1-segmented-quadrature",
+  "source_sha256": {
+    "tools/candidate_a_option3_reconstruction.py": "33593408f2eb82c628b6daf4f326f0dc32354e1c66d03a70df3a26fa6907aa29",
+    "tools/validate_candidate_a_option3.py": "e04f49b7f0aebdbccec81e66122f4b993e8d5030e184a6cf2e0a315c97ec4b48"
+  },
+  "method": "Closed-form line-of-sight integration of the piecewise-linear spherical-density interpolant; existing vertical quadrature retained for HI/H2 Gaussian components. No density clipping.",
+  "scope": "Spherical-inner-bulge sensitivity only; all 10 primary galaxies, both low/high envelopes, all source ring centres.",
+  "threshold": 0.001,
+  "case_count": 20,
+  "maximum_relative_projection_error": 0.0006175843053779495,
+  "status": "passed",
+  "integration_warning_count": 0,
+  "integration_warnings": [],
+  "cases": [
+    {
+      "galaxy": "DDO154",
+      "envelope": "low",
+      "ring_count": 7,
+      "max_relative_projection_error": 1.0178191547967297e-08,
+      "status": "passed"
+    },
+    {
+      "galaxy": "DDO154",
+      "envelope": "high",
+      "ring_count": 7,
+      "max_relative_projection_error": 1.0178191547967297e-08,
+      "status": "passed"
+    },
+    {
+      "galaxy": "IC2574",
+      "envelope": "low",
+      "ring_count": 46,
+      "max_relative_projection_error": 0.0004119425473563254,
+      "status": "passed"
+    },
+    {
+      "galaxy": "IC2574",
+      "envelope": "high",
+      "ring_count": 46,
+      "max_relative_projection_error": 0.0004119425473563254,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC2403",
+      "envelope": "low",
+      "ring_count": 57,
+      "max_relative_projection_error": 0.00011977497629844791,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC2403",
+      "envelope": "high",
+      "ring_count": 57,
+      "max_relative_projection_error": 0.00011977497629844791,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC2841",
+      "envelope": "low",
+      "ring_count": 25,
+      "max_relative_projection_error": 0.0005442174882965833,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC2841",
+      "envelope": "high",
+      "ring_count": 25,
+      "max_relative_projection_error": 0.0005442174882965833,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC2976",
+      "envelope": "low",
+      "ring_count": 26,
+      "max_relative_projection_error": 0.00026853041822905155,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC2976",
+      "envelope": "high",
+      "ring_count": 26,
+      "max_relative_projection_error": 0.00026853041822905155,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC3198",
+      "envelope": "low",
+      "ring_count": 23,
+      "max_relative_projection_error": 3.0220331891483987e-05,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC3198",
+      "envelope": "high",
+      "ring_count": 23,
+      "max_relative_projection_error": 3.0220331891483987e-05,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC3521",
+      "envelope": "low",
+      "ring_count": 30,
+      "max_relative_projection_error": 0.00017507921538062465,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC3521",
+      "envelope": "high",
+      "ring_count": 30,
+      "max_relative_projection_error": 0.00017507921538062465,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC5055",
+      "envelope": "low",
+      "ring_count": 43,
+      "max_relative_projection_error": 4.703325648447443e-05,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC5055",
+      "envelope": "high",
+      "ring_count": 43,
+      "max_relative_projection_error": 4.703325648447443e-05,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC6946",
+      "envelope": "low",
+      "ring_count": 41,
+      "max_relative_projection_error": 0.0005999642998504306,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC6946",
+      "envelope": "high",
+      "ring_count": 41,
+      "max_relative_projection_error": 0.0005999642998504306,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC7331",
+      "envelope": "low",
+      "ring_count": 33,
+      "max_relative_projection_error": 0.0006175843053779495,
+      "status": "passed"
+    },
+    {
+      "galaxy": "NGC7331",
+      "envelope": "high",
+      "ring_count": 33,
+      "max_relative_projection_error": 0.0006175843053779495,
+      "status": "passed"
+    }
+  ],
+  "full_v1_status": "incomplete",
+  "full_v1_blocker": "The separately required outer-exponential-tail sensitivity cannot be constructed for 11 galaxy/envelope cases with non-decaying terminal components; this recheck does not change those source assumptions.",
+  "outer_tail_failure_count": 11,
+  "outer_tail_failures": [
+    {
+      "galaxy": "DDO154",
+      "envelope": "low",
+      "reason": "ValueError: HI: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "DDO154",
+      "envelope": "high",
+      "reason": "ValueError: HI: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC2841",
+      "envelope": "high",
+      "reason": "ValueError: H2: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC2976",
+      "envelope": "low",
+      "reason": "ValueError: stars: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC2976",
+      "envelope": "high",
+      "reason": "ValueError: stars: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC3198",
+      "envelope": "high",
+      "reason": "ValueError: H2: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC3521",
+      "envelope": "high",
+      "reason": "ValueError: H2: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC5055",
+      "envelope": "low",
+      "reason": "ValueError: stars: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC5055",
+      "envelope": "high",
+      "reason": "ValueError: stars: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC6946",
+      "envelope": "high",
+      "reason": "ValueError: H2: Outer exponential tail is not decaying and has no finite source mass"
+    },
+    {
+      "galaxy": "NGC7331",
+      "envelope": "high",
+      "reason": "ValueError: H2: Outer exponential tail is not decaying and has no finite source mass"
+    }
+  ],
+  "observed_velocities_parsed": false,
+  "observational_fit_performed": false,
+  "fit_permitted": false
+}

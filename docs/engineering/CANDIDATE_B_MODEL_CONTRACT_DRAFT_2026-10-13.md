@@ -1053,3 +1053,23 @@ pinned theory table reproduces from the HXSWG pages without rewriting it. The
 HXSWG pages, the ATLAS archive and the CMS archive are git-ignored and pinned
 by SHA-256 in the data catalog. Without them, the reproduction tests are
 skipped.
+
+## 18. November 4 STXS feasibility closure
+
+The [STXS feasibility record](CANDIDATE_B_STXS_FEASIBILITY_DRAFT_2026-11-04.md)
+supersedes the restricted-model STXS next step recorded in section 17.
+The universal-rescaling direction is already covered by the official global-mu
+likelihood used there. A Gaussian STXS calculation would not supply an
+independent constraint, and none was performed. Do not combine these overlapping
+inputs without a justified joint likelihood.
+
+A future non-universal extension needs a new model contract and a qualified
+likelihood. Because central values were exposed during feasibility work, it
+must be described as non-blind/post-data, not prospectively preregistered.
+Loop/off-shell widths, interference and a published resonance statistical model
+remain possible next steps under a new frozen protocol.
+
+The [GPU resource now documented for Candidate A](../site/development/gpu-compute.md)
+does not change these statistical prerequisites or any existing B bound.
+No new B fit, bound or physical-confirmation claim accompanies that engineering
+work. The earlier protocols and result artifacts remain unchanged.

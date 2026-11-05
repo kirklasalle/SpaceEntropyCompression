@@ -100,3 +100,13 @@ reconstruction family is approved, but its numerical priors and treatment of
 the incomplete profiles are not. This audit confirms the data gate; it neither
 rejects nor supports option 3 and does not change the option-2 SPARC result or
 option-1 conditional GR checks.
+
+### Subsequent November 4 checkpoint
+
+The audit conclusion above records its preparatory stage. The later
+[specification and frozen protocol](EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+now define the reconstruction and test. Primary model-only implementation is
+complete, but the conservative order-64/128 convergence check fails at 2.27%
+versus 0.5%; full sensitivity validation remains incomplete. See the
+[GPU resource and gate record](site/development/gpu-compute.md). No observational
+fit or new candidate verdict follows from this progress.

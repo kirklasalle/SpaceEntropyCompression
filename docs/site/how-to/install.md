@@ -12,6 +12,11 @@ emrf doctor
 
 For a runtime-only installation, install the wheel without `[dev]`.
 
+Candidate A's optional NVIDIA computation uses the separate `gpu` extra.
+See the [GPU runbook](../development/gpu-compute.md) for the tested CUDA-12
+environment, Pascal-device requirements, memory budget and explicit smoke
+checks. GPU packages are not required for CPU operation or ordinary CI.
+
 ## Writable roots
 
 - `EMRF_HOME`: all mutable EMRF state.

@@ -1,6 +1,6 @@
 # EMRF dual-candidate program: Candidates A and B
 
-**Updated:** November 4, 2026 (preparation-only audits; candidate evidence unchanged).
+**Updated:** November 5, 2026 (amended model-only validation; observational evidence unchanged).
 **Principal investigator:** Kirk LaSalle.
 
 EMRF now runs two research programs concurrently: Candidate A and Candidate B.
@@ -35,7 +35,7 @@ SHA-256 freezes.
 | Idea | C re-describes existing geometry and energy organization, inside GR | A separately budgeted energy-exchange sector, in a restricted test via physical extra dimensions |
 | New force, reservoir or particle? | No | Yes (in the restricted test: a bulk scalar mixing with the Higgs) |
 | Origin | Kirk's recovered project intention; "why can't we find this inside of GR?" | AI-proposed generic ansatz; extra dimensions are Kirk's 2026-10-13 specification; the Higgs-portal benchmark is assistant-proposed and Kirk-approved |
-| Precise definition chosen? | All three C_m options authorized for investigation, not one final law. Option 2 has a frozen observational definition; option 3 still needs a complete source reconstruction and observational protocol | Only for the restricted model: one circle, quadratic tree-level potential, exact Higgs-mass matching |
+| Precise definition chosen? | All three C_m options authorized for investigation, not one final law. Option 2 has a frozen observational definition; option 3 has a frozen source reconstruction and protocol, with numerical gates still incomplete | Only for the restricted model: one circle, quadratic tree-level potential, exact Higgs-mass matching |
 
 The two candidates make different commitments: A adds no new sector and B adds
 one. They are developed separately. A bound on B is not evidence for A, and a
@@ -51,15 +51,24 @@ specified and frozen in advance. No such comparison exists yet.
 | [Functional comparison](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md) | Exact-background mathematics | The Einstein-projection reference reproduces a scalar GR identity for alpha = 1 and fixed k. Radiation, vacuum and regional-energy counterexamples rule out treating Ricci or sqrt(K) as a universal local density |
 | `tools/check_candidate_a_definitions.py` | Algebra checks, not observations | Identities and counterexamples reproduced |
 | [SPARC test of option 2](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#11-preregistered-sparc-test-of-option-2) | Preregistered observational falsification test; **not blind** | **Rejected.** With C = C_m, alpha = 1 and M = observed baryons, A predicts that every rotation curve equals its baryonic Newtonian curve. In 153 SPARC galaxies, Delta_Q_cons = 98,216 (T1) and 100,067 (T2) against a threshold of 388.2 |
-| [All-option gates](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates) | GR consistency, full-density numerical benchmarks, reproduction and public-data audit | Option 1: 81 checks pass. Option 2: 6,621 fields reproduce. Option 3: solver benchmark passes, but **no observational fit**; density reconstruction and an observational protocol remain open |
+| [All-option gates](EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md#12-all-three-options-authorized-full-density-gates) | GR consistency, full-density numerical benchmarks, reproduction and public-data audit | Option 1: 81 checks pass. Option 2: 6,621 fields reproduce. Option 3: source and protocol are defined; numerical gates remain incomplete and **no observational fit** was run |
 
 The November 4 [option-3 source audit](EMRF_CANDIDATE_A_OPTION3_SOURCE_AUDIT_2026-11-04.md)
 reverified the pinned inputs and found zero complete profiles among the 11
 Leroy/SPARC overlaps. Kirk approved a literature-constrained axisymmetric
 parametric-profile family. Its source, censoring and test rules are now frozen
 in the [option-3 protocol](../knowledgebase/candidate_a_option3_reconstruction_protocol.json)
-(SHA-256 `CD9687DD…16270518`). No source reconstruction, fit, or new
-observational result has been produced.
+(SHA-256 `CD9687DD…16270518`). Primary sources have now been reconstructed
+without parsing observed velocities. Their conservative order-64/128 check
+reaches 2.27%, above the 0.5% threshold, under frozen v1. A distinct
+[segmented experiment](EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md)
+records a sub-threshold pre-approval candidate result. Kirk subsequently
+approved amendment 1; its hash-verified model-only rerun passes V3/V3b. The fit
+remains blocked: the full amendment-1 run reports V4, but V1 and V5 are
+incomplete because the outer-tail and spherical-bulge sensitivities fail for
+part of the source sample. An independent closed-form spherical projection
+recheck passes all 20 galaxy/envelope cases with no integration warnings.
+No new observational result has been produced.
 
 Option 2 was originally assistant-proposed; Kirk has now authorized
 investigation of all three options. The rejection still falsifies **one
@@ -162,7 +171,7 @@ Being transparent means saying where the two programs differ in maturity:
 
 | Candidate | Next step | What it could establish |
 |---|---|---|
-| A | Implement the frozen option-3 reconstruction, pass validation gates V1–V3b without observed velocities, report V4–V5, then run the frozen fit. Keep options 1 and 2 as consistency and rejected observational baselines | A qualified full-density observational test of one operationalization, not another software benchmark |
+| A | Resolve the primary-source convergence failure through approved numerical change control, complete sensitivity validation V1–V3b and report V4–V5 before any fit. Keep options 1 and 2 as consistency and rejected observational baselines | A qualified full-density observational test of one operationalization, not another software benchmark |
 | B | Interference and loop widths, or a published resonance statistical model, each under a new frozen preregistration. STXS is closed for the restricted model (redundant with the global-`mu` likelihood) | Tighter or more robust bounds on the restricted coupling |
 | B (general) | Connect the restricted model back to the collision energy and entropy budget | Whether the broader candidate makes a distinct prediction |
 
@@ -201,3 +210,42 @@ frozen before any computation with observed velocities. The test is
 non-blind. B
 remains limited to its existing preregistered bounds. Its restricted-model STXS
 line is closed as redundant with the global-`mu` likelihood already used.
+
+### GPU implementation checkpoint (2026-11-04)
+
+The [GPU runbook](site/development/gpu-compute.md) records the verified GTX 1050 Ti
+(4 GiB dedicated VRAM, compute capability 6.1), CUDA-12/CuPy environment,
+optional dependency installation, host-memory distinction and validation rules.
+The reported 32 GB RAM and up-to-16 GB shared GPU memory do not enlarge the
+dedicated CUDA allocation budget. Full-fit runtime remains unmeasured; the
+earlier 15--25-hour estimate was based only on a synthetic scratch benchmark.
+
+The protocol and historical results are unchanged. Implementation proceeds
+through density-only reconstruction and numerical gates, not a fit. GPU/CPU
+agreement (V3b) and quadrature convergence (V3) are separate requirements.
+
+The [corrected 180-case artifact](../results/candidate_a_option3_validation_2026-11-04_r2.json)
+passes primary projection checks (< 2.75e-9), measured-gas conversion checks,
+and CPU/GPU agreement (< 1.28e-15). The conservative V3 convergence check
+for frozen v1 fails at 2.27% versus 0.5%; 120 cases exceed the threshold. The
+separate segmented experiment's pre-approval model-only result is not
+retroactive. The full amendment-1 sensitivity run passes V3 (`2.7904e-4`) and
+V3b (`2.0769e-15`); V4 is reported for 20 model-only cases. V1 remains
+incomplete because 11 of 20 outer-tail source cases have non-decaying profiles.
+V5 reports 10 of 12 variants; the outer-tail variant lacks 11 source pairs,
+and spherical-bulge density is negative for eight galaxies, causing 144 of 180
+fixed-grid cases to fail. A separate exact line-of-sight integration check of
+the piecewise-linear spherical-density interpolant passes all 20 cases at
+`6.175843e-4` maximum relative error versus `< 1e-3`, with no integration
+warnings. Its hash-verified artifact is
+[`candidate_a_option3_projection_recheck_2026-11-05_r2.json`](../results/candidate_a_option3_projection_recheck_2026-11-05_r2.json).
+The outer-tail blocker and negative densities remain. No fit or observational
+verdict follows.
+The exact velocity-dependent fit subset was not evaluated: numerical checks
+used all positive-radius rows inside the density coverage.
+
+The hybrid GPU validation path measured 115.04 s versus 36.18 s CPU. It is
+currently slower, not the forecast speedup. No optimizer runtime is claimed.
+The [initial normalization error](../results/candidate_a_option3_validation_2026-11-04.json)
+is retained alongside the corrected run. **No fit was run**, no old evidence
+or frozen protocol was changed, and neither candidate is confirmed.
