@@ -69,6 +69,22 @@ def test_registry_execution_writes_run_record(
     assert (record.path / "stdout-1.txt").read_text(encoding="utf-8")
 
 
+def test_candidate_a_option3_registry_help(tmp_path, monkeypatch: pytest.MonkeyPatch):
+    store = RunStore(tmp_path)
+    monkeypatch.setattr("emrf_run_access.run_store", lambda: store)
+    command = reg.get_command("validate-candidate-a-option3")
+
+    assert command.category == "audit"
+    assert command.source_only
+    assert not command.network
+    result = reg.run_command(command.name, ["--help"], capture=True)
+
+    assert result["returncode"] == 0
+    assert "--backend" in result["stdout"]
+    assert "--amendment" in result["stdout"]
+    assert store.get(result["run_id"]).status == "succeeded"
+
+
 def test_registry_failed_run_can_be_resumed(
     tmp_path, monkeypatch: pytest.MonkeyPatch
 ):

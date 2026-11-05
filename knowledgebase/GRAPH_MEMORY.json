@@ -340,7 +340,7 @@
       "id": "candidate:collision_observable_gate",
       "type": "ProposedResearchGate",
       "name": "Density/temperature shock diagnostic and identifiability gate",
-      "description": "Both candidates run concurrently. All three A options are authorized for investigation: conditional GR checks pass, the option-2 SPARC rejection reproduces, and option 3 needs source reconstruction and an observational protocol after full-density solver checks. B's ATLAS contour/rate and CMS-HIG-24-002 comparisons give coupling bounds only. Correlated STXS and resonance likelihoods remain. Neither program establishes new heating or empirical confirmation.",
+      "description": "Both candidates run concurrently. All three A options are authorized: conditional GR checks pass and the option-2 SPARC rejection is unchanged. Option 3 has a frozen reconstruction protocol; frozen-v1 convergence fails at 2.27% versus 0.5%. The full amendment-1 model-only run passes V3/V3b and reports V4. An independent closed-form spherical projection recheck passes all 20 cases at 6.175843e-4 with zero warnings. V1 remains incomplete due 11 non-decaying outer-tail sources and V5 due outer-tail and spherical-bulge source failures; no fit was run. B's existing comparisons give coupling bounds only; restricted STXS is closed as redundant with global-mu. Neither program establishes new heating or empirical confirmation. See the November 5 follow-up records in the candidate ledger.",
       "status": "candidate_b_contour_likelihood_and_cms_bounds_done_a_observable_pending",
       "filePath": "knowledgebase/thermodynamic_collision_candidates.json",
       "evidence_status": "proposed_observable_not_a_completed_test",

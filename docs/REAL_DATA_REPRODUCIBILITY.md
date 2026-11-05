@@ -12,6 +12,15 @@ failed earlier runs are not expected to match a later corrected runner.
 
 Run from the repository root on Windows. The existing project interpreter is `emergent_matter_model\.venv\Scripts\python.exe`; its dependency declarations are in [pyproject.toml](../emergent_matter_model/pyproject.toml). Runtime/dependency and input hashes must accompany the numerical result artifacts. Do not substitute a fresh package environment and assume bitwise-identical optimizers.
 
+### Optional GPU resource (November 4, 2026)
+
+The GTX 1050 Ti resource, CUDA-12/CuPy installation, float64 requirements,
+memory limits, timing corrections and option-3 validation gates are recorded
+in the [GPU runbook](site/development/gpu-compute.md). The optional `gpu` extra
+does not change CPU requirements. Synthetic CPU/GPU agreement is not a passed
+reconstruction gate or a physical result. The option-3 protocol is frozen at
+commit `8437889`; do not normalize or amend its bytes.
+
 ## Verification completed
 
 The full project software suite passed **219 tests** after numerical correction and manuscript integration. Existing Ruff checks passed for the changed validation modules and report/package tooling. The manuscript compiled locally to a **six-page PDF** with Tectonic 0.17.0. PDF text extraction with pypdf confirmed the title, principal findings and references without replacement-glyph markers. A non-fatal Fontconfig configuration error was printed, but compilation completed successfully; the TeX log had no overfull boxes, missing characters or undefined references. Unit tests validate software behavior only; they do not turn blocked physical cases into confirmed regimes.

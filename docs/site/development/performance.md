@@ -5,6 +5,13 @@ to change scientific methods or tolerances. The baseline gate measures four
 deterministic workloads and rejects either resource regressions or changed
 results.
 
+The optional Candidate A [GPU resource and validation record](gpu-compute.md)
+is separate from these certified baselines. Frozen-v1 reconstructed-source
+convergence fails its threshold; the separately approved segmented amendment
+passes primary-source convergence and CPU/GPU agreement. Full V1/V5 remain
+incomplete because some sensitivity sources are invalid. Neither validation
+timings nor the old synthetic benchmark qualify full-fit throughput.
+
 ## Certified standard profile
 
 | Workload | Standard size | Preserved result |
