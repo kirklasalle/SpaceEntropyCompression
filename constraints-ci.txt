@@ -8,7 +8,7 @@ starlette==1.7.0
 pydantic==2.12.5
 httpx==0.28.1
 httpx2==2.13.1
-uvicorn==0.40.0
+uvicorn==0.54.0
 astropy==6.1.7
 camb==1.6.0
 numpy==2.2.6
