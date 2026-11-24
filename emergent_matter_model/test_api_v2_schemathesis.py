@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import os
+
 import schemathesis
 import yaml
 from fastapi.testclient import TestClient
@@ -14,10 +16,19 @@ from emrf_api_v2_access import app
 v2_schema = schemathesis.openapi.from_asgi("/api/v2/openapi.json", app)
 v2_document = v2_schema.raw_schema
 v2_document["openapi"] = "3.0.3"
-v2_schema = schemathesis.openapi.from_dict(v2_document).include(path_regex=r"/api/v2/health")
+_V2_SAFE_READ_PATHS = (
+    r"^/api/v2/(health|doctor|datasets|knowledge/validate)$"
+)
+v2_schema = schemathesis.openapi.from_dict(v2_document).include(
+    path_regex=_V2_SAFE_READ_PATHS,
+    method="GET",
+)
 v2_schema.app = app
 v1_document = yaml.safe_load((Path(__file__).parent / "openapi.yaml").read_text(encoding="utf-8"))
-v1_schema = schemathesis.openapi.from_dict(v1_document).include(path_regex=r"/api/v1/health")
+v1_schema = schemathesis.openapi.from_dict(v1_document).include(
+    path_regex=r"^/api/v1/(health|version)$",
+    method="GET",
+)
 v1_schema.app = server.app
 
 
@@ -29,6 +40,7 @@ def test_generated_v2_health_contract(case) -> None:
 
 @v1_schema.parametrize()
 def test_documented_v1_health_contract(case) -> None:
+    os.environ.pop("EMRF_API_V2_TOKEN", None)
     response = case.call()
     case.validate_response(response)
 

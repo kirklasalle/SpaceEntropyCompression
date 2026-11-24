@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from emrf.core.errors import IntegrityError, StorageError
+from emrf.core.locks import lock_owner_alive
 from emrf.knowledge import KnowledgeStore
 from emrf.runs import RunStore
 from emrf.validation.preregistration import get_commitment
@@ -293,7 +294,7 @@ class StateRecoveryManager:
     @staticmethod
     def default_receipt_path() -> Path:
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-        return (
+        return Path(
             default_app_root()
             / "recovery"
             / "drills"
@@ -405,7 +406,7 @@ def _run_files(root: Path) -> list[tuple[str, Path]]:
         for path in sorted(directory.rglob("*")):
             if path.is_symlink():
                 raise IntegrityError(f"Run state contains a symbolic link: {path}")
-            if path.is_file():
+            if path.is_file() and not path.name.endswith(".part"):
                 rows.append((path.relative_to(root).as_posix(), path))
     return rows
 
@@ -471,7 +472,7 @@ def _registry_rows(
     immutable: bool = False,
 ) -> dict[str, list[dict[str, Any]]]:
     if immutable:
-        connection_target = f"file:{path}?mode=ro&immutable=1"
+        connection_target = f"{path.resolve().as_uri()}?mode=ro&immutable=1"
         connection = sqlite3.connect(connection_target, uri=True)
     else:
         connection = sqlite3.connect(path)
@@ -500,7 +501,7 @@ def _validate_registry(root: Path) -> None:
     if not registry.is_file() or registry.is_symlink():
         raise IntegrityError("Run registry snapshot is missing or unsafe")
     with closing(
-        sqlite3.connect(f"file:{registry}?mode=ro&immutable=1", uri=True)
+        sqlite3.connect(f"{registry.resolve().as_uri()}?mode=ro&immutable=1", uri=True)
     ) as connection:
         if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise IntegrityError("Run registry failed SQLite integrity checking")
@@ -697,12 +698,17 @@ def _validate_commitment(record: object, commitment_id: str) -> None:
 @contextmanager
 def _destination_lock(target: Path) -> Generator[None, None, None]:
     lock = target.with_name(f".{target.name}.recovery.lock")
-    try:
-        descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    except FileExistsError as exc:
-        raise FileExistsError(
-            f"State destination is reserved by another operation: {target}"
-        ) from exc
+    for attempt in range(2):
+        try:
+            descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError as exc:
+            if attempt == 0 and not lock_owner_alive(lock):
+                lock.unlink(missing_ok=True)
+                continue
+            raise FileExistsError(
+                f"State destination is reserved by another operation: {target}"
+            ) from exc
     try:
         os.write(descriptor, f"{os.getpid()}\n".encode("ascii"))
         os.fsync(descriptor)

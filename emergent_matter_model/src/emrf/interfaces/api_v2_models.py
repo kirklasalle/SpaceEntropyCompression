@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel, StrictFloat, StrictInt, model_validator
 
 
 class APIModel(BaseModel):
@@ -29,6 +30,7 @@ class EnvironmentReport(APIModel):
     api_version: str
     python: str
     python_ok: bool
+    python_warnings: list[str] = Field(default_factory=list)
     platform: str
     core_dependencies: dict[str, str | None]
     optional_dependencies: dict[str, str | None]
@@ -36,8 +38,8 @@ class EnvironmentReport(APIModel):
     registered_commands: int
     missing_scripts: list[str]
     source_only_unavailable: list[str]
-    app_root: str
-    data_root: str
+    app_root: str | None = None
+    data_root: str | None = None
     manifest_present: bool
     offsite_backup_destination_configured: bool
     healthy: bool
@@ -68,7 +70,7 @@ class CommandListResponse(APIModel):
 
 class RunRequest(APIModel):
     args: list[str] = Field(default_factory=list)
-    timeout: float | None = Field(default=300.0, gt=0, le=600)
+    timeout: float | None = Field(default=120.0, gt=0, le=120)
     evidence_class: str = Field(default="software", min_length=1)
     inputs: dict[str, str] = Field(default_factory=dict)
     seeds: dict[str, int] = Field(default_factory=dict)
@@ -131,6 +133,7 @@ class JobListResponse(APIModel):
 
 class JobSubmitRequest(RunRequest):
     command: str = Field(min_length=1)
+    timeout: float | None = Field(default=300.0, gt=0, le=3600)
     max_attempts: int = Field(default=1, ge=1, le=100)
 
 
@@ -261,12 +264,29 @@ class PredictionVerification(APIModel):
 
 
 class SimulationRequest(APIModel):
-    n: int = Field(ge=1)
-    weights: list[float]
-    X_grid: list[list[float]]
-    k: float = 1.0
-    alpha: float = 1.0
-    C0: float = 1.0
+    n: StrictInt = Field(ge=1, le=8)
+    weights: list[StrictFloat | StrictInt]
+    X_grid: list[list[StrictFloat | StrictInt]]
+    k: StrictFloat | StrictInt = 1.0
+    alpha: StrictFloat | StrictInt = 1.0
+    C0: StrictFloat | StrictInt = Field(default=1.0, gt=0)
+
+    @model_validator(mode="after")
+    def _validate_simulation_bounds(self) -> SimulationRequest:
+        if len(self.weights) != self.n:
+            raise ValueError(f"weights must have length n={self.n}")
+        if len(self.X_grid) != self.n:
+            raise ValueError(f"X_grid must have {self.n} axes")
+        total = 1
+        for idx, axis in enumerate(self.X_grid):
+            if len(axis) == 0:
+                raise ValueError(f"X_grid[{idx}] must not be empty")
+            if not all(math.isfinite(float(v)) for v in axis):
+                raise ValueError(f"X_grid[{idx}] must contain only finite values")
+            total *= len(axis)
+            if total > 1_000_000:
+                raise ValueError("Total simulation grid points must be <= 1000000")
+        return self
 
 
 class SimulationResult(APIModel):

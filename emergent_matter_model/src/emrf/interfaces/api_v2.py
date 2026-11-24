@@ -26,6 +26,12 @@ from emrf.sdk import KnowledgeSourceRequest as SDKKnowledgeSourceRequest
 from emrf.sdk import RunRequest as SDKRunRequest
 from emrf.sdk import SimulationRequest as SDKSimulationRequest
 
+from ._security import (
+    SlidingWindowRateLimiter,
+    max_http_request_bytes,
+    validate_http_cli_args,
+    validate_http_io_path,
+)
 from .api_v2_models import (
     ArtifactInfo,
     ArtifactListResponse,
@@ -144,6 +150,40 @@ def _require_execution_token(
         )
 
 
+def _optional_bearer(request: Request) -> HTTPAuthorizationCredentials | None:
+    header = request.headers.get("authorization")
+    if not header:
+        return None
+    scheme, _, token = header.partition(" ")
+    if not scheme or not token:
+        return None
+    return HTTPAuthorizationCredentials(scheme=scheme, credentials=token)
+
+
+def _has_valid_token(credentials: HTTPAuthorizationCredentials | None) -> bool:
+    configured = os.environ.get(API_V2_TOKEN_ENV)
+    return bool(
+        configured
+        and credentials is not None
+        and credentials.scheme.lower() == "bearer"
+        and secrets.compare_digest(credentials.credentials, configured)
+    )
+
+
+def _check_io_path(raw: str, *, field_name: str = "path") -> str:
+    try:
+        return validate_http_io_path(raw, field_name=field_name)
+    except ValueError as exc:
+        raise InvalidRequestError(str(exc), details={"field": field_name}) from exc
+
+
+def _check_cli_args(args: list[str]) -> tuple[str, ...]:
+    try:
+        return validate_http_cli_args(args)
+    except ValueError as exc:
+        raise InvalidRequestError(str(exc), details={"field": "args"}) from exc
+
+
 def _sdk(request: Request) -> EMRFClient:
     return cast(EMRFClient, request.app.state.sdk)
 
@@ -167,6 +207,49 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         redoc_url="/api/v2/redoc",
     )
     application.state.sdk = client or EMRFClient()
+    write_limiter = SlidingWindowRateLimiter(max_requests=120, window_seconds=60.0)
+    read_limiter = SlidingWindowRateLimiter(max_requests=600, window_seconds=60.0)
+
+    @application.middleware("http")
+    async def security_middleware(request: Request, call_next: Any) -> Any:
+        client_ip = request.client.host if request.client else "127.0.0.1"
+        limiter = (
+            write_limiter
+            if request.method in {"POST", "PUT", "PATCH", "DELETE"}
+            else read_limiter
+        )
+        if not limiter.allow(client_ip):
+            resp = _error_response(
+                429,
+                "rate_limit_exceeded",
+                "Rate limit exceeded (please throttle requests).",
+            )
+        else:
+            max_bytes = max_http_request_bytes()
+            content_length = request.headers.get("content-length")
+            too_large = False
+            if content_length is not None:
+                try:
+                    if int(content_length) > max_bytes:
+                        too_large = True
+                except ValueError:
+                    too_large = False
+            if not too_large and request.method in {"POST", "PUT", "PATCH"}:
+                body = await request.body()
+                if len(body) > max_bytes:
+                    too_large = True
+            if too_large:
+                resp = _error_response(
+                    413,
+                    "payload_too_large",
+                    f"Request body exceeds maximum allowed size of {max_bytes} bytes.",
+                )
+            else:
+                resp = await call_next(request)
+        resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+        resp.headers.setdefault("X-Frame-Options", "DENY")
+        resp.headers.setdefault("Cache-Control", "no-store")
+        return resp
 
     @application.exception_handler(APIError)
     def api_error_handler(_: Request, exc: APIError) -> JSONResponse:
@@ -277,7 +360,12 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         tags=["service"],
     )
     def doctor(request: Request) -> EnvironmentReport:
-        return EnvironmentReport(**_sdk(request).environment_report().to_dict())
+        credentials = _optional_bearer(request)
+        return EnvironmentReport(
+            **_sdk(request)
+            .environment_report(include_paths=_has_valid_token(credentials))
+            .to_dict()
+        )
 
     @application.post(
         "/api/v2/performance/baselines",
@@ -358,7 +446,7 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         result = client.run(
             SDKRunRequest(
                 command=name,
-                args=tuple(payload.args),
+                args=_check_cli_args(payload.args),
                 timeout=payload.timeout,
                 evidence_class=payload.evidence_class,
                 inputs=payload.inputs,
@@ -371,8 +459,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/runs",
         response_model=RunListResponse,
-        responses={422: {"model": ErrorResponse}},
+        responses=_error_responses(401, 403, 422),
         tags=["runs"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def list_runs(
         request: Request,
@@ -386,8 +475,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/runs/{run_id}",
         response_model=RunInfo,
-        responses={404: {"model": ErrorResponse}},
+        responses=_error_responses(401, 403, 404),
         tags=["runs"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def get_run(run_id: str, request: Request) -> RunInfo:
         return RunInfo(**_sdk(request).get_run(run_id).to_dict())
@@ -396,7 +486,7 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         "/api/v2/jobs",
         response_model=JobInfo,
         status_code=202,
-        responses={400: {"model": ErrorResponse}, 401: {"model": ErrorResponse}},
+        responses=_error_responses(400, 401, 403, 422),
         tags=["jobs"],
         dependencies=[Depends(_require_execution_token)],
     )
@@ -406,7 +496,7 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
             .submit_job(
                 SDKRunRequest(
                     command=payload.command,
-                    args=tuple(payload.args),
+                    args=_check_cli_args(payload.args),
                     timeout=payload.timeout,
                     evidence_class=payload.evidence_class,
                     inputs=payload.inputs,
@@ -420,8 +510,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/jobs",
         response_model=JobListResponse,
-        responses={422: {"model": ErrorResponse}},
+        responses=_error_responses(401, 403, 422),
         tags=["jobs"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def list_jobs(
         request: Request,
@@ -433,8 +524,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/jobs/{job_id}",
         response_model=JobInfo,
-        responses={404: {"model": ErrorResponse}},
+        responses=_error_responses(401, 403, 404),
         tags=["jobs"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def get_job(job_id: str, request: Request) -> JobInfo:
         return JobInfo(**_sdk(request).get_job(job_id).to_dict())
@@ -509,13 +601,15 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/datasets",
         response_model=DatasetListResponse,
-        responses=_error_responses(400, 422, 503),
+        responses=_error_responses(400, 401, 403, 422, 503),
         tags=["data"],
     )
     def list_datasets(
         request: Request,
         verify: Annotated[bool, Query()] = False,
     ) -> DatasetListResponse:
+        if verify:
+            _require_execution_token(_optional_bearer(request))
         result = _sdk(request).list_datasets(verify=verify)
         return DatasetListResponse(
             datasets=[dataset.to_dict() for dataset in result.datasets]
@@ -524,7 +618,7 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/datasets/{dataset_id}",
         response_model=OperationResponse,
-        responses=_error_responses(400, 404, 422, 503),
+        responses=_error_responses(400, 401, 403, 404, 422, 503),
         tags=["data"],
     )
     def get_dataset(
@@ -532,6 +626,8 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         request: Request,
         verify: Annotated[bool, Query()] = False,
     ) -> OperationResponse:
+        if verify:
+            _require_execution_token(_optional_bearer(request))
         return OperationResponse(
             root=_sdk(request).get_dataset(dataset_id, verify=verify).to_dict()
         )
@@ -549,10 +645,15 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: DatasetWriteRequest,
         request: Request,
     ) -> OperationResponse:
+        source = (
+            _check_io_path(payload.source, field_name="source")
+            if payload.source is not None
+            else None
+        )
         result = _sdk(request).import_dataset(
             dataset_id,
             logical_name=payload.logical_name,
-            source=payload.source,
+            source=source,
         )
         return OperationResponse(root=result.to_dict())
 
@@ -580,8 +681,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.post(
         "/api/v2/datasets/verify",
         response_model=OperationResponse,
-        responses=_error_responses(400, 503),
+        responses=_error_responses(400, 401, 403, 503),
         tags=["data"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def verify_datasets(request: Request) -> OperationResponse:
         return OperationResponse(root=_sdk(request).verify_datasets().to_dict())
@@ -598,8 +700,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: BackupRequest,
         request: Request,
     ) -> OperationResponse:
+        destination = _check_io_path(payload.destination, field_name="destination")
         return OperationResponse(
-            root=_sdk(request).create_data_backup(payload.destination).to_dict()
+            root=_sdk(request).create_data_backup(destination).to_dict()
         )
 
     @application.post(
@@ -614,9 +717,14 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: OffsiteBackupRequest,
         request: Request,
     ) -> OperationResponse:
+        destination_root = (
+            _check_io_path(payload.destination_root, field_name="destination_root")
+            if payload.destination_root is not None
+            else None
+        )
         return OperationResponse(
             root=_sdk(request)
-            .create_offsite_data_backup(payload.destination_root)
+            .create_offsite_data_backup(destination_root)
             .to_dict()
         )
 
@@ -631,8 +739,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: PathRequest,
         request: Request,
     ) -> OperationResponse:
+        source = _check_io_path(payload.source, field_name="source")
         return OperationResponse(
-            root=_sdk(request).verify_data_backup(payload.source).to_dict()
+            root=_sdk(request).verify_data_backup(source).to_dict()
         )
 
     @application.post(
@@ -646,8 +755,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: PathRequest,
         request: Request,
     ) -> OperationResponse:
+        source = _check_io_path(payload.source, field_name="source")
         return OperationResponse(
-            root=_sdk(request).restore_data_backup(payload.source).to_dict()
+            root=_sdk(request).restore_data_backup(source).to_dict()
         )
 
     @application.post(
@@ -661,11 +771,21 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: RestoreDrillRequest,
         request: Request,
     ) -> OperationResponse:
+        receipt = (
+            _check_io_path(payload.receipt, field_name="receipt")
+            if payload.receipt is not None
+            else None
+        )
+        workspace = (
+            _check_io_path(payload.workspace, field_name="workspace")
+            if payload.workspace is not None
+            else None
+        )
         return OperationResponse(
             root=_sdk(request)
             .run_data_restore_drill(
-                receipt=payload.receipt,
-                workspace=payload.workspace,
+                receipt=receipt,
+                workspace=workspace,
             )
             .to_dict()
         )
@@ -697,8 +817,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: BackupRequest,
         request: Request,
     ) -> OperationResponse:
+        destination = _check_io_path(payload.destination, field_name="destination")
         return OperationResponse(
-            root=_sdk(request).create_state_backup(payload.destination).to_dict()
+            root=_sdk(request).create_state_backup(destination).to_dict()
         )
 
     @application.post(
@@ -712,8 +833,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: PathRequest,
         request: Request,
     ) -> OperationResponse:
+        source = _check_io_path(payload.source, field_name="source")
         return OperationResponse(
-            root=_sdk(request).verify_state_backup(payload.source).to_dict()
+            root=_sdk(request).verify_state_backup(source).to_dict()
         )
 
     @application.post(
@@ -727,9 +849,11 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: StateRestoreRequest,
         request: Request,
     ) -> OperationResponse:
+        source = _check_io_path(payload.source, field_name="source")
+        destination = _check_io_path(payload.destination, field_name="destination")
         return OperationResponse(
             root=_sdk(request)
-            .restore_state_backup(payload.source, payload.destination)
+            .restore_state_backup(source, destination)
             .to_dict()
         )
 
@@ -744,11 +868,21 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
         payload: RestoreDrillRequest,
         request: Request,
     ) -> OperationResponse:
+        receipt = (
+            _check_io_path(payload.receipt, field_name="receipt")
+            if payload.receipt is not None
+            else None
+        )
+        workspace = (
+            _check_io_path(payload.workspace, field_name="workspace")
+            if payload.workspace is not None
+            else None
+        )
         return OperationResponse(
             root=_sdk(request)
             .run_state_restore_drill(
-                receipt=payload.receipt,
-                workspace=payload.workspace,
+                receipt=receipt,
+                workspace=workspace,
             )
             .to_dict()
         )
@@ -938,7 +1072,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/verification/physics",
         response_model=VerificationReport,
+        responses=_error_responses(401, 403),
         tags=["verification"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def verify_physics(request: Request) -> VerificationReport:
         return _verification(_sdk(request).verify_physics())
@@ -946,7 +1082,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/verification/inference",
         response_model=VerificationReport,
+        responses=_error_responses(401, 403),
         tags=["verification"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def verify_inference(request: Request) -> VerificationReport:
         return _verification(_sdk(request).verify_inference())
@@ -954,7 +1092,9 @@ def create_app(client: EMRFClient | None = None) -> FastAPI:
     @application.get(
         "/api/v2/verification/engines",
         response_model=VerificationReport,
+        responses=_error_responses(401, 403),
         tags=["verification"],
+        dependencies=[Depends(_require_execution_token)],
     )
     def verify_engines(request: Request) -> VerificationReport:
         return _verification(_sdk(request).verify_engines())

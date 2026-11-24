@@ -2,7 +2,7 @@
 
 - **Principal investigator:** Kirk LaSalle
 - **Repository:** https://github.com/kirklasalle/SpaceEntropyCompression
-- **Scope:** current `main` research revision; engineering audit November 3, 2026
+- **Scope:** current `main` research revision; engineering audit November 3, 2026; engineering hardening November 24, 2026
 **License:** [MIT](emergent_matter_model/LICENSE)
 
 ## Intended use
@@ -109,16 +109,22 @@ equivalent to measurement-table ingestion.
 
 ## Validation and limitations
 
-On November 3, 2026, the non-golden suite passed with 633 passed, 1 skipped
-and 1 deselected using Python 3.12.10 and Hypothesis 6.169.0. That Hypothesis
-version is outside the development constraint `<6.169`; use the pinned CI
-constraints for an exact certified environment. CI-selected Ruff checks,
-strict documentation build, generated-reference checks, JavaFX tests and
-documented engineering checks passed. The default whole-repository Ruff
-profile still reports legacy lint debt, and no whole-repository type-check
-is claimed. Tests include synthetic fixtures, API behavior, document
-structure and graph/provenance checks. They are software checks, not physical
-tests. The current compiled paper is a research draft, not accepted or
+On November 24, 2026 (superseding the November 3 `633 passed` baseline), the
+non-golden suite passed with **672 passed, 2 skipped, and 1 deselected** using
+Python `3.12.10` under the pinned CI constraints (`Hypothesis 6.168.5`). All `6`
+repository-owned `.mcp` unit tests, `5` JavaFX Maven tests, `mypy -p emrf`
+(`42` source files), focused Ruff checks, strict MkDocs build, generated
+reference checks, release metadata validation, isolated wheel smoke checks,
+and recovery archive hash checks passed. CPython `3.10.0` is excluded from
+`requires-python` (`>=3.10.1`) due to `bpo-45662` affecting Hypothesis (`emrf
+doctor` warns when invoked on `3.10.0`). Synthetic benchmarks (`fit_astrometry.py`)
+and legacy toy stress tests now explicitly emit `synthetic_benchmark_not_real_epochs`
+or `illustrative_tautology` evidence classifications, while the seven SHA-256
+provenance- and recovery-locked files remain byte-identical. The default
+whole-repository Ruff profile still reports pre-existing legacy lint debt across
+unmodified legacy scripts. Tests include synthetic fixtures, API behavior,
+document structure and graph/provenance checks. They are software checks, not
+physical tests. The current compiled paper is a research draft, not accepted or
 peer-reviewed work. See the [engineering audit](docs/site/development/project-audit-2026-11-03.md),
 [status](STATUS.md), [top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
 and [reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md).

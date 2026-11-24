@@ -133,20 +133,43 @@ ALL_S_STAR_PARAMS: Dict[str, SgrAOrbitalParameters] = {
 
 def solve_kepler_anomaly(mean_anomaly: float | np.ndarray, eccentricity: float,
                          tol: float = 1e-12, max_iter: int = 100) -> float | np.ndarray:
-    """Solve Kepler's equation M = E - e*sin(E) for Eccentric Anomaly E."""
+    """Solve Kepler's equation M = E - e*sin(E) using bracketed Halley iteration."""
+    if not math.isfinite(eccentricity) or not 0.0 <= eccentricity < 1.0:
+        raise ValueError(f"eccentricity must satisfy 0 <= e < 1, got {eccentricity!r}")
     is_scalar = np.isscalar(mean_anomaly)
-    m = np.atleast_1d(mean_anomaly)
+    m = np.atleast_1d(np.asarray(mean_anomaly, dtype=float))
+    if not np.all(np.isfinite(m)):
+        raise ValueError("mean_anomaly must be finite")
 
-    # Initial guess
-    e_anom = m + eccentricity * np.sin(m)
+    two_pi = 2.0 * math.pi
+    m_wrapped = np.mod(m, two_pi)
+    base_shift = m - m_wrapped
+    flipped = m_wrapped > math.pi
+    m_red = np.where(flipped, two_pi - m_wrapped, m_wrapped)
+
+    lo = np.zeros_like(m_red)
+    hi = np.full_like(m_red, math.pi)
+    e_val = np.clip(m_red + eccentricity * np.sin(m_red), lo, hi)
     for _ in range(max_iter):
-        f = e_anom - eccentricity * np.sin(e_anom) - m
-        f_prime = 1.0 - eccentricity * np.cos(e_anom)
-        delta = f / f_prime
-        e_anom -= delta
-        if np.max(np.abs(delta)) < tol:
+        sin_e = np.sin(e_val)
+        cos_e = np.cos(e_val)
+        f = e_val - eccentricity * sin_e - m_red
+        if float(np.max(np.abs(f))) <= tol:
             break
+        lo = np.where(f < 0.0, e_val, lo)
+        hi = np.where(f > 0.0, e_val, hi)
+        f_prime = 1.0 - eccentricity * cos_e
+        f_double = eccentricity * sin_e
+        denom = f_prime - (f * f_double) / (2.0 * f_prime)
+        cand = np.where(
+            np.abs(denom) > 0.0,
+            e_val - f / np.where(denom != 0.0, denom, 1.0),
+            0.5 * (lo + hi),
+        )
+        inside = (cand > lo) & (cand < hi) & np.isfinite(cand)
+        e_val = np.where(inside, cand, 0.5 * (lo + hi))
 
+    e_anom = base_shift + np.where(flipped, two_pi - e_val, e_val)
     return float(e_anom[0]) if is_scalar else e_anom
 
 
@@ -266,7 +289,7 @@ def project_orbital_position_to_sky(
         grav_redshift = mu / (C_LIGHT * r_m)
         v_rel_corr = (transverse_doppler + grav_redshift) / 1000.0  # to km/s
     else:
-        v_rel_corr = 0.0
+        v_rel_corr = np.zeros_like(epochs, dtype=float)
 
     v_r_kms = (v_z_los_m_s / 1000.0) + params.v_z0_kms + v_rel_corr
 
@@ -280,7 +303,7 @@ def project_orbital_position_to_sky(
     }
 
 
-def load_astrometry_csv(csv_path: str | Path) -> Dict[str, np.ndarray]:
+def load_astrometry_csv(csv_path: str | Path) -> Dict[str, Any]:
     """Load astrometric and radial velocity observation table from CSV."""
     path = Path(csv_path)
     if not path.is_file():
@@ -496,6 +519,7 @@ def evaluate_astrometry_bifurcation(
         ],
         "n_epochs": len(epochs),
         "total_data_points": n_pts,
+        "evidence_class": "synthetic_benchmark_not_real_epochs",
         "models": {
             "newtonian": {
                 "chi2": chi2_newton,
@@ -608,6 +632,7 @@ def evaluate_multi_star_bifurcation(
 
     return {
         "cluster": "Sagittarius A* S-Star Cluster",
+        "evidence_class": "synthetic_benchmark_not_real_epochs",
         "stars_evaluated": list(star_reports.keys()),
         "n_stars": n_stars,
         "total_data_points": total_data_points,

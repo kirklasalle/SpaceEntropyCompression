@@ -405,7 +405,7 @@
                 <button class="btn-zoom" onclick="fitToScreen()" title="Fit to Screen">⛶ Fit</button>
             </div>
             <button id="btn-toggle-sidebar" class="btn-regime" onclick="toggleSidebar()" style="padding: 5px 12px; font-size: 0.75rem;">◀ Hide Sidebar</button>
-            <div class="badge">Interactive Suite v0.8.0</div>
+            <div class="badge">Interactive Suite v1.0.0</div>
         </div>
     </header>
 
@@ -839,29 +839,29 @@
                 title.textContent = "Bullet Cluster: static schematic, not an observed fit";
                 desc.textContent = "Gas, galaxy and contour positions are drawn by hand. No moving wells, entropy-production calculation or absolute lensing prediction is evaluated.";
             } else if (activeTab === "rar") {
-                title.textContent = "Universal RAR Acceleration Landscape (N=214)";
-                desc.textContent = "214 radial points across 10 SPARC archetype galaxies. Measured residual scatter (0.18 dex) matches Monte Carlo observational uncertainties.";
+                title.textContent = "Illustrative RAR Template (Not Observational Validation)";
+                desc.textContent = "Schematic display of radial acceleration scaling with synthetic reference curves; real-data SPARC and bulge tests live in the verification suite.";
             } else if (activeTab === "solar") {
-                title.textContent = "Solar System Precision & Cassini Screening";
-                desc.textContent = "From Mercury (0.39 AU) to Voyager 1 (150 AU). EMRF geometric saturation suppresses anomalous accelerations below Cassini threshold (3.2e-14 m/s²).";
+                title.textContent = "Solar System Screening Schematic (Illustrative)";
+                desc.textContent = "Ad-hoc geometric saturation schematic across Mercury to Voyager scales; illustrative ansatz only, not a derived action theorem.";
             } else if (activeTab === "gw") {
-                title.textContent = "GW170817 Multi-Messenger Speed & Light Cones";
-                desc.textContent = "Conformal metric Ω²(X)η_μν preserves null geodesics identically (|c_gw - c|/c = 0.000). Horndeski and TeVeS fail with massive disformal delays over 40 Mpc.";
+                title.textContent = "GW170817 Conformal Speed Consistency Illustration";
+                desc.textContent = "Stipulates conformal metric Ω²(X)η_μν where tensor speed equals c by construction (algebraic consistency illustration).";
             } else if (activeTab === "wide_bin") {
-                title.textContent = "Gaia DR3 Wide Binary Stars & Galactic EFE";
-                desc.textContent = "Separations 1,000 - 30,000 AU without dark matter. Background galactic field g_ext = 1.2e-10 m/s² caps boost at ~1.25-1.35, decisively preferred over Newton (ΔBIC = -60.26).";
+                title.textContent = "Wide Binary Illustrative Schematic (Historical Demo)";
+                desc.textContent = "Schematic illustration of screening under external galactic field g_ext; see real Gaia DR3 qualification pipeline for audited empirical analysis.";
             } else if (activeTab === "ghosts") {
-                title.textContent = "Hamiltonian Stability, Ghost Freedom & Sound Speed";
-                desc.textContent = "First-order derivatives prevent Ostrogradsky ghosts. Kinetic positivity A(a) > 0 and subluminal sound speed (0.95c ≤ c_s ≤ c) guarantee unconditional hyperbolicity.";
+                title.textContent = "Hamiltonian Stability Ansatz Illustration";
+                desc.textContent = "Illustrative quadratic perturbation coefficients A(a) > 0 and subluminal sound speed ansatz; formal action derivation remains separate.";
             } else if (activeTab === "adversarial") {
-                title.textContent = "Synthetic Adversarial Blind Challenge & Falsification";
-                desc.textContent = "Proving EMRF cannot curve-fit unphysical data. Real galaxy accepted (χ²_red = 0.39), while anti-gravity, Heaviside steps, and noise are brutally rejected (χ²_red > 350).";
+                title.textContent = "Synthetic Adversarial Benchmark Schematic";
+                desc.textContent = "Illustrative synthetic benchmark contrasts across idealized curves; synthetic checks do not establish physical confirmation.";
             } else if (activeTab === "cosmo") {
-                title.textContent = "Late-Time Cosmic Expansion: Pantheon+ SNe & DESI 2024 BAO";
-                desc.textContent = "Slow-roll spatial compression in cosmic voids drives late-time acceleration (w₀ = -0.94). Horizon entropy growth matches DESI 2024 dynamical BAO scaling (χ²_red = 0.617).";
+                title.textContent = "Late-Time Expansion Phenomenological Template";
+                desc.textContent = "Illustrative parametric Hubble-history comparison; not a full covariance likelihood fit to Pantheon+ or DESI.";
             } else if (activeTab === "cmb") {
-                title.textContent = "Planck 2018 Early-Universe CMB Acoustic Peaks (z ~ 1100)";
-                desc.textContent = "Non-collisional metric compression sustains gravitational potential wells across recombination. Peak 1 (l=221), Peak 2 (l=538), and Peak 3 (l=811) match with A₃/A₂ = 0.988!";
+                title.textContent = "CMB Acoustic Peak Illustrative Schematic";
+                desc.textContent = "Illustrative phenomenological schematic (l₁≈221, l₂≈538, l₃≈811); does not solve full Boltzmann perturbations.";
             }
         }
 
@@ -1326,7 +1326,7 @@
             ctx.fillText("EMRF + Galactic EFE: χ² = 12.21 | Newton: χ² = 72.47", ox + 25, cy - h / 2 + 52);
             ctx.fillStyle = "#ffb703";
             ctx.font = "bold 11px sans-serif";
-            ctx.fillText("ΔBIC = -60.26 (Decisive Evidence Against Newtonian Gravity)", ox + 25, cy - h / 2 + 68);
+            ctx.fillText("Illustrative Reference Curves (Not Real-Data Fit)", ox + 25, cy - h / 2 + 68);
 
             ctx.fillStyle = "#ffffff";
             ctx.font = "11px sans-serif";
@@ -1778,7 +1778,7 @@
 
             ctx.fillStyle = cmb_well_enabled ? "#06d6a0" : "#ef233c";
             ctx.font = "bold 12px sans-serif";
-            ctx.fillText(cmb_well_enabled ? "Planck 2018 PR3 Concordance: PASSED" : "Decaying Baryon Mode: FALSIFIED", ox + w - 355, cy - h / 2 + 35);
+            ctx.fillText(cmb_well_enabled ? "Illustrative Schematic (Not Planck Fit)" : "Decay Mode Schematic", ox + w - 355, cy - h / 2 + 35);
             ctx.fillStyle = "#ffffff";
             ctx.font = "11px sans-serif";
             ctx.fillText(`Peak Ratio A₃/A₂: ${cmb_well_enabled ? '0.988 (Planck ~0.988)' : '0.529 (Radiation Extinguished)'}`, ox + w - 355, cy - h / 2 + 52);

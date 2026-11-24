@@ -436,3 +436,40 @@ def test_garbage_collection_is_dry_run_by_default(tmp_path: Path) -> None:
     assert store.garbage_collect(execute=True) == [orphan]
     assert not orphan.path.exists()
     assert store.get(held.sha256).path.exists()
+
+
+def test_fetch_blocks_multicast_and_oversized_responses(tmp_path: Path) -> None:
+    raw = b"expected"
+    catalog = _write_catalog(tmp_path / "catalog.json", raw)
+    store = ContentAddressedStore(tmp_path / "store")
+
+    multicast_resp = _FakeResponse(raw, 200, final_url="https://224.0.0.1/example.dat")
+    fetcher = ResumableFetcher(
+        store,
+        catalog,
+        opener=lambda *args, **kwargs: multicast_resp,
+        sleeper=lambda _: None,
+    )
+    with pytest.raises(AcquisitionError, match="non-public or multicast"):
+        fetcher.fetch("example", "example.dat", retries=0)
+
+    oversized_resp = _FakeResponse(raw + b"EXTRA", 200)
+    fetcher_over = ResumableFetcher(
+        store,
+        catalog,
+        opener=lambda *args, **kwargs: oversized_resp,
+        sleeper=lambda _: None,
+    )
+    with pytest.raises(AcquisitionError, match="exceeded expected size"):
+        fetcher_over.fetch("example", "example.dat", retries=0)
+
+
+def test_safe_redirect_handler_rejects_private_redirect_target() -> None:
+    import urllib.request
+
+    from emrf.data.acquisition import _SafeHTTPSRedirectHandler
+
+    handler = _SafeHTTPSRedirectHandler()
+    req = urllib.request.Request("https://example.org/file.dat")
+    with pytest.raises(AcquisitionError, match="non-public or multicast"):
+        handler.redirect_request(req, None, 302, "Found", {}, "https://127.0.0.1/secret")

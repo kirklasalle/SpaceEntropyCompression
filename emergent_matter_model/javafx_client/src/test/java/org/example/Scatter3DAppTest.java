@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class Scatter3DAppTest {
@@ -69,6 +70,14 @@ class Scatter3DAppTest {
 
         assertFalse(points.isEmpty());
         assertEquals(2, points.size());
-        assertTrue(points.stream().allMatch(point -> Double.isFinite(point.matter)));
+        assertTrue(points.stream().allMatch(point -> Double.isFinite(point.matter) && point.matter == 1.0));
+    }
+
+    @Test
+    void responseMappingRejectsEmptyMatrix() {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> Scatter3DApp.parseSimulationPoints(new JSONObject().put("M", new JSONArray()))
+        );
     }
 }

@@ -108,7 +108,11 @@ def acceleration_unscreened_naive(a_newton: float | np.ndarray, a0: float = A0_N
     a_eff = sqrt(a_N^2 + a_N * a0) = a_N * sqrt(1 + a0 / a_N).
     In the strong field (a_N >> a0), a_eff ≈ a_N + 0.5 * a0.
     """
-    return a_newton * np.sqrt(1.0 + a0 / a_newton)
+    a_arr = np.asarray(a_newton, dtype=float)
+    if np.any(~np.isfinite(a_arr)) or np.any(a_arr <= 0.0) or a0 <= 0.0:
+        raise ValueError("a_newton and a0 must be finite and positive")
+    res = a_arr * np.sqrt(1.0 + a0 / a_arr)
+    return float(res) if np.isscalar(a_newton) else res
 
 
 def acceleration_standard_screened(a_newton: float | np.ndarray, a0: float = A0_NOMINAL) -> float | np.ndarray:
@@ -117,11 +121,15 @@ def acceleration_standard_screened(a_newton: float | np.ndarray, a0: float = A0_
     Interpolates between a_eff = a_N (when a_N >> a0) and a_eff = sqrt(a_N * a0) (when a_N << a0).
     In strong field: delta_a / a_N ≈ 0.5 * (a0 / a_N)^2.
     """
-    y = a_newton / a0
+    a_arr = np.asarray(a_newton, dtype=float)
+    if np.any(~np.isfinite(a_arr)) or np.any(a_arr <= 0.0) or a0 <= 0.0:
+        raise ValueError("a_newton and a0 must be finite and positive")
+    y = a_arr / a0
     # Solve a_eff * mu(a_eff / a0) = a_newton
     # For standard mu: a_eff = a_newton * sqrt(1/2 + 1/2 * sqrt(1 + 4 / y^2))
     factor = np.sqrt(0.5 + 0.5 * np.sqrt(1.0 + 4.0 / (y ** 2)))
-    return a_newton * factor
+    res = a_arr * factor
+    return float(res) if np.isscalar(a_newton) else res
 
 
 def acceleration_emrf_geometric_screened(
@@ -129,31 +137,15 @@ def acceleration_emrf_geometric_screened(
     a0: float = A0_NOMINAL,
     screening_power: float = 2.0,
 ) -> float | np.ndarray:
-    """EMRF Geometric Compression Screening on manifold M^D.
-
-    In the high-acceleration regime (a_N >> a0), extra spatial dimensions d_0
-    compactify / decouple dynamically because spatial compression reaches the
-    saturating geometric threshold C_G >> C_0:
-        nu(y) = 1 + [ 1 - exp(- (y / y_crit)^screening_power) ] * [ (1 - exp(-sqrt(y)))^(-1) - 1 ]
-    yielding exponential suppression of non-GR deviations:
-        |delta_a| = a_N * exp(- (a_N / a0)^p) / y.
-    For standard EMRF parameterization (p=2.0), delta_a at Saturn is < 1e-18 m/s^2.
-    """
-    y = np.maximum(a_newton / a0, 1e-15)
-    # The EMRF interpolation:
-    # Weak field (y -> 0): nu(y) -> y^(-1/2) => a_eff -> sqrt(a_N * a0)
-    # Strong field (y -> inf): nu(y) -> 1 + O(exp(-y^p))
-    # Smooth continuous function across all 16 decades:
-    # nu_emrf(y) = 1.0 / (1.0 - np.exp(- np.sqrt(y))) * (1.0 - np.exp(-(y / 10.0)**screening_power)) + np.exp(-(y / 10.0)**screening_power)
-    # More precisely, McGaugh/EMRF baseline: nu(y) = 1 / (1 - exp(-sqrt(y)))
-    # With geometric saturation factor: S(y) = 1.0 for y < 10, transitioning to 1.0 smoothly.
-    # Note that standard McGaugh nu(y) = 1 / (1 - exp(-sqrt(y))) gives:
-    # At y=100 (1.2e-8 m/s^2): 1 / (1 - exp(-10)) = 1 + exp(-10) = 1 + 4.5e-5.
-    # With EMRF higher-order curvature decoupling:
+    """Illustrative ad-hoc Solar System screening ansatz (not action-derived)."""
+    a_arr = np.asarray(a_newton, dtype=float)
+    if np.any(~np.isfinite(a_arr)) or np.any(a_arr <= 0.0) or a0 <= 0.0:
+        raise ValueError("a_newton and a0 must be finite and positive")
+    y = np.maximum(a_arr / a0, 1e-15)
     rar_nu = 1.0 / (1.0 - np.exp(-np.sqrt(y)))
-    # When y >> 50, extra dimensional degrees of freedom freeze into Branch A (GR)
     nu_screened = 1.0 + (rar_nu - 1.0) * (1.0 - np.tanh(y / 100.0))
-    return a_newton * nu_screened
+    res = a_arr * nu_screened
+    return float(res) if np.isscalar(a_newton) else res
 
 
 def evaluate_solar_system_residuals(
@@ -208,6 +200,14 @@ def summarize_solar_system_stress_test(a0: float = A0_NOMINAL) -> dict:
             "all_passed": all_passed,
             "saturn_cassini_ratio": saturn_cassini_ratio,
             "residuals": res,
+            "evidence": {
+                "class": "illustrative_tautology",
+                "empirical_confirmation": False,
+                "caveat": (
+                    "Ad-hoc phenotypic tanh(y/100) screening cutoff forces solar-system "
+                    "residuals to vanish by construction; not derived from an action."
+                ),
+            },
         }
     return summary
 

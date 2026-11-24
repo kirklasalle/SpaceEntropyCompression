@@ -60,20 +60,17 @@ Preserve historical source copies and qualify graph entries by evidence type.
 
 ## 4. Workspace agent instructions
 
-VS Code Copilot workspace agents must consult
-[`AGENTIC_PRIME_DIRECTIVE.md`](AGENTIC_PRIME_DIRECTIVE.md),
-[`AGENTIC_SACRED_COVENANT.md`](AGENTIC_SACRED_COVENANT.md), and
-[`Permanent_Active_Directives.txt`](Permanent_Active_Directives.txt), as
-required by [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
-For MCP integrations, use only the project-local servers declared in the
-workspace `.vscode/mcp.json` profile, which launch the `.mcp` submodule
-(initialize it with `git submodule update --init`). Do not substitute a global
-or another project's MCP server if a local server is unavailable or its catalog
-is empty; report the limitation. The permission model and verification scope
-are in `.mcp/docs/SPACE_ENTROPY_COMPRESSION.md`. The shared profile uses
-`python` from the VS Code process `PATH` and forward-slash workspace paths;
-ensure a tested Python 3.11 or 3.12 environment is available there (the
-project's devcontainer provides Python 3.12).
+For MCP integrations, use only the project-local, read-only servers declared in
+[`.vscode/mcp.json`](.vscode/mcp.json):
+
+- `emrf-workspace` (`.mcp/emrf_workspace/server.py`) for read-only EMRF diagnostics,
+  command/dataset inspection, and knowledge graph queries.
+- `science-data` (`.mcp/science_data/server.py`) for bounded public archive
+  queries (NASA Exoplanet Archive and INSPIRE-HEP metadata).
+
+Both servers are repository-owned under `.mcp/` (see `.mcp/README.md`) and run
+with `MCP_ALLOW_MUTATIONS=0` by default. Ensure `python` on `PATH` points to
+a certified Python 3.10.1+ or 3.12 environment.
 
 ---
 

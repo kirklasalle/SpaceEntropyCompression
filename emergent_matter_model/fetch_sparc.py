@@ -1,8 +1,8 @@
-"""SPARC Data Ingestion and Catalog Management Module.
+"""Synthetic SPARC-Like Fixture Catalog Management Module.
 
-Automates ingestion, validation, and metadata registration of galaxy rotation
-curves from the Spitzer Photometry & Accurate Rotation Curves (SPARC) database
-(Lelli, McGaugh, & Schombert 2016, Astronomical Journal 152:157).
+Manages validation and metadata listing of synthetic SPARC-like rotation-curve
+fixtures stored under ``data/synthetic/sparc/``. For downloading and verifying the
+authentic Lelli, McGaugh & Schombert (2016) SPARC archive, use ``fetch_real_data.py``.
 """
 
 from __future__ import annotations

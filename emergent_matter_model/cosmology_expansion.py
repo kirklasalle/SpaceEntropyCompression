@@ -11,8 +11,10 @@ Equations:
   w(z)  = w_0 + w_a * z / (1 + z)   [Chevallier-Polarski-Linder / DESI 2024]
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import os
 import numpy as np
 from scipy import integrate, optimize
@@ -145,37 +147,38 @@ def _resolve_cosmo_path(filepath: str) -> str:
     return filepath
 
 
-def evaluate_pantheon_plus(
-    params: EMRFCosmologyParams,
-    filepath: str
-) -> Dict[str, float]:
-    """Evaluate chi2 and residuals against Pantheon+ Supernova sample."""
-    filepath = _resolve_cosmo_path(filepath)
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Pantheon+ data not found at {filepath}")
-    
+def _load_pantheon_rows(filepath: str) -> tuple[list[float], np.ndarray, np.ndarray]:
+    resolved = _resolve_cosmo_path(filepath)
+    if not os.path.exists(resolved):
+        raise FileNotFoundError(f"Pantheon+ data not found at {resolved}")
     data = []
-    with open(filepath, "r") as f:
+    with open(resolved, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith("#") or line.startswith("z_hd"):
                 continue
             parts = line.split(",")
             data.append((float(parts[0]), float(parts[1]), float(parts[2])))
-    
     z_vals = [d[0] for d in data]
     mu_obs = np.array([d[1] for d in data])
     mu_err = np.array([d[2] for d in data])
-    
+    return z_vals, mu_obs, mu_err
+
+
+def _evaluate_pantheon_loaded(
+    params: EMRFCosmologyParams,
+    z_vals: list[float],
+    mu_obs: np.ndarray,
+    mu_err: np.ndarray,
+) -> Dict[str, float]:
     mu_model = np.array([distance_modulus(z, params) for z in z_vals])
     residuals = mu_obs - mu_model
     chi2 = float(np.sum((residuals / mu_err) ** 2))
-    dof = len(data) - 4  # 4 free parameters (H0, Omega_b, w0, wa)
+    dof = len(z_vals) - 4  # 4 free parameters (H0, Omega_b, w0, wa)
     chi2_red = chi2 / max(1, dof)
     rms_resid = float(np.sqrt(np.mean(residuals ** 2)))
-    
     return {
-        "n_points": len(data),
+        "n_points": len(z_vals),
         "chi2": chi2,
         "dof": dof,
         "chi2_reduced": chi2_red,
@@ -183,17 +186,21 @@ def evaluate_pantheon_plus(
     }
 
 
-def evaluate_desi_bao(
+def evaluate_pantheon_plus(
     params: EMRFCosmologyParams,
     filepath: str
 ) -> Dict[str, float]:
-    """Evaluate chi2 against DESI 2024 BAO measurements."""
-    filepath = _resolve_cosmo_path(filepath)
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"DESI BAO data not found at {filepath}")
-    
-    measurements = []
-    with open(filepath, "r") as f:
+    """Evaluate chi2 and residuals against Pantheon+ Supernova sample."""
+    z_vals, mu_obs, mu_err = _load_pantheon_rows(filepath)
+    return _evaluate_pantheon_loaded(params, z_vals, mu_obs, mu_err)
+
+
+def _load_desi_rows(filepath: str) -> list[dict[str, Any]]:
+    resolved = _resolve_cosmo_path(filepath)
+    if not os.path.exists(resolved):
+        raise FileNotFoundError(f"DESI BAO data not found at {resolved}")
+    measurements: list[dict[str, Any]] = []
+    with open(resolved, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith("#") or line.startswith("tracer"):
@@ -206,7 +213,13 @@ def evaluate_desi_bao(
                 "value": float(parts[3]),
                 "error": float(parts[4]),
             })
-    
+    return measurements
+
+
+def _evaluate_desi_loaded(
+    params: EMRFCosmologyParams,
+    measurements: list[dict[str, Any]],
+) -> Dict[str, float]:
     chi2 = 0.0
     for m in measurements:
         theo = bao_observables(m["z_eff"], params)
@@ -215,10 +228,8 @@ def evaluate_desi_bao(
             val_theo = theo[obs_name]
             diff = (val_theo - m["value"]) / m["error"]
             chi2 += diff ** 2
-    
     dof = len(measurements) - 2  # w0, wa
     chi2_red = chi2 / max(1, dof)
-    
     return {
         "n_points": len(measurements),
         "chi2": float(chi2),
@@ -227,29 +238,48 @@ def evaluate_desi_bao(
     }
 
 
+def evaluate_desi_bao(
+    params: EMRFCosmologyParams,
+    filepath: str
+) -> Dict[str, float]:
+    """Evaluate chi2 against DESI 2024 BAO measurements."""
+    measurements = _load_desi_rows(filepath)
+    return _evaluate_desi_loaded(params, measurements)
+
+
 def fit_joint_cosmology(
     pantheon_path: str,
     desi_path: str
 ) -> Tuple[EMRFCosmologyParams, Dict[str, float]]:
     """Jointly fit (H0, Omega_m, w0, wa) against Pantheon+ and DESI 2024."""
+    z_vals, mu_obs, mu_err = _load_pantheon_rows(pantheon_path)
+    desi_measurements = _load_desi_rows(desi_path)
+
     def objective(x: np.ndarray) -> float:
         h0, om_m, w0, wa = x
         om_c_mat = max(0.0, om_m - 0.049)
         p = EMRFCosmologyParams(H0=h0, Omega_b=0.049, Omega_C_matter=om_c_mat, w0=w0, wa=wa)
-        res_pan = evaluate_pantheon_plus(p, pantheon_path)
-        res_desi = evaluate_desi_bao(p, desi_path)
+        res_pan = _evaluate_pantheon_loaded(p, z_vals, mu_obs, mu_err)
+        res_desi = _evaluate_desi_loaded(p, desi_measurements)
         return res_pan["chi2"] + res_desi["chi2"]
 
     init_guess = [70.0, 0.315, -0.99, -0.14]
     bounds = [(65.0, 75.0), (0.25, 0.36), (-1.2, -0.8), (-0.5, 0.2)]
-    
+
     opt = optimize.minimize(
         objective,
         init_guess,
         bounds=bounds,
         method="L-BFGS-B"
     )
-    
+    if not opt.success or not np.isfinite(opt.fun) or not np.isfinite(opt.x).all():
+        opt = optimize.minimize(
+            objective,
+            opt.x if np.isfinite(opt.x).all() else init_guess,
+            bounds=bounds,
+            method="Powell",
+        )
+
     best_om_m = float(opt.x[1])
     best_params = EMRFCosmologyParams(
         H0=float(opt.x[0]),
@@ -258,17 +288,17 @@ def fit_joint_cosmology(
         w0=float(opt.x[2]),
         wa=float(opt.x[3])
     )
-    
-    res_pan = evaluate_pantheon_plus(best_params, pantheon_path)
-    res_desi = evaluate_desi_bao(best_params, desi_path)
+
+    res_pan = _evaluate_pantheon_loaded(best_params, z_vals, mu_obs, mu_err)
+    res_desi = _evaluate_desi_loaded(best_params, desi_measurements)
     total_chi2 = res_pan["chi2"] + res_desi["chi2"]
     total_n = res_pan["n_points"] + res_desi["n_points"]
     dof = total_n - 4
-    
+
     # Information criteria compared to fiducial flat LCDM (k=2 free params: H0, Om)
     aic = total_chi2 + 2.0 * 4
     bic = total_chi2 + np.log(total_n) * 4
-    
+
     stats = {
         "total_chi2": total_chi2,
         "dof": dof,
@@ -277,5 +307,6 @@ def fit_joint_cosmology(
         "desi_chi2_red": res_desi["chi2_reduced"],
         "AIC": aic,
         "BIC": bic,
+        "optimizer_success": bool(opt.success),
     }
     return best_params, stats

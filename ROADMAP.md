@@ -1,8 +1,8 @@
 # EMRF research roadmap
 
 Current selection (October 16, 2026); engineering audit (November 3, 2026);
-amended model-only validation artifact generated November 5 UTC:
-A and B, as selected by Kirk LaSalle.
+amended model-only validation artifact generated November 5 UTC; engineering
+hardening completed November 24, 2026: A and B, as selected by Kirk LaSalle.
 **Both run concurrently** as a [dual-candidate program](docs/EMRF_DUAL_CANDIDATE_PROGRAM.md);
 each keeps its own ledger entries, preregistrations and artifacts.
 This replaces the
@@ -48,7 +48,11 @@ A failed numerical gate blocks the fit; acceleration does not relax the gate.
 Frozen-v1's first primary-source check exceeds its convergence threshold
 (2.27% versus 0.5%). Kirk approved a separately versioned segmented amendment;
 its full model-only run passes V3/V3b and reports V4, while V1/V5 are
-incomplete. No fit is authorized. See the
+incomplete. A non-fit-authorizing
+[amendment 2 draft](knowledgebase/candidate_a_option3_reconstruction_protocol_v1_amendment_2_source_regularization.json)
+(`fit_authorized: false`, awaiting physicist review) and opt-in PAVA bulge
+regularization + bounded GPU kernel caching are prepared for review. No fit is
+authorized. See the
 [experiment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md).
 
 ## 3. Establish what the mapping actually says
@@ -70,7 +74,11 @@ acquisition should precede a specified observable and uncertainty treatment.
 Keep real-data and illustration outputs separate. Continue replacing misleading
 legacy labels and validating likelihoods, numerical stability, provenance and
 missing-data behavior. Maintain regression tests without equating them with
-empirical confirmations.
+empirical confirmations. The November 24, 2026 engineering hardening closed HTTP
+exposure, path/acquisition SSRF, cross-process locking, Win32 PID, Kepler
+eccentricity (`e <= 0.99999`), static typing (`mypy -p emrf`), `.mcp/`
+ownership/ImpressionCore decoupling, and `illustrative_tautology` /
+`synthetic_benchmark_not_real_epochs` boundary labeling gaps.
 
 Future development (noted 2026-11-04, not started): design and build an
 "EMRF farm" volunteer-compute client, in the spirit of SETI@home, so that

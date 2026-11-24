@@ -224,6 +224,7 @@ class SensitivityVariant:
     inner_stellar_exponential: bool = False
     outer_exponential_tails: bool = False
     spherical_inner_bulge: bool = False
+    regularize_bulge: bool = False
     use_leroy_geometry: bool = False
     f_star: float = 1.0
 
@@ -261,8 +262,33 @@ def outer_log_slope(radii: FloatArray, values: FloatArray) -> float | None:
     return mean_slope
 
 
+def _pava_nonincreasing(values: FloatArray) -> FloatArray:
+    """Pool-Adjacent-Violators projection onto non-increasing sequences."""
+    arr = np.asarray(values, dtype=np.float64)
+    if arr.size <= 1:
+        return arr.copy()
+    blocks: list[list[float]] = []  # [sum, count]
+    for val in arr:
+        blocks.append([float(val), 1])
+        while len(blocks) >= 2:
+            prev_mean = blocks[-2][0] / blocks[-2][1]
+            curr_mean = blocks[-1][0] / blocks[-1][1]
+            if prev_mean >= curr_mean:
+                break
+            last = blocks.pop()
+            blocks[-1][0] += last[0]
+            blocks[-1][1] += last[1]
+    out = np.empty_like(arr)
+    idx = 0
+    for total, count in blocks:
+        out[idx:idx + count] = total / count
+        idx += count
+    return out
+
+
 def spherical_bulge_profile(radii: FloatArray, sigma: FloatArray, scale_pc: float,
-                            cutoff_pc: float) -> tuple[
+                            cutoff_pc: float, *,
+                            regularize_bulge: bool = False) -> tuple[
                                 FloatArray, FloatArray, FloatArray, FloatArray
                             ]:
     """Abel-deproject the clipped inner excess over the anchored exponential disc."""
@@ -280,6 +306,10 @@ def spherical_bulge_profile(radii: FloatArray, sigma: FloatArray, scale_pc: floa
     bulge_surface[surface_radii >= 2 * scale_pc] = 0.0
     if cutoff_pc < 2 * scale_pc:
         bulge_surface[-1] = 0.0
+    if regularize_bulge:
+        bulge_surface = _pava_nonincreasing(bulge_surface)
+        if cutoff_pc < 2 * scale_pc:
+            bulge_surface[-1] = 0.0
     if not np.any(bulge_surface > 0):
         return (
             surface_radii, np.zeros_like(surface_radii),
@@ -477,8 +507,13 @@ def build_source(profile: Profile, geometry: Geometry, envelope: Envelope, *,
     bulge_density_values: FloatArray | None = None
     if variant.spherical_inner_bulge:
         bulge_radii, bulge_surface, bulge_density_radii, bulge_density_values = (
-            spherical_bulge_profile(scaled_radii, sigma[0], profile.scale_pc * scale_factor,
-                                   scaled_cutoff)
+            spherical_bulge_profile(
+                scaled_radii,
+                sigma[0],
+                profile.scale_pc * scale_factor,
+                scaled_cutoff,
+                regularize_bulge=variant.regularize_bulge,
+            )
         )
     return Source(
         name=profile.name,
@@ -539,7 +574,7 @@ def hydrostatic_gas_widths(radii_pc: FloatArray, sigma: FloatArray, z0_pc: float
 
 def mapped_density(rho: Any, alpha: float, rho0: float,
                    xp: ModuleType = np) -> Any:
-    """Frozen v1 underflow policy, unlike the historical evaluator's strict policy."""
+    """Frozen v1 underflow policy, uniform across NumPy and CuPy."""
     positive(alpha, "alpha")
     positive(rho0, "rho0")
     if not bool(xp.all(xp.isfinite(rho))) or bool(xp.any(rho < 0)):
@@ -548,8 +583,16 @@ def mapped_density(rho: Any, alpha: float, rho0: float,
         return rho.copy()
     mask = rho > 0
     result = xp.zeros_like(rho, dtype=xp.float64)
-    with np.errstate(over="raise", invalid="raise", under="ignore"):
-        result[mask] = xp.exp(math.log(rho0) + (xp.log(rho[mask]) - math.log(rho0)) / alpha)
+    safe_rho = xp.where(mask, rho, rho0)
+    log_exponent = math.log(rho0) + (xp.log(safe_rho) - math.log(rho0)) / alpha
+    if bool(xp.any(mask & (log_exponent > 709.0))):
+        raise ArithmeticError("Effective-density overflow or non-finite value")
+    if xp is np:
+        with np.errstate(over="raise", invalid="raise", under="ignore"):
+            result[mask] = xp.exp(log_exponent[mask])
+    else:
+        computed = xp.exp(xp.where(mask, log_exponent, 0.0))
+        result = xp.where(mask, computed, 0.0)
     if not bool(xp.all(xp.isfinite(result))):
         raise ArithmeticError("Effective-density overflow or non-finite value")
     return result

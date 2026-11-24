@@ -100,6 +100,9 @@ jobs:
           --select W605,B023,F841,E741
           --per-file-ignores
           "emergent_matter_model/black_hole_horizon_entropy.py:F841,emergent_matter_model/sparc_bulge_test.py:B023"
+      - name: Type-check emrf package with mypy
+        working-directory: emergent_matter_model
+        run: python -m mypy --config-file pyproject.toml -p emrf
       - name: Run tests with coverage
         run: coverage run -m pytest -m "not golden" -q
       - name: Report coverage
@@ -108,6 +111,15 @@ jobs:
         run: python emergent_matter_model/emrf_cli.py doctor
       - name: Validate scientific knowledge graph
         run: python emergent_matter_model/emrf_cli.py kb validate
+      - name: Smoke-test isolated wheel install
+        if: matrix.python == '3.12'
+        shell: bash
+        run: |
+          python -m pip wheel emergent_matter_model --no-deps -w /tmp/emrf-wheel
+          python -m venv /tmp/emrf-wheel-venv
+          /tmp/emrf-wheel-venv/bin/python -m pip install /tmp/emrf-wheel/*.whl
+          /tmp/emrf-wheel-venv/bin/emrf doctor
+          /tmp/emrf-wheel-venv/bin/emrf kb validate
 
   golden:
     name: Golden ${{ matrix.case }} / Windows / Python 3.10

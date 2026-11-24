@@ -43,6 +43,17 @@ class TestKeplerAndTrueAnomaly:
         residuals = np.abs(e_arr - e * np.sin(e_arr) - m_arr)
         assert np.max(residuals) < 1e-10
 
+    def test_extreme_eccentricity_convergence(self):
+        m_arr = np.concatenate([
+            np.logspace(-6, -1, 20),
+            np.linspace(0.1, 2.0 * math.pi - 1e-6, 40),
+            np.array([-0.5, 7.5]),
+        ])
+        e = 0.9999
+        e_arr = solve_kepler_anomaly(m_arr, e)
+        residuals = np.abs(e_arr - e * np.sin(e_arr) - m_arr)
+        assert np.max(residuals) < 1e-12
+
     def test_true_anomaly_boundary_conditions(self):
         # At pericenter E=0 -> nu=0
         nu_peri = compute_true_anomaly(0.0, 0.5)

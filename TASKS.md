@@ -1,6 +1,6 @@
 # EMRF active research tasks
 
-Research selection updated October 16, 2026; engineering audit updated November 3, 2026. A and B run concurrently. Earlier task lists marked several assumptions or
+Research selection updated October 16, 2026; engineering audit updated November 3, 2026; engineering hardening updated November 24, 2026. A and B run concurrently. Earlier task lists marked several assumptions or
 synthetic exercises as completed physical validation; those statuses are not
 carried forward.
 
@@ -13,14 +13,13 @@ carried forward.
 | Investigate all Candidate A options | Authorized by Kirk; full-density route selected for option 3 | Keep authorization to investigate distinct from selection or validation of a final theory |
 | Check Candidate A option 1 | Done: 81 conditional GR checks plus vacuum checks | No claim of independent support over GR or full dynamical equivalence |
 | Reproduce Candidate A option 2 | Done: SPARC rejection reproduced across 6,621 result fields (not blind) | Preserve the old frozen protocol and result, including historical attribution |
-| Develop Candidate A option 3 | Amendment-1 model-only run passes V3/V3b and reports V4; independent spherical-projection recheck passes; V1 incomplete (11 non-decaying outer tails), V5 incomplete (outer-tail and spherical-bulge source failures) | Preserve frozen-v1 result; resolve invalid variants and revalidate under an explicitly approved source protocol, without velocities |
+| Develop Candidate A option 3 | Amendment-1 model-only run passes V3/V3b and reports V4; independent spherical-projection recheck passes; V1 incomplete (11 non-decaying outer tails), V5 incomplete (outer-tail and spherical-bulge source failures); proposed non-fit-authorizing Amendment 2 draft prepared (`fit_authorized: false`) | Preserve frozen-v1 result; resolve invalid variants after physicist review and revalidate under an explicitly approved source protocol, without velocities |
 | Fit Candidate A option 3 | Protocol frozen at `8437889`; **blocked** by numerical validation | Do not fit until all required gates pass; preserve non-blind/post-data disclosure and never relax frozen gates to obtain a fit |
 | Qualify optional GPU execution | GTX 1050 Ti float64 V3b agreement passes at < 2.08e-15; model-only V1/V4/V5 run completed with documented incompleteness | Follow the [GPU runbook](docs/site/development/gpu-compute.md); 1 GiB process pool cap, explicit failures and provenance; do not infer fit throughput |
 | Assess equivalence and matter mapping | Conditional identities/counterexamples documented | No inference of complete equivalence from fits or one scalar identity |
 | Recover original theory intentions | Completed with stated coverage limits | Source-hashed archive, qualified graph and attribution |
-| Complete engineering/documentation audit | Completed November 3, 2026 | 633 non-golden tests pass in the CI-constrained environment; current evidence, link corrections, MCP pack status and remaining lint debt are recorded in the [audit](docs/site/development/project-audit-2026-11-03.md) |
-| Repair project-local IDS catalog | Completed November 3, 2026 | The launched IDS entrypoint resolves this repository through `MCP_WORKSPACE_ROOT` and returns real `docs/` hits; its knowledge graph is not yet populated for Candidate A. Do not substitute a non-local MCP |
-| Integrate the project-local MCP server pack | Integrated, not certified | Nine local servers; 9/9 smoke targets pass, 21 of 63 listed tools are individually exercised, and the `.mcp` CI matrix passes on Ubuntu/Windows with Python 3.11/3.12 (run 41829273692). See the [audit](docs/site/development/project-audit-2026-11-03.md#project-local-mcp-server-pack) |
+| Complete engineering due-diligence hardening | Completed November 24, 2026 | **672** non-golden tests pass on Python 3.12.10; `mypy -p emrf` clean (`42` files); HTTP/IO/acquisition hardening, Win32-safe `ProcessFileLock`, Kepler/solver stability, isolated wheel smoke check, and JavaFX tests pass |
+| Decouple ImpressionCore and own `.mcp/` | Completed November 24, 2026 | Removed external `.mcp` submodule and ImpressionCore directive files (historical archives preserved); repository-owned read-only `.mcp/` servers (`emrf-workspace`, `science-data`) pass 6/6 unit tests |
 | Run real SPARC comparison and influence checks | Completed within documented scope | Converged profiles, real inputs and visible systematic limits |
 | Fit real Pantheon+/DESI baselines | Completed within documented scope | Covariance-aware likelihood; no attribution to new EMRF cosmology |
 | Complete every empirical regime | Blocked, not passed | A defined prediction and usable data likelihood for each case |

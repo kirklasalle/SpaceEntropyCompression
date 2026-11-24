@@ -74,13 +74,23 @@ class EmergentMatterModel:
         alpha: float = 1.0,
         C0: float = 1.0,
     ):
+        if isinstance(n_total, bool) or not isinstance(n_total, int) or n_total < 1:
+            raise ValueError("n_total must be an integer >= 1")
         if len(weights) != n_total:
             raise ValueError(
                 f"len(weights)={len(weights)} must equal n_total={n_total}"
             )
+        weights_arr = np.array(weights, dtype=float)
+        if not np.all(np.isfinite(weights_arr)):
+            raise ValueError("weights must contain only finite values")
+        weight_sum = float(weights_arr.sum())
+        if np.isclose(weight_sum, 0.0):
+            raise ValueError("weights must not sum to zero")
+        for name, val in (("k", k), ("alpha", alpha), ("C0", C0)):
+            if isinstance(val, bool) or not np.isfinite(float(val)):
+                raise ValueError(f"{name} must be finite")
         self.n_total = n_total
-        self.weights = np.array(weights, dtype=float)
-        self.weights /= self.weights.sum()
+        self.weights = weights_arr / weight_sum
         self.k = float(k)
         self.alpha = float(alpha)
         self.C0 = float(C0)

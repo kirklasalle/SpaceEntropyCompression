@@ -170,10 +170,10 @@ def evaluate_sparc_galaxy(
     chi2_rar = float(np.sum(res_rar ** 2))
     chi2_emrf = float(np.sum(res_emrf ** 2))
 
-    # Parameters: Newtonian=0 free (fixed Y_disk, Y_bulge), RAR=1 (a0), EMRF=1 (a_entropy)
-    k_newton = 1
-    k_rar = 2
-    k_emrf = 2
+    # Free parameters: Newtonian=0 (fixed Y_disk, Y_bulge), RAR=1 (a0), EMRF=1 (a_entropy)
+    k_newton = 0
+    k_rar = 1
+    k_emrf = 1
 
     bic_newton = k_newton * math.log(n_points) + chi2_newton
     bic_rar = k_rar * math.log(n_points) + chi2_rar
@@ -301,7 +301,7 @@ def fit_sparc_points(
             v_b = compute_baryonic_velocity(p, u_d, upsilon_bulge)
             v_p = compute_emrf_entropic_velocity(v_b, p.radius_kpc, a_ent)
             v_predictions.append(v_p)
-        return (v_obs - np.asarray(v_predictions)) / v_err
+        return np.asarray((v_obs - np.asarray(v_predictions)) / v_err, dtype=float)
 
     from scipy.optimize import least_squares
 
@@ -397,9 +397,9 @@ def evaluate_multi_sparc(
         joint_chi2_rar += rep["models"]["rar_empirical"]["chi2"]
         joint_chi2_emrf += rep["models"]["emrf_entropic"]["chi2"]
 
-    k_newton = len(reports)
-    k_rar = len(reports) + 1
-    k_emrf = len(reports) + 1
+    k_newton = 0
+    k_rar = 1
+    k_emrf = 1
 
     joint_bic_newton = k_newton * math.log(total_points) + joint_chi2_newton
     joint_bic_rar = k_rar * math.log(total_points) + joint_chi2_rar

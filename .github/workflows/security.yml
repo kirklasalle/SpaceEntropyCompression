@@ -76,7 +76,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install release tools
-        run: python -m pip install -r requirements-release.txt
+        run: python -m pip install -r requirements-release.txt -c constraints-ci.txt
       - name: Validate synchronized metadata
         run: python tools/validate_release_metadata.py
       - name: Build distributions

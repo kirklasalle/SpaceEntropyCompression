@@ -191,34 +191,39 @@ class QuantumVibrationalEngine:
         mass_kg: float,
         num_points: int = 1000
     ) -> Tuple[float, float]:
-        """Integrate spatial vibrational GEO functional C(r) over all 3D space to recover mass."""
+        """Toy soliton envelope normalization check (self-normalizes to input mass_kg).
+
+        NOTE: Divides the numerical integral by ``scaling_ratio = integral / mass_kg``,
+        so the returned normalized value equals ``mass_kg`` identically by construction
+        (``illustrative_tautology``; not a predictive derivation of particle masses).
+        """
         r, _, c_density = self.solve_radial_soliton_profile(mass_kg, num_points=num_points, r_max_factors=15.0)
-        
+
         integrand = 4.0 * np.pi * (r**2) * c_density
-        
+
         # Safe trapz / trapezoid integration
         if hasattr(np, "trapezoid"):
             total_energy_j = float(np.trapezoid(integrand, r))
         else:
             total_energy_j = float(np.trapz(integrand, r))
-            
+
         emergent_mass_kg = total_energy_j / self.c_squared
-        
+
         scaling_ratio = emergent_mass_kg / mass_kg
         normalized_emergent_mass = emergent_mass_kg / scaling_ratio
         rel_error = abs(normalized_emergent_mass - mass_kg) / mass_kg
-        
+
         return normalized_emergent_mass, rel_error
 
-    def evaluate_particle_suite(self) -> Dict[str, Dict[str, float]]:
-        """Evaluate all fundamental particle benchmarks under vibrational geometric energy organization."""
-        results = {}
+    def evaluate_particle_suite(self) -> Dict[str, Dict[str, Any]]:
+        """Evaluate illustrative synthetic soliton benchmarks (not empirical predictions)."""
+        results: Dict[str, Dict[str, Any]] = {}
         for p in PARTICLE_BENCHMARKS:
             omega_c = self.compton_frequency(p.rest_mass_kg)
             lambda_c = self.compton_wavelength(p.rest_mass_kg)
             m_em, rel_err = self.compute_emergent_mass_integral(p.rest_mass_kg)
             stability = self.verify_soliton_thermodynamic_stability(p.rest_mass_kg)
-            
+
             results[p.name] = {
                 "rest_mass_kg": p.rest_mass_kg,
                 "compton_frequency_rad_s": omega_c,
@@ -227,5 +232,13 @@ class QuantumVibrationalEngine:
                 "relative_error": rel_err,
                 "vibrational_synthesis_confirmed": float(rel_err < 1e-5),
                 "thermodynamic_stability_locked": float(stability["thermodynamic_locking_verified"]),
+                "evidence": {
+                    "class": "illustrative_tautology",
+                    "empirical_confirmation": False,
+                    "caveat": (
+                        "Self-normalizing soliton profile divides out scaling_ratio so "
+                        "emergent_mass_kg == rest_mass_kg identically by construction."
+                    ),
+                },
             }
         return results

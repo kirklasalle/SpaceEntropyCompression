@@ -107,13 +107,26 @@ def test_v2_command_discovery_matches_sdk(client: TestClient):
     assert client.get("/api/v2/commands/fit-sparc").json()["category"] == "analysis"
 
 
-def test_v2_doctor_matches_public_sdk_report(client: TestClient):
-    direct = EMRFClient().environment_report().to_dict()
+def test_v2_doctor_matches_public_sdk_report(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    redacted = EMRFClient().environment_report(include_paths=False).to_dict()
     response = client.get("/api/v2/doctor")
 
     assert response.status_code == 200
-    assert response.json() == direct
+    assert response.json() == redacted
+    assert response.json()["app_root"] is None
+    assert response.json()["data_root"] is None
     assert "executable" not in response.json()
+
+    token = "doctor-token"
+    monkeypatch.setenv(API_V2_TOKEN_ENV, token)
+    full = EMRFClient().environment_report(include_paths=True).to_dict()
+    authed = client.get("/api/v2/doctor", headers={"Authorization": f"Bearer {token}"})
+    assert authed.status_code == 200
+    assert authed.json() == full
+    assert authed.json()["app_root"] is not None
 
 
 def test_v2_simulation_matches_sdk_and_requires_auth(
@@ -185,13 +198,11 @@ def test_v2_data_operations_match_sdk_and_enforce_auth(
     library = _FakeDataLibrary()
     monkeypatch.setattr("emrf_data_access.data_library", lambda: library)
 
-    direct = EMRFClient().list_datasets(verify=True).to_dict()
-    assert client.get("/api/v2/datasets?verify=true").json() == direct
-    assert client.get("/api/v2/datasets/demo?verify=true").json() == {
-        "catalog": {"id": "demo"},
-        "managed": {"verified": True},
-    }
-    assert client.post("/api/v2/datasets/verify").json()["healthy"] is True
+    unverified = EMRFClient().list_datasets(verify=False).to_dict()
+    assert client.get("/api/v2/datasets").json() == unverified
+    assert client.get("/api/v2/datasets?verify=true").status_code == 403
+    assert client.get("/api/v2/datasets/demo?verify=true").status_code == 403
+    assert client.post("/api/v2/datasets/verify").status_code == 403
     assert client.post(
         "/api/v2/datasets/demo/import",
         json={},
@@ -200,6 +211,13 @@ def test_v2_data_operations_match_sdk_and_enforce_auth(
     token = "test-token"
     monkeypatch.setenv(API_V2_TOKEN_ENV, token)
     headers = {"Authorization": f"Bearer {token}"}
+    direct = EMRFClient().list_datasets(verify=True).to_dict()
+    assert client.get("/api/v2/datasets?verify=true", headers=headers).json() == direct
+    assert client.get("/api/v2/datasets/demo?verify=true", headers=headers).json() == {
+        "catalog": {"id": "demo"},
+        "managed": {"verified": True},
+    }
+    assert client.post("/api/v2/datasets/verify", headers=headers).json()["healthy"] is True
     assert client.post(
         "/api/v2/datasets/demo/import",
         headers=headers,
@@ -374,8 +392,11 @@ def test_v2_durable_execution_and_run_reads_match_sdk(
     assert record.args == ("--help",)
 
     direct = EMRFClient().get_run(record.run_id).to_dict()
-    assert client.get(f"/api/v2/runs/{record.run_id}").json() == direct
-    assert client.get("/api/v2/runs").json()["runs"] == [direct]
+    headers = {"Authorization": "Bearer secret-token"}
+    assert client.get(f"/api/v2/runs/{record.run_id}").status_code == 401
+    assert client.get("/api/v2/runs").status_code == 401
+    assert client.get(f"/api/v2/runs/{record.run_id}", headers=headers).json() == direct
+    assert client.get("/api/v2/runs", headers=headers).json()["runs"] == [direct]
 
 
 def test_v2_job_lifecycle_and_authenticated_artifacts(
@@ -395,8 +416,10 @@ def test_v2_job_lifecycle_and_authenticated_artifacts(
     )
     assert submitted.status_code == 202
     job_id = submitted.json()["job_id"]
-    assert client.get(f"/api/v2/jobs/{job_id}").json()["status"] == "queued"
-    assert client.get("/api/v2/jobs").json()["jobs"][0]["job_id"] == job_id
+    assert client.get(f"/api/v2/jobs/{job_id}").status_code == 401
+    assert client.get("/api/v2/jobs").status_code == 401
+    assert client.get(f"/api/v2/jobs/{job_id}", headers=headers).json()["status"] == "queued"
+    assert client.get("/api/v2/jobs", headers=headers).json()["jobs"][0]["job_id"] == job_id
     assert client.post(f"/api/v2/jobs/{job_id}/cancel", headers=headers).json()[
         "status"
     ] == "cancelled"
@@ -483,7 +506,15 @@ def test_v2_rejects_unsafe_or_invalid_execution(
     assert invalid.json()["code"] == "validation_error"
 
 
-def test_v2_physics_verification_matches_sdk(client: TestClient):
+def test_v2_physics_verification_matches_sdk(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    assert client.get("/api/v2/verification/physics").status_code == 403
+    token = "verify-token"
+    monkeypatch.setenv(API_V2_TOKEN_ENV, token)
+    headers = {"Authorization": f"Bearer {token}"}
+
     direct = EMRFClient().verify_physics()
     expected = {
         "evidence_class": direct.evidence_class,
@@ -492,9 +523,50 @@ def test_v2_physics_verification_matches_sdk(client: TestClient):
         "metadata": dict(direct.metadata),
     }
 
-    response = client.get("/api/v2/verification/physics")
+    response = client.get("/api/v2/verification/physics", headers=headers)
     assert response.status_code == 200
     assert response.json() == expected
+
+
+def test_v2_rejects_path_traversal_and_oversized_simulation(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    token = "security-token"
+    monkeypatch.setenv(API_V2_TOKEN_ENV, token)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    traversal = client.post(
+        "/api/v2/recovery/backups",
+        headers=headers,
+        json={"destination": "../../outside-escape"},
+    )
+    assert traversal.status_code == 400
+    assert traversal.json()["code"] == "invalid_request"
+
+    oversized_sim = client.post(
+        "/api/v2/simulations",
+        headers=headers,
+        json={
+            "n": 1,
+            "weights": [1.0],
+            "X_grid": [list(range(1000))],
+        },
+    )
+    assert oversized_sim.status_code == 200
+
+    rejected_dim = client.post(
+        "/api/v2/simulations",
+        headers=headers,
+        json={
+            "n": 9,
+            "weights": [1.0] * 9,
+            "X_grid": [[0.0]] * 9,
+        },
+    )
+    assert rejected_dim.status_code == 422
+    assert rejected_dim.headers["x-content-type-options"] == "nosniff"
+    assert rejected_dim.headers["x-frame-options"] == "DENY"
 
 
 def test_v1_flask_application_remains_separate_and_healthy():

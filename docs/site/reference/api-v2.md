@@ -21,16 +21,16 @@ contract at `/api/v2/openapi.json`.
 | `POST` | `/api/v2/data/restore-drills` | Required | data |
 | `POST` | `/api/v2/data/restores` | Required | data |
 | `GET` | `/api/v2/datasets` | No | data |
-| `POST` | `/api/v2/datasets/verify` | No | data |
+| `POST` | `/api/v2/datasets/verify` | Required | data |
 | `GET` | `/api/v2/datasets/{dataset_id}` | No | data |
 | `POST` | `/api/v2/datasets/{dataset_id}/fetch` | Required | data |
 | `POST` | `/api/v2/datasets/{dataset_id}/import` | Required | data |
 | `GET` | `/api/v2/doctor` | No | service |
 | `GET` | `/api/v2/health` | No | service |
-| `GET` | `/api/v2/jobs` | No | jobs |
+| `GET` | `/api/v2/jobs` | Required | jobs |
 | `POST` | `/api/v2/jobs` | Required | jobs |
 | `POST` | `/api/v2/jobs/worker/run-next` | Required | jobs |
-| `GET` | `/api/v2/jobs/{job_id}` | No | jobs |
+| `GET` | `/api/v2/jobs/{job_id}` | Required | jobs |
 | `POST` | `/api/v2/jobs/{job_id}/cancel` | Required | jobs |
 | `GET` | `/api/v2/knowledge` | No | knowledge |
 | `GET` | `/api/v2/knowledge/export` | No | knowledge |
@@ -46,14 +46,14 @@ contract at `/api/v2/openapi.json`.
 | `POST` | `/api/v2/recovery/backups/verify` | Required | recovery |
 | `POST` | `/api/v2/recovery/restore-drills` | Required | recovery |
 | `POST` | `/api/v2/recovery/restores` | Required | recovery |
-| `GET` | `/api/v2/runs` | No | runs |
-| `GET` | `/api/v2/runs/{run_id}` | No | runs |
+| `GET` | `/api/v2/runs` | Required | runs |
+| `GET` | `/api/v2/runs/{run_id}` | Required | runs |
 | `GET` | `/api/v2/runs/{run_id}/artifacts` | Required | artifacts |
 | `GET` | `/api/v2/runs/{run_id}/artifacts/{relative_path}` | Required | artifacts |
 | `POST` | `/api/v2/simulations` | Required | simulation |
-| `GET` | `/api/v2/verification/engines` | No | verification |
-| `GET` | `/api/v2/verification/inference` | No | verification |
-| `GET` | `/api/v2/verification/physics` | No | verification |
+| `GET` | `/api/v2/verification/engines` | Required | verification |
+| `GET` | `/api/v2/verification/inference` | Required | verification |
+| `GET` | `/api/v2/verification/physics` | Required | verification |
 
 ## Error model
 

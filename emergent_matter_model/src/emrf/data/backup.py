@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any
 
 from emrf.core.errors import IntegrityError, StorageError
+from emrf.core.locks import ProcessFileLock
 from emrf_version import __version__
 
 from .store import ContentAddressedStore
@@ -37,53 +38,54 @@ class BackupManager:
 
     def create(self, destination: str | Path) -> dict[str, Any]:
         target = Path(destination).expanduser().resolve()
-        if target.exists():
-            raise FileExistsError(f"Backup destination already exists: {target}")
         target.parent.mkdir(parents=True, exist_ok=True)
-        staging = Path(tempfile.mkdtemp(prefix=f".{target.name}-", dir=target.parent))
-        try:
-            objects = self.store.list_objects(verify=True)
-            holdings = self.store.list_holdings(verify=True)
-            object_rows: list[dict[str, Any]] = []
-            for stored in objects:
-                relative = Path("objects") / stored.sha256[:2] / stored.sha256[2:]
-                copied = staging / relative
-                copied.parent.mkdir(parents=True, exist_ok=True)
-                _copy_fsynced(stored.path, copied)
-                object_rows.append(
+        with ProcessFileLock(target.with_name(f".{target.name}.backup.lock")):
+            if target.exists():
+                raise FileExistsError(f"Backup destination already exists: {target}")
+            staging = Path(tempfile.mkdtemp(prefix=f".{target.name}-", dir=target.parent))
+            try:
+                objects = self.store.list_objects(verify=True)
+                holdings = self.store.list_holdings(verify=True)
+                object_rows: list[dict[str, Any]] = []
+                for stored in objects:
+                    relative = Path("objects") / stored.sha256[:2] / stored.sha256[2:]
+                    copied = staging / relative
+                    copied.parent.mkdir(parents=True, exist_ok=True)
+                    _copy_fsynced(stored.path, copied)
+                    object_rows.append(
+                        {
+                            "sha256": stored.sha256,
+                            "bytes": stored.bytes,
+                            "path": relative.as_posix(),
+                        }
+                    )
+                holding_rows = [
                     {
-                        "sha256": stored.sha256,
-                        "bytes": stored.bytes,
-                        "path": relative.as_posix(),
+                        "dataset_id": holding.dataset_id,
+                        "version": holding.version,
+                        "logical_name": holding.logical_name,
+                        "sha256": holding.sha256,
+                        "source_url": holding.source_url,
+                        "citation": holding.citation,
+                        "licence": holding.licence,
+                        "metadata": holding.metadata,
                     }
-                )
-            holding_rows = [
-                {
-                    "dataset_id": holding.dataset_id,
-                    "version": holding.version,
-                    "logical_name": holding.logical_name,
-                    "sha256": holding.sha256,
-                    "source_url": holding.source_url,
-                    "citation": holding.citation,
-                    "licence": holding.licence,
-                    "metadata": holding.metadata,
+                    for holding in holdings
+                ]
+                manifest = {
+                    "schema_version": _BACKUP_SCHEMA,
+                    "created_utc": datetime.now(timezone.utc).isoformat(),
+                    "objects": object_rows,
+                    "holdings": holding_rows,
                 }
-                for holding in holdings
-            ]
-            manifest = {
-                "schema_version": _BACKUP_SCHEMA,
-                "created_utc": datetime.now(timezone.utc).isoformat(),
-                "objects": object_rows,
-                "holdings": holding_rows,
-            }
-            _write_json_fsynced(staging / _MANIFEST, manifest)
-            self.store.backup_registry(staging / "library.sqlite")
-            self.verify(staging)
-            os.replace(staging, target)
-            return manifest
-        except Exception:
-            shutil.rmtree(staging, ignore_errors=True)
-            raise
+                _write_json_fsynced(staging / _MANIFEST, manifest)
+                self.store.backup_registry(staging / "library.sqlite")
+                self.verify(staging)
+                os.replace(staging, target)
+                return manifest
+            except Exception:
+                shutil.rmtree(staging, ignore_errors=True)
+                raise
 
     def verify(self, source: str | Path) -> dict[str, Any]:
         root, manifest = _read_manifest(source)
@@ -487,7 +489,18 @@ def _write_json_fsynced(path: Path, value: object) -> None:
             output.write("\n")
             output.flush()
             os.fsync(output.fileno())
-        os.link(temporary, path)
+        try:
+            os.link(temporary, path)
+        except OSError as exc:
+            if isinstance(exc, FileExistsError):
+                raise
+            raw = temporary.read_bytes()
+            flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+            dest_fd = os.open(path, flags, 0o600)
+            with os.fdopen(dest_fd, "wb") as dest_file:
+                dest_file.write(raw)
+                dest_file.flush()
+                os.fsync(dest_file.fileno())
         temporary.unlink()
         temporary = None
         _fsync_directory(path.parent)

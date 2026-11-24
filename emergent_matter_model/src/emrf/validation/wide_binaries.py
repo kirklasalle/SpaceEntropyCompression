@@ -12,7 +12,10 @@ import numpy as np
 G_SI: Final = 6.6743e-11
 M_SUN_KG: Final = 1.9884e30
 AU_METERS: Final = 1.496e11
+# Frozen rounded factor (pc/yr -> km/s, ~0.067% below IAU exact) preserved for
+# immutable result/gaia_wide_binary_v1.json SHA-256 certificate reproducibility.
 PM_DISTANCE_TO_KM_S: Final = 1e-3 * (1 / 206265) * 3.086e13 / 3.154e7
+PM_DISTANCE_TO_KM_S_IAU: Final = (149_597_870.7 / 31_557_600.0) * 1e-3
 
 REQUIRED_COLUMNS: Final = (
     "source_id1",
@@ -67,20 +70,20 @@ class MassComponents:
 
     @property
     def total_a(self) -> np.ndarray:
-        return self.primary_a + self.companion_a
+        return np.asarray(self.primary_a + self.companion_a)
 
     @property
     def total_b(self) -> np.ndarray:
-        return self.primary_b + self.companion_b
+        return np.asarray(self.primary_b + self.companion_b)
 
 
 def load_catalog(path: str | Path) -> np.ndarray:
     rows = np.genfromtxt(
-        Path(path),
+        str(Path(path)),
         delimiter=",",
         names=True,
         dtype=None,
-        encoding=None,
+        encoding="utf-8",
     )
     missing = sorted(set(REQUIRED_COLUMNS) - set(rows.dtype.names or ()))
     if missing:
@@ -117,6 +120,19 @@ def select_population(
     )
     candidates = rows[source_mask]
 
+    distance_a = candidates["d1pc"]
+    distance_b = candidates["d2pc"]
+    error_a = candidates["d1_errpc"]
+    error_b = candidates["d2_errpc"]
+    valid_dist = (
+        np.isfinite(distance_a)
+        & np.isfinite(distance_b)
+        & np.isfinite(error_a)
+        & np.isfinite(error_b)
+        & (error_a > 0)
+        & (error_b > 0)
+    )
+    candidates = candidates[valid_dist]
     distance_a = candidates["d1pc"]
     distance_b = candidates["d2pc"]
     error_a = candidates["d1_errpc"]
@@ -177,18 +193,10 @@ def select_population(
 
 
 def projected_velocity_km_s(rows: np.ndarray) -> np.ndarray:
-    distance_a = rows["d1pc"]
-    distance_b = rows["d2pc"]
-    error_a = rows["d1_errpc"]
-    error_b = rows["d2_errpc"]
-    weights_a = 1 / np.square(error_a)
-    weights_b = 1 / np.square(error_b)
-    distance = (
-        distance_a * weights_a + distance_b * weights_b
-    ) / (weights_a + weights_b)
+    distance = _weighted_distance(rows)
     delta_ra = (rows["mu1ramasyr"] - rows["mu2ramasyr"]) * distance
     delta_dec = (rows["mu1decmasyr"] - rows["mu2decmasyr"]) * distance
-    return PM_DISTANCE_TO_KM_S * np.hypot(delta_ra, delta_dec)
+    return np.asarray(PM_DISTANCE_TO_KM_S * np.hypot(delta_ra, delta_dec), dtype=float)
 
 
 def assign_multiplicity(
@@ -252,7 +260,7 @@ def perturbed_projected_velocity_km_s(
     velocity = PM_DISTANCE_TO_KM_S * np.hypot(delta_ra, delta_dec)
     if np.any(~np.isfinite(velocity)) or np.any(velocity <= 0):
         raise RuntimeError("Proper-motion perturbation produced invalid velocity")
-    return velocity
+    return np.asarray(velocity, dtype=float)
 
 
 def sample_newtonian_control_velocity_km_s(
@@ -323,7 +331,7 @@ def sample_newtonian_control_velocity_km_s(
     velocity = np.hypot(velocity_x, velocity_y)
     if np.any(~np.isfinite(velocity)) or np.any(velocity <= 0):
         raise RuntimeError("Newtonian control produced invalid projected velocity")
-    return velocity
+    return np.asarray(velocity, dtype=float)
 
 
 def sample_deprojected_accelerations(
@@ -418,7 +426,7 @@ def phenomenological_external_field_ratio(
     ):
         raise ValueError("Accelerations must be finite and physical")
     total = np.hypot(acceleration, external_field)
-    return 1 / (1 - np.exp(-np.sqrt(total / a0)))
+    return np.asarray(1 / (1 - np.exp(-np.sqrt(total / a0))), dtype=float)
 
 
 def _solve_kepler(
@@ -433,15 +441,20 @@ def _solve_kepler(
         residual = anomaly - eccentricity * np.sin(anomaly) - normalized
         lower = np.where(residual <= 0, anomaly, lower)
         upper = np.where(residual > 0, anomaly, upper)
-    return (lower + upper) / 2
+    return np.asarray((lower + upper) / 2, dtype=float)
 
 
 def _weighted_distance(rows: np.ndarray) -> np.ndarray:
-    weights_a = 1 / np.square(rows["d1_errpc"])
-    weights_b = 1 / np.square(rows["d2_errpc"])
-    return (
-        rows["d1pc"] * weights_a + rows["d2pc"] * weights_b
-    ) / (weights_a + weights_b)
+    err_a = np.asarray(rows["d1_errpc"], dtype=float)
+    err_b = np.asarray(rows["d2_errpc"], dtype=float)
+    if np.any(~np.isfinite(err_a)) or np.any(~np.isfinite(err_b)) or np.any(err_a <= 0) or np.any(err_b <= 0):
+        raise ValueError("Distance errors must be finite and positive")
+    weights_a = 1 / np.square(err_a)
+    weights_b = 1 / np.square(err_b)
+    return np.asarray(
+        (rows["d1pc"] * weights_a + rows["d2pc"] * weights_b) / (weights_a + weights_b),
+        dtype=float,
+    )
 
 
 def _mass_from_magnitude(
@@ -451,7 +464,7 @@ def _mass_from_magnitude(
     mass = np.power(10.0, np.polynomial.polynomial.polyval(magnitude, coefficients))
     if np.any(~np.isfinite(mass)) or np.any(mass <= 0):
         raise RuntimeError("Mass-magnitude relation produced invalid mass")
-    return mass
+    return np.asarray(mass, dtype=float)
 
 
 def _split_unresolved_mass(

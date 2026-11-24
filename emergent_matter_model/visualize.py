@@ -49,13 +49,21 @@ def run_simulation(
             offline = True
 
     if offline:
-        # Direct local model calculation
-        X1, X2 = np.meshgrid(x1, x2)
-        r = np.sqrt(X1**2 + X2**2) + 0.1
-        c_spatial = (1.0 / r) + 0.3 * np.cos(2.0 * np.pi * d0_value)
-        # Entropy modulation
-        m_density = (np.maximum(c_spatial, 0.0) ** 1.2) / (1.0 + 0.5 * entropy_val)
-        M_slice = m_density
+        from model import EmergentMatterModel
+
+        model = EmergentMatterModel(
+            n_total=4,
+            weights=[0.40, 0.40, 0.10, 0.10],
+            k=1.0,
+            alpha=1.0,
+            C0=1.0,
+        )
+        c_funcs = [lambda val, i=i: (val + i) ** 2 for i in range(4)]
+        M_data = model.simulate_grid(
+            [x1, x2, np.array([d0_value]), np.array([entropy_val])],
+            c_funcs,
+        )
+        M_slice = M_data[:, :, 0, 0].T
 
     fig, ax = plt.subplots(figsize=(7, 6))
     im = ax.imshow(M_slice, extent=[-2.5, 2.5, -2.5, 2.5], origin="lower", cmap="inferno")

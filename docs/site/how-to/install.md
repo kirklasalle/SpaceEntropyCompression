@@ -29,8 +29,10 @@ advisory and does not claim that a physical copy exists or has passed a restore
 drill. Until an independent destination is supplied, continue local verified
 backups and restore drills but treat the 3-2-1 off-site requirement as unmet.
 
-Never place API bearer tokens in source files. `EMRF_API_V2_TOKEN` is read at
-runtime and is deliberately excluded from support reports.
+Never place API bearer tokens in source files. `EMRF_API_V2_TOKEN` and
+`EMRF_API_V1_TOKEN` are read at runtime and deliberately excluded from support
+reports and child subprocess environments. Set `EMRF_CORS_ORIGINS` explicitly
+if browser cross-origin access to REST v1 is required.
 
 ## Verify
 

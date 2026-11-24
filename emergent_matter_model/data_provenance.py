@@ -43,7 +43,8 @@ def verify_observation_file(path: str | Path, entry: dict) -> str:
     p = Path(path)
     if not p.is_file():
         raise FileNotFoundError(p)
-    if SYNTHETIC_DIR in p.resolve().parents:
+    synthetic_root = (data_root() / "synthetic").resolve()
+    if synthetic_root in p.resolve().parents or SYNTHETIC_DIR in p.resolve().parents:
         raise ValueError("Synthetic fixtures are not observations")
     if not entry.get("url", "").startswith("https://") or not entry.get("citation"):
         raise ValueError("Missing source URL or citation")

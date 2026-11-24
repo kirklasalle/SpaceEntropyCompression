@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "emergent-matter-model"
 dynamic = ["version"]
 description = "Simulation platform for emergent matter from compressed space-entropy"
-readme = "README_3D.md"
-requires-python = ">=3.10"
+readme = "README.md"
+requires-python = ">=3.10.1"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{name = "Kirk LaSalle"}]
@@ -135,7 +135,7 @@ gpu = [
     "cupy-cuda12x[ctk]==14.2.0",
 ]
 server = [
-    "gunicorn>=21.2,<23",
+    "gunicorn>=23.0.0,<24",
     "uvicorn>=0.30,<0.41",
 ]
 
@@ -152,5 +152,40 @@ select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.10"
+mypy_path = [".", "src"]
+explicit_package_bases = true
 warn_return_any = true
 warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "astropy.*",
+    "emergent_matter_model.*",
+    "jsonschema.*",
+    "scipy.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "data_provenance",
+    "emrf_cli",
+    "emrf_error_access",
+    "emrf_prediction_access",
+    "emrf_registry",
+    "emrf_run_access",
+    "emrf_version",
+    "fetch_real_data",
+    "fit_astrometry",
+    "fit_jwst",
+    "fit_sparc",
+    "lensing_engine",
+    "model",
+    "pantheon_inference",
+    "physics_baseline",
+    "quantum_vibrational_compression",
+    "server",
+    "sparc_marginalized_a0",
+    "sparc_real_analysis",
+]
+ignore_errors = true

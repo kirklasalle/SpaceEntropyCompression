@@ -9,14 +9,16 @@ import sqlite3
 import tempfile
 import threading
 import time
+import uuid
 from collections.abc import Generator, Mapping
 from contextlib import closing, contextmanager, suppress
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, BinaryIO
+from typing import Any, BinaryIO, Protocol
 
 from emrf.core.errors import IntegrityError, StorageError
+from emrf.core.locks import ProcessFileLock
 from emrf_paths import data_root
 
 _BUFFER_SIZE = 1024 * 1024
@@ -80,6 +82,7 @@ class ContentAddressedStore:
         self.objects = self.root / "store" / "sha256"
         self.temporary = self.root / "store" / "tmp"
         self.registry = self.root / "library.sqlite"
+        self._lock_path = self.root / ".store.lock"
         self._initialization_lock = threading.Lock()
         self._promotion_lock = threading.Lock()
         self._initialized = False
@@ -111,15 +114,16 @@ class ContentAddressedStore:
             return 0
         cutoff = time.time() - max_age_seconds
         removed = 0
-        for path in self.temporary.glob("object-*.part"):
-            try:
-                if path.stat().st_mtime < cutoff:
-                    path.unlink()
-                    removed += 1
-            except FileNotFoundError:
-                pass
-            except OSError as exc:
-                raise StorageError(f"Could not prune temporary object: {path}") from exc
+        for pattern in ("object-*.part", "gc-*.trash"):
+            for path in self.temporary.glob(pattern):
+                try:
+                    if path.stat().st_mtime < cutoff:
+                        path.unlink()
+                        removed += 1
+                except FileNotFoundError:
+                    pass
+                except OSError as exc:
+                    raise StorageError(f"Could not prune temporary object: {path}") from exc
         return removed
 
     @contextmanager
@@ -184,7 +188,7 @@ class ContentAddressedStore:
 
     def _put_stream(
         self,
-        source: BinaryIO,
+        source: _SupportsRead | BinaryIO,
         *,
         expected_sha256: str | None,
         expected_bytes: int | None,
@@ -214,7 +218,8 @@ class ContentAddressedStore:
                 )
             destination = self.object_path(actual_sha256)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            with self._promotion_lock:
+            created = datetime.now(timezone.utc).isoformat()
+            with ProcessFileLock(self._lock_path), self._promotion_lock:
                 if destination.exists():
                     try:
                         self._verify_existing(destination, actual_sha256, size)
@@ -235,12 +240,11 @@ class ContentAddressedStore:
                         temporary_path.unlink()
                     temporary_path = None
                     _fsync_directory(destination.parent)
-            created = datetime.now(timezone.utc).isoformat()
-            with self._connect() as connection:
-                connection.execute(
-                    "INSERT OR IGNORE INTO objects (sha256, bytes, created_utc) VALUES (?, ?, ?)",
-                    (actual_sha256, size, created),
-                )
+                with self._connect() as connection:
+                    connection.execute(
+                        "INSERT OR IGNORE INTO objects (sha256, bytes, created_utc) VALUES (?, ?, ?)",
+                        (actual_sha256, size, created),
+                    )
             return StoredObject(actual_sha256, size, destination)
         except StorageError:
             raise
@@ -424,31 +428,61 @@ class ContentAddressedStore:
     def garbage_collect(self, *, execute: bool = False) -> list[StoredObject]:
         """Find or remove objects that are not referenced by any holding."""
         self.initialize()
+        if not execute:
+            try:
+                with self._connect() as connection:
+                    rows = connection.execute(
+                        """
+                        SELECT o.sha256, o.bytes
+                        FROM objects o
+                        LEFT JOIN holdings h ON h.sha256 = o.sha256
+                        WHERE h.sha256 IS NULL
+                        ORDER BY o.sha256
+                        """
+                    ).fetchall()
+                    return [self.get(row["sha256"], verify=True) for row in rows]
+            except sqlite3.Error as exc:
+                raise StorageError("Could not garbage-collect stored objects") from exc
+
+        staged_trash: list[tuple[Path, Path]] = []
         try:
-            with self._connect() as connection:
-                if execute:
+            with ProcessFileLock(self._lock_path), self._promotion_lock:
+                with self._connect() as connection:
                     connection.execute("BEGIN IMMEDIATE")
-                rows = connection.execute(
-                    """
-                    SELECT o.sha256, o.bytes
-                    FROM objects o
-                    LEFT JOIN holdings h ON h.sha256 = o.sha256
-                    WHERE h.sha256 IS NULL
-                    ORDER BY o.sha256
-                    """
-                ).fetchall()
-                objects = [
-                    self.get(row["sha256"], verify=True)
-                    for row in rows
-                ]
-                if execute and rows:
-                    connection.executemany(
-                        "DELETE FROM objects WHERE sha256 = ?",
-                        ((row["sha256"],) for row in rows),
-                    )
-            if execute:
-                for stored in objects:
-                    stored.path.unlink(missing_ok=True)
+                    rows = connection.execute(
+                        """
+                        SELECT o.sha256, o.bytes
+                        FROM objects o
+                        LEFT JOIN holdings h ON h.sha256 = o.sha256
+                        WHERE h.sha256 IS NULL
+                        ORDER BY o.sha256
+                        """
+                    ).fetchall()
+                    objects = [self.get(row["sha256"], verify=True) for row in rows]
+                    if rows:
+                        # Stage to trash before SQLite commit so a concurrent put cannot
+                        # mistakenly reuse an object file scheduled for unlinking.
+                        try:
+                            for stored in objects:
+                                trash_path = (
+                                    self.temporary
+                                    / f"gc-{uuid.uuid4().hex}-{stored.sha256}.trash"
+                                )
+                                os.replace(stored.path, trash_path)
+                                staged_trash.append((trash_path, stored.path))
+                            connection.executemany(
+                                "DELETE FROM objects WHERE sha256 = ?",
+                                ((row["sha256"],) for row in rows),
+                            )
+                        except Exception:
+                            for trash_path, original_path in staged_trash:
+                                if trash_path.exists() and not original_path.exists():
+                                    with suppress(OSError):
+                                        os.replace(trash_path, original_path)
+                            staged_trash.clear()
+                            raise
+            for trash_path, _ in staged_trash:
+                trash_path.unlink(missing_ok=True)
             return objects
         except sqlite3.Error as exc:
             raise StorageError("Could not garbage-collect stored objects") from exc
@@ -499,6 +533,10 @@ class ContentAddressedStore:
                 if not isinstance(exc.__cause__, PermissionError) or attempt == 9:
                     raise
                 time.sleep(0.01 * (attempt + 1))
+
+
+class _SupportsRead(Protocol):
+    def read(self, size: int = -1, /) -> bytes: ...
 
 
 class _BytesReader:

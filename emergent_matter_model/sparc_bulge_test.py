@@ -46,12 +46,12 @@ import numpy as np
 from scipy import optimize
 
 try:
-    from sparc_marginalized_a0 import MarginalizedGalaxy, best_a0
+    from sparc_marginalized_a0 import MarginalizedGalaxy
     from sparc_real_analysis import (ACC, FIGURE_DIR, H0_VALUES, RESULTS_DIR, UPS_DISK_PRIOR, UPS_PRIOR_DEX,
                                      a0_horizon, load_sparc, nu_rar_exponential)
     from sparc_tension_diagnostics import build_subsets
 except ImportError:  # imported as a package
-    from emergent_matter_model.sparc_marginalized_a0 import MarginalizedGalaxy, best_a0
+    from emergent_matter_model.sparc_marginalized_a0 import MarginalizedGalaxy
     from emergent_matter_model.sparc_real_analysis import (ACC, FIGURE_DIR, H0_VALUES, RESULTS_DIR,
                                                            UPS_DISK_PRIOR, UPS_PRIOR_DEX, a0_horizon, load_sparc,
                                                            nu_rar_exponential)
@@ -119,24 +119,62 @@ def classify(ups: float) -> str:
     return "implausible"
 
 
+def _rescaled_best_a0(grid: np.ndarray, obj: np.ndarray, chi2_red: float) -> dict:
+    """Centered and step-rescaled parabolic refinement around the grid minimum."""
+    i = int(np.clip(np.argmin(obj), 2, len(grid) - 3))
+    x, y = grid[i - 2:i + 3], obj[i - 2:i + 3]
+    center = float(x[2])
+    span = float(x[-1] - x[0])
+    step = span / 4.0 if span > 0 else 1.0
+    u = (x - center) / step
+    c2_u, c1_u, _ = np.polyfit(u, y, 2)
+    if c2_u > 0 and math.isfinite(c2_u) and math.isfinite(c1_u):
+        a_raw = center + (-c1_u / (2.0 * c2_u)) * step
+        a_best = float(np.clip(a_raw, float(grid[0]), float(grid[-1])))
+        sigma = step * math.sqrt(1.0 / c2_u)
+    else:
+        a_best = float(grid[i])
+        sigma = float("nan")
+    return {
+        "a0": a_best,
+        "sigma_stat": sigma,
+        "sigma_scaled": sigma * math.sqrt(max(chi2_red, 1.0)),
+        "at_grid_edge": bool(np.argmin(obj) in (0, len(grid) - 1)),
+    }
+
+
 def profile_free_bulge(sample) -> dict:
     """Post hoc decisive check: profile a0 with every galaxy's Upsilon_bulge free (warm-started)."""
     mgals = [FreeBulgeGalaxy(g) for g in sample]
     starts = [None] * len(mgals)
     obj = np.zeros(len(GRID))
+    chi = np.zeros(len(GRID))
     for j, a0 in enumerate(GRID):
         for k, mg in enumerate(mgals):
             if starts[k] is None:
                 f = mg.fit_free(nu_rar_exponential, a0)
                 starts[k] = np.array([math.log10(f["ups_disk"]), f["f_D"], f["inc"], math.log10(f["ups_bulge"])])
-            res = optimize.minimize(lambda x: mg.chi2(x, nu_rar_exponential, a0) + mg.prior(x, UPS_DISK_PRIOR),
+            res = optimize.minimize(lambda x, mg=mg, a0=a0: mg.chi2(x, nu_rar_exponential, a0) + mg.prior(x, UPS_DISK_PRIOR),
                                     starts[k], method="L-BFGS-B", bounds=mg.bounds)
+            if not res.success or not np.isfinite(res.fun) or not np.isfinite(res.x).all():
+                retry_start = res.x if np.isfinite(res.x).all() else starts[k]
+                res = optimize.minimize(
+                    lambda x, mg=mg, a0=a0: mg.chi2(x, nu_rar_exponential, a0) + mg.prior(x, UPS_DISK_PRIOR),
+                    retry_start,
+                    method="Powell",
+                    bounds=mg.bounds,
+                    options={"xtol": 1e-10, "ftol": 1e-10, "maxiter": 2000},
+                )
             starts[k] = res.x
             obj[j] += res.fun
+            chi[j] += mg.chi2(res.x, nu_rar_exponential, a0)
     n_pts = sum(g.n for g in sample)
-    chi2_red = float(obj.min()) / max(n_pts - (4 * len(sample) + 1), 1)
-    b = best_a0(GRID, obj, chi2_red)
+    j_min = int(np.argmin(obj))
+    chi2_red = float(chi[j_min]) / max(n_pts - (4 * len(sample) + 1), 1)
+    b = _rescaled_best_a0(GRID, obj, chi2_red)
+    b["chi2"] = float(chi[j_min])
     b["chi2_reduced_approx"] = chi2_red
+    b["chi2_reduced"] = chi2_red
     b["delta_objective_at_targets"] = {
         lbl: float(np.interp(t, GRID, obj) - obj.min()) / max(chi2_red, 1.0) for lbl, t in A0_TARGETS.items()}
     b["objective_profile"] = obj.tolist()
@@ -155,7 +193,7 @@ def profile_scaled(sample, ratio: float) -> dict:
     n_pts = sum(g.n for g in sample)
     j = int(np.argmin(obj))
     chi2_red = chi[j] / max(n_pts - (3 * len(sample) + 1), 1)
-    b = best_a0(GRID, obj, chi2_red)
+    b = _rescaled_best_a0(GRID, obj, chi2_red)
     b.update({"ratio": ratio, "ups_bulge_nominal": ratio * UPS_DISK_PRIOR, "chi2": float(chi[j]),
               "chi2_reduced": chi2_red})
     return b

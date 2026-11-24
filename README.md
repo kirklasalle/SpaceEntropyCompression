@@ -11,12 +11,12 @@
 [![Continuous integration](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml)
 [![Security](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/kirklasalle/SpaceEntropyCompression/badge)](https://scorecard.dev/viewer/?uri=github.com/kirklasalle/SpaceEntropyCompression)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](emergent_matter_model/pyproject.toml)
+[![Python 3.10.1+](https://img.shields.io/badge/Python-3.10.1%2B-blue)](emergent_matter_model/pyproject.toml)
 [![Release](https://img.shields.io/github/v/release/kirklasalle/SpaceEntropyCompression?display_name=tag)](https://github.com/kirklasalle/SpaceEntropyCompression/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
 [![EMRF 1.0.0 DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23304395.svg)](https://doi.org/10.5281/zenodo.23304395)
 
-**Author and principal investigator: Kirk LaSalle.** Current documentation: November 3, 2026.
+**Author and principal investigator: Kirk LaSalle.** Current documentation: November 24, 2026.
 The CI badge and version-specific archive certify software and release provenance,
 not physical confirmation of the EMRF hypotheses.
 
@@ -40,6 +40,19 @@ results and self-awarded audit certifications are withdrawn. See the
 [historical source archive](docs/archive/antigravity_recovery/README.md).
 Old documents, figures, release assets and audio can still contain those claims;
 their presence is historical evidence, not an endorsement.
+
+## What's new
+
+The November 24, 2026 engineering due-diligence remediation hardened API security,
+concurrency, numerical robustness, supply-chain configuration, and repository
+tooling (software, security, and reproducibility improvements only—not empirical
+confirmation of EMRF physics hypotheses):
+
+- **API, IO, and acquisition security:** Switched `gunicorn.conf.py` to default loopback binding (`127.0.0.1:5000`, `150`s timeout) and hardened [Flask REST v1](emergent_matter_model/server.py) (deprecated for removal no earlier than `2.0`, opt-in `EMRF_CORS_ORIGINS`, `1 MiB` request body cap, bounded sliding-window rate limiting, deprecation/security headers, `120`s timeout cap, bounded simulation validation, and bearer/loopback mutation gating via `EMRF_API_V1_TOKEN`/`EMRF_API_V2_TOKEN`). Hardened canonical [FastAPI REST v2](emergent_matter_model/src/emrf/interfaces/api_v2.py) (`1 MiB` body cap, rate limiting, security headers, expanded bearer auth on `/api/v2/runs*`, `/api/v2/jobs*`, `/api/v2/datasets/verify`, `/api/v2/verification/*`, and `/api/v2/doctor` path redaction when unauthenticated), added HTTP IO path confinement and CLI argument validation, stripped secret environment variables from subprocess execution, and enforced HTTPS, public-IP/redirect safety, and streamed byte caps in observational acquisition.
+- **Concurrency, recovery, and Windows reliability:** Added cross-process `ProcessFileLock` and Win32-safe `process_alive` checks across the content-addressed data store, SQLite run/job registry, knowledge graph, backups, read-only immutable SQLite recovery paths, and atomic exclusive preregistration writes.
+- **Repository-owned `.mcp/` decoupling:** Removed the external `.mcp` submodule and ImpressionCore directive files (preserving historical recovery archives under `docs/archive/antigravity_recovery/`), replacing [`.mcp/`](.mcp/) with repository-owned, read-only `emrf_workspace` and `science_data` MCP servers and unit tests.
+- **Numerical stability, evidence labels, and Candidate A Option-3 prep:** Upgraded `fit_astrometry.py`'s Kepler solver to bracketed Halley/Newton–bisection up to `e = 0.99999` and tagged reports `evidence_class="synthetic_benchmark_not_real_epochs"`; tagged legacy toy stress tests `illustrative_tautology`; preserved the frozen Gaia wide-binary constant alongside exact `PM_DISTANCE_TO_KM_S_IAU`; drafted non-fit-authorizing Amendment 2 ([proposed source regularization protocol](knowledgebase/candidate_a_option3_reconstruction_protocol_v1_amendment_2_source_regularization.json), `fit_authorized: false`, awaiting physicist review) with opt-in PAVA bulge regularization and bounded GPU kernel caching; and moved heavy JavaFX matrix work off the UI thread.
+- **Supply chain, typing, and runtime baseline:** Raised `requires-python` to `>=3.10.1` (addressing CPython `3.10.0` `bpo-45662`, with a runtime warning in `emrf doctor`), bumped `gunicorn>=23.0.0,<24` and `org.json:json` `20260814`, SHA-pinned pre-commit hooks, expanded Dependabot (pip + maven), and added `mypy -p emrf` and isolated wheel smoke checks to CI. All seven SHA-256 provenance- and recovery-locked scripts remain byte-identical to `HEAD`.
 
 ## Dual-candidate program: A and B run concurrently
 
@@ -246,6 +259,7 @@ before interpreting their output.
 | [paper](paper/) | Current SPARC manuscript plus clearly distinguished historical drafts |
 | [docs](docs/) | Audits, candidate specifications, correction history and reproducibility |
 | [knowledgebase](knowledgebase/) | Qualified graph, source-linked claims and historical references |
+| [.mcp](.mcp/) | Repository-owned, read-only local MCP servers (`emrf_workspace`, `science_data`) and unit tests |
 | [data/synthetic](data/synthetic/) | Quarantined software fixtures, **not observations** |
 | [recovered archive](docs/archive/antigravity_recovery/) | Historical drafts/code/logs/images, with hash manifest and warnings |
 
@@ -269,7 +283,11 @@ before fitting. Frozen-v1 convergence exceeds its threshold (2.27% versus
 model-only rerun passes V3/V3b and reports V4. The independent spherical
 projection recheck passes, but V1 and V5 remain incomplete because some frozen
 sensitivity sources are invalid for parts of the sample. CPU/GPU agreement
-alone is insufficient. See the
+alone is insufficient. A proposed non-fit-authorizing
+[amendment 2 draft](knowledgebase/candidate_a_option3_reconstruction_protocol_v1_amendment_2_source_regularization.json)
+(`fit_authorized: false`, awaiting physicist review) and opt-in PAVA bulge
+regularization have been prepared without unblocking or performing any
+observational fit. See the
 [experiment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md)
 and [GPU resource and validation limits](docs/site/development/gpu-compute.md).
 A nonunit exponent still needs physical completion.

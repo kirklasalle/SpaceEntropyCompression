@@ -165,3 +165,35 @@ def test_visualizer_endpoint(client):
     assert response.status_code == 200
     assert "text/html" in response.content_type
     assert "EMRF Interactive Multidimensional Perspective" in response.get_data(as_text=True)
+
+
+def test_v1_security_headers_auth_path_confinement_and_child_env(client, monkeypatch, tmp_path):
+    health_resp = client.get("/api/v1/health")
+    assert health_resp.headers["X-Content-Type-Options"] == "nosniff"
+    assert health_resp.headers["X-Frame-Options"] == "DENY"
+    assert health_resp.headers["Deprecation"] == "true"
+
+    monkeypatch.setenv("EMRF_DATA_WRITE_ALLOW", "1")
+    monkeypatch.setenv("EMRF_API_ALLOW_DATA_WRITE", "1")
+    bad_backup = client.post(
+        "/api/v1/recovery/backups",
+        json={"destination": "../../outside-v1-escape"},
+    )
+    assert bad_backup.status_code == 400
+
+    monkeypatch.setenv("EMRF_API_V1_TOKEN", "v1-secret-token")
+    unauth = client.post("/api/v1/recovery/backups", json={"destination": str(tmp_path)})
+    assert unauth.status_code == 401
+
+    monkeypatch.setenv("EMRF_API_V2_TOKEN", "v2-secret-token")
+    import emrf_registry as reg
+
+    child_env = reg._child_process_env()
+    assert "EMRF_API_V1_TOKEN" not in child_env
+    assert "EMRF_API_V2_TOKEN" not in child_env
+
+    bad_sim = client.post(
+        "/api/v1/simulate",
+        json={"n": 9, "weights": [1.0] * 9, "X_grid": [[0.0]] * 9},
+    )
+    assert bad_sim.status_code == 400
