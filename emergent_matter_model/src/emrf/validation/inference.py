@@ -5,11 +5,11 @@ from __future__ import annotations
 import math
 from dataclasses import replace
 from functools import lru_cache
-from typing import TypedDict
+from typing import TYPE_CHECKING, TypedDict
 
 import numpy as np
 
-try:
+if TYPE_CHECKING:
     from fit_sparc import (
         A0_CRITICAL,
         SPARCDataPoint,
@@ -20,28 +20,40 @@ try:
     from pantheon_inference import dimensionless_magnitudes, fit_baseline
     from sparc_marginalized_a0 import MarginalizedGalaxy, best_a0, profile
     from sparc_real_analysis import ACC, Galaxy, nu_rar_exponential
-except ImportError:
-    from emergent_matter_model.fit_sparc import (
-        A0_CRITICAL,
-        SPARCDataPoint,
-        compute_baryonic_velocity,
-        compute_emrf_entropic_velocity,
-        fit_sparc_points,
-    )
-    from emergent_matter_model.pantheon_inference import (
-        dimensionless_magnitudes,
-        fit_baseline,
-    )
-    from emergent_matter_model.sparc_marginalized_a0 import (
-        MarginalizedGalaxy,
-        best_a0,
-        profile,
-    )
-    from emergent_matter_model.sparc_real_analysis import (
-        ACC,
-        Galaxy,
-        nu_rar_exponential,
-    )
+else:
+    try:
+        from fit_sparc import (
+            A0_CRITICAL,
+            SPARCDataPoint,
+            compute_baryonic_velocity,
+            compute_emrf_entropic_velocity,
+            fit_sparc_points,
+        )
+        from pantheon_inference import dimensionless_magnitudes, fit_baseline
+        from sparc_marginalized_a0 import MarginalizedGalaxy, best_a0, profile
+        from sparc_real_analysis import ACC, Galaxy, nu_rar_exponential
+    except ImportError:
+        from emergent_matter_model.fit_sparc import (
+            A0_CRITICAL,
+            SPARCDataPoint,
+            compute_baryonic_velocity,
+            compute_emrf_entropic_velocity,
+            fit_sparc_points,
+        )
+        from emergent_matter_model.pantheon_inference import (
+            dimensionless_magnitudes,
+            fit_baseline,
+        )
+        from emergent_matter_model.sparc_marginalized_a0 import (
+            MarginalizedGalaxy,
+            best_a0,
+            profile,
+        )
+        from emergent_matter_model.sparc_real_analysis import (
+            ACC,
+            Galaxy,
+            nu_rar_exponential,
+        )
 
 
 class InferenceCheck(TypedDict):

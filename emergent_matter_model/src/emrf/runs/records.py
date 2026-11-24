@@ -13,8 +13,10 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import uuid
+from builtins import list as _builtin_list
 from collections.abc import Generator, Mapping
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -60,7 +62,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     updated_utc TEXT NOT NULL,
     lease_owner TEXT,
     lease_expires_utc TEXT,
-    run_id TEXT REFERENCES runs(run_id),
+    run_id TEXT REFERENCES runs(run_id) ON DELETE SET NULL,
     returncode INTEGER,
     last_error TEXT
 );
@@ -121,20 +123,25 @@ class RunStore:
     def __init__(self, root: str | Path | None = None) -> None:
         self.root = Path(root) if root is not None else app_root() / "runs"
         self.registry = self.root / "registry.sqlite"
+        self._init_lock = threading.RLock()
+        self._run_lock = threading.RLock()
         self._initialized = False
 
     def initialize(self) -> None:
         if self._initialized:
             return
-        try:
-            self.root.mkdir(parents=True, exist_ok=True)
-            with self._connect() as connection:
-                connection.executescript(_SCHEMA)
-                _migrate_job_queue(connection)
-            self._reconcile_run_index()
-            self._initialized = True
-        except (OSError, sqlite3.Error) as exc:
-            raise StorageError(f"Could not initialize run store at {self.root}") from exc
+        with self._init_lock:
+            if self._initialized:
+                return
+            try:
+                self.root.mkdir(parents=True, exist_ok=True)
+                with self._connect() as connection:
+                    connection.executescript(_SCHEMA)
+                    _migrate_job_queue(connection)
+                self._reconcile_run_index()
+                self._initialized = True
+            except (OSError, sqlite3.Error) as exc:
+                raise StorageError(f"Could not initialize run store at {self.root}") from exc
 
     @contextmanager
     def _connect(self) -> Generator[sqlite3.Connection, None, None]:
@@ -225,24 +232,25 @@ class RunStore:
 
     def begin(self, run_id: str, *, resume: bool = False) -> RunRecord:
         self.initialize()
-        record = self.get(run_id)
-        if resume:
-            if record.status not in {"failed", "timed_out", "interrupted"}:
-                raise ValueError(f"Run cannot be resumed from status: {record.status}")
-        elif record.status != "pending":
-            raise ValueError(f"Run cannot begin from status: {record.status}")
-        attempt = record.attempt + 1
-        started = _utc_now()
-        self._update(
-            run_id,
-            status="running",
-            attempt=attempt,
-            started_utc=started,
-            completed_utc=None,
-            returncode=None,
-            duration_seconds=None,
-        )
-        return self.get(run_id)
+        with self._run_lock:
+            record = self.get(run_id)
+            if resume:
+                if record.status not in {"failed", "timed_out", "interrupted"}:
+                    raise ValueError(f"Run cannot be resumed from status: {record.status}")
+            elif record.status != "pending":
+                raise ValueError(f"Run cannot begin from status: {record.status}")
+            attempt = record.attempt + 1
+            started = _utc_now()
+            self._update(
+                run_id,
+                status="running",
+                attempt=attempt,
+                started_utc=started,
+                completed_utc=None,
+                returncode=None,
+                duration_seconds=None,
+            )
+            return self.get(run_id)
 
     def finish(
         self,
@@ -336,7 +344,7 @@ class RunStore:
     def enqueue(
         self,
         command: str,
-        args: list[str] | tuple[str, ...],
+        args: _builtin_list[str] | tuple[str, ...],
         *,
         timeout_seconds: float | None = None,
         evidence_class: str = EvidenceClass.SOFTWARE.value,
@@ -362,6 +370,7 @@ class RunStore:
         job_id = _new_id()
         now = _utc_now()
         with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
             connection.execute(
                 """
                 INSERT INTO jobs (
@@ -460,32 +469,75 @@ class RunStore:
         *,
         returncode: int | None,
         error: str | None = None,
+        lease_owner: str | None = None,
     ) -> JobRecord:
-        job = self.get_job(job_id)
-        if job.status != "running":
-            raise ValueError(f"Job cannot complete from status: {job.status}")
-        succeeded = returncode == 0 and error is None
-        if succeeded:
-            status = "succeeded"
-        elif job.attempts < job.max_attempts:
-            status = "queued"
-        else:
-            status = "failed"
-        self._update_job(
-            job_id,
-            status=status,
-            returncode=returncode,
-            last_error=error,
-            lease_owner=None,
-            lease_expires_utc=None,
-        )
+        _validate_id(job_id, "job")
+        self.initialize()
+        now = _utc_now()
+        with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            row = connection.execute(
+                "SELECT status, attempts, max_attempts, lease_owner FROM jobs WHERE job_id = ?",
+                (job_id,),
+            ).fetchone()
+            if row is None:
+                raise KeyError(f"Unknown job: {job_id}")
+            if row["status"] != "running":
+                raise ValueError(f"Job cannot complete from status: {row['status']}")
+            if lease_owner is not None and row["lease_owner"] != lease_owner:
+                raise ValueError(
+                    f"Job lease owner mismatch for {job_id}: expected {lease_owner!r}, "
+                    f"active {row['lease_owner']!r}"
+                )
+            succeeded = returncode == 0 and error is None
+            if succeeded:
+                status = "succeeded"
+            elif int(row["attempts"]) < int(row["max_attempts"]):
+                status = "queued"
+            else:
+                status = "failed"
+            params: list[Any] = [status, returncode, error, now, job_id]
+            where = "job_id = ? AND status = 'running'"
+            if lease_owner is not None:
+                where += " AND lease_owner = ?"
+                params.append(lease_owner)
+            cursor = connection.execute(
+                f"""
+                UPDATE jobs
+                SET status = ?, returncode = ?, last_error = ?,
+                    lease_owner = NULL, lease_expires_utc = NULL, updated_utc = ?
+                WHERE {where}
+                """,  # noqa: S608
+                params,
+            )
+            if cursor.rowcount != 1:
+                raise ValueError(f"Job completion conflict for {job_id}")
         return self.get_job(job_id)
 
     def cancel_job(self, job_id: str) -> JobRecord:
-        job = self.get_job(job_id)
-        if job.status != "queued":
-            raise ValueError(f"Job cannot be cancelled from status: {job.status}")
-        self._update_job(job_id, status="cancelled")
+        _validate_id(job_id, "job")
+        self.initialize()
+        now = _utc_now()
+        with self._connect() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            row = connection.execute(
+                "SELECT status FROM jobs WHERE job_id = ?",
+                (job_id,),
+            ).fetchone()
+            if row is None:
+                raise KeyError(f"Unknown job: {job_id}")
+            if row["status"] != "queued":
+                raise ValueError(f"Job cannot be cancelled from status: {row['status']}")
+            cursor = connection.execute(
+                """
+                UPDATE jobs
+                SET status = 'cancelled', updated_utc = ?
+                WHERE job_id = ? AND status = 'queued'
+                """,
+                (now, job_id),
+            )
+            if cursor.rowcount != 1:
+                raise ValueError(f"Job cannot be cancelled from status: {row['status']}")
         return self.get_job(job_id)
 
     def get_job(self, job_id: str) -> JobRecord:
@@ -500,7 +552,7 @@ class RunStore:
             raise KeyError(f"Unknown job: {job_id}")
         return _job_from_row(row)
 
-    def list_jobs(self, limit: int = 50) -> list[JobRecord]:
+    def list_jobs(self, limit: int = 50) -> _builtin_list[JobRecord]:
         if limit < 1 or limit > 1000:
             raise ValueError("limit must be in [1, 1000]")
         self.initialize()
@@ -590,6 +642,10 @@ class RunStore:
                     ),
                 )
             for run_id in indexed - present:
+                connection.execute(
+                    "UPDATE jobs SET run_id = NULL WHERE run_id = ?",
+                    (run_id,),
+                )
                 connection.execute("DELETE FROM runs WHERE run_id = ?", (run_id,))
 
     def _update_job(self, job_id: str, **changes: Any) -> None:
@@ -737,7 +793,7 @@ def _utc_now() -> str:
 def _environment_sha256() -> str:
     distributions = sorted(
         (
-            distribution.metadata.get("Name", distribution.name).lower(),
+            (distribution.metadata["Name"] or distribution.name).lower(),
             distribution.version,
         )
         for distribution in importlib.metadata.distributions()

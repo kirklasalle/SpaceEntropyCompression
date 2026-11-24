@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "status": "proposed_draft_awaiting_physicist_review",
+  "fit_authorized": false,
+  "parent_protocol": "knowledgebase/candidate_a_option3_reconstruction_protocol.json",
+  "title": "Candidate A Option-3 Reconstruction Protocol v1 — Draft Amendment 2: Source Regularization and Outer Truncation",
+  "motivation": [
+    "Validation run results/candidate_a_option3_sensitivity_validation_2026-11-04.json found non-decaying outer HI/stellar profiles in 11/20 real THINGS galaxies (outer_exponential_tails variant failure) and negative Abel-inverted 3D bulge densities in IC2574 and NGC2403.",
+    "Until physically reviewed and formally signed off, real-data fitting remains unauthorized under Candidate A Option-3."
+  ],
+  "proposed_amendments": {
+    "bulge_regularization": {
+      "method": "Pool-Adjacent-Violators Algorithm (PAVA) non-increasing projection on the clipped inner excess Sigma_bulge(r) prior to Abel inversion.",
+      "guarantee": "Enforces dSigma_bulge/dr <= 0 pointwise so the Abel integral rho_bulge(r) >= 0 everywhere.",
+      "default_in_v1": false,
+      "flag": "regularize_bulge"
+    },
+    "outer_support_truncation": {
+      "scope": "Non-decaying measured outer rings where mean d ln Sigma / d r >= 0.",
+      "policy": "Truncate smoothly or at fixed half-ring outer cutoff instead of unnormalizable positive-slope exponential extrapolation."
+    }
+  }
+}

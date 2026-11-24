@@ -30,7 +30,7 @@ def _root(root: str | Path | None) -> Path:
     return Path(root) if root is not None else default_app_root() / "predictions"
 
 
-def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
+def _atomic_json_exclusive(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary_name = tempfile.mkstemp(
         prefix=f".{path.name}-",
@@ -44,7 +44,23 @@ def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
             output.write("\n")
             output.flush()
             os.fsync(output.fileno())
-        os.replace(temporary, path)
+        try:
+            os.link(temporary, path)
+        except OSError as exc:
+            if isinstance(exc, FileExistsError):
+                raise
+            # Filesystems without hardlinks: fall back to atomic O_CREAT|O_EXCL create.
+            raw = temporary.read_bytes()
+            flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+            dest_fd = os.open(path, flags, 0o600)
+            try:
+                with os.fdopen(dest_fd, "wb") as dest_file:
+                    dest_file.write(raw)
+                    dest_file.flush()
+                    os.fsync(dest_file.fileno())
+            except Exception:
+                path.unlink(missing_ok=True)
+                raise
     finally:
         temporary.unlink(missing_ok=True)
 
@@ -78,9 +94,7 @@ def commit_prediction(
         "content_stored": False,
     }
     destination = _root(root) / f"{commitment_id}.json"
-    if destination.exists():
-        raise FileExistsError(f"Prediction commitment already exists: {commitment_id}")
-    _atomic_json(destination, record)
+    _atomic_json_exclusive(destination, record)
     return record
 
 
@@ -116,7 +130,7 @@ def get_commitment(
     if not path.is_file():
         raise KeyError(f"Unknown prediction commitment: {commitment_id}")
     record = json.loads(path.read_text(encoding="utf-8"))
-    if record.get("commitment_id") != commitment_id:
+    if not isinstance(record, dict) or record.get("commitment_id") != commitment_id:
         raise ValueError("Prediction commitment record is inconsistent")
     return record
 

@@ -1,9 +1,10 @@
 openapi: 3.0.3
 info:
-  title: Emergent Matter Simulation API
-  version: 1.2.0
+  title: Emergent Matter Simulation API (Legacy v1)
+  version: 1.0.0
   description: |
-    REST API for emergent matter simulation. Entropy S(X,t) is a thermodynamic state
+    Legacy Flask REST API v1 for emergent matter simulation (deprecated in favor of
+    REST API v2 at /api/v2/docs). Entropy S(X,t) is a thermodynamic state
     field (the arrow of change per Second Law), not a spatial coordinate. The last
     entry in X_grid is the entropy state sweep; output M[..., j] is matter at state S_j.
 servers:

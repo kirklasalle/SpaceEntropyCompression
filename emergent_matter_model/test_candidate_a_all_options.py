@@ -193,3 +193,30 @@ def test_artifact_provenance_and_honest_outcomes():
     assert report["option_3"]["observational_fit_performed"] is False
     assert report["candidate_a_confirmed"] is False
     assert report["outcome"] == "partial_option3_observational_test_blocked"
+
+
+def test_pava_regularization_and_gpu_kernel_cache():
+    from tools import candidate_a_option3_gpu as gpu_mod
+    from tools import candidate_a_option3_reconstruction as recon
+
+    # Non-monotone inner bump creates negative Abel inversion without regularization,
+    # whereas opt-in PAVA guarantees nonnegative 3D bulge density.
+    radii = np.array([100.0, 500.0, 1200.0, 2500.0, 5000.0], dtype=np.float64)
+    sigma = np.array([150.0, 320.0, 200.0, 50.0, 10.0], dtype=np.float64)
+    _, bulge_raw, _, rho_raw = recon.spherical_bulge_profile(
+        radii, sigma, scale_pc=1000.0, cutoff_pc=5500.0, regularize_bulge=False
+    )
+    assert np.min(rho_raw) < 0.0
+
+    _, bulge_pava, _, rho_pava = recon.spherical_bulge_profile(
+        radii, sigma, scale_pc=1000.0, cutoff_pc=5500.0, regularize_bulge=True
+    )
+    assert np.all(np.diff(bulge_pava) <= 1e-12)
+    assert np.all(rho_pava >= 0.0)
+    assert np.sum(bulge_raw) > 0.0
+
+    gpu_mod._cached_uniform_kernel.cache_clear()
+    k1 = gpu_mod._cached_uniform_kernel(16, 1000.0, 300.0, 2500.0)
+    k2 = gpu_mod._cached_uniform_kernel(16, 1000.0, 300.0, 2500.0)
+    assert k1[2] is k2[2]
+    assert gpu_mod._cached_uniform_kernel.cache_info().hits >= 1

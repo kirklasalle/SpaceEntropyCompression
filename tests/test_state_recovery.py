@@ -273,6 +273,7 @@ def test_state_recovery_sdk_cli_and_rest_parity(
     ) == 0
     cli_result = json.loads(capsys.readouterr().out)
 
+    monkeypatch.setenv("EMRF_ALLOWED_IO_ROOTS", str(tmp_path))
     monkeypatch.setenv(server.DATA_WRITE_ENV_FLAG, "1")
     with server.app.test_client() as client:
         flask_response = client.post(

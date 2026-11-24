@@ -46,11 +46,23 @@ try {
     Assert-LastExitCode "Headless physics check"
 
 Write-Host "[3/4] Configure Java" -ForegroundColor Cyan
-if (-not $env:JAVA_HOME -or -not (Test-Path $env:JAVA_HOME)) {
-    if (Test-Path 'G:\Program Files\Java\jdk-25.0.2') {
-        $env:JAVA_HOME = 'G:\Program Files\Java\jdk-25.0.2'
-    } elseif (Test-Path 'C:\Program Files\Java\jdk-25.0.2') {
-        $env:JAVA_HOME = 'C:\Program Files\Java\jdk-25.0.2'
+if (-not $env:JAVA_HOME -or -not (Test-Path (Join-Path $env:JAVA_HOME "bin\javac.exe"))) {
+    $env:JAVA_HOME = $null
+    $javacCmd = Get-Command javac -ErrorAction SilentlyContinue
+    if ($javacCmd) {
+        $candidate = Split-Path (Split-Path $javacCmd.Source -Parent) -Parent
+        if (Test-Path (Join-Path $candidate "bin\javac.exe")) {
+            $env:JAVA_HOME = $candidate
+        }
+    }
+    if (-not $env:JAVA_HOME) {
+        $jdkRoot = Get-ChildItem -Path "G:\Program Files\Java", "C:\Program Files\Java", "C:\Program Files\Eclipse Adoptium", "C:\Program Files\Microsoft" -Directory -Filter "jdk*" -ErrorAction SilentlyContinue |
+            Where-Object { Test-Path (Join-Path $_.FullName "bin\javac.exe") } |
+            Sort-Object Name -Descending |
+            Select-Object -First 1
+        if ($jdkRoot) {
+            $env:JAVA_HOME = $jdkRoot.FullName
+        }
     }
 }
 if ($env:JAVA_HOME -and (Test-Path $env:JAVA_HOME)) {

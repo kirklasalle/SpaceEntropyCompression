@@ -9,6 +9,7 @@ import re
 import shutil
 import tempfile
 import time
+from collections import Counter
 from collections.abc import Mapping
 from contextlib import suppress
 from copy import deepcopy
@@ -19,6 +20,7 @@ from typing import Any, cast
 from jsonschema import Draft202012Validator, FormatChecker
 
 from emrf.core.errors import IntegrityError, StorageError
+from emrf.core.locks import ProcessFileLock, lock_owner_alive
 from emrf_paths import app_root, project_root
 
 _NODE_ID = re.compile(r"^[a-z][a-z0-9_-]*:[a-z0-9][a-z0-9_.-]*$")
@@ -415,8 +417,9 @@ class KnowledgeStore:
             for node in nodes
             if isinstance(node, dict) and isinstance(node.get("id"), str)
         ]
+        node_counts = Counter(node_ids)
         duplicate_ids = sorted(
-            {node_id for node_id in node_ids if node_ids.count(node_id) > 1}
+            node_id for node_id, count in node_counts.items() if count > 1
         )
         for node_id in duplicate_ids:
             errors.append(
@@ -532,19 +535,25 @@ class KnowledgeStore:
         nodes: dict[str, dict[str, Any]],
         edges: list[dict[str, Any]],
         trail: tuple[str, ...],
+        cache: dict[str, dict[str, Any]] | None = None,
     ) -> dict[str, Any]:
         if node_id in trail:
             raise IntegrityError(f"Inheritance cycle includes: {node_id}")
+        if cache is None:
+            cache = {}
+        if node_id in cache:
+            return deepcopy(cache[node_id])
         value: dict[str, Any] = {}
         for edge in edges:
             if edge.get("source") != node_id or edge.get("relation") != "inherits_from":
                 continue
             parent_id = str(edge["target"])
             value.update(
-                self._resolve_node(parent_id, nodes, edges, (*trail, node_id))
+                self._resolve_node(parent_id, nodes, edges, (*trail, node_id), cache)
             )
             value.update(deepcopy(edge.get("overrides", {})))
         value.update(deepcopy(nodes[node_id]))
+        cache[node_id] = deepcopy(value)
         return value
 
     @staticmethod
@@ -624,39 +633,7 @@ class KnowledgeStore:
         return _FileLock(self.graph_path.with_suffix(self.graph_path.suffix + ".lock"))
 
 
-class _FileLock:
-    def __init__(self, path: Path, *, timeout: float = 30.0) -> None:
-        self.path = path
-        self.timeout = timeout
-
-    def __enter__(self) -> _FileLock:
-        deadline = time.monotonic() + self.timeout
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        while True:
-            try:
-                descriptor = os.open(
-                    self.path,
-                    os.O_CREAT | os.O_EXCL | os.O_WRONLY,
-                    0o600,
-                )
-                os.write(descriptor, str(os.getpid()).encode("ascii"))
-                os.close(descriptor)
-                return self
-            except FileExistsError:
-                if time.monotonic() >= deadline:
-                    if not _lock_owner_alive(self.path):
-                        with suppress(FileNotFoundError):
-                            self.path.unlink()
-                        deadline = time.monotonic() + self.timeout
-                        continue
-                    raise StorageError(
-                        f"Timed out waiting for knowledge lock: {self.path}"
-                    ) from None
-                time.sleep(0.05)
-
-    def __exit__(self, *_: object) -> None:
-        with suppress(FileNotFoundError):
-            self.path.unlink()
+_FileLock = ProcessFileLock
 
 
 def _append_edge(
@@ -696,14 +673,7 @@ def _file_sha256(path: Path) -> str:
 
 
 def _lock_owner_alive(path: Path) -> bool:
-    try:
-        process_id = int(path.read_text(encoding="ascii"))
-        os.kill(process_id, 0)
-    except (FileNotFoundError, ProcessLookupError, ValueError):
-        return False
-    except OSError:
-        return True
-    return True
+    return lock_owner_alive(path)
 
 
 def _fsync_directory(path: Path) -> None:

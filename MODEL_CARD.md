@@ -2,7 +2,7 @@
 
 - **Principal investigator:** Kirk LaSalle
 - **Repository:** https://github.com/kirklasalle/SpaceEntropyCompression
-- **Scope:** current `main` research revision; engineering audit November 3, 2026
+- **Scope:** current `main` research revision; engineering audit November 3, 2026; engineering hardening November 24, 2026
 **License:** [MIT](emergent_matter_model/LICENSE)
 
 ## Intended use
@@ -47,11 +47,25 @@ It falsifies option 2 only. Kirk subsequently authorized investigation of all
 three options, with the full-density route for option 3, not selection of a
 single final theory. Option 1 passes 81 GR consistency checks and option 2's
 6,621 result fields reproduce. The option-3 volume-density solver passes
-analytic benchmarks, but no observational fit was performed: the downloaded
-Leroy surface-density profiles need a justified 3-D reconstruction and
-missing/censored-data treatment. A nonunit exponent is not the same
-baryons-only GR source; a physical completion or explicit phenomenological
-restriction and a new observational protocol remain necessary.
+analytic benchmarks, but no observational fit was performed. The November 4
+[reconstruction specification](docs/EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+and [frozen protocol](knowledgebase/candidate_a_option3_reconstruction_protocol.json)
+define the 3-D source assumptions, missing-data envelopes and non-blind test.
+The primary-source 180-case model-only sweep under frozen v1 passes CPU/GPU
+agreement but its conservative quadrature-convergence check reaches 2.27%,
+above the 0.5% threshold. Kirk approved a separately versioned segmented
+quadrature amendment; its full model-only run passes V3/V3b and reports V4 on
+20 cases. V1 remains incomplete because 11 outer-tail source cases have
+non-decaying profiles; V5 is incomplete because the outer-tail and
+spherical-bulge sensitivities fail for parts of the sample. An independent
+closed-form spherical projection recheck passes all 20 galaxy/envelope cases
+at `6.18e-4` maximum relative error with no integration warnings. This does
+not resolve the invalid source variants, so the fit remains blocked. See the
+[experiment and amendment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md).
+A nonunit exponent is not
+the same baryons-only GR source; a physical completion remains unresolved.
+The [GPU resource](docs/site/development/gpu-compute.md) is a computational
+backend, not observational evidence or permission to bypass a failed gate.
 See the [functional comparison](docs/EMRF_CANDIDATE_A_FUNCTIONAL_COMPARISON.md).
 Tidal curvature, local material density, thermal entropy and regional mass
 must not be substituted for one another.
@@ -62,6 +76,10 @@ tree-level Higgs portal. Three preregistered comparisons with ATLAS and CMS
 public results allow the new coupling to vanish and bound it from above. See
 the [model contract](docs/engineering/CANDIDATE_B_MODEL_CONTRACT_DRAFT_2026-10-13.md),
 sections 16–17.
+
+The November 4 restricted-model STXS feasibility line is closed without a fit:
+the universal-rescaling direction duplicates the official global-mu likelihood
+already used. It is not an independent extra constraint.
 
 ## Data and statistical constraints
 
@@ -91,16 +109,22 @@ equivalent to measurement-table ingestion.
 
 ## Validation and limitations
 
-On November 3, 2026, the non-golden suite passed with 633 passed, 1 skipped
-and 1 deselected using Python 3.12.10 and Hypothesis 6.169.0. That Hypothesis
-version is outside the development constraint `<6.169`; use the pinned CI
-constraints for an exact certified environment. CI-selected Ruff checks,
-strict documentation build, generated-reference checks, JavaFX tests and
-documented engineering checks passed. The default whole-repository Ruff
-profile still reports legacy lint debt, and no whole-repository type-check
-is claimed. Tests include synthetic fixtures, API behavior, document
-structure and graph/provenance checks. They are software checks, not physical
-tests. The current compiled paper is a research draft, not accepted or
+On November 24, 2026 (superseding the November 3 `633 passed` baseline), the
+non-golden suite passed with **672 passed, 2 skipped, and 1 deselected** using
+Python `3.12.10` under the pinned CI constraints (`Hypothesis 6.168.5`). All `6`
+repository-owned `.mcp` unit tests, `5` JavaFX Maven tests, `mypy -p emrf`
+(`42` source files), focused Ruff checks, strict MkDocs build, generated
+reference checks, release metadata validation, isolated wheel smoke checks,
+and recovery archive hash checks passed. CPython `3.10.0` is excluded from
+`requires-python` (`>=3.10.1`) due to `bpo-45662` affecting Hypothesis (`emrf
+doctor` warns when invoked on `3.10.0`). Synthetic benchmarks (`fit_astrometry.py`)
+and legacy toy stress tests now explicitly emit `synthetic_benchmark_not_real_epochs`
+or `illustrative_tautology` evidence classifications, while the seven SHA-256
+provenance- and recovery-locked files remain byte-identical. The default
+whole-repository Ruff profile still reports pre-existing legacy lint debt across
+unmodified legacy scripts. Tests include synthetic fixtures, API behavior,
+document structure and graph/provenance checks. They are software checks, not
+physical tests. The current compiled paper is a research draft, not accepted or
 peer-reviewed work. See the [engineering audit](docs/site/development/project-audit-2026-11-03.md),
 [status](STATUS.md), [top-down audit](docs/EMRF_TOP_DOWN_AUDIT_2026-10-08.md)
 and [reproducibility guide](docs/REAL_DATA_REPRODUCIBILITY.md).

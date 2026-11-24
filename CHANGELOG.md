@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Engineering due-diligence remediation and security hardening (2026-11-24)
+- **HTTP, IO, subprocess, and acquisition security:**
+  - Changed `emergent_matter_model/gunicorn.conf.py` default bind to `127.0.0.1:5000` with a `150`s timeout; hardened `server.py` (deprecated for removal no earlier than `2.0`) with opt-in `EMRF_CORS_ORIGINS`, `1 MiB` `MAX_CONTENT_LENGTH`, deprecation and security headers, bounded sliding-window rate limiting, `120`s timeout cap, bounded simulation input validation, IO path confinement, CLI arg validation, and bearer/loopback mutation gating (`EMRF_API_V1_TOKEN`/`EMRF_API_V2_TOKEN`).
+  - Added `src/emrf/interfaces/_security.py` and hardened FastAPI REST v2 (`api_v2.py`, `api_v2_models.py`, `sdk/client.py`) with `1 MiB` body caps, rate limiting, security headers, bearer auth on `/api/v2/runs*`, `/api/v2/jobs*`, `/api/v2/datasets/verify`, and `/api/v2/verification/*`, `/api/v2/doctor` path redaction when unauthenticated, and IO/CLI validation.
+  - Hardened `emrf_registry.py` subprocess execution (`_child_process_env()` secret stripping, `1 MiB` output cap, CPython `3.10.0` warning, lazy root resolution) and `src/emrf/data/acquisition.py` (HTTPS-only public-IP URL validation, redirect hop/SSRF blocking, streamed byte limits).
+- **Concurrency, recovery, and atomic state:**
+  - Added `src/emrf/core/locks.py` with Win32-safe `process_alive` and cross-process `ProcessFileLock`, wired into `data/store.py`, `runs/records.py` (`BEGIN IMMEDIATE`, `ON DELETE SET NULL`, `lease_owner`), `knowledge/service.py`, `data/backup.py`, and `recovery.py` (read-only immutable SQLite URI inspection, `.part` filtering, stale lock eviction); added atomic exclusive preregistration writes in `validation/preregistration.py`.
+- **`.mcp/` decoupling & supply-chain hardening:**
+  - Removed the external `.mcp` submodule (`.gitmodules`, `.git/modules/.mcp`) and ImpressionCore directive files while preserving `docs/archive/antigravity_recovery/**`; built repository-owned, read-only `.mcp/` servers (`emrf_workspace`, `science_data`) and `.mcp/tests/test_emrf_mcp.py`.
+  - Bumped `gunicorn>=23.0.0,<24` (`23.0.0` in `constraints-ci.txt`) and `org.json:json` `20260814`, SHA-pinned `.pre-commit-config.yaml` hooks, expanded Dependabot (`pip` + `maven`), and added `mypy -p emrf` and isolated wheel smoke tests to `.github/workflows/ci.yml`.
+  - Updated `pyproject.toml` `requires-python = ">=3.10.1"` (root-causing the Hypothesis `TreeNode` error to CPython `3.10.0` `bpo-45662`).
+- **Physics numerics, evidence tags & JavaFX client:**
+  - Upgraded `fit_astrometry.py` Kepler solver to bracketed Halley/Newton–bisection up to `e = 0.99999` with `evidence_class="synthetic_benchmark_not_real_epochs"`; added `illustrative_tautology` payload tags and bounds checks to legacy stress tests; preserved frozen `PM_DISTANCE_TO_KM_S` in `wide_binaries.py` alongside exact `PM_DISTANCE_TO_KM_S_IAU`; drafted non-fit-authorizing Candidate A Option-3 Amendment 2 (`fit_authorized: false`, awaiting physicist review) with opt-in PAVA bulge regularization and bounded `@lru_cache` elliptic GPU kernel cache; moved heavy JavaFX matrix computation off the FX UI thread (`Scatter3DApp.java`).
+  - Kept all seven SHA-256 provenance- and recovery-locked files byte-identical to `HEAD`.
+- **Verification:** On Python `3.12.10`, `672 passed, 2 skipped, 1 deselected` (`-m "not golden"`), `mypy -p emrf` clean (`42` source files), `ruff` selected rules clean, strict MkDocs clean, `6/6` `.mcp` tests pass, `5/5` JavaFX Maven tests pass, and isolated wheel build + `emrf doctor` + `emrf kb validate` pass.
+
 ### Engineering and documentation audit (2026-11-03)
 - Registered the project-local `.mcp` repository as a submodule, pointed the
   workspace `.vscode/mcp.json` profile only at its nine servers (IDS, EDS, IPA,

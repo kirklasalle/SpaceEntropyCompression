@@ -131,13 +131,17 @@ def compute_arrival_time_delay(
     delta_t = d * (1/c_gw - 1/c).
     Positive delta_t indicates light arrives after gravitational wave.
     """
+    if c_gw <= 0 or not np.isfinite(c_gw):
+        raise ValueError("c_gw must be finite and positive")
+    if distance_m < 0 or not np.isfinite(distance_m):
+        raise ValueError("distance_m must be finite and non-negative")
     t_gw = distance_m / c_gw
     t_em = distance_m / C_LIGHT
     return float(t_em - t_gw)
 
 
 def evaluate_gw_speed_stress_test() -> Dict[str, dict]:
-    """Evaluate all gravity frameworks against the GW170817 empirical bounds."""
+    """Evaluate illustrative GW170817 tensor speed consistency across stipulated models."""
     models = ["gr_baseline", "emrf_standard", "horndeski_modified", "teves_disformal"]
     results = {}
 
@@ -159,6 +163,14 @@ def evaluate_gw_speed_stress_test() -> Dict[str, dict]:
             "passes_gw170817": passes,
             "margin_factor": margin_factor,
             "status": status,
+            "evidence": {
+                "class": "illustrative_tautology",
+                "empirical_confirmation": False,
+                "caveat": (
+                    "Conformal ansatz g_mu_nu = Omega^2 eta_mu_nu sets c_gw = c by "
+                    "stipulation; not a first-principles derivation or observational proof."
+                ),
+            },
         }
 
     return results

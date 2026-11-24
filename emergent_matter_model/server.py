@@ -9,9 +9,12 @@ pass the entropy values as the last grid entry; output M[..., j] represents matt
 at the j-th entropy state S_j.
 """
 
+import hmac
 import logging
+import math
 import os
 import subprocess
+import threading
 import time
 from collections import defaultdict
 from typing import Any
@@ -22,6 +25,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 
 import emrf_registry as registry
+from emrf.interfaces._security import validate_http_cli_args, validate_http_io_path
 from emrf_sdk_access import (
     EMRFClient,
     InvalidRequestError,
@@ -37,10 +41,31 @@ from model import EmergentMatterModel
 RUN_ENV_FLAG = "EMRF_API_ALLOW_RUN"
 DATA_WRITE_ENV_FLAG = "EMRF_API_ALLOW_DATA_WRITE"
 PREDICTION_WRITE_ENV_FLAG = "EMRF_API_ALLOW_PREDICTION_WRITE"
-_MAX_RUN_TIMEOUT_SEC = 600.0
+API_V1_TOKEN_ENV = "EMRF_API_V1_TOKEN"
+API_V2_TOKEN_ENV = "EMRF_API_V2_TOKEN"
+CORS_ORIGINS_ENV = "EMRF_CORS_ORIGINS"
+_MAX_RUN_TIMEOUT_SEC = 120.0
+_MAX_SIMULATION_DIM = 8
+_MAX_SIMULATION_POINTS = 1_000_000
 
 app = Flask(__name__)
-CORS(app)
+app.config["MAX_CONTENT_LENGTH"] = int(
+    os.environ.get("EMRF_MAX_REQUEST_BYTES", str(1 * 1024 * 1024))
+)
+_cors_origins = [
+    origin.strip()
+    for origin in os.environ.get(CORS_ORIGINS_ENV, "").split(",")
+    if origin.strip()
+]
+if _cors_origins:
+    CORS(
+        app,
+        resources={
+            r"/api/v1/simulate": {"origins": _cors_origins},
+            r"/simulate": {"origins": _cors_origins},
+            r"/api/v1/health": {"origins": _cors_origins},
+        },
+    )
 sdk = EMRFClient()
 
 logging.basicConfig(level=logging.INFO)
@@ -49,24 +74,85 @@ logger = logging.getLogger(__name__)
 # In-memory sliding window rate limiter: client_ip -> list of timestamps
 _RATE_LIMIT_WINDOW_SEC = 60.0
 _RATE_LIMIT_MAX_REQUESTS = 120
+_RATE_LIMIT_MAX_TRACKED_IPS = 10_000
 _request_records: dict[str, list[float]] = defaultdict(list)
+_rate_limit_lock = threading.Lock()
+
+
+@app.after_request
+def _add_security_and_deprecation_headers(response):
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    if request.path != "/visualizer":
+        response.headers.setdefault("Cache-Control", "no-store")
+    if request.path.startswith("/api/v1/") or request.path == "/simulate":
+        response.headers.setdefault("Deprecation", "true")
+        response.headers.setdefault("Link", '</api/v2/docs>; rel="successor-version"')
+    return response
 
 
 def _check_rate_limit(client_ip: str) -> bool:
     """Return True if request is allowed, False if rate limit is exceeded."""
     now = time.time()
     cutoff = now - _RATE_LIMIT_WINDOW_SEC
-    timestamps = [t for t in _request_records[client_ip] if t > cutoff]
-    if len(timestamps) >= _RATE_LIMIT_MAX_REQUESTS:
+    with _rate_limit_lock:
+        if (
+            client_ip not in _request_records
+            and len(_request_records) >= _RATE_LIMIT_MAX_TRACKED_IPS
+        ):
+            stale_keys = [
+                ip
+                for ip, times in _request_records.items()
+                if not times or times[-1] <= cutoff
+            ]
+            for ip in stale_keys:
+                del _request_records[ip]
+            while len(_request_records) >= _RATE_LIMIT_MAX_TRACKED_IPS:
+                _request_records.pop(next(iter(_request_records)))
+        timestamps = [t for t in _request_records[client_ip] if t > cutoff]
+        if len(timestamps) >= _RATE_LIMIT_MAX_REQUESTS:
+            _request_records[client_ip] = timestamps
+            return False
+        timestamps.append(now)
         _request_records[client_ip] = timestamps
-        return False
-    timestamps.append(now)
-    _request_records[client_ip] = timestamps
-    return True
+        return True
 
 
 def _is_real_number(value: Any) -> bool:
-    return isinstance(value, (int, float)) and np.isfinite(value)
+    return (
+        not isinstance(value, bool)
+        and isinstance(value, (int, float))
+        and bool(np.isfinite(value))
+    )
+
+
+def _require_v1_mutation_auth():
+    """Enforce bearer token when configured, or reject non-loopback v1 mutations."""
+    configured = os.environ.get(API_V1_TOKEN_ENV) or os.environ.get(API_V2_TOKEN_ENV)
+    if configured:
+        auth_header = request.headers.get("Authorization", "")
+        scheme, _, token = auth_header.partition(" ")
+        if scheme.lower() != "bearer" or not token or not hmac.compare_digest(
+            token, configured
+        ):
+            return (
+                jsonify({"error": "A valid bearer token is required for API v1 mutations."}),
+                401,
+                {"WWW-Authenticate": "Bearer"},
+            )
+        return None
+    if app.config.get("TESTING"):
+        return None
+    remote = (request.remote_addr or "").strip()
+    if remote not in {"127.0.0.1", "::1", "localhost", "::ffff:127.0.0.1"}:
+        return (
+            jsonify({
+                "error": "Unauthenticated API v1 mutations are permitted only on loopback "
+                         f"hosts; configure {API_V1_TOKEN_ENV} or use REST API v2."
+            }),
+            403,
+        )
+    return None
 
 
 def _data_library():
@@ -88,6 +174,8 @@ def _public_record(record):
 
 
 def _run_write_denied():
+    if auth_denied := _require_v1_mutation_auth():
+        return auth_denied
     if os.environ.get(RUN_ENV_FLAG) == "1":
         return None
     return jsonify({
@@ -116,6 +204,8 @@ def _run_error(exc: Exception):
 
 
 def _data_write_denied():
+    if auth_denied := _require_v1_mutation_auth():
+        return auth_denied
     if os.environ.get(DATA_WRITE_ENV_FLAG) == "1":
         return None
     return jsonify({
@@ -177,11 +267,13 @@ def _validate_and_parse_payload(
             raise ValueError(f"Missing required field: '{field}'")
 
     n_raw = data["n"]
-    if not isinstance(n_raw, int):
+    if isinstance(n_raw, bool) or not isinstance(n_raw, int):
         raise ValueError("n must be an integer")
     n = int(n_raw)
     if n < 1:
         raise ValueError("n must be >= 1")
+    if n > _MAX_SIMULATION_DIM:
+        raise ValueError(f"n must be <= {_MAX_SIMULATION_DIM}")
 
     weights_raw = data["weights"]
     if not isinstance(weights_raw, list) or len(weights_raw) != n:
@@ -198,6 +290,7 @@ def _validate_and_parse_payload(
         raise ValueError(f"X_grid must be a list of {n} arrays")
 
     x_grid: list[np.ndarray] = []
+    total_points = 1
     for idx, axis in enumerate(x_grid_raw):
         if not isinstance(axis, list):
             raise ValueError(f"X_grid[{idx}] must be a list of numeric values")
@@ -205,6 +298,11 @@ def _validate_and_parse_payload(
             raise ValueError(f"X_grid[{idx}] must not be empty")
         if not all(_is_real_number(v) for v in axis):
             raise ValueError(f"X_grid[{idx}] must contain only finite numeric values")
+        total_points *= len(axis)
+        if total_points > _MAX_SIMULATION_POINTS:
+            raise ValueError(
+                f"Total simulation grid points must be <= {_MAX_SIMULATION_POINTS}"
+            )
         x_grid.append(np.array(axis, dtype=float))
 
     for optional_field in ("k", "alpha", "C0"):
@@ -214,6 +312,8 @@ def _validate_and_parse_payload(
     k = float(data.get("k", 1.0))
     alpha = float(data.get("alpha", 1.0))
     C0 = float(data.get("C0", 1.0))
+    if C0 <= 0.0:
+        raise ValueError("C0 must be > 0")
     return n, [float(w) for w in weights_raw], x_grid, k, alpha, C0
 
 
@@ -315,6 +415,8 @@ def verify_inference():
 @app.route('/api/v1/predictions/commit', methods=['POST'])
 def commit_prediction():
     """Commit a prediction digest without retaining prediction content."""
+    if auth_denied := _require_v1_mutation_auth():
+        return auth_denied
     if os.environ.get(PREDICTION_WRITE_ENV_FLAG) != "1":
         return jsonify({
             'error': f'Prediction writes are disabled. Set {PREDICTION_WRITE_ENV_FLAG}=1 '
@@ -380,9 +482,8 @@ def get_command(name: str):
 @app.route('/api/v1/commands/<name>/run', methods=['POST'])
 def run_command(name: str):
     """Run a registered program (same as `emrf run`). Disabled unless EMRF_API_ALLOW_RUN=1."""
-    if os.environ.get(RUN_ENV_FLAG) != '1':
-        return jsonify({'error': f'Command execution is disabled. Set {RUN_ENV_FLAG}=1 '
-                                 'on a trusted host to enable it.'}), 403
+    if denied := _run_write_denied():
+        return denied
     client_ip = request.remote_addr or '127.0.0.1'
     if not _check_rate_limit(client_ip):
         return jsonify({'error': 'Rate limit exceeded'}), 429
@@ -398,14 +499,18 @@ def run_command(name: str):
     args = data.get('args', [])
     if not isinstance(args, list) or not all(isinstance(a, str) for a in args):
         return jsonify({'error': 'args must be a list of strings'}), 400
-    timeout = data.get('timeout', 300)
+    try:
+        validated_args = validate_http_cli_args(args)
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
+    timeout = data.get('timeout', _MAX_RUN_TIMEOUT_SEC)
     if not _is_real_number(timeout) or not 0 < timeout <= _MAX_RUN_TIMEOUT_SEC:
         return jsonify({'error': f'timeout must be in (0, {_MAX_RUN_TIMEOUT_SEC}]'}), 400
     try:
         result = sdk.run(
             RunRequest(
                 command=name,
-                args=tuple(args),
+                args=validated_args,
                 timeout=float(timeout),
             ),
             capture=True,
@@ -480,9 +585,10 @@ def submit_job():
         args = data.get('args', [])
         if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
             raise ValueError("args must be a list of strings")
+        validated_args = validate_http_cli_args(args)
         record = _run_store().enqueue(
             name,
-            args,
+            list(validated_args),
             timeout_seconds=data.get('timeout'),
             evidence_class=data.get('evidence_class', 'software'),
             max_attempts=data.get('max_attempts', 1),
@@ -548,10 +654,13 @@ def import_dataset(dataset_id: str):
         return denied
     try:
         data = _json_object()
+        source = data.get('source')
+        if source is not None:
+            source = validate_http_io_path(source, field_name='source')
         result = sdk.import_dataset(
             dataset_id,
             logical_name=data.get('logical_name'),
-            source=data.get('source'),
+            source=source,
         )
         return jsonify(result.to_dict()), 201
     except Exception as exc:
@@ -590,7 +699,10 @@ def create_data_backup():
         return denied
     try:
         data = _json_object()
-        destination = _required_json_text(data, 'destination')
+        destination = validate_http_io_path(
+            _required_json_text(data, 'destination'),
+            field_name='destination',
+        )
         return jsonify(sdk.create_data_backup(destination).to_dict()), 201
     except Exception as exc:
         return _data_error(exc)
@@ -603,10 +715,13 @@ def create_offsite_data_backup():
     try:
         data = _json_object()
         destination_root = data.get('destination_root')
-        if destination_root is not None and (
-            not isinstance(destination_root, str) or not destination_root.strip()
-        ):
-            raise ValueError("destination_root must be non-empty text")
+        if destination_root is not None:
+            if not isinstance(destination_root, str) or not destination_root.strip():
+                raise ValueError("destination_root must be non-empty text")
+            destination_root = validate_http_io_path(
+                destination_root,
+                field_name='destination_root',
+            )
         return jsonify(
             sdk.create_offsite_data_backup(destination_root).to_dict()
         ), 201
@@ -620,7 +735,10 @@ def verify_data_backup():
         return denied
     try:
         data = _json_object()
-        source = _required_json_text(data, 'source')
+        source = validate_http_io_path(
+            _required_json_text(data, 'source'),
+            field_name='source',
+        )
         return jsonify(sdk.verify_data_backup(source).to_dict())
     except Exception as exc:
         return _data_error(exc)
@@ -632,7 +750,10 @@ def restore_data_backup():
         return denied
     try:
         data = _json_object()
-        source = _required_json_text(data, 'source')
+        source = validate_http_io_path(
+            _required_json_text(data, 'source'),
+            field_name='source',
+        )
         return jsonify(sdk.restore_data_backup(source).to_dict())
     except Exception as exc:
         return _data_error(exc)
@@ -646,9 +767,10 @@ def run_data_restore_drill():
         data = _json_object()
         receipt = data.get('receipt')
         workspace = data.get('workspace')
-        for field, value in (("receipt", receipt), ("workspace", workspace)):
-            if value is not None and (not isinstance(value, str) or not value.strip()):
-                raise ValueError(f"{field} must be non-empty text")
+        if receipt is not None:
+            receipt = validate_http_io_path(receipt, field_name='receipt')
+        if workspace is not None:
+            workspace = validate_http_io_path(workspace, field_name='workspace')
         return jsonify(
             sdk.run_data_restore_drill(
                 receipt=receipt,
@@ -661,6 +783,8 @@ def run_data_restore_drill():
 
 @app.route('/api/v1/data/gc', methods=['POST'])
 def garbage_collect_data():
+    if auth_denied := _require_v1_mutation_auth():
+        return auth_denied
     try:
         data = _json_object()
         execute = data.get('execute', False)
@@ -680,7 +804,10 @@ def create_state_backup():
     if denied := _data_write_denied():
         return denied
     try:
-        destination = _required_json_text(_json_object(), 'destination')
+        destination = validate_http_io_path(
+            _required_json_text(_json_object(), 'destination'),
+            field_name='destination',
+        )
         return jsonify(sdk.create_state_backup(destination).to_dict()), 201
     except Exception as exc:
         return _data_error(exc)
@@ -691,7 +818,10 @@ def verify_state_backup():
     if denied := _data_write_denied():
         return denied
     try:
-        source = _required_json_text(_json_object(), 'source')
+        source = validate_http_io_path(
+            _required_json_text(_json_object(), 'source'),
+            field_name='source',
+        )
         return jsonify(sdk.verify_state_backup(source).to_dict())
     except Exception as exc:
         return _data_error(exc)
@@ -703,8 +833,14 @@ def restore_state_backup():
         return denied
     try:
         data = _json_object()
-        source = _required_json_text(data, 'source')
-        destination = _required_json_text(data, 'destination')
+        source = validate_http_io_path(
+            _required_json_text(data, 'source'),
+            field_name='source',
+        )
+        destination = validate_http_io_path(
+            _required_json_text(data, 'destination'),
+            field_name='destination',
+        )
         return jsonify(sdk.restore_state_backup(source, destination).to_dict())
     except Exception as exc:
         return _data_error(exc)
@@ -718,9 +854,10 @@ def run_state_restore_drill():
         data = _json_object()
         receipt = data.get('receipt')
         workspace = data.get('workspace')
-        for field, value in (("receipt", receipt), ("workspace", workspace)):
-            if value is not None and (not isinstance(value, str) or not value.strip()):
-                raise ValueError(f"{field} must be non-empty text")
+        if receipt is not None:
+            receipt = validate_http_io_path(receipt, field_name='receipt')
+        if workspace is not None:
+            workspace = validate_http_io_path(workspace, field_name='workspace')
         return jsonify(
             sdk.run_state_restore_drill(
                 receipt=receipt,

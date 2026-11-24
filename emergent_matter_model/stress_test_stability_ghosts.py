@@ -30,6 +30,10 @@ def compute_quadratic_action_coefficients(
     Delta^2 S = int d^D X dt [ 1/2 A (d_t delta_C)^2 - 1/2 B (grad delta_C)^2 - 1/2 M_eff^2 (delta_C)^2 ]
     """
     a = np.asarray(acceleration_range, dtype=float)
+    if a.size == 0 or not np.all(np.isfinite(a)) or np.any(a <= 0.0):
+        raise ValueError("acceleration_range must contain finite positive values")
+    if 1.0 + 0.4 * entropy_state <= 0.0 or not np.isfinite(entropy_state):
+        raise ValueError("entropy_state must satisfy 1 + 0.4 * entropy_state > 0")
     y = np.maximum(a / A0_NOMINAL, 1e-15)
 
     # In EMRF, the Lagrangian kinetic term for compression C is:
@@ -99,6 +103,14 @@ def evaluate_hamiltonian_stability(
         "min_m_eff_squared": min_m2,
         "ostrogradsky_free": ostrogradsky_free,
         "overall_stable": overall_stable,
+        "evidence": {
+            "class": "illustrative_tautology",
+            "empirical_confirmation": False,
+            "caveat": (
+                "Stipulated quadratic ansatz coefficients (A > 0, B > 0, M^2 >= 0) "
+                "and literal max_time_derivative_order = 2 are checked by construction."
+            ),
+        },
     }
 
 

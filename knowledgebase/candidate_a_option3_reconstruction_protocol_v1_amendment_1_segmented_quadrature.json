@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "protocol_id": "candidate-a-option3-reconstruction-v1-amendment-1-segmented-quadrature",
+  "date": "2026-11-04",
+  "status": "approved_for_model_only_validation",
+  "approval": {
+    "approver": "Kirk LaSalle",
+    "scope": "Adopt segmented quadrature for further model-only validation under a separately versioned amendment.",
+    "limitations": [
+      "This approval does not authorize an observational fit.",
+      "Observed velocities must not be parsed for these validation gates.",
+      "No candidate verdict or physical confirmation follows from numerical validation."
+    ]
+  },
+  "parent_protocol": {
+    "path": "knowledgebase/candidate_a_option3_reconstruction_protocol.json",
+    "sha256": "cd9687ddac497025e709fccc0c6baf3d40ae5bce92166b8c23fefeec16270518",
+    "status": "frozen_and_unchanged"
+  },
+  "amendment_scope": {
+    "changes": [
+      "V3 uses axisymmetric_segmented_v1 instead of the frozen-v1 radial rational map.",
+      "V3b compares the CPU and GPU implementations of axisymmetric_segmented_v1."
+    ],
+    "unchanged": [
+      "The 3-D source model, data, input hashes, censoring envelopes, sample, and radius selection.",
+      "The parameter grid and V3/V3b error definitions and thresholds.",
+      "V1, V2, V4, V5, all inferential choices, and all interpretation limits in the parent protocol.",
+      "The full frozen-v1 protocol remains intact and its original V3 result remains recorded."
+    ],
+    "application": "This amendment governs further model-only validation only. It does not retroactively alter earlier artifacts."
+  },
+  "V3": {
+    "method_id": "axisymmetric_segmented_v1",
+    "implementation": "tools/candidate_a_option3_quadrature.py",
+    "radial_rule": "Apply an order-n Gauss-Legendre rule independently on each finite source interval. Split at zero, every aligned profile-ring centre, each field radius inside the source support, and the frozen outer cutoff.",
+    "vertical_rule": "Retain the parent protocol's rational half-line map with order-n Gauss-Legendre nodes.",
+    "orders": [
+      64,
+      128
+    ],
+    "case_grid": {
+      "galaxies": "All 10 primary-sample galaxies.",
+      "envelopes": [
+        "low",
+        "high"
+      ],
+      "alpha": [
+        0.5,
+        1.0,
+        2.0
+      ],
+      "log10_rho0": [
+        -4.0,
+        -1.0,
+        2.0
+      ],
+      "radii": "All positive-radius rows inside aligned density coverage; this is a conservative superset of the unevaluated velocity-dependent fit selection."
+    },
+    "error_metric": "Maximum over retained radii of |V64^2 - V128^2| / max(|V128^2|, 0.01 km^2 s^-2), for every galaxy, envelope, alpha, and rho0 case.",
+    "threshold": "strictly less than 0.005"
+  },
+  "V3b": {
+    "method_id": "axisymmetric_segmented_v1",
+    "comparison": "Compare the CPU reference with the GPU implementation in float64 at both quadrature orders on every primary-source V3 case.",
+    "error_metric": "Maximum over retained radii of |V_GPU^2 - V_CPU^2| / max(|V_CPU^2|, 0.01 km^2 s^-2).",
+    "threshold": "strictly less than 1e-10",
+    "sensitivity_variants": "Not included in this amendment's V3b case grid."
+  },
+  "retained_gates": {
+    "V1": "Unchanged: all required component-projection and reconstruction sensitivity variants must meet relative error < 1e-3.",
+    "V2": "Unchanged: no second helium factor on measured gas profiles; synthetic global-mass envelopes include their explicit helium factor.",
+    "V4": "Unchanged: Newtonian descriptive comparison using model components only; report when prerequisites permit.",
+    "V5": "Unchanged: report model-only sensitivity effects across the frozen variants before any fit."
+  },
+  "fit_authorized": false,
+  "observed_velocities_parsed": false,
+  "observational_fit_performed": false,
+  "candidate_confirmed": false
+}

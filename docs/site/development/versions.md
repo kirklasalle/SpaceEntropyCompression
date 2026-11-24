@@ -8,7 +8,7 @@ successful installation on another version is not equivalent to certification.
 
 | Surface | Supported contract |
 |---|---|
-| Python | CPython 3.10 and 3.12 on Windows Server 2022 and Ubuntu 24.04 are certified; Python 3.12 is recommended |
+| Python | CPython 3.10.1+ and 3.12 on Windows Server 2022 and Ubuntu 24.04 are certified (`>=3.10.1` avoids CPython `3.10.0` `bpo-45662`); Python 3.12 is recommended |
 | Java client | Java 17 and JavaFX 17 are certified |
 | Python SDK | Public `emrf.sdk` types and `EMRFClient` methods follow package semantic versioning |
 | CLI | Commands and JSON output documented in the generated CLI reference are stable within 1.x |
@@ -66,13 +66,28 @@ or containment procedure, and retained evidence of the retired behavior.
 
 ## Runtime lifecycle
 
-Python 3.10 is deprecated because its upstream security support ends in
-October 2026. EMRF continues certifying it for the 1.0 line while downstream
-users migrate, but no new runtime-specific capability will target 3.10.
-Removal requires the notice window above and a protected release that first
+`emergent-matter-model` requires Python `>=3.10.1` (`3.12` recommended) because
+CPython `3.10.0` triggers `dataclass(slots=True)` failure `bpo-45662` under
+Hypothesis; `emrf doctor` emits an explicit runtime warning if invoked on
+CPython `3.10.0`. Python 3.10 is deprecated because its upstream security support
+ends in October 2026. EMRF continues certifying 3.10.1+ for the 1.0 line while
+downstream users migrate, but no new runtime-specific capability will target
+3.10. Removal requires the notice window above and a protected release that first
 certifies the replacement matrix. Java 17 remains the long-term-support client
-baseline until a later LTS is certified in parallel.
+baseline until a later LTS is certified in parallel (tested through JDK 25).
 
 Dependency lower and upper bounds remain authoritative in `pyproject.toml`.
 Changes to those bounds require dependency resolution, audit, SBOM generation,
 the complete platform matrix and scientific golden tests.
+
+## 2.0 Namespace Consolidation Plan
+
+During the 1.x release series, flat top-level compatibility modules (`model.py`,
+`server.py`, `emrf_cli.py`, `emrf_registry.py`, and related bridges under
+`emergent_matter_model/`) remain supported alongside the canonical `emrf.*`
+package under `src/emrf/`. In EMRF 2.0:
+
+1. New code and integrations must import exclusively from `emrf.*` (and target
+   REST API v2 at `/api/v2/`).
+2. Root-level module shims and Flask REST API v1 routes will be removed after
+   at least two minor releases and twelve months of deprecation notice.

@@ -2,34 +2,114 @@
 
 from __future__ import annotations
 
+import ipaddress
 import math
 import os
+import socket
+import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import BinaryIO, Protocol
+from typing import Any, BinaryIO, Protocol
 
+from emrf import __version__
 from emrf.core.errors import AcquisitionError, IntegrityError
 
 from .catalog import CatalogDataset, CatalogHolding, DataCatalog
 from .store import ContentAddressedStore, Holding
 
 _BUFFER_SIZE = 1024 * 1024
+_MAX_REDIRECTS = 5
+
+
+def _validate_public_https_url(url: str, *, resolve_dns: bool = True) -> str:
+    """Validate HTTPS scheme and block local, private, or multicast destinations."""
+    try:
+        parsed = urllib.parse.urlsplit(url)
+        hostname = parsed.hostname
+        port = parsed.port
+    except ValueError as exc:
+        raise AcquisitionError(f"Invalid acquisition URL: {url}") from exc
+
+    if (
+        parsed.scheme.lower() != "https"
+        or not hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or port not in (None, 443)
+        or hostname.lower().endswith((".localhost", ".local"))
+    ):
+        raise AcquisitionError(
+            f"Refusing non-HTTPS or disallowed acquisition URL: {url}"
+        )
+
+    addresses: list[ipaddress.IPv4Address | ipaddress.IPv6Address] = []
+    try:
+        addresses = [ipaddress.ip_address(hostname)]
+    except ValueError:
+        if resolve_dns:
+            try:
+                addresses = [
+                    ipaddress.ip_address(info[4][0])
+                    for info in socket.getaddrinfo(
+                        hostname, port or 443, type=socket.SOCK_STREAM
+                    )
+                ]
+            except OSError as exc:
+                raise AcquisitionError(
+                    f"Hostname resolution failed for acquisition URL: {hostname}"
+                ) from exc
+    if any(not address.is_global or address.is_multicast for address in addresses):
+        raise AcquisitionError(
+            f"Refusing non-public or multicast acquisition destination: {url}"
+        )
+    return url
+
+
+class _SafeHTTPSRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Redirect handler enforcing HTTPS and public IP destinations on every hop."""
+
+    max_redirections = _MAX_REDIRECTS
+
+    def redirect_request(  # type: ignore[override]
+        self,
+        req: urllib.request.Request,
+        fp: Any,
+        code: int,
+        msg: str,
+        headers: Any,
+        newurl: str,
+    ) -> urllib.request.Request | None:
+        redirect_dict = getattr(req, "redirect_dict", {})
+        if len(redirect_dict) >= _MAX_REDIRECTS:
+            raise AcquisitionError(
+                f"Acquisition exceeded maximum redirect limit ({_MAX_REDIRECTS})"
+            )
+        _validate_public_https_url(newurl, resolve_dns=True)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _default_urlopen(request: urllib.request.Request, timeout: float) -> Any:
+    opener = urllib.request.build_opener(_SafeHTTPSRedirectHandler)
+    return opener.open(request, timeout=timeout)
 
 
 class _Response(Protocol):
-    headers: object
+    headers: Any
 
-    def __enter__(self) -> BinaryIO: ...
+    def __enter__(self) -> _Response: ...
 
     def __exit__(self, *args: object) -> None: ...
 
     def getcode(self) -> int: ...
 
     def geturl(self) -> str: ...
+
+    def read(self, size: int = -1, /) -> bytes: ...
 
 
 class ResumableFetcher:
@@ -40,12 +120,13 @@ class ResumableFetcher:
         store: ContentAddressedStore,
         catalog: DataCatalog,
         *,
-        opener: Callable[..., _Response] = urllib.request.urlopen,
+        opener: Callable[..., _Response] | None = None,
         sleeper: Callable[[float], None] = time.sleep,
     ) -> None:
         self.store = store
         self.catalog = catalog
-        self._opener = opener
+        self._custom_opener = opener is not None
+        self._opener: Callable[..., _Response] = opener or _default_urlopen
         self._sleeper = sleeper
         self.downloads = store.root / "acquisition"
         self.quarantine = store.root / "quarantine"
@@ -155,14 +236,24 @@ class ResumableFetcher:
         timeout: float,
     ) -> None:
         offset = partial.stat().st_size if partial.is_file() else 0
-        headers = {"User-Agent": "EMRF/0.9 scientific-data-acquisition"}
+        if expected.bytes and offset > expected.bytes:
+            partial.unlink(missing_ok=True)
+            raise AcquisitionError(
+                f"Partial download exceeds expected size for {expected.logical_name}"
+            )
+        headers = {"User-Agent": f"EMRF/{__version__} scientific-data-acquisition"}
         if offset:
             headers["Range"] = f"bytes={offset}-"
-        request = urllib.request.Request(expected.url, headers=headers)
+        expected_url = expected.url
+        if not expected_url:
+            raise AcquisitionError(
+                f"No URL configured for {expected.logical_name}"
+            )
+        _validate_public_https_url(expected_url, resolve_dns=not self._custom_opener)
+        request = urllib.request.Request(expected_url, headers=headers)
         with self._opener(request, timeout=timeout) as response:
             final_url = response.geturl()
-            if not final_url.startswith("https://"):
-                raise AcquisitionError("Acquisition redirected to a non-HTTPS URL")
+            _validate_public_https_url(final_url, resolve_dns=not self._custom_opener)
             status = response.getcode()
             if status not in {200, 206}:
                 raise AcquisitionError(f"Unexpected HTTP status {status}")
@@ -173,9 +264,16 @@ class ResumableFetcher:
                     f"bytes {offset}-"
                 ):
                     raise AcquisitionError("Server returned an invalid resume range")
+            written = offset if append else 0
             mode = "ab" if append else "wb"
             with partial.open(mode) as output:
                 while chunk := response.read(_BUFFER_SIZE):
+                    written += len(chunk)
+                    if expected.bytes and written > expected.bytes:
+                        raise AcquisitionError(
+                            f"Download exceeded expected size ({expected.bytes} bytes) "
+                            f"for {expected.logical_name}"
+                        )
                     output.write(chunk)
                 output.flush()
                 os.fsync(output.fileno())
@@ -252,7 +350,7 @@ def _exclusive_lock(path: Path, timeout: float) -> Generator[None, None, None]:
 
 def _lock_file(lock_file: BinaryIO) -> None:
     lock_file.seek(0)
-    if os.name == "nt":
+    if sys.platform == "win32":
         import msvcrt
 
         msvcrt.locking(lock_file.fileno(), msvcrt.LK_NBLCK, 1)
@@ -264,7 +362,7 @@ def _lock_file(lock_file: BinaryIO) -> None:
 
 def _unlock_file(lock_file: BinaryIO) -> None:
     lock_file.seek(0)
-    if os.name == "nt":
+    if sys.platform == "win32":
         import msvcrt
 
         msvcrt.locking(lock_file.fileno(), msvcrt.LK_UNLCK, 1)

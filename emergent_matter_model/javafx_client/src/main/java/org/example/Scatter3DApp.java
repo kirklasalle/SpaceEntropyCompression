@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -18,6 +19,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 3-D scatter-plot viewer for Emergent Matter Model data.
@@ -103,11 +105,25 @@ public class Scatter3DApp extends Application {
 
     static List<SimulationPoint> parseSimulationPoints(JSONObject json) {
         JSONArray m = json.getJSONArray("M");
-
+        if (m.length() == 0) {
+            throw new IllegalArgumentException("Simulation response array M must not be empty");
+        }
         int nx = m.length();
-        int ny = m.getJSONArray(0).length();
-        int nz = m.getJSONArray(0).getJSONArray(0).length();
-        int ns = m.getJSONArray(0).getJSONArray(0).getJSONArray(0).length();
+        JSONArray firstY = m.getJSONArray(0);
+        if (firstY.length() == 0) {
+            throw new IllegalArgumentException("Simulation response array M[0] must not be empty");
+        }
+        int ny = firstY.length();
+        JSONArray firstZ = firstY.getJSONArray(0);
+        if (firstZ.length() == 0) {
+            throw new IllegalArgumentException("Simulation response array M[0][0] must not be empty");
+        }
+        int nz = firstZ.length();
+        JSONArray firstS = firstZ.getJSONArray(0);
+        if (firstS.length() == 0) {
+            throw new IllegalArgumentException("Simulation response array M[0][0][0] must not be empty");
+        }
+        int ns = firstS.length();
         int sIndex = ns - 1;
 
         List<SimulationPoint> points = new ArrayList<>(nx * ny * nz);
@@ -136,28 +152,19 @@ public class Scatter3DApp extends Application {
             throw new IllegalArgumentException("Simulation response contains no finite matter values");
         }
 
-        double range = Math.max(maxMatter - minMatter, 1e-9);
+        double span = maxMatter - minMatter;
+        boolean uniformField = span <= 1e-12;
         List<SimulationPoint> filtered = new ArrayList<>();
         for (SimulationPoint p : points) {
             if (!Double.isFinite(p.matter)) {
                 continue;
             }
-            double normalized = (p.matter - minMatter) / range;
+            double normalized = uniformField ? 1.0 : (p.matter - minMatter) / span;
             if (normalized >= 0.45) {
                 filtered.add(new SimulationPoint(p.x, p.y, p.z, normalized));
             }
         }
-
-        if (!filtered.isEmpty()) {
-            return filtered;
-        }
-        List<SimulationPoint> finitePoints = new ArrayList<>();
-        for (SimulationPoint point : points) {
-            if (Double.isFinite(point.matter)) {
-                finitePoints.add(point);
-            }
-        }
-        return finitePoints;
+        return filtered;
     }
 
     static List<SimulationPoint> fetchSimulationPoints() throws IOException, InterruptedException {
@@ -196,20 +203,8 @@ public class Scatter3DApp extends Application {
         return points;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        Group root = new Group();
-
-        List<SimulationPoint> points;
-        boolean usingFallback = false;
-        try {
-            points = fetchSimulationPoints();
-        } catch (Exception ex) {
-            points = fallbackPoints();
-            usingFallback = true;
-            ex.printStackTrace();
-        }
-
+    private static void populateScenePoints(Group root, List<SimulationPoint> points) {
+        root.getChildren().clear();
         for (SimulationPoint p : points) {
             double radius = 3.0 + 7.0 * Math.max(0.0, Math.min(1.0, p.matter));
             Sphere sphere = new Sphere(radius);
@@ -222,6 +217,12 @@ public class Scatter3DApp extends Application {
             sphere.setTranslateZ(p.z);
             root.getChildren().add(sphere);
         }
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        Group root = new Group();
+        populateScenePoints(root, fallbackPoints());
 
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.setTranslateZ(-500);
@@ -233,18 +234,29 @@ public class Scatter3DApp extends Application {
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
 
-        // Add rotation for better 3-D perspective
         Rotate rotateX = new Rotate(30, Rotate.X_AXIS);
         Rotate rotateY = new Rotate(30, Rotate.Y_AXIS);
         root.getTransforms().addAll(rotateX, rotateY);
 
-        if (usingFallback) {
-            primaryStage.setTitle("Emergent Matter — 3D Scatter (fallback data; start Python server)");
-        } else {
-            primaryStage.setTitle("Emergent Matter — 3D Scatter (live API)");
-        }
+        primaryStage.setTitle("Emergent Matter — 3D Scatter (connecting to API...)");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return fetchSimulationPoints();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }).thenAccept(fetched -> Platform.runLater(() -> {
+            if (fetched == null) {
+                primaryStage.setTitle("Emergent Matter — 3D Scatter (fallback data; start Python server)");
+            } else {
+                populateScenePoints(root, fetched);
+                primaryStage.setTitle("Emergent Matter — 3D Scatter (live API)");
+            }
+        }));
     }
 
     public static void main(String[] args) {

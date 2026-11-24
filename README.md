@@ -11,12 +11,12 @@
 [![Continuous integration](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/ci.yml)
 [![Security](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml/badge.svg)](https://github.com/kirklasalle/SpaceEntropyCompression/actions/workflows/security.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/kirklasalle/SpaceEntropyCompression/badge)](https://scorecard.dev/viewer/?uri=github.com/kirklasalle/SpaceEntropyCompression)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](emergent_matter_model/pyproject.toml)
+[![Python 3.10.1+](https://img.shields.io/badge/Python-3.10.1%2B-blue)](emergent_matter_model/pyproject.toml)
 [![Release](https://img.shields.io/github/v/release/kirklasalle/SpaceEntropyCompression?display_name=tag)](https://github.com/kirklasalle/SpaceEntropyCompression/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](emergent_matter_model/LICENSE)
 [![EMRF 1.0.0 DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23304395.svg)](https://doi.org/10.5281/zenodo.23304395)
 
-**Author and principal investigator: Kirk LaSalle.** Current documentation: November 3, 2026.
+**Author and principal investigator: Kirk LaSalle.** Current documentation: November 24, 2026.
 The CI badge and version-specific archive certify software and release provenance,
 not physical confirmation of the EMRF hypotheses.
 
@@ -41,6 +41,19 @@ results and self-awarded audit certifications are withdrawn. See the
 Old documents, figures, release assets and audio can still contain those claims;
 their presence is historical evidence, not an endorsement.
 
+## What's new
+
+The November 24, 2026 engineering due-diligence remediation hardened API security,
+concurrency, numerical robustness, supply-chain configuration, and repository
+tooling (software, security, and reproducibility improvements only—not empirical
+confirmation of EMRF physics hypotheses):
+
+- **API, IO, and acquisition security:** Switched `gunicorn.conf.py` to default loopback binding (`127.0.0.1:5000`, `150`s timeout) and hardened [Flask REST v1](emergent_matter_model/server.py) (deprecated for removal no earlier than `2.0`, opt-in `EMRF_CORS_ORIGINS`, `1 MiB` request body cap, bounded sliding-window rate limiting, deprecation/security headers, `120`s timeout cap, bounded simulation validation, and bearer/loopback mutation gating via `EMRF_API_V1_TOKEN`/`EMRF_API_V2_TOKEN`). Hardened canonical [FastAPI REST v2](emergent_matter_model/src/emrf/interfaces/api_v2.py) (`1 MiB` body cap, rate limiting, security headers, expanded bearer auth on `/api/v2/runs*`, `/api/v2/jobs*`, `/api/v2/datasets/verify`, `/api/v2/verification/*`, and `/api/v2/doctor` path redaction when unauthenticated), added HTTP IO path confinement and CLI argument validation, stripped secret environment variables from subprocess execution, and enforced HTTPS, public-IP/redirect safety, and streamed byte caps in observational acquisition.
+- **Concurrency, recovery, and Windows reliability:** Added cross-process `ProcessFileLock` and Win32-safe `process_alive` checks across the content-addressed data store, SQLite run/job registry, knowledge graph, backups, read-only immutable SQLite recovery paths, and atomic exclusive preregistration writes.
+- **Repository-owned `.mcp/` decoupling:** Removed the external `.mcp` submodule and ImpressionCore directive files (preserving historical recovery archives under `docs/archive/antigravity_recovery/`), replacing [`.mcp/`](.mcp/) with repository-owned, read-only `emrf_workspace` and `science_data` MCP servers and unit tests.
+- **Numerical stability, evidence labels, and Candidate A Option-3 prep:** Upgraded `fit_astrometry.py`'s Kepler solver to bracketed Halley/Newton–bisection up to `e = 0.99999` and tagged reports `evidence_class="synthetic_benchmark_not_real_epochs"`; tagged legacy toy stress tests `illustrative_tautology`; preserved the frozen Gaia wide-binary constant alongside exact `PM_DISTANCE_TO_KM_S_IAU`; drafted non-fit-authorizing Amendment 2 ([proposed source regularization protocol](knowledgebase/candidate_a_option3_reconstruction_protocol_v1_amendment_2_source_regularization.json), `fit_authorized: false`, awaiting physicist review) with opt-in PAVA bulge regularization and bounded GPU kernel caching; and moved heavy JavaFX matrix work off the UI thread.
+- **Supply chain, typing, and runtime baseline:** Raised `requires-python` to `>=3.10.1` (addressing CPython `3.10.0` `bpo-45662`, with a runtime warning in `emrf doctor`), bumped `gunicorn>=23.0.0,<24` and `org.json:json` `20260814`, SHA-pinned pre-commit hooks, expanded Dependabot (pip + maven), and added `mypy -p emrf` and isolated wheel smoke checks to CI. All seven SHA-256 provenance- and recovery-locked scripts remain byte-identical to `HEAD`.
+
 ## Dual-candidate program: A and B run concurrently
 
 EMRF now runs two research programs side by side. Both are active; neither is
@@ -54,8 +67,8 @@ that apply to both.
 | Idea | C re-describes existing geometry and energy organization, inside GR; no new force or reservoir | A separately budgeted energy-exchange sector; tested as a restricted extra-dimension Higgs portal |
 | Origin | Kirk's recovered intention | AI-proposed ansatz; extra dimensions specified by Kirk; benchmark assistant-proposed and Kirk-approved |
 | Done so far | Kirk authorized testing options 1, 2 and 3. GR consistency sweep; reproduction of the preregistered option-2 SPARC test; full-density option-3 solver benchmarks and public-data coverage audit | Three preregistered public-data tests (ATLAS contour, ATLAS rate likelihood, CMS heavy-scalar limits) |
-| Outcome | Option 1 passes conditional GR checks, not independent confirmation. Option 2 remains **rejected** in 153 SPARC galaxies (not blind). Option 3 passes numerical benchmarks but has **no observational fit or verdict** | Compatible with limit: bounds on the new coupling, **not** evidence for B |
-| Next gate | Option 3: justified three-dimensional baryon reconstruction, missing-gas treatment, physical scope and a new frozen observational protocol | Correlated STXS likelihood, interference and loop widths, each under a new frozen preregistration |
+| Outcome | Option 1 passes conditional GR checks, not independent confirmation. Option 2 remains **rejected** in 153 SPARC galaxies (not blind). Frozen-v1 option-3 convergence exceeds its threshold; amendment 1 passes V3/V3b for model-only validation. **Fit blocked; no observational verdict** | Compatible with limit: bounds on the new coupling, **not** evidence for B |
+| Next gate | Under amendment 1, V3/V3b pass and V4 is reported; an independent spherical-projection check passes at max relative error 6.18e-4 with no warnings. V1 remains incomplete (11 non-decaying outer tails); V5 remains incomplete (outer-tail and spherical-bulge source failures). Resolve invalid variants under a separately approved source protocol before fitting. See the [sensitivity report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md) and [GPU runbook](docs/site/development/gpu-compute.md) | Restricted STXS closed as redundant with global-mu; interference, loop widths or a qualified resonance likelihood need a new frozen protocol |
 
 Kirk selected A on October 8, 2026, added B on October 16 (initially worked one
 at a time, B first) and later that day made both concurrent. Both now have
@@ -246,6 +259,7 @@ before interpreting their output.
 | [paper](paper/) | Current SPARC manuscript plus clearly distinguished historical drafts |
 | [docs](docs/) | Audits, candidate specifications, correction history and reproducibility |
 | [knowledgebase](knowledgebase/) | Qualified graph, source-linked claims and historical references |
+| [.mcp](.mcp/) | Repository-owned, read-only local MCP servers (`emrf_workspace`, `science_data`) and unit tests |
 | [data/synthetic](data/synthetic/) | Quarantined software fixtures, **not observations** |
 | [recovered archive](docs/archive/antigravity_recovery/) | Historical drafts/code/logs/images, with hash manifest and warnings |
 
@@ -261,18 +275,33 @@ what could not be established from the incomplete IDE archive.
 selection of a single final theory. Option 1 is a conditional GR identity;
 option 2 is rejected on SPARC. For option 3, the full-density mapping and
 axisymmetric Poisson solver are implemented and benchmarked. The downloaded
-Leroy profiles do not yet provide the complete three-dimensional source model:
-missing/censored gas, vertical structure, boundaries and uncertainties need
-explicit treatment. A nonunit exponent also needs a declared effective-source
-or modified-dynamics interpretation. Freeze those choices, parameter bounds
-and a decision rule before any observational fit. A useful reformulation can succeed
+Leroy profiles require modeled three-dimensional structure. The November 4
+[specification](docs/EMRF_CANDIDATE_A_OPTION3_RECONSTRUCTION_SPEC_2026-11-04.md)
+and frozen protocol now define the source assumptions and test; numerical validation must pass
+before fitting. Frozen-v1 convergence exceeds its threshold (2.27% versus
+0.5%). Kirk approved a separately versioned segmented amendment; its full
+model-only rerun passes V3/V3b and reports V4. The independent spherical
+projection recheck passes, but V1 and V5 remain incomplete because some frozen
+sensitivity sources are invalid for parts of the sample. CPU/GPU agreement
+alone is insufficient. A proposed non-fit-authorizing
+[amendment 2 draft](knowledgebase/candidate_a_option3_reconstruction_protocol_v1_amendment_2_source_regularization.json)
+(`fit_authorized: false`, awaiting physicist review) and opt-in PAVA bulge
+regularization have been prepared without unblocking or performing any
+observational fit. See the
+[experiment report](docs/EMRF_CANDIDATE_A_OPTION3_SEGMENTED_EXPERIMENT_2026-11-04.md)
+and [GPU resource and validation limits](docs/site/development/gpu-compute.md).
+A nonunit exponent still needs physical completion.
+A useful reformulation can succeed
 without predicting a new force; novelty and full equivalence need their own
 arguments.
 
 **Candidate B:** decide whether to deepen the restricted-model constraints
-(correlated STXS likelihood, interference, loop widths) or to connect the
+(interference, loop widths, a qualified resonance likelihood) or to connect the
 restricted model back to the collision energy and entropy budget. Each step
 needs a new frozen preregistration.
+
+The restricted STXS direction is closed as redundant with the global-mu
+likelihood already used; no STXS fit or additional bound was computed.
 
 ## Contributing and research integrity
 

@@ -204,10 +204,18 @@ class EMRFClient:
         )
         return RunListResponse(records)
 
-    def environment_report(self, *, include_executable: bool = False) -> EnvironmentReport:
+    def environment_report(
+        self,
+        *,
+        include_executable: bool = False,
+        include_paths: bool = True,
+    ) -> EnvironmentReport:
         report = dict(emrf_registry.environment_report())
         if not include_executable:
             report.pop("executable", None)
+        if not include_paths:
+            report["app_root"] = None
+            report["data_root"] = None
         return EnvironmentReport(report)
 
     def create_support_report(
@@ -484,6 +492,7 @@ class EMRFClient:
         return PredictionVerification.from_mapping(report)
 
     def simulate(self, request: SimulationRequest) -> SimulationResult:
+        import numpy as np
         from server import _validate_and_parse_payload, run_simulation
 
         try:
@@ -493,6 +502,8 @@ class EMRFClient:
         except (TypeError, ValueError) as exc:
             raise InvalidRequestError(str(exc)) from exc
         values = run_simulation(n, weights, grid, k, alpha, c0)
+        if not np.all(np.isfinite(values)):
+            raise InvalidRequestError("Simulation produced non-finite values")
         return SimulationResult(tuple(int(size) for size in values.shape), values.tolist())
 
     def submit_job(

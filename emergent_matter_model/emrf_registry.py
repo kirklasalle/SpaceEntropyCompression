@@ -42,6 +42,20 @@ REPO_ROOT = app_root()
 PROJECT_ROOT = project_root()
 EXTERNAL_DIR = data_root() / "external"
 MANIFEST = EXTERNAL_DIR / "download_manifest.json"
+_INITIAL_REPO_ROOT = REPO_ROOT
+_INITIAL_MANIFEST = MANIFEST
+
+
+def _effective_repo_root() -> Path:
+    return REPO_ROOT if REPO_ROOT != _INITIAL_REPO_ROOT else app_root()
+
+
+def _effective_manifest() -> Path:
+    return (
+        MANIFEST
+        if MANIFEST != _INITIAL_MANIFEST
+        else data_root() / "external" / "download_manifest.json"
+    )
 
 CATEGORIES = (
     "data", "analysis", "stress-test", "figures", "visualization", "service", "audit", "release",
@@ -59,7 +73,7 @@ class Command:
 
     @property
     def path(self) -> Path:
-        return REPO_ROOT / self.script
+        return _effective_repo_root() / self.script
 
     @property
     def module(self) -> str | None:
@@ -87,7 +101,8 @@ COMMANDS: tuple[Command, ...] = (
     Command("fetch-real-data", _M + "fetch_real_data.py", "data",
             "Download/verify official public datasets (SPARC) with SHA-256 provenance",
             network=True),
-    Command("fetch-sparc", _M + "fetch_sparc.py", "data", "SPARC catalog ingestion and management"),
+    Command("fetch-sparc", _M + "fetch_sparc.py", "data",
+            "Validate synthetic SPARC-like fixture catalog (not real data; see fetch-real-data)"),
     # real-data and fitting analyses
     Command("sparc-real-analysis", _M + "sparc_real_analysis.py", "analysis",
             "Real-data test of a0 = cH0/2pi against SPARC"),
@@ -159,6 +174,8 @@ COMMANDS: tuple[Command, ...] = (
             "Preregistered Candidate A option-2 SPARC baryonic-matter falsification test"),
     Command("evaluate-candidate-a-all-options", _T + "evaluate_candidate_a_all_options.py", "audit",
             "Candidate A density gates and SPARC reproduction (exit 2 if blocked)", network=True),
+    Command("validate-candidate-a-option3", _T + "validate_candidate_a_option3.py", "audit",
+            "Model-only Candidate A option-3 reconstruction validation; no fit authorized"),
     Command("check-candidate-b", _T + "check_candidate_b_definitions.py", "audit",
             "Candidate B benchmark checks"),
     Command("prepare-candidate-b", _T + "prepare_candidate_b_test.py", "audit",
@@ -255,6 +272,65 @@ def list_commands(category: str | None = None) -> list[dict]:
     ]
 
 
+_MAX_CAPTURED_STREAM_CHARS = 1_048_576
+_SAFE_CHILD_ENV_KEYS = frozenset({
+    "PATH",
+    "PATHEXT",
+    "SYSTEMROOT",
+    "WINDIR",
+    "COMSPEC",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "HOME",
+    "USERPROFILE",
+    "HOMEDRIVE",
+    "HOMEPATH",
+    "LOCALAPPDATA",
+    "APPDATA",
+    "XDG_DATA_HOME",
+    "XDG_CONFIG_HOME",
+    "XDG_CACHE_HOME",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "PYTHONUTF8",
+    "PYTHONIOENCODING",
+    "MPLBACKEND",
+    "MPLCONFIGDIR",
+    "OPENBLAS_NUM_THREADS",
+    "OMP_NUM_THREADS",
+    "MKL_NUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+    "CUDA_VISIBLE_DEVICES",
+    "VIRTUAL_ENV",
+    "PYTHONPATH",
+})
+_SECRET_KEY_TOKENS = ("TOKEN", "SECRET", "PASSWORD", "KEY", "CREDENTIAL", "AUTH")
+
+
+def _child_process_env() -> dict[str, str]:
+    """Return an allowlisted environment for child commands without API secrets."""
+    env: dict[str, str] = {}
+    for key, value in os.environ.items():
+        upper = key.upper()
+        if any(secret_token in upper for secret_token in _SECRET_KEY_TOKENS):
+            continue
+        if upper in _SAFE_CHILD_ENV_KEYS or upper.startswith("EMRF_"):
+            env[key] = value
+    env["PYTHONPATH"] = os.pathsep.join(
+        [str(PACKAGE_DIR), str(app_root()), env.get("PYTHONPATH", "")]
+    ).rstrip(os.pathsep)
+    env.setdefault("MPLBACKEND", "Agg")
+    return env
+
+
+def _cap_captured_stream(text: str | None) -> str | None:
+    if text is None or len(text) <= _MAX_CAPTURED_STREAM_CHARS:
+        return text
+    return f"{text[:_MAX_CAPTURED_STREAM_CHARS]}\n...[truncated]..."
+
+
 def run_command(
     name: str,
     args: list[str] | None = None,
@@ -280,12 +356,9 @@ def run_command(
                 f"{cmd.name} requires an EMRF source checkout containing {cmd.script}"
             )
         raise FileNotFoundError(f"Command target is unavailable: {cmd.script}")
-    env = dict(os.environ)
-    env["PYTHONPATH"] = os.pathsep.join(
-        [str(PACKAGE_DIR), str(REPO_ROOT), env.get("PYTHONPATH", "")]
-    ).rstrip(os.pathsep)
-    env.setdefault("MPLBACKEND", "Agg")
-    REPO_ROOT.mkdir(parents=True, exist_ok=True)
+    env = _child_process_env()
+    current_root = app_root()
+    current_root.mkdir(parents=True, exist_ok=True)
     store = run_store()
     if resume_run_id is not None and prepared_run_id is not None:
         raise ValueError("A run cannot be both prepared and resumed")
@@ -317,7 +390,7 @@ def run_command(
     try:
         proc = subprocess.run(  # noqa: S603 - fixed interpreter + registered target, no shell
             [sys.executable, *target, *args],
-            cwd=str(REPO_ROOT),
+            cwd=str(current_root),
             env=env,
             timeout=timeout,
             capture_output=capture,
@@ -366,8 +439,8 @@ def run_command(
         "run_id": final.run_id,
     }
     if capture:
-        result["stdout"] = proc.stdout
-        result["stderr"] = proc.stderr
+        result["stdout"] = _cap_captured_stream(proc.stdout)
+        result["stderr"] = _cap_captured_stream(proc.stderr)
     return result
 
 
@@ -426,24 +499,28 @@ def run_next_job(worker_id: str, *, lease_seconds: float = 3600) -> object | Non
             job.job_id,
             returncode=None,
             error=f"Command exceeded timeout of {job.timeout_seconds}s",
+            lease_owner=worker_id,
         )
     except Exception as exc:
         return store.complete_job(
             job.job_id,
             returncode=None,
             error=f"{type(exc).__name__}: {exc}",
+            lease_owner=worker_id,
         )
     except BaseException as exc:
         store.complete_job(
             job.job_id,
             returncode=None,
             error=f"{type(exc).__name__}: {exc}",
+            lease_owner=worker_id,
         )
         raise
     return store.complete_job(
         job.job_id,
         returncode=int(result["returncode"]),
         error=None if result["returncode"] == 0 else "Command returned a nonzero exit code",
+        lease_owner=worker_id,
     )
 
 
@@ -461,14 +538,15 @@ def _manifest_path(value: str) -> Path:
         return path
     if path.parts and path.parts[0].lower() == "data":
         return resolve_data_path(path)
-    return REPO_ROOT / path
+    return _effective_repo_root() / path
 
 
 def dataset_status(verify: bool = False) -> list[dict]:
     """List manifest-registered observational files; optionally re-hash them (read-only)."""
-    if not MANIFEST.is_file():
+    manifest_file = _effective_manifest()
+    if not manifest_file.is_file():
         return []
-    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
     out = []
     for key, entry in sorted(manifest.items()):
         path = _manifest_path(entry.get("file", ""))
@@ -513,11 +591,18 @@ def environment_report() -> dict:
     else:
         offsite_backup_destination_configured = True
     py_ok = sys.version_info >= (3, 10)
+    python_warnings: list[str] = []
+    if sys.version_info[:3] == (3, 10, 0):
+        python_warnings.append(
+            "CPython 3.10.0 has known dataclass(slots=True) bug bpo-45662 "
+            "affecting Hypothesis; upgrade to Python >=3.10.1 (3.12 recommended)."
+        )
     return {
         "emrf_version": __version__,
         "api_version": API_VERSION,
         "python": sys.version.split()[0],
         "python_ok": py_ok,
+        "python_warnings": python_warnings,
         "executable": sys.executable,
         "platform": sys.platform,
         "core_dependencies": core,
@@ -526,9 +611,9 @@ def environment_report() -> dict:
         "registered_commands": len(COMMANDS),
         "missing_scripts": missing_scripts,
         "source_only_unavailable": source_only_unavailable,
-        "app_root": str(REPO_ROOT),
+        "app_root": str(_effective_repo_root()),
         "data_root": str(data_root()),
-        "manifest_present": MANIFEST.is_file(),
+        "manifest_present": _effective_manifest().is_file(),
         "offsite_backup_destination_configured": (
             offsite_backup_destination_configured
         ),

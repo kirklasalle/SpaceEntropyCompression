@@ -5,11 +5,11 @@ from __future__ import annotations
 import math
 from dataclasses import replace
 from functools import lru_cache
-from typing import TypedDict
+from typing import TYPE_CHECKING, TypedDict
 
 import numpy as np
 
-try:
+if TYPE_CHECKING:
     from fit_astrometry import (
         S2_BENCHMARK_PARAMS,
         fit_emrf_beta,
@@ -30,27 +30,49 @@ try:
         PARTICLE_BENCHMARKS,
         QuantumVibrationalEngine,
     )
-except ImportError:
-    from emergent_matter_model.fit_astrometry import (
-        S2_BENCHMARK_PARAMS,
-        fit_emrf_beta,
-        project_orbital_position_to_sky,
-    )
-    from emergent_matter_model.fit_jwst import (
-        HighZGalaxyRecord,
-        critical_acceleration_z,
-        fit_high_z_acceleration_scale,
-        predict_flat_velocity_kms,
-    )
-    from emergent_matter_model.lensing_engine import (
-        calculate_deflection_angle_profile,
-        integrate_softened_isothermal_deflection,
-    )
-    from emergent_matter_model.model import EmergentMatterModel
-    from emergent_matter_model.quantum_vibrational_compression import (
-        PARTICLE_BENCHMARKS,
-        QuantumVibrationalEngine,
-    )
+else:
+    try:
+        from fit_astrometry import (
+            S2_BENCHMARK_PARAMS,
+            fit_emrf_beta,
+            project_orbital_position_to_sky,
+        )
+        from fit_jwst import (
+            HighZGalaxyRecord,
+            critical_acceleration_z,
+            fit_high_z_acceleration_scale,
+            predict_flat_velocity_kms,
+        )
+        from lensing_engine import (
+            calculate_deflection_angle_profile,
+            integrate_softened_isothermal_deflection,
+        )
+        from model import EmergentMatterModel
+        from quantum_vibrational_compression import (
+            PARTICLE_BENCHMARKS,
+            QuantumVibrationalEngine,
+        )
+    except ImportError:
+        from emergent_matter_model.fit_astrometry import (
+            S2_BENCHMARK_PARAMS,
+            fit_emrf_beta,
+            project_orbital_position_to_sky,
+        )
+        from emergent_matter_model.fit_jwst import (
+            HighZGalaxyRecord,
+            critical_acceleration_z,
+            fit_high_z_acceleration_scale,
+            predict_flat_velocity_kms,
+        )
+        from emergent_matter_model.lensing_engine import (
+            calculate_deflection_angle_profile,
+            integrate_softened_isothermal_deflection,
+        )
+        from emergent_matter_model.model import EmergentMatterModel
+        from emergent_matter_model.quantum_vibrational_compression import (
+            PARTICLE_BENCHMARKS,
+            QuantumVibrationalEngine,
+        )
 
 
 class EngineCheck(TypedDict):

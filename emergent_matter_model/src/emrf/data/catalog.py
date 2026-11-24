@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from builtins import list as _builtin_list
 from dataclasses import dataclass
 from importlib.resources import files
 from pathlib import Path
@@ -79,7 +80,7 @@ class DataCatalog:
         store: ContentAddressedStore,
         *,
         verify: bool = False,
-    ) -> list[dict[str, Any]]:
+    ) -> _builtin_list[dict[str, Any]]:
         """Return catalog metadata combined with managed-store availability."""
         store.initialize()
         rows: list[dict[str, Any]] = []

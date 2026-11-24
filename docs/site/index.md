@@ -26,5 +26,6 @@ The typed `EMRFClient` application layer is authoritative. The `emrf` CLI,
 Flask REST v1 compatibility API, and FastAPI REST v2 call that layer.
 REST v1 remains stable for existing clients; new functionality targets v2.
 
-Current supported Python versions are 3.10 and 3.12. JavaFX compatibility is
-certified on Java 17.
+Current supported Python versions are `3.10.1+` and `3.12` (`3.12` recommended;
+CPython `3.10.0` triggers a `bpo-45662` warning in `emrf doctor`). JavaFX
+compatibility is certified on Java 17 and exercised on JDK 25.
