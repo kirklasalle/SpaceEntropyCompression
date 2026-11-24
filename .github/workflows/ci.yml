@@ -115,11 +115,17 @@ jobs:
         if: matrix.python == '3.12'
         shell: bash
         run: |
+          rm -rf /tmp/emrf-wheel /tmp/emrf-wheel-venv
           python -m pip wheel emergent_matter_model --no-deps -w /tmp/emrf-wheel
           python -m venv /tmp/emrf-wheel-venv
-          /tmp/emrf-wheel-venv/bin/python -m pip install /tmp/emrf-wheel/*.whl
-          /tmp/emrf-wheel-venv/bin/emrf doctor
-          /tmp/emrf-wheel-venv/bin/emrf kb validate
+          if [ -x /tmp/emrf-wheel-venv/Scripts/python.exe ]; then
+            WHEEL_BIN=/tmp/emrf-wheel-venv/Scripts
+          else
+            WHEEL_BIN=/tmp/emrf-wheel-venv/bin
+          fi
+          "$WHEEL_BIN/python" -m pip install /tmp/emrf-wheel/*.whl -c constraints-ci.txt
+          "$WHEEL_BIN/emrf" doctor
+          "$WHEEL_BIN/emrf" kb validate
 
   golden:
     name: Golden ${{ matrix.case }} / Windows / Python 3.10
